@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -36,6 +37,88 @@ class AuthController extends Controller
         return view('auth.two_factor_challenge', [
             'email' => $request->session()->get('two_factor_auth.email'),
         ]);
+    }
+
+    public function redirectToGoogle(Request $request): RedirectResponse
+    {
+        if (RateLimiter::tooManyAttempts($this->socialThrottleKey($request), 5)) {
+            return redirect()->to(route('login', absolute: false))->withErrors([
+                'email' => 'Too many Google login attempts. Please wait a few minutes and try again.',
+            ]);
+        }
+
+        RateLimiter::hit($this->socialThrottleKey($request), 300);
+
+        return Socialite::driver('google')
+            ->stateless()
+            ->redirect();
+    }
+
+    public function handleGoogleCallback(Request $request): RedirectResponse
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+        } catch (\Throwable $exception) {
+            return redirect()->to(route('login', absolute: false))->withErrors([
+                'email' => 'Google sign-in could not be completed. Please try again.',
+            ]);
+        }
+
+        $email = $this->normalizeEmail((string) ($googleUser->getEmail() ?? ''));
+
+        if ($email === '') {
+            return redirect()->to(route('login', absolute: false))->withErrors([
+                'email' => 'Your Google account did not return an email address.',
+            ]);
+        }
+
+        $userRole = Role::firstOrCreate(['name' => 'user']);
+
+        $user = User::query()
+            ->where('google_id', $googleUser->getId())
+            ->orWhere('email', $email)
+            ->first();
+
+        if (! $user) {
+            $user = User::create([
+                'name' => trim((string) ($googleUser->getName() ?: $googleUser->getNickname() ?: 'Google User')),
+                'email' => $email,
+                'google_id' => (string) $googleUser->getId(),
+                'avatar_path' => $googleUser->getAvatar(),
+                'password' => Str::password(32),
+                'role_id' => $userRole->id,
+                'email_verified_at' => now(),
+            ]);
+        } else {
+            $user->google_id = $user->google_id ?: (string) $googleUser->getId();
+
+            if (! $user->avatar_path && $googleUser->getAvatar()) {
+                $user->avatar_path = $googleUser->getAvatar();
+            }
+
+            if (! $user->email_verified_at) {
+                $user->email_verified_at = now();
+            }
+
+            $user->save();
+        }
+
+        RateLimiter::clear($this->socialThrottleKey($request));
+        Auth::login($user, true);
+        $request->session()->regenerate();
+
+        if ($user->two_factor_enabled) {
+            $this->sendOtpTo($user, 'login_two_factor');
+            $request->session()->put('two_factor_auth.user_id', $user->id);
+            $request->session()->put('two_factor_auth.remember', true);
+            $request->session()->put('two_factor_auth.email', $user->email);
+            Auth::logout();
+
+            return redirect()->to(route('two-factor.challenge', absolute: false))
+                ->with('status', 'We sent a login verification code to your email address.');
+        }
+
+        return redirect()->intended($this->redirectPathFor($user));
     }
 
     public function login(Request $request): RedirectResponse
@@ -102,6 +185,18 @@ class AuthController extends Controller
 
     public function register(Request $request): RedirectResponse
     {
+        if (RateLimiter::tooManyAttempts($this->registerThrottleKey($request), 5)) {
+            $seconds = RateLimiter::availableIn($this->registerThrottleKey($request));
+
+            return back()
+                ->withErrors([
+                    'email' => 'Too many signup attempts. Please try again in '.max(1, (int) ceil($seconds / 60)).' minute(s).',
+                ])
+                ->withInput($request->except('password', 'password_confirmation'));
+        }
+
+        RateLimiter::hit($this->registerThrottleKey($request), 300);
+
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -135,6 +230,7 @@ class AuthController extends Controller
             'role_id' => $userRole->id,
         ]);
 
+        RateLimiter::clear($this->registerThrottleKey($request));
         Auth::login($user);
         $request->session()->regenerate();
         $this->sendOtpTo($user, 'email_verification');
@@ -399,6 +495,16 @@ class AuthController extends Controller
     protected function loginThrottleKey(Request $request): string
     {
         return Str::lower(trim((string) $request->input('email'))).'|'.$request->ip();
+    }
+
+    protected function registerThrottleKey(Request $request): string
+    {
+        return 'register|'.$request->ip();
+    }
+
+    protected function socialThrottleKey(Request $request): string
+    {
+        return 'social|google|'.$request->ip();
     }
 
     protected function normalizeEmail(string $email): string

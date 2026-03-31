@@ -32,6 +32,8 @@ Route::get('/placement', [PublicSiteController::class, 'placement'])->name('home
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
+    Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('login.google.redirect');
+    Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('login.google.callback');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.store');
     Route::get('/two-factor-challenge', [AuthController::class, 'showTwoFactorChallenge'])->name('two-factor.challenge');
