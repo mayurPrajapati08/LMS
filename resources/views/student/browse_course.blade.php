@@ -12,17 +12,17 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#3525cd",
-                        "primary-container": "#4f46e5",
-                        surface: "#f8f9fa",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
+                        primary: "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        surface: "#f4f9ff",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
                         "surface-container-lowest": "#ffffff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        outline: "#777587",
+                        "on-surface-variant": "#4f6178",
+                        outline: "#7c8da7",
                         tertiary: "#007030",
-                        secondary: "#58579b"
+                        secondary: "#3b5f8d"
                     },
                     fontFamily: {
                         headline: ["Manrope"],
@@ -55,7 +55,7 @@
             <a class="hidden rounded-full bg-surface-container-low px-4 py-2 text-sm font-semibold text-primary md:inline-flex" href="{{ route('student.wishlist') }}">
                 Wishlist
             </a>
-            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
         </div>
     </header>
 
@@ -68,11 +68,11 @@
 
         <section class="mb-10 grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
             <div class="rounded-[2rem] bg-gradient-to-br from-slate-950 via-indigo-900 to-indigo-700 px-6 py-8 text-white md:px-8">
-                <p class="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-indigo-200">Student Catalog</p>
+                <p class="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#b9dcff]">Student Catalog</p>
                 <h1 class="font-headline text-4xl font-extrabold tracking-tight md:text-5xl">
                     Discover courses that fit your next learning sprint.
                 </h1>
-                <p class="mt-4 max-w-2xl text-sm leading-7 text-indigo-100 md:text-base">
+                <p class="mt-4 max-w-2xl text-sm leading-7 text-[#dcecff] md:text-base">
                     Real courses, real progress paths, and direct access to the same lessons you can continue inside your player once you enroll.
                 </p>
                 <div class="mt-6 flex flex-wrap gap-3 text-sm">
@@ -230,7 +230,7 @@
                                         @unless ($courseCard['is_enrolled'])
                                             <form action="{{ route('student.cart.add', ['course' => $courseCard['id']]) }}" method="POST">
                                                 @csrf
-                                                <button class="rounded-xl px-4 py-3 text-sm font-bold transition-all {{ $courseCard['is_in_cart'] ? 'bg-indigo-50 text-primary' : 'bg-surface-container-low text-primary hover:bg-surface-container-high' }}" type="submit">
+                                                <button class="rounded-xl px-4 py-3 text-sm font-bold transition-all {{ $courseCard['is_in_cart'] ? 'bg-[#edf5ff] text-primary' : 'bg-surface-container-low text-primary hover:bg-surface-container-high' }}" type="submit">
                                                     {{ $courseCard['is_in_cart'] ? 'In Cart' : 'Add to Cart' }}
                                                 </button>
                                             </form>
@@ -278,3 +278,5 @@
     </script>
 </body>
 </html>
+
+

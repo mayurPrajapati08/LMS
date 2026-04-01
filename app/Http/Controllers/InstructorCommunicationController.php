@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inquiry;
+use App\Support\CloudflareR2Storage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use RuntimeException;
@@ -88,7 +88,7 @@ class InstructorCommunicationController extends Controller
 
         if ($request->hasFile('avatar')) {
             try {
-                $payload['avatar_path'] = $this->uploadAvatarToCloudinary(
+                $payload['avatar_path'] = $this->uploadAvatarToR2(
                     $request->file('avatar'),
                     $request->user()->id,
                     $validated['name']
@@ -129,46 +129,13 @@ class InstructorCommunicationController extends Controller
             ->with('status', 'Password updated successfully.');
     }
 
-    private function uploadAvatarToCloudinary($file, int $userId, string $name): string
+    private function uploadAvatarToR2($file, int $userId, string $name): string
     {
-        $cloudName = (string) config('services.cloudinary.cloud_name');
-        $apiKey = (string) config('services.cloudinary.api_key');
-        $apiSecret = (string) config('services.cloudinary.api_secret');
-        $folder = (string) config('services.cloudinary.avatar_folder', 'lms/instructor-avatars');
+        $folder = trim((string) config('services.cloudflare_r2.avatar_folder', 'lms/avatars'), '/');
+        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
+        $path = $folder.'/instructor-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar.'.$extension;
 
-        if ($cloudName === '' || $apiKey === '' || $apiSecret === '') {
-            throw new RuntimeException('Cloudinary is not configured. Add Cloudinary credentials to continue.');
-        }
-
-        $timestamp = time();
-        $publicId = 'instructor-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar';
-        $signature = sha1("folder={$folder}&public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
-
-        $response = Http::timeout(60)
-            ->attach(
-                'file',
-                file_get_contents($file->getRealPath()),
-                $file->getClientOriginalName()
-            )
-            ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                'api_key' => $apiKey,
-                'timestamp' => $timestamp,
-                'folder' => $folder,
-                'public_id' => $publicId,
-                'signature' => $signature,
-            ]);
-
-        if (! $response->successful()) {
-            throw new RuntimeException('Avatar upload failed. Please try again.');
-        }
-
-        $secureUrl = $response->json('secure_url');
-
-        if (! is_string($secureUrl) || $secureUrl === '') {
-            throw new RuntimeException('Cloudinary did not return a valid avatar URL.');
-        }
-
-        return $secureUrl;
+        return CloudflareR2Storage::uploadPublicFile($file, $path);
     }
 }
 

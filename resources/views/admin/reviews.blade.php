@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Academic Curator - Student Feedback & Reviews</title>
+    <title>CodeInYourself - Student Feedback & Reviews</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -13,14 +13,14 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "background": "#f8f9fa",
+                        "primary": "#0c4ea3",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        "outline-variant": "#c7c4d8",
+                        "on-surface-variant": "#4f6178",
+                        "outline-variant": "#d5e4ff",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -43,11 +43,11 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none transition-all" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
-            <span class="hidden sm:block text-sm font-semibold text-indigo-600">{{ $admin->name }}</span>
+            <span class="hidden sm:block text-sm font-semibold text-[#0c4ea3]">{{ $admin->name }}</span>
             <img alt="{{ $admin->name }}" class="w-9 h-9 rounded-full object-cover" src="{{ $profileAvatar }}" />
         </div>
     </header>
@@ -97,12 +97,12 @@
 
                 <div class="col-span-12 lg:col-span-9 space-y-4">
                     @forelse ($reviews as $review)
-                        <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col sm:flex-row border {{ $featuredReviewId === $review->id ? 'border-2 border-indigo-100 ring-4 ring-indigo-50' : 'border-outline-variant/10' }}">
+                        <div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col sm:flex-row border {{ $featuredReviewId === $review->id ? 'border-2 border-[#dcecff] ring-4 ring-[#edf5ff]' : 'border-outline-variant/10' }}">
                             <div class="p-6 flex-1">
                                 @if ($featuredReviewId === $review->id)
                                     <div class="flex items-center gap-2 mb-3">
-                                        <span class="material-symbols-outlined text-indigo-600 text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
-                                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Featured Review</span>
+                                        <span class="material-symbols-outlined text-[#0c4ea3] text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                                        <span class="text-[10px] font-bold text-[#0c4ea3] uppercase tracking-widest">Featured Review</span>
                                     </div>
                                 @endif
                                 <div class="flex items-start justify-between mb-4">
@@ -122,7 +122,7 @@
                                 <p class="text-on-surface-variant text-sm leading-relaxed mb-6">{{ $review->comment ?: 'No written comment was left with this review.' }}</p>
                             </div>
                             <div class="bg-surface-container-low px-6 py-4 sm:w-48 flex sm:flex-col justify-center gap-2 border-t sm:border-t-0 sm:border-l border-slate-100">
-                                <span class="flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold {{ $featuredReviewId === $review->id ? 'text-white bg-indigo-600 rounded-lg' : 'text-primary hover:bg-white rounded-lg' }}">
+                                <span class="flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold {{ $featuredReviewId === $review->id ? 'text-white bg-[#0c4ea3] rounded-lg' : 'text-primary hover:bg-white rounded-lg' }}">
                                     <span class="material-symbols-outlined text-sm">{{ $featuredReviewId === $review->id ? 'check' : 'grade' }}</span>
                                     {{ $featuredReviewId === $review->id ? 'Featured' : 'Review' }}
                                 </span>
@@ -136,7 +136,7 @@
                         <span class="text-sm font-bold text-slate-400">Page {{ $reviews->currentPage() }} of {{ $reviews->lastPage() }}</span>
                         <div class="flex gap-4">
                             @for ($page = 1; $page <= min(3, $reviews->lastPage()); $page++)
-                                <a class="text-sm font-bold {{ $reviews->currentPage() === $page ? 'text-indigo-600 underline underline-offset-8' : 'text-slate-400 hover:text-on-surface' }}" href="{{ $reviews->url($page) }}">{{ str_pad((string) $page, 2, '0', STR_PAD_LEFT) }}</a>
+                                <a class="text-sm font-bold {{ $reviews->currentPage() === $page ? 'text-[#0c4ea3] underline underline-offset-8' : 'text-slate-400 hover:text-on-surface' }}" href="{{ $reviews->url($page) }}">{{ str_pad((string) $page, 2, '0', STR_PAD_LEFT) }}</a>
                             @endfor
                         </div>
                     </div>
@@ -146,3 +146,5 @@
     </main>
 </body>
 </html>
+
+

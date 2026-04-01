@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>User Management - Academic Curator</title>
+    <title>User Management - CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -13,16 +13,16 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
+                        "primary": "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container-highest": "#dbe8ff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        "outline-variant": "#c7c4d8",
+                        "on-surface-variant": "#4f6178",
+                        "outline-variant": "#d5e4ff",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -46,7 +46,7 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -164,8 +164,8 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-indigo-600 rounded-3xl p-6 text-white">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-indigo-200">Total Database</p>
+                <div class="bg-[#0c4ea3] rounded-3xl p-6 text-white">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-[#b9dcff]">Total Database</p>
                     <h3 class="text-5xl font-extrabold font-headline">{{ number_format($studentCount) }}</h3>
                 </div>
                 <div class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-sm">
@@ -181,3 +181,5 @@
     </main>
 </body>
 </html>
+
+

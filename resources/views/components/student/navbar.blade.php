@@ -19,7 +19,7 @@
 
 <x-shared.page-loader />
 
-<button id="studentSidebarToggle" type="button" class="md:hidden fixed top-2.5 left-3 z-[70] w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 flex items-center justify-center shadow-sm transition-opacity duration-200" aria-label="Open student menu" onclick="toggleStudentSidebar(true)">
+<button id="studentSidebarToggle" type="button" class="md:hidden fixed top-2.5 left-3 z-[70] w-10 h-10 rounded-xl border border-[#d5e4ff] bg-white text-[#0c4ea3] flex items-center justify-center shadow-sm transition-opacity duration-200" aria-label="Open student menu" onclick="toggleStudentSidebar(true)">
     <span class="material-symbols-outlined">menu</span>
 </button>
 
@@ -41,16 +41,22 @@
     }
 </style>
 
-<aside id="studentSidebar" class="h-[100dvh] w-64 fixed left-0 top-0 border-r-0 flex flex-col p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] bg-white dark:bg-slate-900 z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 overflow-y-auto">
-    <div class="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-8 font-headline">
-        CodeInYourself
+<aside id="studentSidebar" class="h-[100dvh] w-64 fixed left-0 top-0 flex flex-col p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] bg-[linear-gradient(180deg,#f5faff_0%,#eef5ff_100%)] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 overflow-y-auto border-r border-[#dbe8ff]">
+    <div class="mb-8 flex items-center gap-3">
+        <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-[#d5e4ff] shadow-[0_12px_28px_rgba(12,78,163,0.16)]">
+            <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+        </span>
+        <div>
+            <div class="text-[1.05rem] font-extrabold tracking-[-0.03em] text-[#08275c] font-headline">CodeInYourself</div>
+            <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1570d8] mt-1">Student Hub</div>
+        </div>
     </div>
 
     <nav class="flex-1 space-y-1">
         <a href="/student/dashboard" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-all font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isDashboard,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isDashboard,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isDashboard,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isDashboard,
         ])>
             <span class="material-symbols-outlined" data-icon="dashboard" @if($isDashboard) style="font-variation-settings: 'FILL' 1;" @endif>dashboard</span>
             Dashboard
@@ -58,8 +64,8 @@
 
         <a href="/student/browse-courses" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isBrowseCourses,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isBrowseCourses,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isBrowseCourses,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isBrowseCourses,
         ])>
             <span class="material-symbols-outlined" data-icon="explore" @if($isBrowseCourses) style="font-variation-settings: 'FILL' 1;" @endif>explore</span>
             Browse Courses
@@ -67,8 +73,8 @@
 
         <a href="/student/my-learning" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isMyLearning,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isMyLearning,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isMyLearning,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isMyLearning,
         ])>
             <span class="material-symbols-outlined" data-icon="school" @if($isMyLearning) style="font-variation-settings: 'FILL' 1;" @endif>school</span>
             My Learning
@@ -76,8 +82,8 @@
 
         <a href="/student/wishlist" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isWishlist,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isWishlist,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isWishlist,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isWishlist,
         ])>
             <span class="material-symbols-outlined" data-icon="favorite" @if($isWishlist) style="font-variation-settings: 'FILL' 1;" @endif>favorite</span>
             Wishlist
@@ -85,8 +91,8 @@
 
         <a href="/student/cart" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center justify-between gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isCart,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isCart,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isCart,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isCart,
         ])>
             <span class="flex items-center gap-3">
                 <span class="material-symbols-outlined" data-icon="shopping_cart" @if($isCart) style="font-variation-settings: 'FILL' 1;" @endif>shopping_cart</span>
@@ -99,8 +105,8 @@
 
         <a href="/student/certificate" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isCertificates,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isCertificates,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isCertificates,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isCertificates,
         ])>
             <span class="material-symbols-outlined" data-icon="workspace_premium" @if($isCertificates) style="font-variation-settings: 'FILL' 1;" @endif>workspace_premium</span>
             Certificates
@@ -110,8 +116,8 @@
 
         <a href="/student/payment" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isPayments,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isPayments,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isPayments,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isPayments,
         ])>
             <span class="material-symbols-outlined" data-icon="payments" @if($isPayments) style="font-variation-settings: 'FILL' 1;" @endif>payments</span>
             Payments
@@ -119,8 +125,8 @@
 
         <a href="/student/messages-support" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isSupport,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isSupport,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isSupport,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isSupport,
         ])>
             <span class="material-symbols-outlined" data-icon="support_agent" @if($isSupport) style="font-variation-settings: 'FILL' 1;" @endif>support_agent</span>
             Messages / Support
@@ -128,20 +134,20 @@
 
         <a href="/student/seeting" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
             "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-indigo-600 dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-indigo-600' => $isSettings,
-            'text-slate-500 dark:text-slate-400 hover:text-indigo-500 hover:bg-slate-50 dark:hover:bg-slate-800' => !$isSettings,
+            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isSettings,
+            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isSettings,
         ])>
             <span class="material-symbols-outlined" data-icon="settings" @if($isSettings) style="font-variation-settings: 'FILL' 1;" @endif>settings</span>
             Profile Settings
         </a>
     </nav>
 
-    <div class="mt-auto pt-6 border-t border-surface-container-low">
+    <div class="mt-auto pt-6 border-t border-[#d7e6ff]">
         <div class="flex items-center gap-3">
             @if ($user?->avatar_path)
-                <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $user->avatarUrl(96) }}" />
+                <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $user->avatarUrl(96) }}" />
             @else
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-sm font-bold text-white">{{ $initials ?: 'U' }}</div>
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#0c4ea3] text-sm font-bold text-white">{{ $initials ?: 'U' }}</div>
             @endif
             <div class="overflow-hidden">
                 <p class="text-sm font-bold truncate">{{ $user->name }}</p>
@@ -177,3 +183,4 @@
         };
     }
 </script>
+

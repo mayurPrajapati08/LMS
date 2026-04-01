@@ -13,53 +13,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "secondary": "#58579b",
-                        "surface-tint": "#4d44e3",
-                        "inverse-on-surface": "#f0f1f2",
-                        "secondary-fixed": "#e2dfff",
+                        "secondary": "#3b5f8d",
+                        "surface-tint": "#1570d8",
+                        "inverse-on-surface": "#f5fbff",
+                        "secondary-fixed": "#e8f3ff",
                         "on-primary-fixed": "#0f0069",
                         "error-container": "#ffdad6",
                         "tertiary": "#005523",
                         "tertiary-container": "#007030",
-                        "on-secondary-fixed-variant": "#413f82",
+                        "on-secondary-fixed-variant": "#315b90",
                         "tertiary-fixed": "#6bff8f",
-                        "secondary-fixed-dim": "#c3c0ff",
+                        "secondary-fixed-dim": "#b9dcff",
                         "on-tertiary": "#ffffff",
-                        "on-primary-fixed-variant": "#3323cc",
+                        "on-primary-fixed-variant": "#0a4b99",
                         "error": "#ba1a1a",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary-container": "#b6b4ff",
+                        "surface-container-low": "#eef5ff",
+                        "secondary-container": "#d7e9ff",
                         "on-primary": "#ffffff",
                         "on-error": "#ffffff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "outline-variant": "#c7c4d8",
+                        "primary-fixed-dim": "#b9dcff",
+                        "outline-variant": "#d5e4ff",
                         "on-surface": "#191c1d",
-                        "surface-dim": "#d9dadb",
-                        "on-secondary-fixed": "#140f54",
-                        "inverse-primary": "#c3c0ff",
-                        "on-surface-variant": "#464555",
+                        "surface-dim": "#d4e3f8",
+                        "on-secondary-fixed": "#072a60",
+                        "inverse-primary": "#b9dcff",
+                        "on-surface-variant": "#4f6178",
                         "tertiary-fixed-dim": "#4ae176",
-                        "on-primary-container": "#dad7ff",
-                        "inverse-surface": "#2e3132",
-                        "outline": "#777587",
-                        "primary-container": "#4f46e5",
+                        "on-primary-container": "#edf5ff",
+                        "inverse-surface": "#18345f",
+                        "outline": "#7c8da7",
+                        "primary-container": "#1570d8",
                         "on-background": "#191c1d",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container": "#e9f2ff",
                         "on-tertiary-fixed-variant": "#005321",
-                        "primary-fixed": "#e2dfff",
-                        "surface-bright": "#f8f9fa",
+                        "primary-fixed": "#e8f3ff",
+                        "surface-bright": "#f4f9ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-container": "#63f889",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-error-container": "#93000a",
-                        "background": "#f8f9fa",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "primary": "#3525cd",
-                        "on-secondary-container": "#454386",
-                        "surface-variant": "#e1e3e4",
+                        "primary": "#0c4ea3",
+                        "on-secondary-container": "#41648d",
+                        "surface-variant": "#dbe8ff",
                         "on-secondary": "#ffffff",
-                        "surface": "#f8f9fa"
+                        "surface": "#f4f9ff"
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -83,7 +83,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f4f9ff;
         }
     </style>
 </head>
@@ -103,10 +103,10 @@
                 <input class="pl-10 pr-3 md:pr-4 py-2 bg-surface-container-low border-none rounded-xl text-sm w-full md:w-64 focus:ring-2 focus:ring-primary/20 transition-all outline-none" name="search" placeholder="Search..." type="text" value="{{ $search }}" />
             </form>
             <div class="flex items-center gap-3">
-                <button class="p-2 text-slate-500 hover:text-indigo-600 transition-colors" type="button">
+                <button class="p-2 text-slate-500 hover:text-[#0c4ea3] transition-colors" type="button">
                     <span class="material-symbols-outlined">notifications</span>
                 </button>
-                <img alt="Student Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $studentAvatar }}" />
+                <img alt="Student Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $studentAvatar }}" />
             </div>
         </div>
     </header>
@@ -219,7 +219,7 @@
 
                         @if ($activeInquiry->admin_reply)
                             <div class="flex gap-4 max-w-2xl ml-auto flex-row-reverse">
-                                <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-[10px] font-bold">TS</div>
+                                <div class="w-8 h-8 rounded-lg bg-[#0c4ea3] flex items-center justify-center text-white text-[10px] font-bold">TS</div>
                                 <div class="text-right">
                                     <div class="flex items-baseline justify-end gap-3 mb-1">
                                         <span class="text-[10px] text-slate-400">{{ optional($activeInquiry->updated_at)->format('h:i A') }}</span>
@@ -286,3 +286,4 @@
 </body>
 
 </html>
+

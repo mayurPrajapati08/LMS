@@ -13,6 +13,7 @@ use App\Models\PublicContact;
 use App\Models\Review;
 use App\Models\Role;
 use App\Models\User;
+use App\Support\CloudflareR2Storage;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -21,7 +22,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use RuntimeException;
@@ -264,14 +264,11 @@ class AdminController extends Controller
 
         $instructors->getCollection()->transform(function (User $instructor) use ($earnings) {
             $instructor->setAttribute('total_earnings', (float) ($earnings[$instructor->id] ?? 0));
-
-            $status = 'pending';
-            if ($instructor->courses_count > 0) {
-                $publishedCourses = $instructor->courses()->where('status', 'published')->count();
-                $status = $publishedCourses > 0 ? 'active' : 'pending';
-            }
-
-            $instructor->setAttribute('directory_status', $status);
+            $statusMeta = $this->resolveInstructorDirectoryStatus($instructor);
+            $instructor->setAttribute('directory_status', $statusMeta['key']);
+            $instructor->setAttribute('directory_status_label', $statusMeta['label']);
+            $instructor->setAttribute('directory_status_classes', $statusMeta['classes']);
+            $instructor->setAttribute('directory_status_hint', $statusMeta['hint']);
 
             return $instructor;
         });
@@ -520,7 +517,7 @@ class AdminController extends Controller
             'notification_new_review' => '1',
             'notification_support_alerts' => '1',
             'notification_daily_digest' => '0',
-            'integration_cloudinary_folder' => (string) config('services.cloudinary.avatar_folder', 'lms/admin-avatars'),
+                'integration_cloudinary_folder' => (string) config('services.cloudflare_r2.avatar_folder', 'lms/avatars'),
             'integration_razorpay_key' => (string) config('services.razorpay.key_id', ''),
             'integration_app_url' => (string) config('app.url'),
             'integration_webhook_secret' => '',
@@ -552,7 +549,7 @@ class AdminController extends Controller
         ];
 
         if ($request->hasFile('avatar')) {
-            $payload['avatar_path'] = $this->uploadAvatarToCloudinary(
+            $payload['avatar_path'] = $this->uploadAvatarToR2(
                 $request->file('avatar'),
                 $request->user()->id,
                 $validated['name']
@@ -836,45 +833,51 @@ class AdminController extends Controller
             ->with('status', 'Admin account removed successfully.');
     }
 
-    private function uploadAvatarToCloudinary($file, int $userId, string $name): string
+    private function uploadAvatarToR2($file, int $userId, string $name): string
     {
-        $cloudName = (string) config('services.cloudinary.cloud_name');
-        $apiKey = (string) config('services.cloudinary.api_key');
-        $apiSecret = (string) config('services.cloudinary.api_secret');
-        $folder = (string) config('services.cloudinary.avatar_folder', 'lms/admin-avatars');
+        $folder = trim((string) config('services.cloudflare_r2.avatar_folder', 'lms/avatars'), '/');
+        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
+        $path = $folder.'/admin-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar.'.$extension;
 
-        if ($cloudName === '' || $apiKey === '' || $apiSecret === '') {
-            throw new RuntimeException('Cloudinary is not configured. Add Cloudinary credentials to continue.');
+        return CloudflareR2Storage::uploadPublicFile($file, $path);
+    }
+
+    private function resolveInstructorDirectoryStatus(User $instructor): array
+    {
+        if (! $instructor->last_login_at) {
+            return [
+                'key' => 'pending',
+                'label' => 'Pending',
+                'classes' => 'bg-amber-50 text-amber-700',
+                'hint' => 'Has not logged in yet',
+            ];
         }
 
-        $timestamp = time();
-        $publicId = 'admin-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar';
-        $signature = sha1("folder={$folder}&public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
+        $daysSinceLogin = (int) $instructor->last_login_at->diffInDays(now());
 
-        $response = Http::timeout(60)
-            ->attach(
-                'file',
-                file_get_contents($file->getRealPath()),
-                $file->getClientOriginalName()
-            )
-            ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                'api_key' => $apiKey,
-                'timestamp' => $timestamp,
-                'folder' => $folder,
-                'public_id' => $publicId,
-                'signature' => $signature,
-            ]);
-
-        if (! $response->successful()) {
-            throw new RuntimeException('Avatar upload failed. Please try again.');
+        if ($daysSinceLogin <= 30) {
+            return [
+                'key' => 'active',
+                'label' => 'Active',
+                'classes' => 'bg-emerald-50 text-emerald-700',
+                'hint' => 'Recently active',
+            ];
         }
 
-        $secureUrl = $response->json('secure_url');
-
-        if (! is_string($secureUrl) || $secureUrl === '') {
-            throw new RuntimeException('Cloudinary did not return a valid avatar URL.');
+        if ($daysSinceLogin <= 60) {
+            return [
+                'key' => 'inactive',
+                'label' => 'Inactive',
+                'classes' => 'bg-slate-100 text-slate-700',
+                'hint' => 'No login in the last 30 days',
+            ];
         }
 
-        return $secureUrl;
+        return [
+            'key' => 'unavailable',
+            'label' => 'Unavailable',
+            'classes' => 'bg-rose-50 text-rose-700',
+            'hint' => 'No login in more than 60 days',
+        ];
     }
 }

@@ -8,9 +8,11 @@ use App\Models\CourseMaterial;
 use App\Models\Review;
 use App\Models\Section;
 use App\Models\Video;
+use App\Support\CloudflareR2Storage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -122,58 +124,79 @@ class InstructorCourseController extends Controller
         ]);
     }
 
-    public function signVideoUpload(Request $request): JsonResponse
+    public function signVideoUpload(Request $request): JsonResponse|Response
     {
         $course = $this->findOwnedCourseOrFail($request);
 
-        $validated = $request->validate([
+        $validated = validator($request->query(), [
             'course_id' => ['required', 'integer', Rule::exists('courses', 'id')],
             'section_index' => ['required', 'integer', 'min:0'],
             'lesson_index' => ['required', 'integer', 'min:0'],
             'lesson_title' => ['nullable', 'string', 'max:255'],
-        ]);
+        ])->validate();
 
-        $cloudName = (string) config('services.cloudinary.cloud_name');
-        $apiKey = (string) config('services.cloudinary.api_key');
-        $apiSecret = (string) config('services.cloudinary.api_secret');
-        $folder = (string) config('services.cloudinary.video_folder', 'lms/course-videos');
+        $accountId = (string) config('services.cloudflare_stream.account_id');
+        $apiToken = (string) config('services.cloudflare_stream.api_token');
+        $customerCode = (string) config('services.cloudflare_stream.customer_code');
+        $maxDurationSeconds = max(60, (int) config('services.cloudflare_stream.max_duration_seconds', 14400));
 
-        if ($cloudName === '' || $apiKey === '' || $apiSecret === '') {
+        if ($accountId === '' || $apiToken === '' || $customerCode === '') {
             return response()->json([
-                'message' => 'Cloudinary is not configured. Add Cloudinary credentials to continue.',
+                'message' => 'Cloudflare Stream is not configured. Add the Stream account, token, and customer code to continue.',
             ], 422);
         }
 
-        $timestamp = time();
-        $lessonSlug = Str::slug((string) ($validated['lesson_title'] ?? 'lesson'));
-        $publicId = Str::slug($course->slug)
-            .'-section-'.($validated['section_index'] + 1)
-            .'-lesson-'.($validated['lesson_index'] + 1)
-            .($lessonSlug !== '' ? '-'.$lessonSlug : '')
-            .'-'.Str::lower(Str::random(6));
+        $uploadLength = (string) $request->header('Upload-Length', '');
+        $incomingMetadata = trim((string) $request->header('Upload-Metadata', ''));
 
-        $signature = sha1("folder={$folder}&public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
+        if (! ctype_digit($uploadLength) || (int) $uploadLength <= 0) {
+            return response()->json([
+                'message' => 'A valid upload length is required to start the resumable upload.',
+            ], 422);
+        }
 
-        return response()->json([
-            'cloud_name' => $cloudName,
-            'api_key' => $apiKey,
-            'timestamp' => $timestamp,
-            'folder' => $folder,
-            'public_id' => $publicId,
-            'resource_type' => 'video',
-            'signature' => $signature,
-            'upload_url' => "https://api.cloudinary.com/v1_1/{$cloudName}/video/upload",
+        $lessonSlug = Str::slug((string) ($validated['lesson_title'] ?? 'lesson video'));
+        $displayName = trim(Str::headline(str_replace('-', ' ', $lessonSlug !== '' ? $lessonSlug : 'lesson video')));
+        $metadataParts = array_filter([
+            $incomingMetadata,
+            'maxDurationSeconds '.base64_encode((string) $maxDurationSeconds),
+            'expiry '.base64_encode(now()->addHours(2)->toIso8601String()),
+            'name '.base64_encode($displayName),
+        ]);
+
+        $response = Http::withToken($apiToken)
+            ->withHeaders([
+                'Tus-Resumable' => '1.0.0',
+                'Upload-Length' => $uploadLength,
+                'Upload-Metadata' => implode(',', $metadataParts),
+            ])
+            ->post("https://api.cloudflare.com/client/v4/accounts/{$accountId}/stream?direct_user=true");
+
+        if ($response->status() < 200 || $response->status() >= 300) {
+            return response()->json([
+                'message' => $response->json('errors.0.message') ?: 'Unable to prepare the Cloudflare Stream resumable upload.',
+            ], 422);
+        }
+
+        $streamUid = (string) ($response->header('stream-media-id') ?? '');
+        $uploadUrl = (string) ($response->header('Location') ?? '');
+
+        if ($streamUid === '' || $uploadUrl === '') {
+            return response()->json([
+                'message' => 'Cloudflare Stream did not return a valid resumable upload URL.',
+            ], 422);
+        }
+
+        return response('', 201, [
+            'Tus-Resumable' => '1.0.0',
+            'Location' => $uploadUrl,
+            'stream-media-id' => $streamUid,
+            'x-stream-playback-url' => "https://customer-{$customerCode}.cloudflarestream.com/{$streamUid}/manifest/video.m3u8",
+            'Access-Control-Expose-Headers' => 'Location,stream-media-id,x-stream-playback-url,Tus-Resumable',
         ]);
     }
 
     public function signMaterialUpload(Request $request): JsonResponse
-    {
-        return response()->json([
-            'message' => 'Material signature endpoint is no longer used.',
-        ]);
-    }
-
-    public function uploadMaterial(Request $request): JsonResponse
     {
         $course = $this->findOwnedCourseOrFail($request);
 
@@ -184,25 +207,10 @@ class InstructorCourseController extends Controller
             'material_index' => ['required', 'integer', 'min:0'],
             'material_title' => ['required', 'string', 'max:255'],
             'material_type' => ['required', Rule::in(['pdf', 'zip', 'docx'])],
-            'file' => ['required', 'file', 'max:51200'],
+            'file_name' => ['nullable', 'string', 'max:255'],
         ]);
-
-        $file = $request->file('file');
-        $extension = strtolower((string) $file->getClientOriginalExtension());
         $expectedExtension = strtolower((string) $validated['material_type']);
-
-        if ($extension !== $expectedExtension) {
-            return response()->json([
-                'message' => 'The selected file type does not match the chosen resource type.',
-            ], 422);
-        }
-
-        $folder = public_path('uploads/course-materials');
-
-        if (! is_dir($folder)) {
-            mkdir($folder, 0775, true);
-        }
-
+        $folder = trim((string) config('services.cloudflare_r2.material_folder', 'lms/course-materials'), '/');
         $filename = Str::slug($course->slug)
             .'-section-'.($validated['section_index'] + 1)
             .'-lesson-'.($validated['lesson_index'] + 1)
@@ -210,13 +218,21 @@ class InstructorCourseController extends Controller
             .'-'.Str::slug($validated['material_title'])
             .'-'.Str::lower(Str::random(6))
             .'.'.$expectedExtension;
+        $mimeType = match ($expectedExtension) {
+            'pdf' => 'application/pdf',
+            'zip' => 'application/zip',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            default => 'application/octet-stream',
+        };
+        $path = $folder.'/'.$filename;
 
-        $file->move($folder, $filename);
-
-        return response()->json([
-            'file_url' => asset('uploads/course-materials/'.$filename),
-            'message' => 'Resource uploaded successfully.',
-        ]);
+        try {
+            return response()->json(CloudflareR2Storage::createPresignedUpload($path, $mimeType, 30));
+        } catch (RuntimeException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 422);
+        }
     }
 
     public function storeCurriculum(Request $request): RedirectResponse
@@ -498,7 +514,7 @@ class InstructorCourseController extends Controller
 
         if ($request->hasFile('thumbnail')) {
             try {
-                $course->thumbnail = $this->uploadThumbnailToCloudinary(
+                $course->thumbnail = $this->uploadThumbnailToR2(
                     $request->file('thumbnail'),
                     $course->slug ?: Str::slug($validated['title'])
                 );
@@ -575,46 +591,13 @@ class InstructorCourseController extends Controller
         return $slug;
     }
 
-    private function uploadThumbnailToCloudinary(UploadedFile $file, string $slug): string
+    private function uploadThumbnailToR2(UploadedFile $file, string $slug): string
     {
-        $cloudName = (string) config('services.cloudinary.cloud_name');
-        $apiKey = (string) config('services.cloudinary.api_key');
-        $apiSecret = (string) config('services.cloudinary.api_secret');
-        $folder = (string) config('services.cloudinary.thumbnail_folder', 'lms/course-thumbnails');
+        $folder = trim((string) config('services.cloudflare_r2.thumbnail_folder', 'lms/course-thumbnails'), '/');
+        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
+        $path = $folder.'/'.Str::slug($slug).'-thumbnail.'.$extension;
 
-        if ($cloudName === '' || $apiKey === '' || $apiSecret === '') {
-            throw new RuntimeException('Cloudinary is not configured. Add Cloudinary credentials to continue.');
-        }
-
-        $timestamp = time();
-        $publicId = Str::slug($slug).'-thumbnail';
-        $signature = sha1("folder={$folder}&public_id={$publicId}&timestamp={$timestamp}{$apiSecret}");
-
-        $response = Http::timeout(60)
-            ->attach(
-                'file',
-                file_get_contents($file->getRealPath()),
-                $file->getClientOriginalName()
-            )
-            ->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                'api_key' => $apiKey,
-                'timestamp' => $timestamp,
-                'folder' => $folder,
-                'public_id' => $publicId,
-                'signature' => $signature,
-            ]);
-
-        if (! $response->successful()) {
-            throw new RuntimeException('Thumbnail upload failed. Please try again.');
-        }
-
-        $secureUrl = $response->json('secure_url');
-
-        if (! is_string($secureUrl) || $secureUrl === '') {
-            throw new RuntimeException('Cloudinary did not return a valid thumbnail URL.');
-        }
-
-        return $secureUrl;
+        return CloudflareR2Storage::uploadPublicFile($file, $path);
     }
 
 }

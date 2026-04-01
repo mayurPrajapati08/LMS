@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>The Scholarly Editorial | Student Dashboard</title>
+    <title>CodeInYourself | Student Dashboard</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -16,53 +16,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "secondary": "#58579b",
-                        "surface-tint": "#4d44e3",
-                        "inverse-on-surface": "#f0f1f2",
-                        "secondary-fixed": "#e2dfff",
+                        "secondary": "#3b5f8d",
+                        "surface-tint": "#1570d8",
+                        "inverse-on-surface": "#f5fbff",
+                        "secondary-fixed": "#e8f3ff",
                         "on-primary-fixed": "#0f0069",
                         "error-container": "#ffdad6",
                         "tertiary": "#005523",
                         "tertiary-container": "#007030",
-                        "on-secondary-fixed-variant": "#413f82",
+                        "on-secondary-fixed-variant": "#315b90",
                         "tertiary-fixed": "#6bff8f",
-                        "secondary-fixed-dim": "#c3c0ff",
+                        "secondary-fixed-dim": "#b9dcff",
                         "on-tertiary": "#ffffff",
-                        "on-primary-fixed-variant": "#3323cc",
+                        "on-primary-fixed-variant": "#0a4b99",
                         "error": "#ba1a1a",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary-container": "#b6b4ff",
+                        "surface-container-low": "#eef5ff",
+                        "secondary-container": "#d7e9ff",
                         "on-primary": "#ffffff",
                         "on-error": "#ffffff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "outline-variant": "#c7c4d8",
+                        "primary-fixed-dim": "#b9dcff",
+                        "outline-variant": "#d5e4ff",
                         "on-surface": "#191c1d",
-                        "surface-dim": "#d9dadb",
-                        "on-secondary-fixed": "#140f54",
-                        "inverse-primary": "#c3c0ff",
-                        "on-surface-variant": "#464555",
+                        "surface-dim": "#d4e3f8",
+                        "on-secondary-fixed": "#072a60",
+                        "inverse-primary": "#b9dcff",
+                        "on-surface-variant": "#4f6178",
                         "tertiary-fixed-dim": "#4ae176",
-                        "on-primary-container": "#dad7ff",
-                        "inverse-surface": "#2e3132",
-                        "outline": "#777587",
-                        "primary-container": "#4f46e5",
+                        "on-primary-container": "#edf5ff",
+                        "inverse-surface": "#18345f",
+                        "outline": "#7c8da7",
+                        "primary-container": "#1570d8",
                         "on-background": "#191c1d",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container": "#e9f2ff",
                         "on-tertiary-fixed-variant": "#005321",
-                        "primary-fixed": "#e2dfff",
-                        "surface-bright": "#f8f9fa",
+                        "primary-fixed": "#e8f3ff",
+                        "surface-bright": "#f4f9ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-container": "#63f889",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-error-container": "#93000a",
-                        "background": "#f8f9fa",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "primary": "#3525cd",
-                        "on-secondary-container": "#454386",
-                        "surface-variant": "#e1e3e4",
+                        "primary": "#0c4ea3",
+                        "on-secondary-container": "#41648d",
+                        "surface-variant": "#dbe8ff",
                         "on-secondary": "#ffffff",
-                        "surface": "#f8f9fa"
+                        "surface": "#f4f9ff"
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -85,7 +85,7 @@
         }
 
         body {
-            background-color: #f8f9fa;
+            background-color: #f4f9ff;
             color: #191c1d;
         }
 
@@ -111,20 +111,20 @@
     <main class="md:ml-64 min-h-screen">
         <!-- TopNavBar -->
         <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 shadow-sm dark:shadow-none">
-            <div class="flex items-center gap-2 text-indigo-600 font-bold font-['Inter'] text-sm">
+            <div class="flex items-center gap-2 text-[#0c4ea3] font-bold font-['Inter'] text-sm">
                 <span class="material-symbols-outlined" data-icon="school">school</span>
                 Learning Workspace
             </div>
             <div class="ml-auto flex items-center gap-4 md:gap-6">
                 <div class="relative group w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
-                    <input class="bg-surface-container-low border-none rounded-xl px-4 py-2 text-sm w-full md:w-64 focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none" placeholder="Search..." type="text" />
+                    <input class="bg-surface-container-low border-none rounded-xl px-4 py-2 text-sm w-full md:w-64 focus:ring-2 focus:ring-[#edf5ff]0/20 transition-all outline-none" placeholder="Search..." type="text" />
                     <span class="material-symbols-outlined absolute right-3 top-2 text-slate-400 text-lg" data-icon="search">search</span>
                 </div>
                 <div class="flex items-center gap-4 text-slate-500">
-                    <button class="hover:text-indigo-500 transition-all flex items-center justify-center">
+                    <button class="hover:text-[#1570d8] transition-all flex items-center justify-center">
                         <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
                     </a>
-                    <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $studentAvatar }}" />
+                    <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $studentAvatar }}" />
                 </div>
             </div>
         </header>
@@ -266,10 +266,10 @@
                                 <span>{{ $curriculumOne['progress_percent'] ?? 0 }}%</span>
                             </div>
                             <div class="w-full bg-surface-container-low h-1 rounded-full overflow-hidden">
-                                <div class="bg-indigo-500 h-full js-progress-fill" data-progress="{{ $curriculumOne['progress_percent'] ?? 0 }}"></div>
+                                <div class="bg-[#edf5ff]0 h-full js-progress-fill" data-progress="{{ $curriculumOne['progress_percent'] ?? 0 }}"></div>
                             </div>
                         </div>
-                        <a class="w-full py-2 bg-surface-container-low text-indigo-600 rounded-lg text-xs font-bold hover:bg-indigo-50 transition-colors text-center" href="{{ $curriculumOne['resume_url'] ?? '/student/browse-courses' }}">{{ $curriculumOne['button_label'] ?? 'Browse' }}</a>
+                        <a class="w-full py-2 bg-surface-container-low text-[#0c4ea3] rounded-lg text-xs font-bold hover:bg-[#edf5ff] transition-colors text-center" href="{{ $curriculumOne['resume_url'] ?? '/student/browse-courses' }}">{{ $curriculumOne['button_label'] ?? 'Browse' }}</a>
                     </div>
                     <!-- Course Card 2 -->
                     <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-4 flex flex-col transition-all hover:-translate-y-1">
@@ -287,10 +287,10 @@
                                 <span>{{ $curriculumTwo['progress_percent'] ?? 0 }}%</span>
                             </div>
                             <div class="w-full bg-surface-container-low h-1 rounded-full overflow-hidden">
-                                <div class="bg-indigo-500 h-full js-progress-fill" data-progress="{{ $curriculumTwo['progress_percent'] ?? 0 }}"></div>
+                                <div class="bg-[#edf5ff]0 h-full js-progress-fill" data-progress="{{ $curriculumTwo['progress_percent'] ?? 0 }}"></div>
                             </div>
                         </div>
-                        <a class="w-full py-2 bg-surface-container-low text-indigo-600 rounded-lg text-xs font-bold hover:bg-indigo-50 transition-colors text-center" href="{{ $curriculumTwo['resume_url'] ?? '/student/browse-courses' }}">{{ $curriculumTwo['button_label'] ?? 'Browse' }}</a>
+                        <a class="w-full py-2 bg-surface-container-low text-[#0c4ea3] rounded-lg text-xs font-bold hover:bg-[#edf5ff] transition-colors text-center" href="{{ $curriculumTwo['resume_url'] ?? '/student/browse-courses' }}">{{ $curriculumTwo['button_label'] ?? 'Browse' }}</a>
                     </div>
                     <!-- Course Card 3 -->
                     <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-4 flex flex-col transition-all hover:-translate-y-1">
@@ -308,14 +308,14 @@
                                 <span>{{ $curriculumThree['progress_percent'] ?? 0 }}%</span>
                             </div>
                             <div class="w-full bg-surface-container-low h-1 rounded-full overflow-hidden">
-                                <div class="bg-indigo-500 h-full js-progress-fill" data-progress="{{ $curriculumThree['progress_percent'] ?? 0 }}"></div>
+                                <div class="bg-[#edf5ff]0 h-full js-progress-fill" data-progress="{{ $curriculumThree['progress_percent'] ?? 0 }}"></div>
                             </div>
                         </div>
-                        <a class="w-full py-2 bg-surface-container-low text-indigo-600 rounded-lg text-xs font-bold hover:bg-indigo-50 transition-colors text-center" href="{{ $curriculumThree['resume_url'] ?? '/student/browse-courses' }}">{{ $curriculumThree['button_label'] ?? 'Browse' }}</a>
+                        <a class="w-full py-2 bg-surface-container-low text-[#0c4ea3] rounded-lg text-xs font-bold hover:bg-[#edf5ff] transition-colors text-center" href="{{ $curriculumThree['resume_url'] ?? '/student/browse-courses' }}">{{ $curriculumThree['button_label'] ?? 'Browse' }}</a>
                     </div>
                     <!-- Course Card 4 -->
                     <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm space-y-4 flex flex-col transition-all hover:-translate-y-1 border border-primary/10">
-                        <div class="h-32 bg-indigo-50 rounded-lg flex flex-col items-center justify-center text-center p-4">
+                        <div class="h-32 bg-[#edf5ff] rounded-lg flex flex-col items-center justify-center text-center p-4">
                             <span class="material-symbols-outlined text-primary text-3xl mb-2" data-icon="add_circle">add_circle</span>
                             <p class="text-[10px] font-bold text-primary tracking-widest uppercase">Explore More</p>
                         </div>
@@ -352,7 +352,7 @@
                     <div class="pt-4 border-t border-surface-container-low flex flex-col md:flex-row md:justify-between md:items-center gap-3">
                         <p class="text-sm text-on-surface-variant">
                             @if ($weeklyHours > 0)
-                                You've logged <span class="text-indigo-600 font-bold">{{ $weeklyHours }}h</span> this week across {{ $activeCourseCount }} active course{{ $activeCourseCount === 1 ? '' : 's' }}.
+                                You've logged <span class="text-[#0c4ea3] font-bold">{{ $weeklyHours }}h</span> this week across {{ $activeCourseCount }} active course{{ $activeCourseCount === 1 ? '' : 's' }}.
                             @else
                                 Start a lesson this week and your engagement streak will appear here.
                             @endif
@@ -395,6 +395,9 @@
 </body>
 
 </html>
+
+
+
 
 
 

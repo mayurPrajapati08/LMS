@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Categories Management | Academic Curator</title>
+    <title>Categories Management | CodeInYourself</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -13,18 +13,18 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
+                        "primary": "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container-highest": "#dbe8ff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        "outline-variant": "#c7c4d8",
-                        "primary-fixed": "#e2dfff",
-                        "on-primary-fixed-variant": "#3323cc",
+                        "on-surface-variant": "#4f6178",
+                        "outline-variant": "#d5e4ff",
+                        "primary-fixed": "#e8f3ff",
+                        "on-primary-fixed-variant": "#0a4b99",
                         "error": "#ba1a1a",
                         "error-container": "#ffdad6",
                         "on-error-container": "#93000a",
@@ -41,7 +41,7 @@
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         body { font-family: 'Inter', sans-serif; }
         .font-headline { font-family: 'Manrope', sans-serif; }
-        .primary-gradient { background: linear-gradient(135deg, #3525cd 0%, #4f46e5 100%); }
+        .primary-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
     </style>
 </head>
 <body class="bg-background font-body text-on-surface">
@@ -54,7 +54,7 @@
                 <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400 font-body" placeholder="Search..." type="text" />
             </div>
             <div class="ml-auto flex items-center gap-3">
-                <span class="hidden sm:block text-sm font-semibold text-indigo-600">{{ $admin->name }}</span>
+                <span class="hidden sm:block text-sm font-semibold text-[#0c4ea3]">{{ $admin->name }}</span>
                 <img alt="{{ $admin->name }}" class="w-9 h-9 rounded-full object-cover" src="{{ $profileAvatar }}" />
             </div>
         </header>
@@ -129,7 +129,7 @@
                                 <tr class="hover:bg-surface-container-low/30 transition-colors group">
                                     <td class="px-6 py-5">
                                         <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center">
+                                            <div class="w-10 h-10 rounded-lg bg-[#dcecff] text-[#0c4ea3] flex items-center justify-center">
                                                 <span class="material-symbols-outlined">category</span>
                                             </div>
                                             <span class="font-semibold text-on-surface font-headline">{{ $category->name }}</span>
@@ -213,3 +213,5 @@
     </main>
 </body>
 </html>
+
+

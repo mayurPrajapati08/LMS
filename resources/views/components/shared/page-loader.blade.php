@@ -36,7 +36,7 @@
             inset: 0 auto 0 -35%;
             width: 35%;
             border-radius: 999px;
-            background: linear-gradient(90deg, #3525cd, #4f46e5);
+            background: linear-gradient(90deg, #0c4ea3, #1570d8);
             animation: global-loader-slide 1s ease-in-out infinite;
         }
 
@@ -57,7 +57,7 @@
             height: 2.2rem;
             border-radius: 999px;
             border: 3px solid rgba(79, 70, 229, 0.16);
-            border-top-color: #3525cd;
+            border-top-color: #0c4ea3;
             animation: global-loader-spin 0.9s linear infinite;
             flex-shrink: 0;
         }
@@ -183,3 +183,4 @@
         })();
     </script>
 @endonce
+

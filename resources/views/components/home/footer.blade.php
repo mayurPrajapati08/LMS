@@ -7,19 +7,27 @@
 @endphp
 
 <!-- Footer -->
-    <footer class="bg-white w-full border-t border-surface-variant pt-16 pb-10">
+    <footer class="w-full border-t border-[#d5e4ff] bg-[linear-gradient(180deg,#f7fbff_0%,#ffffff_100%)] pt-16 pb-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-10 md:gap-16 mb-16 md:mb-20">
                 <div class="space-y-8">
-                    <div class="text-2xl font-extrabold text-primary font-headline tracking-tighter">Code In Yourself</div>
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-[#d5e4ff] shadow-[0_12px_26px_rgba(12,78,163,0.16)]">
+                            <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                        </span>
+                        <div>
+                            <div class="text-2xl font-extrabold text-[#08275c] font-headline tracking-tighter">CodeInYourself</div>
+                            <div class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#1570d8]">Engineering Career Growth</div>
+                        </div>
+                    </div>
                     <p class="text-on-surface-variant leading-relaxed text-sm max-w-xs">
                         Engineering professional careers through high-impact technical training and dedicated placement support ecosystem.
                     </p>
                     <div class="flex gap-4">
-                        <a class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="{{ $catalogUrl }}" aria-label="Browse courses">
+                        <a class="w-12 h-12 rounded-full border border-[#d5e4ff] bg-white flex items-center justify-center text-[#0c4ea3] hover:bg-[#0c4ea3] hover:text-white transition-all shadow-sm" href="{{ $catalogUrl }}" aria-label="Browse courses">
                             <span class="material-symbols-outlined">public</span>
                         </a>
-                        <a class="w-12 h-12 rounded-full bg-surface flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all shadow-sm" href="{{ $contactUrl }}" aria-label="Contact us">
+                        <a class="w-12 h-12 rounded-full border border-[#d5e4ff] bg-white flex items-center justify-center text-[#0c4ea3] hover:bg-[#0c4ea3] hover:text-white transition-all shadow-sm" href="{{ $contactUrl }}" aria-label="Contact us">
                             <span class="material-symbols-outlined">share</span>
                         </a>
                     </div>
@@ -64,7 +72,7 @@
             </div>
             <div class="pt-10 border-t border-surface-variant flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6 text-center md:text-left">
                 <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">
-                    &copy; 2024 Code In Yourself. Engineering professional careers.
+                    &copy; 2024 CodeInYourself. Engineering professional careers.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4 sm:gap-8 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">
                     <a class="hover:text-primary" href="{{ $contactUrl }}">Privacy Policy</a>

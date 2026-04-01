@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Academic Curator Admin - Executive Dashboard</title>
+    <title>CodeInYourself Admin - Executive Dashboard</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -13,16 +13,16 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
+                        "primary": "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container-highest": "#dbe8ff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        "outline-variant": "#c7c4d8",
+                        "on-surface-variant": "#4f6178",
+                        "outline-variant": "#d5e4ff",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -34,7 +34,7 @@
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .editorial-gradient { background: linear-gradient(135deg, #3525cd 0%, #4f46e5 100%); }
+        .editorial-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
     </style>
@@ -44,7 +44,7 @@
 
     <main class="md:ml-64 flex-1 flex flex-col">
         <header class="fixed top-0 right-0 left-0 md:left-64 h-16 z-40 bg-white/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 w-full md:w-[calc(100%-16rem)] border-b border-slate-100">
-            <div class="flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:px-4 md:gap-4 md:w-96 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+            <div class="flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:px-4 md:gap-4 md:w-96 focus-within:ring-2 focus-within:ring-[#edf5ff]0/20 transition-all">
                 <span class="material-symbols-outlined text-slate-400">search</span>
                 <input class="bg-transparent border-none text-sm focus:ring-0 w-full placeholder:text-slate-400" placeholder="Search..." type="text" />
             </div>
@@ -185,7 +185,7 @@
                                         </td>
                                         <td class="py-4 text-slate-600">{{ $enrollment->course?->title ?: 'Course unavailable' }}</td>
                                         <td class="py-4 text-slate-500">{{ $enrollment->created_at?->diffForHumans() }}</td>
-                                        <td class="py-4"><span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold uppercase px-2 py-1 rounded-full">{{ $enrollment->status }}</span></td>
+                                        <td class="py-4"><span class="bg-[#edf5ff] text-[#0c4ea3] text-[10px] font-bold uppercase px-2 py-1 rounded-full">{{ $enrollment->status }}</span></td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -221,12 +221,12 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-2 bg-indigo-900 rounded-3xl p-4 md:p-8 relative overflow-hidden group">
+                <div class="lg:col-span-2 bg-[#0a2f73] rounded-3xl p-4 md:p-8 relative overflow-hidden group">
                     <div class="relative z-10 h-full flex flex-col justify-center">
-                        <span class="text-indigo-300 text-xs font-bold uppercase tracking-[0.2em] mb-2">Curator Intelligence</span>
+                        <span class="text-[#76c6ff] text-xs font-bold uppercase tracking-[0.2em] mb-2">Curator Intelligence</span>
                         <h3 class="text-3xl font-bold text-white mb-4 leading-tight">{{ $insightTitle }}</h3>
-                        <p class="text-indigo-200/70 max-w-md text-sm mb-6">{{ $insightText }}</p>
-                        <a class="bg-white text-indigo-900 px-6 py-3 rounded-xl font-bold text-sm self-start" href="{{ route('admin.analytics') }}">Explore AI Forecast</a>
+                        <p class="text-[#b9dcff]/70 max-w-md text-sm mb-6">{{ $insightText }}</p>
+                        <a class="bg-white text-[#08275c] px-6 py-3 rounded-xl font-bold text-sm self-start" href="{{ route('admin.analytics') }}">Explore AI Forecast</a>
                     </div>
                 </div>
             </div>
@@ -234,3 +234,5 @@
     </main>
 </body>
 </html>
+
+

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Courses | Code In Yourself</title>
+    <title>Courses | CodeInYourself</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
@@ -12,10 +12,10 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#002D62",
+                        primary: "#08275c",
                         "on-primary": "#FFFFFF",
-                        "primary-container": "#D6E3FF",
-                        "on-primary-container": "#001B3E",
+                        "primary-container": "#dcecff",
+                        "on-primary-container": "#071c4a",
                         secondary: "#565E71",
                         "on-secondary": "#FFFFFF",
                         "secondary-container": "#DAE2F9",
@@ -24,16 +24,16 @@
                         "on-tertiary": "#FFFFFF",
                         "tertiary-container": "#9EF7A0",
                         "on-tertiary-container": "#002106",
-                        surface: "#F8FAFF",
-                        background: "#FDFBFF",
+                        surface: "#f4f9ff",
+                        background: "#f7fbff",
                         "surface-variant": "#E1E2EC",
                         "surface-container": "#e9eef8",
                         "surface-container-low": "#f1f4f9",
                         "surface-container-high": "#e5e8ee",
                         "surface-container-lowest": "#ffffff",
                         "on-surface": "#1A1C1E",
-                        "on-surface-variant": "#44474F",
-                        outline: "#74777F",
+                        "on-surface-variant": "#4f6178",
+                        outline: "#7c8da7",
                         error: "#BA1A1A",
                     },
                     fontFamily: {
@@ -217,3 +217,5 @@
     <x-home.footer />
 </body>
 </html>
+
+

@@ -13,53 +13,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#4f46e5",
-                        "outline-variant": "#c7c4d8",
-                        "secondary-container": "#b6b4ff",
-                        "background": "#f8f9fa",
+                        "primary-container": "#1570d8",
+                        "outline-variant": "#d5e4ff",
+                        "secondary-container": "#d7e9ff",
+                        "background": "#f4f9ff",
                         "on-tertiary": "#ffffff",
                         "tertiary": "#005523",
                         "tertiary-fixed": "#6bff8f",
-                        "on-surface-variant": "#464555",
+                        "on-surface-variant": "#4f6178",
                         "surface-container-lowest": "#ffffff",
                         "on-primary-fixed": "#0f0069",
-                        "outline": "#777587",
-                        "on-secondary-fixed-variant": "#413f82",
-                        "on-primary-fixed-variant": "#3323cc",
-                        "surface-tint": "#4d44e3",
-                        "on-primary-container": "#dad7ff",
+                        "outline": "#7c8da7",
+                        "on-secondary-fixed-variant": "#315b90",
+                        "on-primary-fixed-variant": "#0a4b99",
+                        "surface-tint": "#1570d8",
+                        "on-primary-container": "#edf5ff",
                         "on-background": "#191c1d",
                         "on-tertiary-container": "#63f889",
-                        "inverse-on-surface": "#f0f1f2",
-                        "primary": "#3525cd",
-                        "surface-bright": "#f8f9fa",
-                        "secondary-fixed": "#e2dfff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "primary-fixed": "#e2dfff",
+                        "inverse-on-surface": "#f5fbff",
+                        "primary": "#0c4ea3",
+                        "surface-bright": "#f4f9ff",
+                        "secondary-fixed": "#e8f3ff",
+                        "primary-fixed-dim": "#b9dcff",
+                        "primary-fixed": "#e8f3ff",
                         "error": "#ba1a1a",
-                        "surface-variant": "#e1e3e4",
-                        "secondary-fixed-dim": "#c3c0ff",
-                        "surface": "#f8f9fa",
+                        "surface-variant": "#dbe8ff",
+                        "secondary-fixed-dim": "#b9dcff",
+                        "surface": "#f4f9ff",
                         "on-error": "#ffffff",
-                        "surface-container-high": "#e7e8e9",
+                        "surface-container-high": "#e3eeff",
                         "error-container": "#ffdad6",
                         "tertiary-fixed-dim": "#4ae176",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-fixed-variant": "#005321",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary": "#58579b",
-                        "inverse-surface": "#2e3132",
-                        "surface-container": "#edeeef",
+                        "surface-container-low": "#eef5ff",
+                        "secondary": "#3b5f8d",
+                        "inverse-surface": "#18345f",
+                        "surface-container": "#e9f2ff",
                         "on-primary": "#ffffff",
                         "tertiary-container": "#007030",
                         "on-surface": "#191c1d",
-                        "inverse-primary": "#c3c0ff",
-                        "surface-dim": "#d9dadb",
+                        "inverse-primary": "#b9dcff",
+                        "surface-dim": "#d4e3f8",
                         "on-secondary": "#ffffff",
                         "on-error-container": "#93000a",
-                        "on-secondary-container": "#454386",
-                        "on-secondary-fixed": "#140f54"
+                        "on-secondary-container": "#41648d",
+                        "on-secondary-fixed": "#072a60"
                     }
                 }
             }
@@ -67,7 +67,7 @@
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
-        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #191c1d; }
+        body { font-family: 'Inter', sans-serif; background: #f4f9ff; color: #191c1d; }
         .font-headline { font-family: 'Manrope', sans-serif; }
         .editorial-shadow { box-shadow: 0 32px 64px -12px rgba(25, 28, 29, 0.05); }
     </style>
@@ -81,7 +81,7 @@
                 <h1 class="font-headline text-3xl font-bold tracking-tight text-slate-900">Settings</h1>
                 <p class="mt-1 text-sm text-slate-500">Manage your public profile, avatar, and account security.</p>
             </div>
-            <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+            <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
         </header>
 
         <div class="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-12">
@@ -93,11 +93,11 @@
                 <div class="lg:col-span-4 space-y-6">
                     <div class="rounded-[28px] bg-white p-6 md:p-8 border border-slate-200 editorial-shadow">
                         <div class="text-center">
-                            <img alt="Profile Avatar" class="mx-auto h-32 w-32 rounded-full object-cover ring-4 ring-indigo-100" src="{{ $profileAvatar }}" />
+                            <img alt="Profile Avatar" class="mx-auto h-32 w-32 rounded-full object-cover ring-4 ring-[#dcecff]" src="{{ $profileAvatar }}" />
                             <h2 class="mt-5 font-headline text-2xl font-bold text-slate-900">{{ $instructor->name }}</h2>
                             <p class="mt-1 text-sm text-slate-500">{{ $instructor->email }}</p>
                             <div class="mt-6 rounded-2xl bg-slate-50 px-4 py-4 text-left space-y-2">
-                                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-600">Security Status</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#0c4ea3]">Security Status</p>
                                 <p class="text-sm text-slate-600">Two-step verification is <span class="font-semibold {{ $instructor->two_factor_enabled ? 'text-emerald-600' : 'text-slate-700' }}">{{ $instructor->two_factor_enabled ? 'enabled' : 'disabled' }}</span>.</p>
                                 <p class="text-xs text-slate-500">When enabled, login will require your password and an email OTP.</p>
                             </div>
@@ -113,12 +113,12 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Full Name</label>
-                                    <input class="mt-2 w-full rounded-2xl border {{ $errors->has('name') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100" name="name" type="text" value="{{ old('name', $instructor->name) }}" />
+                                    <input class="mt-2 w-full rounded-2xl border {{ $errors->has('name') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="name" type="text" value="{{ old('name', $instructor->name) }}" />
                                     @error('name')<p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>@enderror
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Email Address</label>
-                                    <input class="mt-2 w-full rounded-2xl border {{ $errors->has('email') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100" name="email" type="email" value="{{ old('email', $instructor->email) }}" />
+                                    <input class="mt-2 w-full rounded-2xl border {{ $errors->has('email') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="email" type="email" value="{{ old('email', $instructor->email) }}" />
                                     @error('email')<p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>@enderror
                                 </div>
                             </div>
@@ -126,9 +126,9 @@
                             <div>
                                 <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Avatar</label>
                                 <div class="mt-2 flex flex-col gap-4 md:flex-row md:items-center">
-                                    <img alt="Avatar Preview" class="h-20 w-20 rounded-2xl object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+                                    <img alt="Avatar Preview" class="h-20 w-20 rounded-2xl object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
                                     <div class="flex-1">
-                                        <input class="block w-full rounded-2xl border {{ $errors->has('avatar') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-indigo-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-indigo-700 hover:file:bg-indigo-100" name="avatar" type="file" accept="image/png,image/jpeg,image/jpg,image/webp" />
+                                        <input class="block w-full rounded-2xl border {{ $errors->has('avatar') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#edf5ff] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#0b3f88] hover:file:bg-[#dcecff]" name="avatar" type="file" accept="image/png,image/jpeg,image/jpg,image/webp" />
                                         <p class="mt-2 text-xs text-slate-500">Upload JPG, PNG, or WEBP up to 5MB.</p>
                                         @error('avatar')<p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>@enderror
                                     </div>
@@ -137,7 +137,7 @@
 
                             <div>
                                 <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Professional Bio</label>
-                                <textarea class="mt-2 w-full rounded-[24px] border {{ $errors->has('bio') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-5 py-4 text-sm text-slate-700 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100 resize-none" name="bio" rows="5" placeholder="Tell students a little about your expertise and teaching style...">{{ old('bio', $instructor->bio) }}</textarea>
+                                <textarea class="mt-2 w-full rounded-[24px] border {{ $errors->has('bio') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-5 py-4 text-sm text-slate-700 focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff] resize-none" name="bio" rows="5" placeholder="Tell students a little about your expertise and teaching style...">{{ old('bio', $instructor->bio) }}</textarea>
                                 @error('bio')<p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>@enderror
                             </div>
 
@@ -148,7 +148,7 @@
                                         <p class="mt-2 text-sm leading-relaxed text-slate-500">Turn this on to require both your password and an email OTP every time you log in.</p>
                                     </div>
                                     <label class="inline-flex items-center gap-3 text-sm font-semibold text-slate-700">
-                                        <input class="h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" type="checkbox" name="two_factor_enabled" value="1" {{ old('two_factor_enabled', $instructor->two_factor_enabled) ? 'checked' : '' }} />
+                                        <input class="h-5 w-5 rounded border-slate-300 text-[#0c4ea3] focus:ring-[#edf5ff]0" type="checkbox" name="two_factor_enabled" value="1" {{ old('two_factor_enabled', $instructor->two_factor_enabled) ? 'checked' : '' }} />
                                         Enable
                                     </label>
                                 </div>
@@ -169,17 +169,17 @@
                             @csrf
                             <div>
                                 <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Current Password</label>
-                                <input class="mt-2 w-full rounded-2xl border {{ $errors->has('current_password') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100" name="current_password" type="password" />
+                                <input class="mt-2 w-full rounded-2xl border {{ $errors->has('current_password') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="current_password" type="password" />
                                 @error('current_password')<p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>@enderror
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">New Password</label>
-                                    <input class="mt-2 w-full rounded-2xl border {{ $errors->has('password') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100" name="password" type="password" />
+                                    <input class="mt-2 w-full rounded-2xl border {{ $errors->has('password') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="password" type="password" />
                                 </div>
                                 <div>
                                     <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Confirm Password</label>
-                                    <input class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100" name="password_confirmation" type="password" />
+                                    <input class="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm text-slate-700 focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="password_confirmation" type="password" />
                                 </div>
                             </div>
                             @error('password')<p class="text-xs font-medium text-red-600">{{ $message }}</p>@enderror
@@ -197,3 +197,5 @@
     </main>
 </body>
 </html>
+
+

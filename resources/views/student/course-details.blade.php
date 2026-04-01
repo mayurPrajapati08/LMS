@@ -6,23 +6,24 @@
     <title>{{ $course->title }} | Student Course Details</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        primary: "#3525cd",
-                        "primary-container": "#4f46e5",
-                        surface: "#f8f9fa",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
+                        primary: "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        surface: "#f4f9ff",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
                         "surface-container-lowest": "#ffffff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        outline: "#777587",
+                        "on-surface-variant": "#4f6178",
+                        outline: "#7c8da7",
                         tertiary: "#007030",
-                        secondary: "#58579b"
+                        secondary: "#3b5f8d"
                     },
                     fontFamily: {
                         headline: ["Manrope"],
@@ -38,10 +39,10 @@
         }
         .player-stage { background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.26), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
         .player-range { -webkit-appearance: none; appearance: none; background: transparent; }
-        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #6366f1 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
-        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35); }
+        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #1570d8 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
+        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(12, 78, 163, 0.32); }
         .player-range::-moz-range-track { height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.16); }
-        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #6366f1; }
+        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #1570d8; }
         .player-range::-moz-range-thumb { height: 16px; width: 16px; border: none; border-radius: 9999px; background: #ffffff; }
         .player-feedback {
             --feedback-x: -50%;
@@ -155,6 +156,7 @@
     </style>
 </head>
 <body class="bg-surface font-body text-on-surface antialiased">
+    @php($previewVideoType = str_contains((string) $previewVideoUrl, '.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/mp4')
     <x-student.navbar />
 
     <header class="fixed top-0 right-0 z-40 flex h-16 w-full items-center justify-between bg-white/80 px-4 shadow-sm backdrop-blur-md md:w-[calc(100%-16rem)] md:px-8">
@@ -168,7 +170,7 @@
             <a class="hidden rounded-full bg-surface-container-low px-4 py-2 text-sm font-semibold text-primary md:inline-flex" href="{{ $browseUrl }}">
                 Browse courses
             </a>
-            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
         </div>
     </header>
 
@@ -192,7 +194,7 @@
 
                     <div class="space-y-3">
                         <div class="flex flex-wrap gap-2">
-                            <span class="rounded-full bg-indigo-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
+                            <span class="rounded-full bg-[#dcecff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
                             <span class="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-700">{{ ucfirst($course->level ?: 'all levels') }}</span>
                             @if ($isEnrolled)
                                 <span class="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-700">Enrolled</span>
@@ -206,7 +208,7 @@
                         @if ($previewVideoUrl)
                             <div class="player-preview-area relative aspect-video overflow-hidden">
                                 <video id="coursePreviewVideo" class="h-full w-full bg-black object-contain" controlsList="nodownload noplaybackrate" data-preview-limit="{{ $previewLimitSeconds ?? 40 }}" poster="{{ $heroThumbnail }}" preload="metadata">
-                                    <source src="{{ $previewVideoUrl }}" type="video/mp4" />
+                                    <source src="{{ $previewVideoUrl }}" type="{{ $previewVideoType }}" />
                                 </video>
                                 <button id="previewPosterOverlay" class="absolute inset-0 z-[5] flex items-center justify-center bg-black/20 transition-opacity duration-200" type="button">
                                     <img alt="{{ $course->title }} thumbnail" class="absolute inset-0 h-full w-full object-cover" src="{{ $heroThumbnail }}" />
@@ -391,7 +393,7 @@
                             @unless ($isEnrolled)
                                 <form action="{{ route('student.cart.add', ['course' => $course->id]) }}" method="POST">
                                     @csrf
-                                    <button class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary/15 px-6 py-4 text-sm font-bold transition-all {{ $isInCart ? 'bg-indigo-50 text-primary' : 'bg-white text-on-surface-variant hover:bg-indigo-50 hover:text-primary' }}" type="submit">
+                                    <button class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary/15 px-6 py-4 text-sm font-bold transition-all {{ $isInCart ? 'bg-[#edf5ff] text-primary' : 'bg-white text-on-surface-variant hover:bg-[#edf5ff] hover:text-primary' }}" type="submit">
                                         <span class="material-symbols-outlined" @if($isInCart) style="font-variation-settings: 'FILL' 1;" @endif>shopping_cart</span>
                                         {{ $isInCart ? 'Already in Cart' : 'Add to Cart' }}
                                     </button>
@@ -473,6 +475,9 @@
             var video = document.getElementById('coursePreviewVideo');
             if (!video) return;
 
+            var sourceElement = video.querySelector('source');
+            var sourceUrl = sourceElement ? sourceElement.getAttribute('src') || '' : '';
+            var streamLoader = null;
             var playerStage = document.getElementById('previewPlayerStage');
             var posterOverlay = document.getElementById('previewPosterOverlay');
             var playPauseButton = document.getElementById('previewPlayPauseButton');
@@ -495,6 +500,30 @@
             var feedbackTimer = null;
             var hasStartedPlayback = false;
             var orientationLocked = false;
+
+            function initializeVideoSource() {
+                if (!sourceUrl) {
+                    return;
+                }
+
+                if (!/\.m3u8($|\?)/i.test(sourceUrl)) {
+                    if (!video.getAttribute('src')) {
+                        video.src = sourceUrl;
+                    }
+                    return;
+                }
+
+                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = sourceUrl;
+                    return;
+                }
+
+                if (window.Hls && window.Hls.isSupported()) {
+                    streamLoader = new window.Hls();
+                    streamLoader.loadSource(sourceUrl);
+                    streamLoader.attachMedia(video);
+                }
+            }
 
             function formatTime(seconds) {
                 var safeSeconds = Math.max(0, Math.floor(Number(seconds) || 0));
@@ -670,6 +699,7 @@
                 updateTimeline();
             });
 
+            initializeVideoSource();
             video.volume = 0.3;
             volumeBar.value = 0.3;
             setRangeProgress(seekBar);
@@ -682,3 +712,5 @@
     </script>
 </body>
 </html>
+
+

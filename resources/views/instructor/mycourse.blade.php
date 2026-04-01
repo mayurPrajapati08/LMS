@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>My Courses | Scholarly Editorial</title>
+    <title>My Courses | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -13,9 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
-                        "primary": "#3525cd",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
+                        "primary": "#0c4ea3",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -32,7 +32,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f4f9ff;
             color: #191c1d;
         }
 
@@ -74,7 +74,7 @@
                         <p class="font-semibold text-slate-900 leading-none">{{ $instructorName }}</p>
                         <p class="text-xs text-slate-500 mt-1">Instructor</p>
                     </div>
-                    <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+                    <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
                 </div>
             </div>
         </header>
@@ -87,10 +87,10 @@
             <section class="rounded-[28px] bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-800 text-white overflow-hidden editorial-shadow">
                 <div class="grid gap-8 lg:grid-cols-[1.3fr_0.95fr] p-6 md:p-10">
                     <div class="space-y-5">
-                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-indigo-100">Instructor Library</div>
+                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#dcecff]">Instructor Library</div>
                         <div class="space-y-3">
                             <h1 class="font-headline text-4xl md:text-5xl font-bold leading-tight">Manage every draft, launch, and update from one place.</h1>
-                            <p class="max-w-2xl text-sm md:text-base text-indigo-100/90 leading-relaxed">Track live course performance, revisit drafts, and jump back into editing without breaking the design flow you already built.</p>
+                            <p class="max-w-2xl text-sm md:text-base text-[#dcecff]/90 leading-relaxed">Track live course performance, revisit drafts, and jump back into editing without breaking the design flow you already built.</p>
                         </div>
                         <a class="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-primary hover:bg-slate-100 transition-colors" href="{{ route('instructor.create-course') }}">
                             <span class="material-symbols-outlined text-[1.1rem]">add_circle</span>
@@ -98,23 +98,23 @@
                         </a>
                     </div>
                     <div class="rounded-[24px] border border-white/15 bg-white/10 p-5 md:p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-100/80">Publishing Snapshot</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#dcecff]/80">Publishing Snapshot</p>
                         <div class="mt-5 grid grid-cols-2 gap-4">
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ $totalCourses }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-indigo-100/80">Total Courses</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Total Courses</p>
                             </div>
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ $publishedCourses }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-indigo-100/80">Published</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Published</p>
                             </div>
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ number_format($activeLearners) }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-indigo-100/80">Learners</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Learners</p>
                             </div>
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">Rs. {{ number_format((float) $monthlyEarnings, 0) }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-indigo-100/80">This Month</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">This Month</p>
                             </div>
                         </div>
                     </div>
@@ -124,10 +124,10 @@
             <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 <div class="rounded-[24px] bg-white p-6 border border-slate-200 editorial-shadow">
                     <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-primary flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-2xl bg-[#edf5ff] text-primary flex items-center justify-center">
                             <span class="material-symbols-outlined">menu_book</span>
                         </div>
-                        <span class="rounded-full bg-indigo-50 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-indigo-600">{{ $publishedCourses }} live</span>
+                        <span class="rounded-full bg-[#edf5ff] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#0c4ea3]">{{ $publishedCourses }} live</span>
                     </div>
                     <p class="text-sm font-medium text-slate-500">Total Courses</p>
                     <p class="mt-2 font-headline text-3xl font-bold text-slate-900">{{ $totalCourses }}</p>
@@ -256,7 +256,7 @@
                                 <tr>
                                     <td class="px-6 md:px-8 py-16 text-center" colspan="7">
                                         <div class="max-w-md mx-auto">
-                                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-indigo-50 text-primary">
+                                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-[#edf5ff] text-primary">
                                                 <span class="material-symbols-outlined text-3xl">library_books</span>
                                             </div>
                                             <h3 class="mt-5 font-headline text-2xl font-bold text-slate-900">No courses yet</h3>
@@ -288,3 +288,6 @@
     </main>
 </body>
 </html>
+
+
+

@@ -6,8 +6,9 @@
     <meta charset="utf-8" />
     <meta content="{{ csrf_token() }}" name="csrf-token" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Course Player - The Scholarly Editorial</title>
+    <title>Course Player - CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
     <script id="tailwind-config">
@@ -16,53 +17,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "secondary": "#58579b",
-                        "surface-tint": "#4d44e3",
-                        "inverse-on-surface": "#f0f1f2",
-                        "secondary-fixed": "#e2dfff",
+                        "secondary": "#3b5f8d",
+                        "surface-tint": "#1570d8",
+                        "inverse-on-surface": "#f5fbff",
+                        "secondary-fixed": "#e8f3ff",
                         "on-primary-fixed": "#0f0069",
                         "error-container": "#ffdad6",
                         "tertiary": "#005523",
                         "tertiary-container": "#007030",
-                        "on-secondary-fixed-variant": "#413f82",
+                        "on-secondary-fixed-variant": "#315b90",
                         "tertiary-fixed": "#6bff8f",
-                        "secondary-fixed-dim": "#c3c0ff",
+                        "secondary-fixed-dim": "#b9dcff",
                         "on-tertiary": "#ffffff",
-                        "on-primary-fixed-variant": "#3323cc",
+                        "on-primary-fixed-variant": "#0a4b99",
                         "error": "#ba1a1a",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary-container": "#b6b4ff",
+                        "surface-container-low": "#eef5ff",
+                        "secondary-container": "#d7e9ff",
                         "on-primary": "#ffffff",
                         "on-error": "#ffffff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "outline-variant": "#c7c4d8",
+                        "primary-fixed-dim": "#b9dcff",
+                        "outline-variant": "#d5e4ff",
                         "on-surface": "#191c1d",
-                        "surface-dim": "#d9dadb",
-                        "on-secondary-fixed": "#140f54",
-                        "inverse-primary": "#c3c0ff",
-                        "on-surface-variant": "#464555",
+                        "surface-dim": "#d4e3f8",
+                        "on-secondary-fixed": "#072a60",
+                        "inverse-primary": "#b9dcff",
+                        "on-surface-variant": "#4f6178",
                         "tertiary-fixed-dim": "#4ae176",
-                        "on-primary-container": "#dad7ff",
-                        "inverse-surface": "#2e3132",
-                        "outline": "#777587",
-                        "primary-container": "#4f46e5",
+                        "on-primary-container": "#edf5ff",
+                        "inverse-surface": "#18345f",
+                        "outline": "#7c8da7",
+                        "primary-container": "#1570d8",
                         "on-background": "#191c1d",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container": "#e9f2ff",
                         "on-tertiary-fixed-variant": "#005321",
-                        "primary-fixed": "#e2dfff",
-                        "surface-bright": "#f8f9fa",
+                        "primary-fixed": "#e8f3ff",
+                        "surface-bright": "#f4f9ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-container": "#63f889",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-error-container": "#93000a",
-                        "background": "#f8f9fa",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "primary": "#3525cd",
-                        "on-secondary-container": "#454386",
-                        "surface-variant": "#e1e3e4",
+                        "primary": "#0c4ea3",
+                        "on-secondary-container": "#41648d",
+                        "surface-variant": "#dbe8ff",
                         "on-secondary": "#ffffff",
-                        "surface": "#f8f9fa"
+                        "surface": "#f4f9ff"
                     },
                     fontFamily: {
                         "headline": ["Manrope", "sans-serif"],
@@ -101,10 +102,10 @@
         .glass-effect { backdrop-filter: blur(12px); background-color: rgba(248, 249, 250, 0.8); }
         .player-stage { background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.26), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
         .player-range { -webkit-appearance: none; appearance: none; background: transparent; }
-        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #6366f1 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
-        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35); }
+        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #1570d8 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
+        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(12, 78, 163, 0.32); }
         .player-range::-moz-range-track { height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.16); }
-        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #6366f1; }
+        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #1570d8; }
         .player-range::-moz-range-thumb { height: 16px; width: 16px; border: none; border-radius: 9999px; background: #ffffff; }
         .player-interactive.is-idle { cursor: none; }
         .player-interactive.is-idle .player-fade { opacity: 0; transform: translateY(8px); }
@@ -285,6 +286,7 @@
 
 <body class="bg-background text-on-surface font-body antialiased">
     @php($activeTab = request()->query('tab', 'description'))
+    @php($lessonVideoType = str_contains((string) $currentLesson->video_url, '.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/mp4')
     <x-student.navbar />
 
     <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 glass-effect z-40 flex items-center justify-between px-4 md:px-8">
@@ -310,7 +312,7 @@
                 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
                 <span class="absolute top-2 right-2 h-2 w-2 bg-error rounded-full border-2 border-white"></span>
             </button>
-            <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $studentAvatar }}" />
+            <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $studentAvatar }}" />
         </div>
     </header>
 
@@ -332,7 +334,7 @@
                 <div id="playerInteractiveArea" class="player-interactive relative aspect-video overflow-hidden">
                     @if ($currentLesson->video_url)
                         <video data-course-id="{{ $course->id }}" data-lesson-id="{{ $currentLesson->id }}" data-resume-seconds="{{ $resumeSeconds }}" data-save-progress-url="{{ $saveProgressUrl }}" data-completion-threshold="{{ max(1, $currentLessonDurationSeconds > 0 ? $currentLessonDurationSeconds - 3 : 1) }}" data-lesson-completed="{{ $isCurrentLessonCompleted ? '1' : '0' }}" id="lessonVideo" class="w-full h-full bg-black object-contain" poster="{{ $course->thumbnail ?: '' }}" preload="metadata">
-                            <source src="{{ $currentLesson->video_url }}" type="video/mp4">
+                            <source src="{{ $currentLesson->video_url }}" type="{{ $lessonVideoType }}">
                             Your browser does not support the video tag.
                         </video>
                         <button id="playerPosterOverlay" class="absolute inset-0 z-[5] flex items-center justify-center bg-black/20 transition-opacity duration-200" type="button">
@@ -353,7 +355,7 @@
 
                     <div class="player-top absolute left-5 right-5 top-5 flex items-start justify-between gap-4 transition-all duration-300">
                         <div class="rounded-full bg-black/35 px-4 py-2 backdrop-blur-md">
-                            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-indigo-200">{{ $course->title }}</p>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#b9dcff]">{{ $course->title }}</p>
                             <p class="mt-1 text-sm font-semibold text-white">{{ $currentLesson->title }}</p>
                         </div>
                         <div class="rounded-full bg-black/35 px-4 py-2 text-xs font-semibold text-slate-200 backdrop-blur-md">{{ $completedCount }}/{{ $totalLessons }} completed</div>
@@ -712,6 +714,9 @@
 
             var video = document.getElementById('lessonVideo');
             if (!video) return;
+            var sourceElement = video.querySelector('source');
+            var sourceUrl = sourceElement ? sourceElement.getAttribute('src') || '' : '';
+            var streamLoader = null;
             var playPauseButton = document.getElementById('playPauseButton');
             var playPauseIcon = document.getElementById('playPauseIcon');
             var rewindButton = document.getElementById('rewindButton');
@@ -751,6 +756,30 @@
             var feedbackTimer = null;
             var hasStartedPlayback = resumeSeconds > 0;
             var orientationLocked = false;
+
+            function initializeVideoSource() {
+                if (!sourceUrl) {
+                    return;
+                }
+
+                if (!/\.m3u8($|\?)/i.test(sourceUrl)) {
+                    if (!video.getAttribute('src')) {
+                        video.src = sourceUrl;
+                    }
+                    return;
+                }
+
+                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = sourceUrl;
+                    return;
+                }
+
+                if (window.Hls && window.Hls.isSupported()) {
+                    streamLoader = new window.Hls();
+                    streamLoader.loadSource(sourceUrl);
+                    streamLoader.attachMedia(video);
+                }
+            }
 
             function formatTime(time) {
                 if (!isFinite(time) || time < 0) return '00:00';
@@ -1076,6 +1105,7 @@
             window.addEventListener('beforeunload', function () {
                 sendProgressBeacon();
             });
+            initializeVideoSource();
             video.volume = 0.3;
             volumeBar.value = 0.3;
             setRangeProgress(seekBar);
@@ -1091,3 +1121,5 @@
 </body>
 
 </html>
+
+

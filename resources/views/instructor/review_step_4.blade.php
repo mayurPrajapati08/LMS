@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Review Course - Scholarly Editorial</title>
+    <title>Review Course - CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -13,9 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
-                        "primary": "#3525cd",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
+                        "primary": "#0c4ea3",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -33,7 +33,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f4f9ff;
             color: #191c1d;
         }
 
@@ -109,10 +109,10 @@
 
             <section class="rounded-[28px] bg-white p-6 md:p-8 editorial-shadow">
                 <div class="flex flex-wrap items-center gap-4 md:gap-6">
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-indigo-100">1</div><p class="text-sm font-semibold text-slate-700">Basic Info</p></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">1</div><p class="text-sm font-semibold text-slate-700">Basic Info</p></div>
                     <div class="hidden md:block h-px flex-1 bg-slate-200"></div>
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-indigo-100">2</div><p class="text-sm font-semibold text-slate-700">Curriculum</p></div>
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-indigo-100">3</div><p class="text-sm font-semibold text-slate-700">Pricing</p></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">2</div><p class="text-sm font-semibold text-slate-700">Curriculum</p></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">3</div><p class="text-sm font-semibold text-slate-700">Pricing</p></div>
                     <div class="flex items-center gap-3"><div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white font-bold shadow-lg shadow-indigo-200">4</div><div><p class="text-sm font-bold text-slate-900">Review</p><p class="text-xs text-slate-500">Final step</p></div></div>
                 </div>
             </section>
@@ -138,7 +138,7 @@
                             @else
                                 <div class="aspect-[16/7] bg-gradient-to-br from-slate-200 via-slate-100 to-indigo-100 flex items-center justify-center">
                                     <div class="text-center">
-                                        <span class="material-symbols-outlined text-5xl text-indigo-300">auto_stories</span>
+                                        <span class="material-symbols-outlined text-5xl text-[#76c6ff]">auto_stories</span>
                                         <p class="mt-3 text-sm font-semibold text-slate-600">Course thumbnail preview</p>
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                                     </div>
                                 </div>
                                 @if($reviewPromotionalNote)
-                                    <div class="rounded-2xl border border-indigo-100 bg-indigo-50/70 p-5">
+                                    <div class="rounded-2xl border border-[#dcecff] bg-[#edf5ff]/70 p-5">
                                         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Promotional Note</p>
                                         <p class="mt-3 text-sm font-medium text-slate-700">{{ $reviewPromotionalNote }}</p>
                                     </div>
@@ -188,7 +188,7 @@
                                                     'html' => ['border-orange-100', 'bg-orange-50', 'text-orange-600', 'language', 'Semantic page structure'],
                                                     'css' => ['border-sky-100', 'bg-sky-50', 'text-sky-600', 'palette', 'Responsive UI styling'],
                                                     'javascript' => ['border-amber-100', 'bg-amber-50', 'text-amber-600', 'terminal', 'Interactive app logic'],
-                                                    'react' => ['border-indigo-100', 'bg-indigo-50', 'text-indigo-600', 'view_comfy', 'Modern component UI'],
+                                                    'react' => ['border-[#dcecff]', 'bg-[#edf5ff]', 'text-[#0c4ea3]', 'view_comfy', 'Modern component UI'],
                                                     'node.js', 'nodejs', 'node' => ['border-emerald-100', 'bg-emerald-50', 'text-emerald-600', 'hub', 'Backend foundations'],
                                                     'git' => ['border-slate-200', 'bg-slate-100', 'text-slate-700', 'source_branch', 'Version control workflow'],
                                                     default => ['border-violet-100', 'bg-violet-50', 'text-violet-600', 'deployed_code', 'Core project technology'],
@@ -268,3 +268,6 @@
     </main>
 </body>
 </html>
+
+
+

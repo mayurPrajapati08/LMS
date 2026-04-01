@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Instructor Management | Academic Curator</title>
+    <title>Instructor Management | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -13,14 +13,14 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
+                        "primary": "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-highest": "#dbe8ff",
                         "on-surface": "#191c1d",
-                        "outline-variant": "#c7c4d8",
+                        "outline-variant": "#d5e4ff",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -43,7 +43,7 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -170,7 +170,7 @@
                                             <img alt="{{ $instructor->name }}" class="w-10 h-10 rounded-full object-cover" src="{{ $instructor->avatarUrl(80) }}" />
                                             <div>
                                                 <p class="font-bold text-on-surface text-sm">{{ $instructor->name }}</p>
-                                                <p class="text-xs text-slate-500">{{ ucfirst($instructor->directory_status) }} instructor</p>
+                                                <p class="text-xs text-slate-500">{{ $instructor->directory_status_hint }}</p>
                                             </div>
                                         </div>
                                     </td>
@@ -179,7 +179,7 @@
                                     <td class="px-6 py-5 font-bold text-on-surface text-sm">Rs. {{ number_format($instructor->total_earnings, 0) }}</td>
                                     <td class="px-6 py-5 text-sm font-bold">{{ number_format($instructor->average_rating ?? 0, 1) }}</td>
                                     <td class="px-6 py-5 text-center">
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold {{ $instructor->directory_status === 'active' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700' }}">{{ ucfirst($instructor->directory_status) }}</span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold {{ $instructor->directory_status_classes }}">{{ $instructor->directory_status_label }}</span>
                                     </td>
                                 </tr>
                             @empty
@@ -195,3 +195,5 @@
     </main>
 </body>
 </html>
+
+

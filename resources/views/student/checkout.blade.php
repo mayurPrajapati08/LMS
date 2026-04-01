@@ -16,17 +16,17 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#3525cd",
-                        "primary-container": "#4f46e5",
-                        background: "#f8f9fa",
-                        surface: "#f8f9fa",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
+                        primary: "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        background: "#f4f9ff",
+                        surface: "#f4f9ff",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
                         "surface-container-lowest": "#ffffff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
+                        "on-surface-variant": "#4f6178",
                         tertiary: "#007030",
-                        outline: "#777587",
+                        outline: "#7c8da7",
                     },
                     fontFamily: {
                         headline: ["Manrope"],
@@ -42,7 +42,7 @@
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f4f9ff;
         }
     </style>
 </head>
@@ -51,7 +51,7 @@
 
     <header class="fixed top-0 right-0 z-40 flex h-16 w-full items-center justify-between bg-white/80 px-4 shadow-sm backdrop-blur-md md:w-[calc(100%-16rem)] md:px-8">
         <div class="flex items-center gap-3">
-            <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-50 text-primary">
+            <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5ff] text-primary">
                 <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
             </div>
             <div>
@@ -61,7 +61,7 @@
         </div>
         <div class="flex items-center gap-4">
             <a class="hidden rounded-full bg-surface-container-low px-4 py-2 text-sm font-semibold text-primary md:inline-flex" href="{{ $browseUrl }}">Browse courses</a>
-            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
         </div>
     </header>
 
@@ -87,7 +87,7 @@
                                 <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;">verified_user</span>
                                 Razorpay secured
                             </span>
-                            <span class="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                            <span class="inline-flex items-center gap-2 rounded-full bg-[#edf5ff] px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
                                 <span class="material-symbols-outlined text-[18px]">payments</span>
                                 Instant enrollment after payment
                             </span>
@@ -99,7 +99,7 @@
                             </div>
                             <div class="flex-1 space-y-4">
                                 <div class="flex flex-wrap gap-2">
-                                    <span class="rounded-full bg-indigo-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
+                                    <span class="rounded-full bg-[#dcecff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
                                     <span class="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-700">{{ ucfirst($course->level ?: 'all levels') }}</span>
                                 </div>
                                 <div>
@@ -164,7 +164,7 @@
                     <div class="rounded-[1.75rem] bg-surface-container-lowest p-6 shadow-sm ring-1 ring-slate-200/70 md:p-8">
                         <div class="flex items-center justify-between gap-4">
                             <h3 class="font-headline text-lg font-bold">{{ $isCartCheckout ? 'Courses in this order' : 'Course in this order' }}</h3>
-                            <span class="rounded-full bg-indigo-50 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $checkoutCourses->count() }} item{{ $checkoutCourses->count() === 1 ? '' : 's' }}</span>
+                            <span class="rounded-full bg-[#edf5ff] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $checkoutCourses->count() }} item{{ $checkoutCourses->count() === 1 ? '' : 's' }}</span>
                         </div>
                         <div class="mt-6 space-y-4">
                             @foreach ($checkoutCourses as $checkoutCourse)
@@ -190,7 +190,7 @@
                                 <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Total amount</p>
                                 <p class="mt-2 font-headline text-4xl font-extrabold text-on-surface">Rs. {{ number_format($checkoutAmount, 2) }}</p>
                             </div>
-                            <div class="rounded-full bg-indigo-50 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">One-time secure checkout</div>
+                            <div class="rounded-full bg-[#edf5ff] px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">One-time secure checkout</div>
                         </div>
 
                         <div class="mt-6 space-y-4 border-t border-surface-container-high pt-6">
@@ -286,7 +286,7 @@
                         key: checkoutButton.dataset.key,
                         amount: Number(checkoutButton.dataset.amount || '0'),
                         currency: 'INR',
-                        name: 'The Scholarly Editorial',
+                        name: 'CodeInYourself',
                         description: checkoutButton.dataset.courseTitle,
                         order_id: checkoutButton.dataset.orderId,
                         handler: function (response) {
@@ -300,7 +300,7 @@
                             email: checkoutButton.dataset.customerEmail || '',
                         },
                         theme: {
-                            color: '#3525cd',
+                            color: '#0c4ea3',
                         }
                     };
 
@@ -312,3 +312,5 @@
     @endif
 </body>
 </html>
+
+

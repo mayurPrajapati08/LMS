@@ -13,7 +13,7 @@
         $headline = $isLoginOtp ? 'Your Login OTP is ready' : 'Your Signup OTP is ready';
         $intro = $isLoginOtp
             ? 'Hi '.$user->name.', use the login OTP below to finish signing in to your account.'
-            : 'Hi '.$user->name.', welcome to Code In Yourself. Use the signup OTP below to finish creating your account.';
+            : 'Hi '.$user->name.', welcome to CodeInYourself. Use the signup OTP below to finish creating your account.';
         $finalNote = $isLoginOtp
             ? 'If you did not try to sign in, change your password right away and review your account activity.'
             : 'If you did not create this account, you can ignore this no-reply email safely.';
@@ -22,7 +22,7 @@
     <div style="width:100%;background:linear-gradient(180deg,#07152b 0%,#123a74 100%);padding:34px 18px;">
         <div style="max-width:640px;margin:0 auto;">
             <div style="padding:0 6px 18px;">
-                <p style="margin:0;color:#9ec5ff;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;">Code In Yourself</p>
+                <p style="margin:0;color:#9ec5ff;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;">CodeInYourself</p>
                 <h1 style="margin:10px 0 0;color:#ffffff;font-size:32px;line-height:1.15;font-weight:800;">{{ $headline }}</h1>
             </div>
 
@@ -83,7 +83,7 @@
                     <div style="border-radius:20px;background:#f8fbff;border:1px solid #d8e7ff;padding:18px 20px;">
                         <p style="margin:0 0 8px;color:#0f172a;font-size:14px;font-weight:700;">Important</p>
                         <p style="margin:0;color:#5b677d;font-size:14px;line-height:1.7;">
-                            This mailbox is not monitored for replies. For help, contact the Code In Yourself support team from inside the platform.
+                            This mailbox is not monitored for replies. For help, contact the CodeInYourself support team from inside the platform.
                         </p>
                     </div>
                 </div>
@@ -97,3 +97,4 @@
 </body>
 
 </html>
+

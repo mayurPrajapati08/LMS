@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Code In Yourself - Engineering Professional Careers</title>
+    <title>CodeInYourself - Engineering Professional Careers</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -16,10 +16,10 @@
                 extend: {
                     colors: {
                         // Scholar Navy Design System Tokens
-                        "primary": "#002D62", // Scholar Navy
+                        "primary": "#08275c", // Scholar Navy
                         "on-primary": "#FFFFFF",
-                        "primary-container": "#D6E3FF",
-                        "on-primary-container": "#001B3E",
+                        "primary-container": "#dcecff",
+                        "on-primary-container": "#071c4a",
                         "secondary": "#565E71",
                         "on-secondary": "#FFFFFF",
                         "secondary-container": "#DAE2F9",
@@ -28,12 +28,12 @@
                         "on-tertiary": "#FFFFFF",
                         "tertiary-container": "#9EF7A0",
                         "on-tertiary-container": "#002106",
-                        "surface": "#F8FAFF",
+                        "surface": "#f4f9ff",
                         "on-surface": "#1A1C1E",
                         "surface-variant": "#E1E2EC",
-                        "on-surface-variant": "#44474F",
-                        "outline": "#74777F",
-                        "background": "#FDFBFF",
+                        "on-surface-variant": "#4f6178",
+                        "outline": "#7c8da7",
+                        "background": "#f7fbff",
                         "error": "#BA1A1A"
                     },
                     fontFamily: {
@@ -292,7 +292,7 @@
         <section class="py-24 px-6 bg-background">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
-                    <h2 class="text-4xl font-extrabold font-headline mb-4 text-on-surface">Why Code In Yourself?</h2>
+                    <h2 class="text-4xl font-extrabold font-headline mb-4 text-on-surface">Why CodeInYourself?</h2>
                     <p class="text-on-surface-variant max-w-2xl mx-auto text-lg">We offer a unique ecosystem that combines technical depth with career support.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -423,7 +423,7 @@
                                 <p class="text-xs text-primary font-bold uppercase tracking-wider mt-1">Amazon → 15 LPA</p>
                             </div>
                         </div>
-                        <p class="text-on-surface-variant leading-relaxed">"From a service company to a product giant. Code In Yourself's ecosystem for Full Stack Development is truly unparalleled in India."</p>
+                        <p class="text-on-surface-variant leading-relaxed">"From a service company to a product giant. CodeInYourself's ecosystem for Full Stack Development is truly unparalleled in India."</p>
                     </div>
                 </div>
             </div>
@@ -496,7 +496,7 @@
             <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 relative z-10 items-center">
                 <div>
                     <h2 class="text-5xl md:text-6xl font-extrabold font-headline text-white mb-8 leading-tight">Start Your Career Journey Today</h2>
-                    <p class="text-primary-container text-xl mb-12 max-w-lg leading-relaxed">Don't just wait for opportunities—engineer them. Join 10,000+ professionals who transformed their lives with Code In Yourself.</p>
+                    <p class="text-primary-container text-xl mb-12 max-w-lg leading-relaxed">Don't just wait for opportunities—engineer them. Join 10,000+ professionals who transformed their lives with CodeInYourself.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-white font-bold text-sm">
                         <div class="flex items-center gap-3">
                             <span class="material-symbols-outlined text-tertiary-container">check_circle</span>
@@ -558,3 +558,5 @@
 </body>
 
 </html>
+
+

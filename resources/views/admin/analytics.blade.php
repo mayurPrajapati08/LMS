@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Analytics Hub | Academic Curator</title>
+    <title>Analytics Hub | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -13,13 +13,13 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "secondary": "#58579b",
+                        "primary": "#0c4ea3",
+                        "secondary": "#3b5f8d",
                         "tertiary": "#7e3000",
-                        "background": "#f8f9fa",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
                         "on-surface": "#191c1d",
                     },
                     fontFamily: {
@@ -34,7 +34,7 @@
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .primary-gradient { background: linear-gradient(135deg, #3525cd 0%, #4f46e5 100%); }
+        .primary-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
     </style>
 </head>
 <body class="bg-surface text-on-surface">
@@ -44,7 +44,7 @@
         <div class="flex items-center gap-4 w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:w-1/3">
             <div class="relative w-full md:max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -149,3 +149,5 @@
     </main>
 </body>
 </html>
+
+

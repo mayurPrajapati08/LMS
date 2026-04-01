@@ -21,11 +21,17 @@
 <x-shared.page-loader />
 
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-surface-variant shadow-sm">
+<nav class="fixed top-0 w-full z-50 border-b border-[#d5e4ff] bg-white/92 backdrop-blur-md shadow-[0_10px_30px_rgba(7,32,84,0.08)]">
     <div class="flex justify-between items-center px-4 md:px-6 py-4 max-w-7xl mx-auto">
-        <div class="text-xl md:text-2xl font-extrabold tracking-tighter text-primary font-headline">
-            Code In Yourself
-        </div>
+        <a href="/" class="flex items-center gap-3">
+            <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-[#d5e4ff] shadow-[0_12px_28px_rgba(12,78,163,0.16)]">
+                <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+            </span>
+            <span class="flex flex-col leading-none">
+                <span class="text-[1.05rem] md:text-[1.18rem] font-extrabold tracking-[-0.03em] text-[#08275c] font-headline">CodeInYourself</span>
+                <span class="text-[0.66rem] md:text-[0.7rem] font-bold uppercase tracking-[0.24em] text-[#1570d8]">Learn. Build. Launch.</span>
+            </span>
+        </a>
 
         <div class="hidden md:flex items-center gap-8 font-semibold text-sm tracking-tight">
             <a href="/" @class([
@@ -57,7 +63,7 @@
 
         <div class="flex items-center gap-3 md:gap-4">
             @auth
-                <a href="{{ $dashboardUrl }}" class="hidden md:flex items-center gap-3 rounded-full border border-surface-variant bg-white px-2.5 py-2 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+                <a href="{{ $dashboardUrl }}" class="hidden md:flex items-center gap-3 rounded-full border border-[#d7e6ff] bg-white px-2.5 py-2 shadow-[0_10px_24px_rgba(7,32,84,0.08)] transition-all hover:border-[#1570d8]/40 hover:shadow-[0_14px_28px_rgba(12,78,163,0.12)]">
                     <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{{ $initials ?: 'U' }}</span>
                     <span class="max-w-[120px] truncate text-sm font-semibold text-on-surface">{{ $user->name }}</span>
                 </a>
@@ -67,15 +73,15 @@
                 </form>
             @else
                 <button class="hidden md:block text-on-surface font-semibold text-sm px-4 py-2 hover:bg-surface-variant rounded-lg transition-all" onclick="window.location.href='/login'">Login</button>
-                <button class="hidden sm:block bg-primary text-on-primary font-bold text-sm px-4 md:px-6 py-2.5 md:py-3 rounded-lg shadow-md hover:brightness-110 active:scale-95 transition-all" onclick="window.location.href='/login'">Enroll Now</button>
+                <button class="hidden sm:block bg-gradient-to-r from-[#0c4ea3] via-[#1570d8] to-[#2dc7ff] text-white font-bold text-sm px-4 md:px-6 py-2.5 md:py-3 rounded-xl shadow-[0_14px_28px_rgba(12,78,163,0.2)] hover:brightness-110 active:scale-95 transition-all" onclick="window.location.href='/login'">Enroll Now</button>
             @endauth
-            <button type="button" class="md:hidden w-10 h-10 rounded-lg border border-surface-variant text-primary flex items-center justify-center" aria-label="Open menu" onclick="toggleHomeMobileMenu()">
+            <button type="button" class="md:hidden w-10 h-10 rounded-xl border border-[#d5e4ff] bg-white text-[#0c4ea3] flex items-center justify-center shadow-sm" aria-label="Open menu" onclick="toggleHomeMobileMenu()">
                 <span class="material-symbols-outlined">menu</span>
             </button>
         </div>
     </div>
 
-    <div id="homeMobileMenu" class="md:hidden hidden border-t border-surface-variant bg-white px-4 pb-5 pt-3 space-y-2">
+    <div id="homeMobileMenu" class="md:hidden hidden border-t border-[#d5e4ff] bg-white px-4 pb-5 pt-3 space-y-2 shadow-[0_16px_30px_rgba(7,32,84,0.08)]">
         <a href="/" onclick="toggleHomeMobileMenu(false)" @class([
             'block rounded-lg px-3 py-2.5 font-semibold text-sm',
             'text-primary bg-primary/10' => $isHome,

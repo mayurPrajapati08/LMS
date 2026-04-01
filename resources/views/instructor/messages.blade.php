@@ -13,53 +13,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#4f46e5",
-                        "outline-variant": "#c7c4d8",
-                        "secondary-container": "#b6b4ff",
-                        "background": "#f8f9fa",
+                        "primary-container": "#1570d8",
+                        "outline-variant": "#d5e4ff",
+                        "secondary-container": "#d7e9ff",
+                        "background": "#f4f9ff",
                         "on-tertiary": "#ffffff",
                         "tertiary": "#005523",
                         "tertiary-fixed": "#6bff8f",
-                        "on-surface-variant": "#464555",
+                        "on-surface-variant": "#4f6178",
                         "surface-container-lowest": "#ffffff",
                         "on-primary-fixed": "#0f0069",
-                        "outline": "#777587",
-                        "on-secondary-fixed-variant": "#413f82",
-                        "on-primary-fixed-variant": "#3323cc",
-                        "surface-tint": "#4d44e3",
-                        "on-primary-container": "#dad7ff",
+                        "outline": "#7c8da7",
+                        "on-secondary-fixed-variant": "#315b90",
+                        "on-primary-fixed-variant": "#0a4b99",
+                        "surface-tint": "#1570d8",
+                        "on-primary-container": "#edf5ff",
                         "on-background": "#191c1d",
                         "on-tertiary-container": "#63f889",
-                        "inverse-on-surface": "#f0f1f2",
-                        "primary": "#3525cd",
-                        "surface-bright": "#f8f9fa",
-                        "secondary-fixed": "#e2dfff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "primary-fixed": "#e2dfff",
+                        "inverse-on-surface": "#f5fbff",
+                        "primary": "#0c4ea3",
+                        "surface-bright": "#f4f9ff",
+                        "secondary-fixed": "#e8f3ff",
+                        "primary-fixed-dim": "#b9dcff",
+                        "primary-fixed": "#e8f3ff",
                         "error": "#ba1a1a",
-                        "surface-variant": "#e1e3e4",
-                        "secondary-fixed-dim": "#c3c0ff",
-                        "surface": "#f8f9fa",
+                        "surface-variant": "#dbe8ff",
+                        "secondary-fixed-dim": "#b9dcff",
+                        "surface": "#f4f9ff",
                         "on-error": "#ffffff",
-                        "surface-container-high": "#e7e8e9",
+                        "surface-container-high": "#e3eeff",
                         "error-container": "#ffdad6",
                         "tertiary-fixed-dim": "#4ae176",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-fixed-variant": "#005321",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary": "#58579b",
-                        "inverse-surface": "#2e3132",
-                        "surface-container": "#edeeef",
+                        "surface-container-low": "#eef5ff",
+                        "secondary": "#3b5f8d",
+                        "inverse-surface": "#18345f",
+                        "surface-container": "#e9f2ff",
                         "on-primary": "#ffffff",
                         "tertiary-container": "#007030",
                         "on-surface": "#191c1d",
-                        "inverse-primary": "#c3c0ff",
-                        "surface-dim": "#d9dadb",
+                        "inverse-primary": "#b9dcff",
+                        "surface-dim": "#d4e3f8",
                         "on-secondary": "#ffffff",
                         "on-error-container": "#93000a",
-                        "on-secondary-container": "#454386",
-                        "on-secondary-fixed": "#140f54"
+                        "on-secondary-container": "#41648d",
+                        "on-secondary-fixed": "#072a60"
                     }
                 }
             }
@@ -67,7 +67,7 @@
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
-        body { font-family: 'Inter', sans-serif; background: #f8f9fa; color: #191c1d; }
+        body { font-family: 'Inter', sans-serif; background: #f4f9ff; color: #191c1d; }
         .font-headline { font-family: 'Manrope', sans-serif; }
         .custom-scrollbar::-webkit-scrollbar { width: 5px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #d7dbe1; border-radius: 999px; }
@@ -84,7 +84,7 @@
             </div>
             <div class="flex items-center gap-4">
                 <div class="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700">{{ $openCount }} open</div>
-                <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+                <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
             </div>
         </header>
 
@@ -93,7 +93,7 @@
                 <div class="px-6 py-5 border-b border-slate-200">
                     <div class="flex items-center justify-between">
                         <h2 class="font-headline text-2xl font-bold text-slate-900">Inbox</h2>
-                        <span class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">{{ $inquiries->count() }}</span>
+                        <span class="rounded-full bg-[#edf5ff] px-3 py-1 text-xs font-semibold text-[#0b3f88]">{{ $inquiries->count() }}</span>
                     </div>
                     <div class="mt-4 flex gap-2">
                         <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700">Open {{ $openCount }}</span>
@@ -103,10 +103,10 @@
 
                 <div class="max-h-[calc(100vh-15rem)] overflow-y-auto custom-scrollbar p-4 space-y-3">
                     @forelse($inquiries as $inquiry)
-                        <a class="block rounded-2xl border px-4 py-4 transition-all {{ $activeInquiry && $activeInquiry->id === $inquiry->id ? 'border-indigo-200 bg-indigo-50/70' : 'border-slate-200 bg-slate-50/60 hover:bg-slate-50' }}" href="{{ route('instructor.messages', ['inquiry' => $inquiry->id]) }}">
+                        <a class="block rounded-2xl border px-4 py-4 transition-all {{ $activeInquiry && $activeInquiry->id === $inquiry->id ? 'border-[#c7e0ff] bg-[#edf5ff]/70' : 'border-slate-200 bg-slate-50/60 hover:bg-slate-50' }}" href="{{ route('instructor.messages', ['inquiry' => $inquiry->id]) }}">
                             <div class="flex items-start justify-between gap-3">
                                 <div>
-                                    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-600">{{ $inquiry->course?->title ?? 'Unknown Course' }}</p>
+                                    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#0c4ea3]">{{ $inquiry->course?->title ?? 'Unknown Course' }}</p>
                                     <p class="mt-2 font-semibold text-slate-900">{{ $inquiry->name }}</p>
                                     <p class="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-500">{{ $inquiry->message ?: 'No message body provided.' }}</p>
                                 </div>
@@ -139,14 +139,14 @@
 
                     <div class="p-6 md:p-8 space-y-8">
                         <div class="rounded-[24px] bg-slate-50 border border-slate-200 p-6">
-                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-600">Student Message</p>
+                            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#0c4ea3]">Student Message</p>
                             <p class="mt-4 text-sm leading-7 text-slate-600">{{ $activeInquiry->message ?: 'No message body provided.' }}</p>
                             <p class="mt-4 text-xs font-medium text-slate-400">{{ $activeInquiry->created_at?->format('M d, Y h:i A') }}</p>
                         </div>
 
                         @if($activeInquiry->admin_reply)
-                            <div class="rounded-[24px] bg-indigo-50 border border-indigo-100 p-6">
-                                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-indigo-600">Your Reply</p>
+                            <div class="rounded-[24px] bg-[#edf5ff] border border-[#dcecff] p-6">
+                                <p class="text-xs font-semibold uppercase tracking-[0.16em] text-[#0c4ea3]">Your Reply</p>
                                 <p class="mt-4 text-sm leading-7 text-slate-700">{{ $activeInquiry->admin_reply }}</p>
                                 <p class="mt-4 text-xs font-medium text-slate-400">Status: {{ ucfirst($activeInquiry->status) }}</p>
                             </div>
@@ -156,14 +156,14 @@
                             @csrf
                             <div>
                                 <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Reply</label>
-                                <textarea class="mt-2 w-full rounded-[24px] border {{ $errors->has('admin_reply') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-5 py-4 text-sm text-slate-700 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100 resize-none" name="admin_reply" rows="6" placeholder="Write a clear response for the student...">{{ old('admin_reply', $activeInquiry->admin_reply) }}</textarea>
+                                <textarea class="mt-2 w-full rounded-[24px] border {{ $errors->has('admin_reply') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-5 py-4 text-sm text-slate-700 focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff] resize-none" name="admin_reply" rows="6" placeholder="Write a clear response for the student...">{{ old('admin_reply', $activeInquiry->admin_reply) }}</textarea>
                                 @error('admin_reply')
                                     <p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                                 <label class="inline-flex items-center gap-3 text-sm font-medium text-slate-700">
-                                    <input class="h-4 w-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" type="checkbox" name="status" value="resolved" {{ old('status', $activeInquiry->status) === 'resolved' ? 'checked' : '' }} />
+                                    <input class="h-4 w-4 rounded border-slate-300 text-[#0c4ea3] focus:ring-[#edf5ff]0" type="checkbox" name="status" value="resolved" {{ old('status', $activeInquiry->status) === 'resolved' ? 'checked' : '' }} />
                                     Mark this inquiry as resolved
                                 </label>
                                 <button class="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-primary to-primary-container px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200/50 hover:opacity-90 transition-all" type="submit">
@@ -181,3 +181,5 @@
     </main>
 </body>
 </html>
+
+

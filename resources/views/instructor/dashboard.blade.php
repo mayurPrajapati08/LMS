@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Instructor Dashboard | Scholarly Editorial</title>
+    <title>Instructor Dashboard | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -16,53 +16,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#4f46e5",
-                        "outline-variant": "#c7c4d8",
-                        "secondary-container": "#b6b4ff",
-                        "background": "#f8f9fa",
+                        "primary-container": "#1570d8",
+                        "outline-variant": "#d5e4ff",
+                        "secondary-container": "#d7e9ff",
+                        "background": "#f4f9ff",
                         "on-tertiary": "#ffffff",
                         "tertiary": "#005523",
                         "tertiary-fixed": "#6bff8f",
-                        "on-surface-variant": "#464555",
+                        "on-surface-variant": "#4f6178",
                         "surface-container-lowest": "#ffffff",
                         "on-primary-fixed": "#0f0069",
-                        "outline": "#777587",
-                        "on-secondary-fixed-variant": "#413f82",
-                        "on-primary-fixed-variant": "#3323cc",
-                        "surface-tint": "#4d44e3",
-                        "on-primary-container": "#dad7ff",
+                        "outline": "#7c8da7",
+                        "on-secondary-fixed-variant": "#315b90",
+                        "on-primary-fixed-variant": "#0a4b99",
+                        "surface-tint": "#1570d8",
+                        "on-primary-container": "#edf5ff",
                         "on-background": "#191c1d",
                         "on-tertiary-container": "#63f889",
-                        "inverse-on-surface": "#f0f1f2",
-                        "primary": "#3525cd",
-                        "surface-bright": "#f8f9fa",
-                        "secondary-fixed": "#e2dfff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "primary-fixed": "#e2dfff",
+                        "inverse-on-surface": "#f5fbff",
+                        "primary": "#0c4ea3",
+                        "surface-bright": "#f4f9ff",
+                        "secondary-fixed": "#e8f3ff",
+                        "primary-fixed-dim": "#b9dcff",
+                        "primary-fixed": "#e8f3ff",
                         "error": "#ba1a1a",
-                        "surface-variant": "#e1e3e4",
-                        "secondary-fixed-dim": "#c3c0ff",
-                        "surface": "#f8f9fa",
+                        "surface-variant": "#dbe8ff",
+                        "secondary-fixed-dim": "#b9dcff",
+                        "surface": "#f4f9ff",
                         "on-error": "#ffffff",
-                        "surface-container-high": "#e7e8e9",
+                        "surface-container-high": "#e3eeff",
                         "error-container": "#ffdad6",
                         "tertiary-fixed-dim": "#4ae176",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-fixed-variant": "#005321",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary": "#58579b",
-                        "inverse-surface": "#2e3132",
-                        "surface-container": "#edeeef",
+                        "surface-container-low": "#eef5ff",
+                        "secondary": "#3b5f8d",
+                        "inverse-surface": "#18345f",
+                        "surface-container": "#e9f2ff",
                         "on-primary": "#ffffff",
                         "tertiary-container": "#007030",
                         "on-surface": "#191c1d",
-                        "inverse-primary": "#c3c0ff",
-                        "surface-dim": "#d9dadb",
+                        "inverse-primary": "#b9dcff",
+                        "surface-dim": "#d4e3f8",
                         "on-secondary": "#ffffff",
                         "on-error-container": "#93000a",
-                        "on-secondary-container": "#454386",
-                        "on-secondary-fixed": "#140f54"
+                        "on-secondary-container": "#41648d",
+                        "on-secondary-fixed": "#072a60"
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -86,7 +86,7 @@
         }
 
         .editorial-gradient {
-            background: linear-gradient(135deg, #3525cd 0%, #4f46e5 100%);
+            background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%);
         }
 
         .glass-panel {
@@ -116,7 +116,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #e1e3e4;
+            background: #dbe8ff;
             border-radius: 10px;
         }
     </style>
@@ -142,7 +142,7 @@
             <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
                 <div class="relative w-full md:max-w-md">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                    <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-indigo-500/20" placeholder="Search..." type="text" />
+                    <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-[#edf5ff]0/20" placeholder="Search..." type="text" />
                 </div>
             </div>
             <div class="ml-auto flex items-center gap-4 md:gap-6">
@@ -159,7 +159,7 @@
         <div class="p-4 md:p-8 space-y-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div class="space-y-2">
-                    <p class="text-xs font-bold tracking-[0.2em] text-indigo-600 uppercase font-label">Dashboard Overview</p>
+                    <p class="text-xs font-bold tracking-[0.2em] text-[#0c4ea3] uppercase font-label">Dashboard Overview</p>
                     <h2 class="text-5xl font-bold font-headline text-slate-900 leading-tight">Welcome back, <br />{{ $welcomeName }}.</h2>
                 </div>
                 <div class="flex gap-3">
@@ -170,7 +170,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="md:col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm space-y-4">
                     <div class="flex justify-between items-start">
-                        <div class="p-3 bg-indigo-50 text-indigo-600 rounded-lg">
+                        <div class="p-3 bg-[#edf5ff] text-[#0c4ea3] rounded-lg">
                             <span class="material-symbols-outlined" data-icon="payments">payments</span>
                         </div>
                         <span class="{{ $trendClass($totalRevenueTrend) }} font-semibold text-xs flex items-center gap-1">
@@ -245,7 +245,7 @@
                             <p class="text-slate-500 text-sm">Detailed revenue metrics over the last 30 days</p>
                         </div>
                         <div class="flex gap-2">
-                            <button class="px-4 py-2 bg-surface-container-low rounded-lg text-xs font-semibold text-indigo-600">30 Days</button>
+                            <button class="px-4 py-2 bg-surface-container-low rounded-lg text-xs font-semibold text-[#0c4ea3]">30 Days</button>
                             <button class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 rounded-lg transition-colors">90 Days</button>
                         </div>
                     </div>
@@ -253,11 +253,11 @@
                         <svg class="w-full h-full" viewbox="0 0 800 200">
                             <defs>
                                 <lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                    <stop offset="0%" stop-color="#3525cd" stop-opacity="0.2"></stop>
-                                    <stop offset="100%" stop-color="#3525cd" stop-opacity="0"></stop>
+                                    <stop offset="0%" stop-color="#0c4ea3" stop-opacity="0.2"></stop>
+                                    <stop offset="100%" stop-color="#0c4ea3" stop-opacity="0"></stop>
                                 </lineargradient>
                             </defs>
-                            <path d="{{ $chartPath }}" fill="none" stroke="#3525cd" stroke-linecap="round" stroke-width="4"></path>
+                            <path d="{{ $chartPath }}" fill="none" stroke="#0c4ea3" stroke-linecap="round" stroke-width="4"></path>
                             <path d="{{ $chartAreaPath }}" fill="url(#chartGradient)"></path>
                         </svg>
                         @if($peakPoint)
@@ -293,7 +293,7 @@
                     </div>
                 </div>
                 <div class="space-y-6">
-                    <div class="bg-indigo-900 text-indigo-50 p-4 md:p-8 rounded-xl shadow-lg relative overflow-hidden group">
+                    <div class="bg-[#0a2f73] text-[#f5fbff] p-4 md:p-8 rounded-xl shadow-lg relative overflow-hidden group">
                         <div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-110 transition-transform duration-500">
                             <span class="material-symbols-outlined text-[10rem]">trending_up</span>
                         </div>
@@ -303,10 +303,10 @@
                                 <span class="text-4xl font-bold">{{ $studentGrowthCount }}</span>
                                 <span class="text-emerald-400 text-sm font-bold mb-1">{{ $studentGrowthTrend['label'] }} {{ $studentGrowthTrend['suffix'] }}</span>
                             </div>
-                            <div class="w-full bg-indigo-950/50 rounded-full h-2">
+                            <div class="w-full bg-[#071c4a]/55 rounded-full h-2">
                                 <div class="bg-emerald-400 h-2 rounded-full instructor-growth-bar" data-width="{{ $studentGrowthWidth }}"></div>
                             </div>
-                            <p class="text-indigo-300 text-xs leading-relaxed">{{ $studentGrowthMessage }}</p>
+                            <p class="text-[#76c6ff] text-xs leading-relaxed">{{ $studentGrowthMessage }}</p>
                         </div>
                     </div>
                     <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100">
@@ -321,7 +321,7 @@
                                         <p class="text-xs font-bold text-slate-900">{{ $action['title'] }}</p>
                                         <p class="text-[0.7rem] text-slate-500">{{ $action['description'] }}</p>
                                     </div>
-                                    <span class="material-symbols-outlined text-slate-300 ml-auto group-hover:text-indigo-600 transition-colors">chevron_right</span>
+                                    <span class="material-symbols-outlined text-slate-300 ml-auto group-hover:text-[#0c4ea3] transition-colors">chevron_right</span>
                                 </a>
                             @endforeach
                         </div>
@@ -332,7 +332,7 @@
                 <section class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h4 class="text-xl font-bold font-headline">New Enrollments</h4>
-                        <a class="text-indigo-600 text-xs font-bold hover:underline" href="/instructor/students">View all</a>
+                        <a class="text-[#0c4ea3] text-xs font-bold hover:underline" href="/instructor/students">View all</a>
                     </div>
                     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                         <div class="divide-y divide-slate-50">
@@ -341,7 +341,7 @@
                                     <img alt="Student Avatar" class="w-10 h-10 rounded-full object-cover" src="https://ui-avatars.com/api/?name={{ urlencode($enrollment->user->name) }}&background=E2E8F0&color=334155&size=80" />
                                     <div class="flex-1">
                                         <p class="text-sm font-bold">{{ $enrollment->user->name }}</p>
-                                        <p class="text-[0.7rem] text-slate-500">Enrolled in <span class="font-semibold text-indigo-600">{{ $enrollment->course->title }}</span></p>
+                                        <p class="text-[0.7rem] text-slate-500">Enrolled in <span class="font-semibold text-[#0c4ea3]">{{ $enrollment->course->title }}</span></p>
                                     </div>
                                     <div class="text-right">
                                         <p class="text-sm font-bold">Rs. {{ number_format($enrollment->payment?->amount ?? $enrollment->amount, 2) }}</p>
@@ -360,7 +360,7 @@
                 <section class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h4 class="text-xl font-bold font-headline">Recent Reviews</h4>
-                        <a class="text-indigo-600 text-xs font-bold hover:underline" href="/instructor/reviews">Manage</a>
+                        <a class="text-[#0c4ea3] text-xs font-bold hover:underline" href="/instructor/reviews">Manage</a>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
                         @forelse($recentReviews as $review)
@@ -378,7 +378,7 @@
                                     <p class="text-xs text-slate-600 leading-relaxed italic">{{ \Illuminate\Support\Str::limit($review->comment ?: 'This course is already earning strong feedback from students.', 140) }}</p>
                                     <div class="mt-3 flex items-center justify-between gap-4">
                                         <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-tighter">{{ $review->user->name }} • {{ $review->created_at->diffForHumans() }}</p>
-                                        <a class="text-xs font-bold text-indigo-600 flex items-center gap-1 shrink-0" href="/instructor/reviews">Reply <span class="material-symbols-outlined text-sm">reply</span></a>
+                                        <a class="text-xs font-bold text-[#0c4ea3] flex items-center gap-1 shrink-0" href="/instructor/reviews">Reply <span class="material-symbols-outlined text-sm">reply</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -433,3 +433,6 @@
 </body>
 
 </html>
+
+
+

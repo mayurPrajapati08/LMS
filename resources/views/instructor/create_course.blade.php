@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Create Course - Scholarly Editorial</title>
+    <title>Create Course - CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -15,53 +15,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#4f46e5",
-                        "outline-variant": "#c7c4d8",
-                        "secondary-container": "#b6b4ff",
-                        "background": "#f8f9fa",
+                        "primary-container": "#1570d8",
+                        "outline-variant": "#d5e4ff",
+                        "secondary-container": "#d7e9ff",
+                        "background": "#f4f9ff",
                         "on-tertiary": "#ffffff",
                         "tertiary": "#005523",
                         "tertiary-fixed": "#6bff8f",
-                        "on-surface-variant": "#464555",
+                        "on-surface-variant": "#4f6178",
                         "surface-container-lowest": "#ffffff",
                         "on-primary-fixed": "#0f0069",
-                        "outline": "#777587",
-                        "on-secondary-fixed-variant": "#413f82",
-                        "on-primary-fixed-variant": "#3323cc",
-                        "surface-tint": "#4d44e3",
-                        "on-primary-container": "#dad7ff",
+                        "outline": "#7c8da7",
+                        "on-secondary-fixed-variant": "#315b90",
+                        "on-primary-fixed-variant": "#0a4b99",
+                        "surface-tint": "#1570d8",
+                        "on-primary-container": "#edf5ff",
                         "on-background": "#191c1d",
                         "on-tertiary-container": "#63f889",
-                        "inverse-on-surface": "#f0f1f2",
-                        "primary": "#3525cd",
-                        "surface-bright": "#f8f9fa",
-                        "secondary-fixed": "#e2dfff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "primary-fixed": "#e2dfff",
+                        "inverse-on-surface": "#f5fbff",
+                        "primary": "#0c4ea3",
+                        "surface-bright": "#f4f9ff",
+                        "secondary-fixed": "#e8f3ff",
+                        "primary-fixed-dim": "#b9dcff",
+                        "primary-fixed": "#e8f3ff",
                         "error": "#ba1a1a",
-                        "surface-variant": "#e1e3e4",
-                        "secondary-fixed-dim": "#c3c0ff",
-                        "surface": "#f8f9fa",
+                        "surface-variant": "#dbe8ff",
+                        "secondary-fixed-dim": "#b9dcff",
+                        "surface": "#f4f9ff",
                         "on-error": "#ffffff",
-                        "surface-container-high": "#e7e8e9",
+                        "surface-container-high": "#e3eeff",
                         "error-container": "#ffdad6",
                         "tertiary-fixed-dim": "#4ae176",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-fixed-variant": "#005321",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary": "#58579b",
-                        "inverse-surface": "#2e3132",
-                        "surface-container": "#edeeef",
+                        "surface-container-low": "#eef5ff",
+                        "secondary": "#3b5f8d",
+                        "inverse-surface": "#18345f",
+                        "surface-container": "#e9f2ff",
                         "on-primary": "#ffffff",
                         "tertiary-container": "#007030",
                         "on-surface": "#191c1d",
-                        "inverse-primary": "#c3c0ff",
-                        "surface-dim": "#d9dadb",
+                        "inverse-primary": "#b9dcff",
+                        "surface-dim": "#d4e3f8",
                         "on-secondary": "#ffffff",
                         "on-error-container": "#93000a",
-                        "on-secondary-container": "#454386",
-                        "on-secondary-fixed": "#140f54"
+                        "on-secondary-container": "#41648d",
+                        "on-secondary-fixed": "#072a60"
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -86,7 +86,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f4f9ff;
             color: #191c1d;
         }
 
@@ -139,43 +139,43 @@
             <section class="rounded-[28px] bg-gradient-to-br from-slate-900 via-indigo-900 to-indigo-700 text-white overflow-hidden editorial-shadow">
                 <div class="grid gap-8 lg:grid-cols-[1.35fr_0.95fr] p-6 md:p-10">
                     <div class="space-y-6">
-                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-indigo-100">
+                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#dcecff]">
                             Step 1 of 4
                         </div>
                         <div class="space-y-3">
                             <h1 class="font-headline text-4xl md:text-5xl font-bold leading-tight">Shape the course before you build the lessons.</h1>
-                            <p class="max-w-2xl text-sm md:text-base text-indigo-100/90 leading-relaxed">Set the title, positioning, and learning identity for your course. This first step gives the rest of the builder a clear structure and keeps every later step aligned.</p>
+                            <p class="max-w-2xl text-sm md:text-base text-[#dcecff]/90 leading-relaxed">Set the title, positioning, and learning identity for your course. This first step gives the rest of the builder a clear structure and keeps every later step aligned.</p>
                         </div>
                     </div>
                     <div class="rounded-[24px] border border-white/15 bg-white/10 p-5 md:p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-indigo-100/80">Build Flow</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#dcecff]/80">Build Flow</p>
                         <div class="mt-5 space-y-4">
                             <div class="flex items-center gap-4">
                                 <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg">1</div>
                                 <div>
                                     <p class="text-sm font-bold text-white">Basic Info</p>
-                                    <p class="text-xs text-indigo-100/80">Define the course identity</p>
+                                    <p class="text-xs text-[#dcecff]/80">Define the course identity</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4 opacity-80">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-indigo-100">2</div>
+                                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-[#dcecff]">2</div>
                                 <div>
-                                    <p class="text-sm font-semibold text-indigo-50">Curriculum</p>
-                                    <p class="text-xs text-indigo-100/70">Organize sections and lessons</p>
+                                    <p class="text-sm font-semibold text-[#f5fbff]">Curriculum</p>
+                                    <p class="text-xs text-[#dcecff]/70">Organize sections and lessons</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4 opacity-70">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-indigo-100">3</div>
+                                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-[#dcecff]">3</div>
                                 <div>
-                                    <p class="text-sm font-semibold text-indigo-50">Pricing</p>
-                                    <p class="text-xs text-indigo-100/70">Set value and access</p>
+                                    <p class="text-sm font-semibold text-[#f5fbff]">Pricing</p>
+                                    <p class="text-xs text-[#dcecff]/70">Set value and access</p>
                                 </div>
                             </div>
                             <div class="flex items-center gap-4 opacity-60">
-                                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-indigo-100">4</div>
+                                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-[#dcecff]">4</div>
                                 <div>
-                                    <p class="text-sm font-semibold text-indigo-50">Review</p>
-                                    <p class="text-xs text-indigo-100/70">Polish before publishing</p>
+                                    <p class="text-sm font-semibold text-[#f5fbff]">Review</p>
+                                    <p class="text-xs text-[#dcecff]/70">Polish before publishing</p>
                                 </div>
                             </div>
                         </div>
@@ -232,7 +232,7 @@
                         <div class="space-y-6">
                             <div class="space-y-2">
                                 <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Course Title</label>
-                                <input class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('title') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-indigo-300 focus:ring-indigo-100' }} px-5 py-4 text-on-surface outline-none transition-all placeholder:text-slate-400" name="title" placeholder="e.g. Advanced Editorial Design & Composition" type="text" value="{{ old('title', $selectedCourse?->title) }}" />
+                                <input class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('title') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} px-5 py-4 text-on-surface outline-none transition-all placeholder:text-slate-400" name="title" placeholder="e.g. Advanced Editorial Design & Composition" type="text" value="{{ old('title', $selectedCourse?->title) }}" />
                                 <p class="text-[0.72rem] text-on-surface-variant/80">Aim for a title that is specific, searchable, and outcome-focused.</p>
                                 @error('title')
                                     <p class="text-xs font-medium text-red-600">{{ $message }}</p>
@@ -241,7 +241,7 @@
 
                             <div class="space-y-2">
                                 <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Description</label>
-                                <textarea class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('details') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-indigo-300 focus:ring-indigo-100' }} px-5 py-4 text-on-surface outline-none transition-all placeholder:text-slate-400" name="details" placeholder="Describe the transformation students will experience by the end of this course..." rows="7">{{ old('details', $selectedCourse?->details) }}</textarea>
+                                <textarea class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('details') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} px-5 py-4 text-on-surface outline-none transition-all placeholder:text-slate-400" name="details" placeholder="Describe the transformation students will experience by the end of this course..." rows="7">{{ old('details', $selectedCourse?->details) }}</textarea>
                                 @error('details')
                                     <p class="text-xs font-medium text-red-600">{{ $message }}</p>
                                 @enderror
@@ -250,7 +250,7 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-2">
                                     <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Category</label>
-                                    <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('category_id') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-indigo-300 focus:ring-indigo-100' }} px-5 py-4 text-on-surface outline-none transition-all appearance-none" name="category_id">
+                                    <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('category_id') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} px-5 py-4 text-on-surface outline-none transition-all appearance-none" name="category_id">
                                         <option value="">Select a category</option>
                                         @foreach($categories as $category)
                                             <option value="{{ $category->id }}" @selected((string) old('category_id', $selectedCourse?->category_id) === (string) $category->id)>{{ $category->name }}</option>
@@ -262,7 +262,7 @@
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Difficulty Level</label>
-                                    <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('level') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-indigo-300 focus:ring-indigo-100' }} px-5 py-4 text-on-surface outline-none transition-all appearance-none" name="level">
+                                    <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('level') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} px-5 py-4 text-on-surface outline-none transition-all appearance-none" name="level">
                                         <option value="">Select level</option>
                                         <option value="beginner" @selected(old('level', $selectedCourse?->level) === 'beginner')>Beginner</option>
                                         <option value="intermediate" @selected(old('level', $selectedCourse?->level) === 'intermediate')>Intermediate</option>
@@ -274,7 +274,7 @@
                                 </div>
                                 <div class="space-y-2 md:col-span-2">
                                     <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Instruction Language</label>
-                                    <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('language') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-indigo-300 focus:ring-indigo-100' }} px-5 py-4 text-on-surface outline-none transition-all appearance-none" name="language">
+                                    <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('language') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} px-5 py-4 text-on-surface outline-none transition-all appearance-none" name="language">
                                         <option value="">Select language</option>
                                         <option value="English" @selected(old('language', $selectedCourse?->language) === 'English')>English</option>
                                         <option value="Hindi" @selected(old('language', $selectedCourse?->language) === 'Hindi')>Hindi</option>
@@ -286,10 +286,10 @@
                                 </div>
                                 <div class="space-y-3 md:col-span-2">
                                     <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Languages & Tools Students Will Learn</label>
-                                    <input class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('learning_topics') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-indigo-300 focus:ring-indigo-100' }} px-5 py-4 text-on-surface outline-none transition-all placeholder:text-slate-400" name="learning_topics" placeholder="e.g. HTML, CSS, JavaScript, React, Node.js, Git" type="text" value="{{ $selectedTopics }}" />
+                                    <input class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('learning_topics') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} px-5 py-4 text-on-surface outline-none transition-all placeholder:text-slate-400" name="learning_topics" placeholder="e.g. HTML, CSS, JavaScript, React, Node.js, Git" type="text" value="{{ $selectedTopics }}" />
                                     <div class="flex flex-wrap gap-3">
                                         @forelse($topicChips as $topic)
-                                            <span class="inline-flex items-center gap-2 rounded-full bg-indigo-50 border border-indigo-100 px-4 py-2 text-xs font-semibold text-indigo-700">
+                                            <span class="inline-flex items-center gap-2 rounded-full bg-[#edf5ff] border border-[#dcecff] px-4 py-2 text-xs font-semibold text-[#0b3f88]">
                                                 <span class="material-symbols-outlined text-sm">terminal</span>
                                                 {{ $topic }}
                                             </span>
@@ -342,25 +342,25 @@
                                 <p class="text-xs font-semibold uppercase tracking-[0.22em] text-primary mb-2">Thumbnail</p>
                                 <h3 class="font-headline text-xl font-bold text-slate-900">Cover preview</h3>
                             </div>
-                            <span class="rounded-full bg-indigo-50 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-indigo-600">16:9</span>
+                            <span class="rounded-full bg-[#edf5ff] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#0c4ea3]">16:9</span>
                         </div>
-                        <label class="aspect-video rounded-[22px] bg-gradient-to-br from-slate-100 via-slate-50 to-indigo-50 border border-dashed {{ $errors->has('thumbnail') ? 'border-red-300' : 'border-slate-300 hover:border-indigo-300' }} flex flex-col items-center justify-center p-6 text-center group cursor-pointer transition-all overflow-hidden relative">
+                        <label class="aspect-video rounded-[22px] bg-gradient-to-br from-slate-100 via-slate-50 to-[#edf5ff] border border-dashed {{ $errors->has('thumbnail') ? 'border-red-300' : 'border-slate-300 hover:border-[#9eccff]' }} flex flex-col items-center justify-center p-6 text-center group cursor-pointer transition-all overflow-hidden relative">
                             @if($selectedCourse?->thumbnail)
                                 <img alt="Course Thumbnail Preview" class="absolute inset-0 h-full w-full object-cover" src="{{ $selectedCourse->thumbnail }}" />
                                 <div class="absolute inset-0 bg-slate-900/35"></div>
                             @endif
                             <div class="relative z-10">
-                                <span class="material-symbols-outlined text-5xl {{ $selectedCourse?->thumbnail ? 'text-white' : 'text-indigo-300' }} mb-4 group-hover:scale-110 transition-transform">add_photo_alternate</span>
+                                <span class="material-symbols-outlined text-5xl {{ $selectedCourse?->thumbnail ? 'text-white' : 'text-[#76c6ff]' }} mb-4 group-hover:scale-110 transition-transform">add_photo_alternate</span>
                                 <p class="text-sm font-semibold {{ $selectedCourse?->thumbnail ? 'text-white' : 'text-slate-700' }}">{{ $selectedCourse?->thumbnail ? 'Replace uploaded thumbnail' : 'Click to upload or drag and drop' }}</p>
-                                <p class="text-[0.7rem] {{ $selectedCourse?->thumbnail ? 'text-indigo-100' : 'text-slate-500' }} mt-2 uppercase tracking-[0.18em]">PNG or JPG up to 10MB</p>
+                                <p class="text-[0.7rem] {{ $selectedCourse?->thumbnail ? 'text-[#dcecff]' : 'text-slate-500' }} mt-2 uppercase tracking-[0.18em]">PNG or JPG up to 10MB</p>
                             </div>
                             <input class="hidden" name="thumbnail" type="file" accept="image/png,image/jpeg,image/jpg,image/webp" />
                         </label>
                         @error('thumbnail')
                             <p class="mt-3 text-xs font-medium text-red-600">{{ $message }}</p>
                         @enderror
-                        <div class="mt-5 rounded-2xl bg-indigo-50 border border-indigo-100 p-4">
-                            <p class="text-xs leading-relaxed text-indigo-900"><span class="font-bold">Editorial Tip:</span> Use a bold focal image with clear contrast so the course feels premium at first glance.</p>
+                        <div class="mt-5 rounded-2xl bg-[#edf5ff] border border-[#dcecff] p-4">
+                            <p class="text-xs leading-relaxed text-[#08275c]"><span class="font-bold">Editorial Tip:</span> Use a bold focal image with clear contrast so the course feels premium at first glance.</p>
                         </div>
                     </div>
 
@@ -410,3 +410,6 @@
 </body>
 
 </html>
+
+
+

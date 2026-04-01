@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Inquiries Dashboard - Academic Curator</title>
+    <title>Inquiries Dashboard - CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -13,14 +13,14 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
+                        "primary": "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
+                        "surface-container-low": "#eef5ff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        "outline-variant": "#c7c4d8",
+                        "on-surface-variant": "#4f6178",
+                        "outline-variant": "#d5e4ff",
                         "error": "#ba1a1a",
                         "error-container": "#ffdad6",
                         "on-error-container": "#93000a",
@@ -48,7 +48,7 @@
             <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
                 <div class="relative w-full md:max-w-md">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-                    <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all" placeholder="Search..." type="text" />
+                    <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none transition-all" placeholder="Search..." type="text" />
                 </div>
             </div>
             <div class="ml-auto flex items-center gap-3">
@@ -76,9 +76,9 @@
                     <p class="text-4xl font-bold font-headline text-primary">{{ number_format($openTickets) }}</p>
                     <p class="text-xs text-error mt-2">Live platform queue</p>
                 </div>
-                <div class="col-span-6 lg:col-span-3 bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-indigo-200">
+                <div class="col-span-6 lg:col-span-3 bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-[#c7e0ff]">
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Resolved this week</p>
-                    <p class="text-4xl font-bold font-headline text-indigo-900">{{ number_format($resolvedTickets) }}</p>
+                    <p class="text-4xl font-bold font-headline text-[#08275c]">{{ number_format($resolvedTickets) }}</p>
                     <p class="text-xs text-primary mt-2">Avg response {{ $avgResponseHours }} hours</p>
                 </div>
             </div>
@@ -183,7 +183,7 @@
 
                     <div class="grid grid-cols-1 gap-6">
                         <div class="bg-surface-container-low p-5 rounded-xl flex items-center gap-4">
-                            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-primary">
+                            <div class="w-12 h-12 bg-[#dcecff] rounded-lg flex items-center justify-center text-primary">
                                 <span class="material-symbols-outlined">timer</span>
                             </div>
                             <div>
@@ -207,3 +207,5 @@
     </main>
 </body>
 </html>
+
+

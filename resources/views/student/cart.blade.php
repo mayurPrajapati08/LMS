@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Cart | The Scholarly Editorial</title>
+    <title>Cart | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script>
@@ -12,15 +12,15 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#3525cd",
-                        "primary-container": "#4f46e5",
-                        surface: "#f8f9fa",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
+                        primary: "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        surface: "#f4f9ff",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
                         "surface-container-lowest": "#ffffff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        outline: "#777587",
+                        "on-surface-variant": "#4f6178",
+                        outline: "#7c8da7",
                     },
                     fontFamily: {
                         headline: ["Manrope"],
@@ -41,7 +41,7 @@
         </div>
         <div class="flex items-center gap-4">
             <a class="hidden rounded-full bg-surface-container-low px-4 py-2 text-sm font-semibold text-primary md:inline-flex" href="{{ $browseUrl }}">Browse courses</a>
-            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
         </div>
     </header>
 
@@ -60,7 +60,7 @@
                             <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Selected courses</p>
                             <h2 class="mt-2 font-headline text-3xl font-extrabold">{{ $cartCount }} item{{ $cartCount === 1 ? '' : 's' }}</h2>
                         </div>
-                        <div class="rounded-full bg-indigo-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-primary">Ready for one payment</div>
+                        <div class="rounded-full bg-[#edf5ff] px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-primary">Ready for one payment</div>
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@
                                 <div class="flex flex-wrap items-start justify-between gap-4">
                                     <div>
                                         <div class="flex flex-wrap gap-2">
-                                            <span class="rounded-full bg-indigo-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
+                                            <span class="rounded-full bg-[#dcecff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
                                             <span class="rounded-full bg-surface-container-low px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">{{ ucfirst($course->level ?: 'All Levels') }}</span>
                                         </div>
                                         <h3 class="mt-3 font-headline text-2xl font-extrabold leading-tight">{{ $course->title }}</h3>
@@ -102,8 +102,8 @@
                         </div>
                     </article>
                 @empty
-                    <div class="rounded-[1.5rem] border border-dashed border-indigo-200 bg-surface-container-lowest p-12 text-center shadow-sm">
-                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-indigo-50 text-primary">
+                    <div class="rounded-[1.5rem] border border-dashed border-[#c7e0ff] bg-surface-container-lowest p-12 text-center shadow-sm">
+                        <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#edf5ff] text-primary">
                             <span class="material-symbols-outlined">shopping_cart</span>
                         </div>
                         <h2 class="mt-5 font-headline text-2xl font-extrabold">Your cart is empty</h2>
@@ -145,3 +145,5 @@
     </main>
 </body>
 </html>
+
+

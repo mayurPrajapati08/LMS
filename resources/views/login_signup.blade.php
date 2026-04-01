@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Login &amp; Signup | Code In Yourself</title>
+    <title>Login &amp; Signup | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -85,9 +85,9 @@
         }
 
         .glass-card {
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.56));
+            background: linear-gradient(180deg, rgba(8, 30, 76, 0.74), rgba(13, 57, 128, 0.56));
             backdrop-filter: blur(14px);
-            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.24);
+            box-shadow: 0 18px 40px rgba(8, 30, 76, 0.24);
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -104,14 +104,22 @@
     @endphp
 
     <main class="flex min-h-screen">
-        <section class="hidden lg:flex lg:w-1/2 relative flex-col justify-center p-20 overflow-hidden bg-slate-900">
+        <section class="hidden lg:flex lg:w-1/2 relative flex-col justify-center p-20 overflow-hidden bg-[#071c4a]">
             <div class="absolute inset-0 z-0 opacity-40">
                 <img class="w-full h-full object-cover" data-alt="Abstract futuristic digital circuit board pattern with glowing blue lines and data points on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoELogDO6sM2n2QAcB2QZpmRcfPpJFNdlsfuvORIOqAJzKm7wxdHbTrZ54Vl1m9Q7QJCQn2QyNKQa6IGjjVsc8T-8p-CXeikLOWwG8Zr_AmCOj6IfVSKMkTew5zwPmXTRrP4QFIV2RzqQEPAKe-OkIfm4WQN_U0mZs9j2RF3xphe4CwK_DpRqDm2wJzwrnQiWnqb2gY13ipGACqcWs0J-I22vf2txyb_XORE8gYmiTd1ghABCEelyljHTPYKX5Hsbv9vrUQiaA7Lkz" />
             </div>
-            <div class="absolute inset-0 z-10 bg-gradient-to-br from-primary/80 to-slate-900/90"></div>
+            <div class="absolute inset-0 z-10 bg-gradient-to-br from-[#0b2a6d]/88 via-[#0c4ea3]/84 to-[#071c4a]/92"></div>
             <div class="relative z-20 max-w-lg">
                 <div class="mb-12">
-                    <span class="text-white font-headline font-black text-3xl tracking-tighter">Code In Yourself</span>
+                    <div class="flex items-center gap-4">
+                        <span class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-3xl bg-white p-2 shadow-[0_16px_32px_rgba(7,28,74,0.18)]">
+                            <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                        </span>
+                        <div>
+                            <span class="block text-white font-headline font-black text-3xl tracking-tighter">CodeInYourself</span>
+                            <span class="block text-[#9fdcff] text-xs font-bold uppercase tracking-[0.22em] mt-1">Industry-ready engineering careers</span>
+                        </div>
+                    </div>
                 </div>
                 <h1 class="font-headline text-5xl font-extrabold text-white leading-tight mb-6">
                     Engineering <span class="text-primary-fixed-dim">Next-Gen</span> Careers.
@@ -145,7 +153,12 @@
         <section class="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 py-8 sm:px-6 md:p-16 lg:p-24 bg-surface">
             <div class="w-full max-w-md">
                 <div class="lg:hidden mb-8">
-                    <span class="text-primary font-headline font-black text-2xl tracking-tighter">Code In Yourself</span>
+                    <div class="flex items-center gap-3">
+                        <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-[#d5e4ff] shadow-[0_12px_26px_rgba(12,78,163,0.16)]">
+                            <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                        </span>
+                        <span class="text-[#08275c] font-headline font-black text-2xl tracking-tighter">CodeInYourself</span>
+                    </div>
                 </div>
 
                 <header class="mb-8">

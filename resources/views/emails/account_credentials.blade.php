@@ -9,7 +9,7 @@
     <div style="width:100%;padding:34px 18px;background:linear-gradient(180deg,#07152b 0%,#123a74 100%);">
         <div style="max-width:640px;margin:0 auto;">
             <div style="padding:0 6px 18px;">
-                <p style="margin:0;color:#9ec5ff;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;">Code In Yourself</p>
+                <p style="margin:0;color:#9ec5ff;font-size:12px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;">CodeInYourself</p>
                 <h1 style="margin:10px 0 0;color:#ffffff;font-size:30px;line-height:1.15;font-weight:800;">Your {{ $roleLabel }} account is ready</h1>
             </div>
 
@@ -59,3 +59,4 @@
     </div>
 </body>
 </html>
+

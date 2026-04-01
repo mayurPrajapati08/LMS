@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Academic Curator - Platform Settings</title>
+    <title>CodeInYourself - Platform Settings</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -13,18 +13,18 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#3525cd",
-                        "primary-container": "#4f46e5",
-                        "background": "#f8f9fa",
+                        "primary": "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container-highest": "#dbe8ff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        "outline-variant": "#c7c4d8",
-                        "primary-fixed": "#e2dfff",
-                        "on-primary-fixed-variant": "#3323cc",
+                        "on-surface-variant": "#4f6178",
+                        "outline-variant": "#d5e4ff",
+                        "primary-fixed": "#e8f3ff",
+                        "on-primary-fixed-variant": "#0a4b99",
                         "error-container": "#ffdad6",
                         "on-error-container": "#93000a",
                     },
@@ -38,10 +38,10 @@
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #191c1d; }
+        body { font-family: 'Inter', sans-serif; background-color: #f4f9ff; color: #191c1d; }
         h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
         .editorial-shadow { box-shadow: 0 32px 64px -12px rgba(25, 28, 29, 0.04); }
-        .primary-gradient { background: linear-gradient(135deg, #3525cd 0%, #4f46e5 100%); }
+        .primary-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
         .tab-panel[hidden] { display: none !important; }
         .admin-select {
             appearance: none;
@@ -59,7 +59,7 @@
         <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
             <div class="relative w-full md:max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
-                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all" placeholder="Search..." type="text" />
+                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none transition-all" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -128,7 +128,7 @@
                                     <p class="text-sm text-on-surface-variant mt-1">PNG, JPG or GIF. Max 5MB.</p>
                                     <div class="mt-3 flex items-center gap-3">
                                         <label class="text-xs font-bold uppercase tracking-wider text-primary cursor-pointer">Upload New<input class="hidden" name="avatar" type="file" accept="image/*" /></label>
-                                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">{{ $admin->avatar_path ? 'Cloudinary linked' : 'Using fallback avatar' }}</span>
+                                        <span class="text-xs font-bold uppercase tracking-wider text-slate-400">{{ $admin->avatar_path ? 'R2 linked' : 'Using fallback avatar' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -311,7 +311,7 @@
                             <input name="section" type="hidden" value="integrations" />
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="space-y-2">
-                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Cloudinary Folder</label>
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">R2 Folder</label>
                                     <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="integration_cloudinary_folder" type="text" value="{{ old('integration_cloudinary_folder', $platformSettings['integration_cloudinary_folder']) }}" />
                                 </div>
                                 <div class="space-y-2">
@@ -370,7 +370,7 @@
                                     <span class="material-symbols-outlined text-3xl">apartment</span>
                                 </div>
                                 <div>
-                                    <p class="font-bold">Code In Yourself</p>
+                                    <p class="font-bold">CodeInYourself</p>
                                     <p class="text-xs text-on-surface-variant">Admin workspace synced with live platform data</p>
                                 </div>
                             </div>
@@ -428,3 +428,6 @@
     </script>
 </body>
 </html>
+
+
+

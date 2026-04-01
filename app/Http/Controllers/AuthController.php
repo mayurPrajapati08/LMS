@@ -118,6 +118,8 @@ class AuthController extends Controller
                 ->with('status', 'We sent a login verification code to your email address.');
         }
 
+        $this->markUserAsLoggedIn($user);
+
         return redirect()->intended($this->redirectPathFor($user));
     }
 
@@ -179,6 +181,8 @@ class AuthController extends Controller
             return redirect()->to(route('two-factor.challenge', absolute: false))
                 ->with('status', 'We sent a login verification code to your email address.');
         }
+
+        $this->markUserAsLoggedIn($user);
 
         return redirect()->intended($this->redirectPathFor($user));
     }
@@ -342,6 +346,10 @@ class AuthController extends Controller
         Auth::loginUsingId($userId, $remember);
         $request->session()->forget('two_factor_auth');
         $request->session()->regenerate();
+
+        if ($authenticatedUser = Auth::user()) {
+            $this->markUserAsLoggedIn($authenticatedUser);
+        }
 
         return redirect()->intended($this->redirectPathFor(Auth::user()));
     }
@@ -510,5 +518,12 @@ class AuthController extends Controller
     protected function normalizeEmail(string $email): string
     {
         return Str::lower(trim($email));
+    }
+
+    protected function markUserAsLoggedIn(User $user): void
+    {
+        $user->forceFill([
+            'last_login_at' => now(),
+        ])->save();
     }
 }

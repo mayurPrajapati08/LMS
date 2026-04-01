@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>About Us | Code In Yourself</title>
+  <title>About Us | CodeInYourself</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -138,7 +138,7 @@
             </h2>
             <div class="space-y-6 text-on-surface-variant text-lg leading-relaxed">
               <p>
-                Founded in 2020, Code In Yourself began with a singular observation: traditional education was failing to keep pace with the hyper-evolved tech landscape.
+                Founded in 2020, CodeInYourself began with a singular observation: traditional education was failing to keep pace with the hyper-evolved tech landscape.
               </p>
               <p>
                 We didn't want to build another tutorial platform. We wanted to build a career forge. Our approach combines rigorous technical training with the soft skills and real-world project experience that top-tier companies actually demand.
@@ -236,7 +236,7 @@
               <div class="md:w-[45%] mb-8 md:mb-0 text-right pr-0 md:pr-12">
                 <h4 class="font-headline text-3xl font-extrabold text-primary mb-2">2020</h4>
                 <h5 class="text-xl font-bold text-on-surface mb-4">The Spark</h5>
-                <p class="text-on-surface-variant leading-relaxed">Code In Yourself launches with its first batch of 20 students in a small home office, focusing purely on Full-Stack Development.</p>
+                <p class="text-on-surface-variant leading-relaxed">CodeInYourself launches with its first batch of 20 students in a small home office, focusing purely on Full-Stack Development.</p>
               </div>
               <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-white z-10 hidden md:block"></div>
               <div class="md:w-[45%] pl-0 md:pl-12 opacity-40">
@@ -279,3 +279,4 @@
 </body>
 
 </html>
+

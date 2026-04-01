@@ -17,7 +17,7 @@
 
 <x-shared.page-loader />
 
-<button id="instructorSidebarToggle" type="button" class="md:hidden fixed top-2.5 left-3 z-[70] w-10 h-10 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-indigo-600 dark:text-indigo-300 flex items-center justify-center shadow-sm transition-opacity duration-200" aria-label="Open instructor menu" onclick="toggleInstructorSidebar(true)">
+<button id="instructorSidebarToggle" type="button" class="md:hidden fixed top-2.5 left-3 z-[70] w-10 h-10 rounded-xl border border-[#d5e4ff] bg-white text-[#0c4ea3] flex items-center justify-center shadow-sm transition-opacity duration-200" aria-label="Open instructor menu" onclick="toggleInstructorSidebar(true)">
     <span class="material-symbols-outlined">menu</span>
 </button>
 
@@ -57,120 +57,122 @@
     }
 </style>
 
-<aside id="instructorSidebar" class="h-[100dvh] w-64 fixed left-0 top-0 overflow-y-auto bg-slate-50 border-r border-slate-100 flex flex-col gap-1 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+<aside id="instructorSidebar" class="h-[100dvh] w-64 fixed left-0 top-0 overflow-y-auto bg-[linear-gradient(180deg,#f5faff_0%,#eef5ff_100%)] border-r border-[#dbe8ff] flex flex-col gap-1 p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
     <div class="mb-8 px-4">
         <div class="flex items-center gap-3 mb-2">
-            <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
-                <span class="material-symbols-outlined text-sm" data-icon="auto_stories">auto_stories</span>
+            <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-[#d5e4ff] shadow-[0_12px_28px_rgba(12,78,163,0.16)]">
+                <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+            </span>
+            <div>
+                <h2 class="text-[1.05rem] font-extrabold tracking-[-0.03em] text-[#08275c] font-['Manrope']">CodeInYourself</h2>
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1570d8] mt-1">Instructor Portal</p>
             </div>
-            <h2 class="text-lg font-bold text-slate-900 font-['Manrope']">CodeInYourself</h2>
         </div>
-        <p class="text-xs text-slate-500 font-medium">Instructor Portal</p>
     </div>
 
     <nav class="flex flex-col gap-1">
         <a href="/instructor/dashboard" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isDashboard,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isDashboard,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isDashboard,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isDashboard,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isDashboard,
+                'text-[#0c4ea3]' => $isDashboard,
             ]) data-icon="dashboard" @if($isDashboard) style="font-variation-settings: 'FILL' 1;" @endif>dashboard</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isDashboard ? '' : 'font-medium' }}">Dashboard</span>
         </a>
 
         <a href="/instructor/mycourse" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isMyCourse,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isMyCourse,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isMyCourse,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isMyCourse,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isMyCourse,
+                'text-[#0c4ea3]' => $isMyCourse,
             ]) data-icon="library_books" @if($isMyCourse) style="font-variation-settings: 'FILL' 1;" @endif>library_books</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isMyCourse ? '' : 'font-medium' }}">My Courses</span>
         </a>
 
         <a href="/instructor/create-course" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isCreateCourse,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isCreateCourse,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isCreateCourse,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isCreateCourse,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isCreateCourse,
+                'text-[#0c4ea3]' => $isCreateCourse,
             ]) data-icon="add_circle" @if($isCreateCourse) style="font-variation-settings: 'FILL' 1;" @endif>add_circle</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isCreateCourse ? '' : 'font-medium' }}">Create Course</span>
         </a>
 
         <a href="/instructor/earnings" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isEarnings,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isEarnings,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isEarnings,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isEarnings,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isEarnings,
+                'text-[#0c4ea3]' => $isEarnings,
             ]) data-icon="payments" @if($isEarnings) style="font-variation-settings: 'FILL' 1;" @endif>payments</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isEarnings ? '' : 'font-medium' }}">Earnings</span>
         </a>
 
         <a href="/instructor/students" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isStudents,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isStudents,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isStudents,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isStudents,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isStudents,
+                'text-[#0c4ea3]' => $isStudents,
             ]) data-icon="group" @if($isStudents) style="font-variation-settings: 'FILL' 1;" @endif>group</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isStudents ? '' : 'font-medium' }}">Students</span>
         </a>
 
         <a href="/instructor/reviews" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isReviews,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isReviews,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isReviews,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isReviews,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isReviews,
+                'text-[#0c4ea3]' => $isReviews,
             ]) data-icon="star" @if($isReviews) style="font-variation-settings: 'FILL' 1;" @endif>star</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isReviews ? '' : 'font-medium' }}">Reviews</span>
         </a>
 
         <a href="/instructor/messages" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isMessages,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isMessages,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isMessages,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isMessages,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isMessages,
+                'text-[#0c4ea3]' => $isMessages,
             ]) data-icon="mail" @if($isMessages) style="font-variation-settings: 'FILL' 1;" @endif>mail</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isMessages ? '' : 'font-medium' }}">Messages</span>
         </a>
 
         <a href="/instructor/settings" onclick="if (window.innerWidth < 768) toggleInstructorSidebar(false)" @class([
             'flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200',
-            'text-indigo-700 bg-white shadow-sm font-semibold' => $isSettings,
-            'text-slate-600 hover:text-indigo-600 hover:bg-slate-200/50 hover:translate-x-1' => !$isSettings,
+            'text-[#0b3f88] bg-white shadow-sm font-semibold' => $isSettings,
+            'text-slate-600 hover:text-[#0c4ea3] hover:bg-slate-200/50 hover:translate-x-1' => !$isSettings,
         ])>
             <span @class([
                 'material-symbols-outlined',
-                'text-indigo-600' => $isSettings,
+                'text-[#0c4ea3]' => $isSettings,
             ]) data-icon="settings" @if($isSettings) style="font-variation-settings: 'FILL' 1;" @endif>settings</span>
             <span class="font-['Inter'] text-[0.875rem] {{ $isSettings ? '' : 'font-medium' }}">Settings</span>
         </a>
     </nav>
 
     <div class="mt-auto pt-6 space-y-4">
-        <div class="rounded-2xl border border-slate-200 bg-white px-4 py-4">
+        <div class="rounded-2xl border border-[#d7e6ff] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(7,32,84,0.08)]">
             <div class="flex items-center gap-3">
                 @if ($user?->avatar_path)
-                    <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $user->avatarUrl(96) }}" />
+                    <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $user->avatarUrl(96) }}" />
                 @else
                     <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{{ $initials ?: 'U' }}</div>
                 @endif
@@ -180,7 +182,7 @@
                 </div>
             </div>
         </div>
-        <button class="w-full bg-gradient-to-r from-primary to-primary-container text-white py-3 rounded-xl font-semibold shadow-lg shadow-indigo-200/50 flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-95">
+        <button class="w-full bg-gradient-to-r from-[#0c4ea3] via-[#1570d8] to-[#2dc7ff] text-white py-3 rounded-xl font-semibold shadow-[0_16px_30px_rgba(12,78,163,0.2)] flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-95">
             <span class="material-symbols-outlined" data-icon="add">add</span>
             New Course
         </button>
@@ -213,3 +215,4 @@
         };
     }
 </script>
+

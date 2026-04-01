@@ -35,14 +35,17 @@ return [
         ],
     ],
 
-    'cloudinary' => [
-        'cloud_name' => env('CLOUDINARY_CLOUD_NAME'),
-        'api_key' => env('CLOUDINARY_API_KEY'),
-        'api_secret' => env('CLOUDINARY_API_SECRET'),
-        'avatar_folder' => env('CLOUDINARY_AVATAR_FOLDER', 'lms/instructor-avatars'),
-        'thumbnail_folder' => env('CLOUDINARY_THUMBNAIL_FOLDER', 'lms/course-thumbnails'),
-        'video_folder' => env('CLOUDINARY_VIDEO_FOLDER', 'lms/course-videos'),
-        'material_folder' => env('CLOUDINARY_MATERIAL_FOLDER', 'lms/course-materials'),
+    'cloudflare_r2' => [
+        'avatar_folder' => env('R2_AVATAR_FOLDER', 'lms/avatars'),
+        'thumbnail_folder' => env('R2_THUMBNAIL_FOLDER', 'lms/course-thumbnails'),
+        'material_folder' => env('R2_MATERIAL_FOLDER', 'lms/course-materials'),
+    ],
+
+    'cloudflare_stream' => [
+        'account_id' => env('CLOUDFLARE_STREAM_ACCOUNT_ID'),
+        'api_token' => env('CLOUDFLARE_STREAM_API_TOKEN'),
+        'customer_code' => env('CLOUDFLARE_STREAM_CUSTOMER_CODE'),
+        'max_duration_seconds' => (int) env('CLOUDFLARE_STREAM_MAX_DURATION_SECONDS', 14400),
     ],
 
     'razorpay' => [

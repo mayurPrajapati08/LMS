@@ -13,15 +13,15 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#3525cd",
-                        "primary-container": "#4f46e5",
-                        surface: "#f8f9fa",
-                        "surface-container-low": "#f3f4f5",
-                        "surface-container-high": "#e7e8e9",
+                        primary: "#0c4ea3",
+                        "primary-container": "#1570d8",
+                        surface: "#f4f9ff",
+                        "surface-container-low": "#eef5ff",
+                        "surface-container-high": "#e3eeff",
                         "surface-container-lowest": "#ffffff",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#464555",
-                        outline: "#777587",
+                        "on-surface-variant": "#4f6178",
+                        outline: "#7c8da7",
                         tertiary: "#007030",
                         error: "#ba1a1a"
                     },
@@ -34,7 +34,7 @@
         }
     </script>
 </head>
-<body class="bg-surface font-body text-on-surface antialiased selection:bg-indigo-100">
+<body class="bg-surface font-body text-on-surface antialiased selection:bg-[#dcecff]">
     <x-student.navbar />
 
     <header class="fixed top-0 right-0 z-40 flex h-16 w-full items-center justify-between bg-white/85 px-4 shadow-sm backdrop-blur-md md:w-[calc(100%-16rem)] md:px-8">
@@ -42,7 +42,7 @@
             <p class="text-xs font-bold uppercase tracking-[0.28em] text-outline">Student Account</p>
             <h1 class="font-headline text-xl font-extrabold">Profile settings</h1>
         </div>
-        <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $profileAvatar }}" />
+        <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
     </header>
 
     <main class="min-h-screen bg-surface px-4 pb-12 pt-24 md:ml-64 md:px-8">
@@ -61,24 +61,24 @@
 
             <section class="mb-8 grid gap-6 xl:grid-cols-[300px_minmax(0,1fr)] xl:items-start">
                 <div class="rounded-[2rem] bg-gradient-to-br from-slate-950 via-indigo-900 to-indigo-700 p-5 text-white shadow-xl xl:sticky xl:top-24">
-                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-200">Your account</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-[#b9dcff]">Your account</p>
                     <div class="mt-5 flex items-center gap-3">
                         <img alt="{{ $student->name }} avatar" class="h-20 w-20 rounded-[1.25rem] object-cover ring-4 ring-white/10" src="{{ $profileAvatar }}" />
                         <div class="min-w-0">
                             <h2 class="truncate font-headline text-xl font-extrabold">{{ $student->name }}</h2>
-                            <p class="mt-1 truncate text-xs text-indigo-100">{{ $student->email }}</p>
+                            <p class="mt-1 truncate text-xs text-[#dcecff]">{{ $student->email }}</p>
                         </div>
                     </div>
-                    <p class="mt-5 text-sm leading-6 text-indigo-100">
+                    <p class="mt-5 text-sm leading-6 text-[#dcecff]">
                         Keep your profile fresh, update your avatar, and secure your learning account with password plus email OTP verification.
                     </p>
                     <div class="mt-6 grid grid-cols-2 gap-3">
                         <div class="rounded-2xl bg-white/10 p-3">
-                            <p class="text-xs uppercase tracking-[0.2em] text-indigo-200">Courses</p>
+                            <p class="text-xs uppercase tracking-[0.2em] text-[#b9dcff]">Courses</p>
                             <p class="mt-1 text-2xl font-black">{{ $learningStats['courses'] }}</p>
                         </div>
                         <div class="rounded-2xl bg-white/10 p-3">
-                            <p class="text-xs uppercase tracking-[0.2em] text-indigo-200">Completed</p>
+                            <p class="text-xs uppercase tracking-[0.2em] text-[#b9dcff]">Completed</p>
                             <p class="mt-1 text-2xl font-black">{{ $learningStats['completed'] }}</p>
                         </div>
                     </div>
@@ -92,7 +92,7 @@
                                 <p class="text-xs font-bold uppercase tracking-[0.28em] text-primary">Public profile</p>
                                 <h3 class="mt-2 font-headline text-3xl font-extrabold">Personal information</h3>
                             </div>
-                            <span class="rounded-full bg-indigo-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">Live on student pages</span>
+                            <span class="rounded-full bg-[#edf5ff] px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">Live on student pages</span>
                         </div>
 
                         <div class="grid gap-6 md:grid-cols-2">
@@ -102,7 +102,7 @@
                                     <img alt="{{ $student->name }} avatar preview" class="h-20 w-20 rounded-[1.25rem] object-cover" src="{{ $profileAvatar }}" />
                                     <div class="min-w-0 flex-1">
                                         <p class="text-sm font-semibold">Upload a new profile photo</p>
-                                        <p class="mt-1 text-xs text-on-surface-variant">This image is uploaded to Cloudinary and shown across student pages.</p>
+                                        <p class="mt-1 text-xs text-on-surface-variant">This image is uploaded to Cloudflare R2 and shown across student pages.</p>
                                     </div>
                                     <input accept="image/*" class="w-full rounded-xl border-none bg-white px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 md:max-w-xs" name="avatar" type="file" />
                                 </div>
@@ -123,7 +123,7 @@
                                 <textarea class="w-full rounded-xl border-none bg-surface-container-low px-4 py-3 text-sm leading-6 focus:ring-2 focus:ring-primary/20" name="bio" rows="4">{{ old('bio', $student->bio) }}</textarea>
                             </div>
 
-                            <div class="md:col-span-2 rounded-2xl border border-indigo-100 bg-indigo-50/60 p-5">
+                            <div class="md:col-span-2 rounded-2xl border border-[#dcecff] bg-[#edf5ff]/60 p-5">
                                 <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
                                     <div>
                                         <p class="text-sm font-bold text-on-surface">Two-step verification</p>
@@ -132,7 +132,7 @@
                                         </p>
                                     </div>
                                     <label class="inline-flex items-center gap-3 rounded-full bg-white px-4 py-3 shadow-sm">
-                                        <input @checked(old('two_factor_enabled', $student->two_factor_enabled)) class="rounded border-indigo-300 text-primary focus:ring-primary/20" name="two_factor_enabled" type="checkbox" value="1" />
+                                        <input @checked(old('two_factor_enabled', $student->two_factor_enabled)) class="rounded border-[#9eccff] text-primary focus:ring-primary/20" name="two_factor_enabled" type="checkbox" value="1" />
                                         <span class="text-sm font-semibold text-primary">Enable security step</span>
                                     </label>
                                 </div>
@@ -182,3 +182,5 @@
     </main>
 </body>
 </html>
+
+

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Payments | The Scholarly Editorial</title>
+    <title>Payments | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -14,53 +14,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "secondary": "#58579b",
-                        "surface-tint": "#4d44e3",
-                        "inverse-on-surface": "#f0f1f2",
-                        "secondary-fixed": "#e2dfff",
+                        "secondary": "#3b5f8d",
+                        "surface-tint": "#1570d8",
+                        "inverse-on-surface": "#f5fbff",
+                        "secondary-fixed": "#e8f3ff",
                         "on-primary-fixed": "#0f0069",
                         "error-container": "#ffdad6",
                         "tertiary": "#005523",
                         "tertiary-container": "#007030",
-                        "on-secondary-fixed-variant": "#413f82",
+                        "on-secondary-fixed-variant": "#315b90",
                         "tertiary-fixed": "#6bff8f",
-                        "secondary-fixed-dim": "#c3c0ff",
+                        "secondary-fixed-dim": "#b9dcff",
                         "on-tertiary": "#ffffff",
-                        "on-primary-fixed-variant": "#3323cc",
+                        "on-primary-fixed-variant": "#0a4b99",
                         "error": "#ba1a1a",
-                        "surface-container-low": "#f3f4f5",
-                        "secondary-container": "#b6b4ff",
+                        "surface-container-low": "#eef5ff",
+                        "secondary-container": "#d7e9ff",
                         "on-primary": "#ffffff",
                         "on-error": "#ffffff",
-                        "primary-fixed-dim": "#c3c0ff",
-                        "outline-variant": "#c7c4d8",
+                        "primary-fixed-dim": "#b9dcff",
+                        "outline-variant": "#d5e4ff",
                         "on-surface": "#191c1d",
-                        "surface-dim": "#d9dadb",
-                        "on-secondary-fixed": "#140f54",
-                        "inverse-primary": "#c3c0ff",
-                        "on-surface-variant": "#464555",
+                        "surface-dim": "#d4e3f8",
+                        "on-secondary-fixed": "#072a60",
+                        "inverse-primary": "#b9dcff",
+                        "on-surface-variant": "#4f6178",
                         "tertiary-fixed-dim": "#4ae176",
-                        "on-primary-container": "#dad7ff",
-                        "inverse-surface": "#2e3132",
-                        "outline": "#777587",
-                        "primary-container": "#4f46e5",
+                        "on-primary-container": "#edf5ff",
+                        "inverse-surface": "#18345f",
+                        "outline": "#7c8da7",
+                        "primary-container": "#1570d8",
                         "on-background": "#191c1d",
-                        "surface-container-high": "#e7e8e9",
-                        "surface-container": "#edeeef",
+                        "surface-container-high": "#e3eeff",
+                        "surface-container": "#e9f2ff",
                         "on-tertiary-fixed-variant": "#005321",
-                        "primary-fixed": "#e2dfff",
-                        "surface-bright": "#f8f9fa",
+                        "primary-fixed": "#e8f3ff",
+                        "surface-bright": "#f4f9ff",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-container": "#63f889",
-                        "surface-container-highest": "#e1e3e4",
+                        "surface-container-highest": "#dbe8ff",
                         "on-error-container": "#93000a",
-                        "background": "#f8f9fa",
+                        "background": "#f4f9ff",
                         "surface-container-lowest": "#ffffff",
-                        "primary": "#3525cd",
-                        "on-secondary-container": "#454386",
-                        "surface-variant": "#e1e3e4",
+                        "primary": "#0c4ea3",
+                        "on-secondary-container": "#41648d",
+                        "surface-variant": "#dbe8ff",
                         "on-secondary": "#ffffff",
-                        "surface": "#f8f9fa"
+                        "surface": "#f4f9ff"
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -100,7 +100,7 @@
             <h2 class="text-xl font-headline font-bold text-on-surface">Payment History</h2>
         </div>
         <div class="ml-auto flex items-center gap-4 md:gap-6">
-            <form action="{{ route('student.payments') }}" class="relative flex items-center bg-surface-container-low px-3 md:px-4 py-2 rounded-xl focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:w-auto" method="GET">
+            <form action="{{ route('student.payments') }}" class="relative flex items-center bg-surface-container-low px-3 md:px-4 py-2 rounded-xl focus-within:ring-2 focus-within:ring-[#edf5ff]0/20 transition-all w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:w-auto" method="GET">
                 <span class="material-symbols-outlined text-slate-400 text-sm mr-2" data-icon="search">search</span>
                 <input class="bg-transparent border-none focus:ring-0 text-sm w-full md:w-64 text-on-surface" name="search" placeholder="Search..." type="text" value="{{ $search }}" />
             </form>
@@ -108,7 +108,7 @@
                 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
                 <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
             </button>
-            <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ $studentAvatar }}" />
+            <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $studentAvatar }}" />
         </div>
     </header>
 
@@ -190,7 +190,7 @@
                                 <tr class="hover:bg-surface-container-low/30 transition-colors group">
                                     <td class="px-4 md:px-8 py-5">
                                         <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-primary">
+                                            <div class="w-10 h-10 rounded-lg bg-[#edf5ff] flex items-center justify-center text-primary">
                                                 <span class="material-symbols-outlined" data-icon="{{ $icon }}">{{ $icon }}</span>
                                             </div>
                                             <div>
@@ -210,7 +210,7 @@
                                     <td class="px-4 md:px-8 py-5 text-right">
                                         <button @class([
                                             'p-2 rounded-lg transition-all',
-                                            'text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50' => $payment->status === 'completed',
+                                            'text-[#0c4ea3] hover:text-indigo-800 hover:bg-[#edf5ff]' => $payment->status === 'completed',
                                             'text-slate-300 cursor-not-allowed' => $payment->status !== 'completed',
                                         ]) type="button">
                                             <span class="material-symbols-outlined text-xl" data-icon="{{ $payment->status === 'completed' ? 'description' : 'pending' }}">{{ $payment->status === 'completed' ? 'description' : 'pending' }}</span>
@@ -269,8 +269,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-indigo-50 dark:bg-indigo-900/10 p-4 md:p-8 rounded-xl flex items-start gap-6 border-l-4 border-indigo-500">
-                    <div class="bg-indigo-100 dark:bg-indigo-800 p-3 rounded-xl text-indigo-600 dark:text-indigo-300">
+                <div class="bg-[#edf5ff] dark:bg-[#0a2f73]/10 p-4 md:p-8 rounded-xl flex items-start gap-6 border-l-4 border-indigo-500">
+                    <div class="bg-[#dcecff] dark:bg-[#0a2f73] p-3 rounded-xl text-[#0c4ea3] dark:text-[#76c6ff]">
                         <span class="material-symbols-outlined text-2xl" data-icon="live_help">live_help</span>
                     </div>
                     <div>
@@ -301,3 +301,5 @@
 </body>
 
 </html>
+
+

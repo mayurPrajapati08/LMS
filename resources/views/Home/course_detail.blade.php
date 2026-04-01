@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>{{ $course->title }} | Code In Yourself</title>
+    <title>{{ $course->title }} | CodeInYourself</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
     <script>
@@ -13,10 +14,10 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#002D62",
+                        primary: "#08275c",
                         "on-primary": "#FFFFFF",
-                        "primary-container": "#D6E3FF",
-                        "on-primary-container": "#001B3E",
+                        "primary-container": "#dcecff",
+                        "on-primary-container": "#071c4a",
                         secondary: "#565E71",
                         "on-secondary": "#FFFFFF",
                         "secondary-container": "#DAE2F9",
@@ -25,15 +26,15 @@
                         "on-tertiary": "#FFFFFF",
                         "tertiary-container": "#9EF7A0",
                         "on-tertiary-container": "#002106",
-                        surface: "#F8FAFF",
-                        background: "#FDFBFF",
+                        surface: "#f4f9ff",
+                        background: "#f7fbff",
                         "surface-variant": "#E1E2EC",
                         "surface-container-low": "#f1f4f9",
                         "surface-container-high": "#e5e8ee",
                         "surface-container-lowest": "#ffffff",
                         "on-surface": "#1A1C1E",
-                        "on-surface-variant": "#44474F",
-                        outline: "#74777F",
+                        "on-surface-variant": "#4f6178",
+                        outline: "#7c8da7",
                         error: "#BA1A1A"
                     },
                     fontFamily: {
@@ -50,10 +51,10 @@
         }
         .player-stage { background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.26), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
         .player-range { -webkit-appearance: none; appearance: none; background: transparent; }
-        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #6366f1 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
-        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35); }
+        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #1570d8 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
+        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(12, 78, 163, 0.32); }
         .player-range::-moz-range-track { height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.16); }
-        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #6366f1; }
+        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #1570d8; }
         .player-range::-moz-range-thumb { height: 16px; width: 16px; border: none; border-radius: 9999px; background: #ffffff; }
         .player-feedback {
             --feedback-x: -50%;
@@ -181,6 +182,7 @@
     </style>
 </head>
 <body class="bg-surface font-body text-on-surface">
+    @php($previewVideoType = str_contains((string) $previewVideoUrl, '.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/mp4')
     <x-home.navbar />
 
     <main class="pb-20 pt-24">
@@ -271,7 +273,7 @@
                         @if ($previewVideoUrl)
                             <div class="player-preview-area relative aspect-video overflow-hidden">
                                 <video id="coursePreviewVideo" class="h-full w-full bg-black object-contain" controlsList="nodownload noplaybackrate" data-preview-limit="{{ $previewLimitSeconds ?? 40 }}" poster="{{ $heroThumbnail }}" preload="metadata">
-                                    <source src="{{ $previewVideoUrl }}" type="video/mp4" />
+                                    <source src="{{ $previewVideoUrl }}" type="{{ $previewVideoType }}" />
                                 </video>
                                 <button id="previewPosterOverlay" class="absolute inset-0 z-[5] flex items-center justify-center bg-black/20 transition-opacity duration-200" type="button">
                                     <img alt="{{ $course->title }} thumbnail" class="absolute inset-0 h-full w-full object-cover" src="{{ $heroThumbnail }}" />
@@ -387,7 +389,7 @@
                         <div class="rounded-2xl bg-surface-container-low p-6">
                             <span class="material-symbols-outlined text-primary">play_circle</span>
                             <h3 class="mt-4 text-xl font-bold">Player-ready content</h3>
-                            <p class="mt-3 text-sm leading-6 text-on-surface-variant">Once enrolled, this course opens directly in the student player with real lesson progress and Cloudinary video playback support.</p>
+                            <p class="mt-3 text-sm leading-6 text-on-surface-variant">Once enrolled, this course opens directly in the student player with real lesson progress and Cloudflare Stream video playback support.</p>
                         </div>
                     </div>
                 </section>
@@ -516,6 +518,9 @@
             var video = document.getElementById('coursePreviewVideo');
             if (!video) return;
 
+            var sourceElement = video.querySelector('source');
+            var sourceUrl = sourceElement ? sourceElement.getAttribute('src') || '' : '';
+            var streamLoader = null;
             var playerStage = document.getElementById('previewPlayerStage');
             var posterOverlay = document.getElementById('previewPosterOverlay');
             var playPauseButton = document.getElementById('previewPlayPauseButton');
@@ -541,6 +546,30 @@
             var hasStartedPlayback = false;
             var idleTimer = null;
             var orientationLocked = false;
+
+            function initializeVideoSource() {
+                if (!sourceUrl) {
+                    return;
+                }
+
+                if (!/\.m3u8($|\?)/i.test(sourceUrl)) {
+                    if (!video.getAttribute('src')) {
+                        video.src = sourceUrl;
+                    }
+                    return;
+                }
+
+                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = sourceUrl;
+                    return;
+                }
+
+                if (window.Hls && window.Hls.isSupported()) {
+                    streamLoader = new window.Hls();
+                    streamLoader.loadSource(sourceUrl);
+                    streamLoader.attachMedia(video);
+                }
+            }
 
             function formatTime(seconds) {
                 var safeSeconds = Math.max(0, Math.floor(Number(seconds) || 0));
@@ -754,6 +783,7 @@
                 }
             });
 
+            initializeVideoSource();
             video.volume = 0.3;
             volumeBar.value = 0.3;
             setRangeProgress(seekBar);
@@ -767,3 +797,5 @@
     </script>
 </body>
 </html>
+
+
