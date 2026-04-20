@@ -13,23 +13,60 @@
             theme: {
                 extend: {
                     colors: {
-                        "background": "#f7f9ff",
-                        "surface": "#f7f9ff",
-                        "surface-container-low": "#f1f4f9",
+                        "background": "#fcf9fe",
+                        "surface": "#fcf9fe",
+                        "surface-container-low": "#f5eef8",
                         "surface-container-lowest": "#ffffff",
-                        "outline-variant": "#c1c6d7",
+                        "outline-variant": "#dbcde4",
                         "on-surface": "#181c20",
-                        "on-surface-variant": "#414754",
-                        "primary": "#0059bb",
-                        "primary-container": "#0070ea",
+                        "on-surface-variant": "#6d5a76",
+                        "primary": "#6a3378",
+                        "primary-container": "#8f52a3",
                         "on-primary-container": "#fefcff"
                     }
                 }
             }
         }
     </script>
+    <style>
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(106, 51, 120, 0.76) rgba(243, 236, 247, 0.96);
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+            background:
+                linear-gradient(180deg, rgba(252, 247, 254, 0.98), rgba(240, 231, 245, 0.98));
+            border-left: 1px solid rgba(219, 205, 228, 0.72);
+        }
+
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb {
+            background:
+                linear-gradient(180deg, rgba(106, 51, 120, 0.90), rgba(143, 82, 163, 0.84));
+            border: 2px solid rgba(252, 247, 254, 0.96);
+            border-radius: 9999px;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.24),
+                0 6px 16px rgba(106, 51, 120, 0.14);
+        }
+
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover {
+            background:
+                linear-gradient(180deg, rgba(90, 41, 104, 0.94), rgba(122, 61, 143, 0.88));
+        }
+    </style>
 </head>
 <body class="bg-surface font-['Inter'] text-on-surface min-h-screen antialiased">
+    <x-shared.back-to-top />
     <main class="min-h-screen flex items-center justify-center px-6 py-12">
         <div class="w-full max-w-md rounded-[32px] border border-outline-variant/40 bg-surface-container-lowest p-8 shadow-2xl shadow-slate-200/70">
             <div class="mb-8 text-center">
@@ -57,7 +94,7 @@
                     <label class="mb-2 block text-sm font-semibold text-on-surface-variant" for="otp">6-Digit OTP</label>
                     <input class="w-full rounded-2xl border border-outline-variant/50 bg-surface-container-low px-4 py-4 text-center text-2xl font-extrabold tracking-[0.35em] text-on-surface focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary" id="otp" name="otp" type="text" inputmode="numeric" maxlength="6" placeholder="000000" value="{{ old('otp') }}" />
                 </div>
-                <button class="w-full rounded-2xl bg-primary-container py-4 font-['Manrope'] text-sm font-bold text-on-primary-container shadow-lg shadow-blue-200/70 transition-all hover:opacity-90" type="submit">Verify And Sign In</button>
+                <button class="w-full rounded-2xl bg-primary-container py-4 font-['Manrope'] text-sm font-bold text-on-primary-container shadow-lg shadow-[#b07ac3]/30 transition-all hover:opacity-90" type="submit">Verify And Sign In</button>
             </form>
 
             <form action="{{ route('two-factor.resend', absolute: false) }}" method="POST" class="mt-4">
@@ -72,4 +109,5 @@
     </main>
 </body>
 </html>
+
 

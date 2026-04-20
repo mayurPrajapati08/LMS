@@ -14,27 +14,27 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: "#08275c",
+                        primary: "#8b6a34",
                         "on-primary": "#FFFFFF",
-                        "primary-container": "#dcecff",
-                        "on-primary-container": "#071c4a",
-                        secondary: "#565E71",
+                        "primary-container": "#e9dbc5",
+                        "on-primary-container": "#43311b",
+                        secondary: "#64584c",
                         "on-secondary": "#FFFFFF",
-                        "secondary-container": "#DAE2F9",
-                        "on-secondary-container": "#131C2C",
-                        tertiary: "#006B24",
+                        "secondary-container": "#ece3d7",
+                        "on-secondary-container": "#2b241d",
+                        tertiary: "#2d4a45",
                         "on-tertiary": "#FFFFFF",
-                        "tertiary-container": "#9EF7A0",
-                        "on-tertiary-container": "#002106",
-                        surface: "#f4f9ff",
-                        background: "#f7fbff",
-                        "surface-variant": "#E1E2EC",
-                        "surface-container-low": "#f1f4f9",
-                        "surface-container-high": "#e5e8ee",
+                        "tertiary-container": "#dce8e5",
+                        "on-tertiary-container": "#11211d",
+                        surface: "#f8f2e9",
+                        background: "#f8f2e9",
+                        "surface-variant": "#e4d8c8",
+                        "surface-container-low": "#fcf8f2",
+                        "surface-container-high": "#f1e8dc",
                         "surface-container-lowest": "#ffffff",
-                        "on-surface": "#1A1C1E",
-                        "on-surface-variant": "#4f6178",
-                        outline: "#7c8da7",
+                        "on-surface": "#1f1a16",
+                        "on-surface-variant": "#6f6254",
+                        outline: "#cbbba4",
                         error: "#BA1A1A"
                     },
                     fontFamily: {
@@ -46,15 +46,190 @@
         }
     </script>
     <style>
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(109, 40, 217, 0.68) rgba(244, 237, 228, 0.92);
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+            background:
+                linear-gradient(180deg, rgba(250, 245, 238, 0.98), rgba(239, 229, 214, 0.98));
+            border-left: 1px solid rgba(215, 197, 171, 0.72);
+        }
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb {
+            background:
+                linear-gradient(180deg, rgba(139, 106, 52, 0.92), rgba(109, 40, 217, 0.76));
+            border: 2px solid rgba(250, 245, 238, 0.96);
+            border-radius: 9999px;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.25),
+                0 6px 16px rgba(57, 34, 10, 0.12);
+        }
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover {
+            background:
+                linear-gradient(180deg, rgba(120, 90, 42, 0.96), rgba(91, 33, 182, 0.82));
+        }
+        body {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(109, 40, 217, 0.68) rgba(244, 237, 228, 0.92);
+        }
+        .page-shell {
+            position: relative;
+            isolation: isolate;
+            background:
+                radial-gradient(circle at top left, rgba(212, 175, 55, 0.08), transparent 16%),
+                radial-gradient(circle at top right, rgba(124, 58, 237, 0.08), transparent 22%),
+                radial-gradient(circle at bottom right, rgba(183, 140, 71, 0.08), transparent 20%),
+                linear-gradient(180deg, #fcfbff 0%, #f5f0fb 52%, #f7f3ee 100%);
+        }
+        .page-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 22rem;
+            background:
+                radial-gradient(circle at 16% 18%, rgba(214, 175, 84, 0.12), transparent 18%),
+                radial-gradient(circle at 84% 14%, rgba(167, 139, 250, 0.14), transparent 18%),
+                linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0));
+            pointer-events: none;
+            z-index: -1;
+        }
+        .page-shell::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.16) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.14) 1px, transparent 1px);
+            background-size: 5rem 5rem;
+            mask-image: linear-gradient(180deg, rgba(0,0,0,0.12), transparent 35%);
+            pointer-events: none;
+            z-index: -1;
+        }
+        .glass-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(251,247,255,0.9));
+            border: 1px solid rgba(225, 214, 240, 0.82);
+            box-shadow: 0 22px 54px rgba(76, 29, 149, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+        .hero-glow {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            background:
+                radial-gradient(circle at 14% 18%, rgba(214, 176, 103, 0.16), transparent 24%),
+                radial-gradient(circle at 82% 20%, rgba(255,255,255,0.08), transparent 18%),
+                linear-gradient(135deg, #111111 0%, #181512 38%, #241f1a 72%, #332a22 100%);
+            box-shadow: 0 40px 110px rgba(29, 23, 18, 0.34);
+        }
+        .hero-glow::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 4rem 4rem;
+            mask-image: radial-gradient(circle at center, black 28%, transparent 82%);
+            pointer-events: none;
+            opacity: 0.45;
+        }
+        .hero-outline {
+            position: relative;
+        }
+        .hero-outline::before {
+            content: "";
+            position: absolute;
+            inset: 1rem;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.75rem;
+            pointer-events: none;
+        }
+        .premium-label {
+            border: 1px solid rgba(212, 175, 55, 0.18);
+            background: rgba(255,255,255,0.72);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+        }
+        .editorial-divider {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0), rgba(124, 58, 237, 0.18), rgba(212, 175, 55, 0.24), rgba(124, 58, 237, 0));
+        }
+        .detail-stat {
+            border: 1px solid rgba(227, 218, 238, 0.78);
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(250,246,252,0.88));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.62);
+        }
+        .soft-panel {
+            border: 1px solid rgba(220, 205, 246, 0.72);
+            background:
+                radial-gradient(circle at top right, rgba(212, 175, 55, 0.08), transparent 22%),
+                radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.06), transparent 24%),
+                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(250,246,255,0.9));
+            box-shadow: 0 22px 48px rgba(76, 29, 149, 0.08);
+        }
+        .hero-surface {
+            border-color: rgba(220, 205, 246, 0.68);
+            background:
+                radial-gradient(circle at top left, rgba(212, 175, 55, 0.10), transparent 20%),
+                radial-gradient(circle at top right, rgba(124, 58, 237, 0.08), transparent 18%),
+                linear-gradient(180deg, rgba(255,255,255,0.97), rgba(249,244,255,0.9));
+            box-shadow:
+                0 24px 56px rgba(76, 29, 149, 0.09),
+                0 1px 0 rgba(255,255,255,0.28) inset;
+        }
+        .curriculum-row {
+            border: 1px solid rgba(227, 218, 238, 0.72);
+            background: linear-gradient(180deg, rgba(255,255,255,0.82), rgba(248,244,251,0.74));
+        }
+        .related-card {
+            border: 1px solid rgba(227, 218, 238, 0.82);
+            background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(250,246,252,0.92));
+            box-shadow: 0 18px 42px rgba(76, 29, 149, 0.08);
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+        .related-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(180, 146, 68, 0.26);
+            box-shadow: 0 26px 56px rgba(76, 29, 149, 0.12);
+        }
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, #7d5b2f, #b78c47, #ead7a7);
+            transition: width 0.08s linear;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
         .font-variation-settings-fill {
             font-variation-settings: 'FILL' 1;
         }
-        .player-stage { background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.26), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
+        .player-stage { background: radial-gradient(circle at top right, rgba(183, 140, 71, 0.22), transparent 30%), linear-gradient(180deg, #111111 0%, #1b1712 100%); }
         .player-range { -webkit-appearance: none; appearance: none; background: transparent; }
-        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #1570d8 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
-        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(12, 78, 163, 0.32); }
+        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #d2b172 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
+        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(39, 29, 21, 0.3); }
         .player-range::-moz-range-track { height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.16); }
-        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #1570d8; }
+        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #d2b172; }
         .player-range::-moz-range-thumb { height: 16px; width: 16px; border: none; border-radius: 9999px; background: #ffffff; }
         .player-feedback {
             --feedback-x: -50%;
@@ -181,98 +356,130 @@
         }
     </style>
 </head>
-<body class="bg-surface font-body text-on-surface">
+<body class="page-shell bg-surface font-body text-on-surface">
+    <div id="scroll-progress"></div>
+    <x-shared.back-to-top />
     @php($previewVideoType = str_contains((string) $previewVideoUrl, '.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/mp4')
-    <x-home.navbar />
+    @php($displayRating = $rating > 0 ? $rating : 4.8)
+    @php($courseLevel = ucfirst($course->level ?: 'All levels'))
+    @php($courseLanguage = $course->language ?: 'English')
+    @php($courseValidity = $course->validity_in_days ? $course->validity_in_days.' days' : 'Lifetime access')
+    @php($previewSeconds = $previewLimitSeconds ?? 40)
+    
 
-    <main class="pb-20 pt-24">
-        <section class="mx-auto mb-16 max-w-7xl px-6">
-            <nav class="mb-8 flex items-center space-x-2 text-sm text-on-surface-variant">
-                <span>Home</span>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <a class="hover:text-primary" href="{{ $browseUrl }}">Courses</a>
-                <span class="material-symbols-outlined text-xs">chevron_right</span>
-                <span class="font-medium text-primary">{{ $course->title }}</span>
-            </nav>
+    <main class="pb-24 pt-5">
+        <section class="mx-auto max-w-7xl px-4 sm:px-6">
+            <div class="soft-panel hero-surface reveal overflow-hidden rounded-[2.5rem] p-5 sm:p-8 lg:p-10">
+                <nav class="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-on-surface-variant/80">
+                    <span>Home</span>
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <a class="transition hover:text-primary" href="{{ $browseUrl }}">Courses</a>
+                    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                    <span class="text-primary">{{ $course->title }}</span>
+                </nav>
 
-            <div class="grid gap-12 lg:grid-cols-12 lg:items-start">
-                <div class="lg:col-span-7">
-                    <p class="mb-3 inline-flex rounded-full bg-primary/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.3em] text-primary">
-                        {{ $course->category?->name ?? 'Course' }}
-                    </p>
-                    <h1 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface lg:text-6xl">
-                        {{ $course->title }}
-                    </h1>
-                    <p class="mt-5 max-w-3xl text-lg leading-8 text-on-surface-variant">
-                        {{ $course->details }}
-                    </p>
+                <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(360px,0.9fr)] lg:items-start">
+                    <div class="reveal">
+                        <span class="premium-label inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] text-primary">
+                            <span class="h-2 w-2 rounded-full bg-[#b78c47]"></span>
+                            {{ $course->category?->name ?? 'Course' }}
+                        </span>
+                        <h1 class="mt-6 max-w-4xl font-headline text-[2.5rem] font-extrabold leading-[0.98] tracking-[-0.04em] text-on-surface sm:text-[3.2rem] lg:text-[3.5rem]">
+                            {{ $course->title }}
+                        </h1>
+                        <p class="mt-6 max-w-3xl text-base leading-8 text-on-surface-variant sm:text-md">
+                            {{ $course->details }}
+                        </p>
 
-                    <div class="mt-8 flex flex-wrap items-center gap-4 text-sm">
-                        <div class="inline-flex items-center rounded-full bg-emerald-50 px-4 py-2 font-bold text-emerald-700">
-                            <span class="material-symbols-outlined mr-2 text-base" style="font-variation-settings: 'FILL' 1;">star</span>
-                            {{ number_format($rating > 0 ? $rating : 4.8, 1) }}
+                        <div class="mt-8 flex flex-wrap items-center gap-3 text-sm">
+                            <div class="premium-label inline-flex items-center rounded-full px-4 py-2.5 font-bold text-on-surface">
+                                <span class="material-symbols-outlined mr-2 text-base text-[#b78c47]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                {{ number_format($displayRating, 1) }}
+                            </div>
+                            <span class="text-on-surface-variant">{{ number_format($reviewsCount) }} reviews</span>
+                            <span class="h-1 w-1 rounded-full bg-[#c9b89d]"></span>
+                            <span class="text-on-surface-variant">{{ number_format($studentsCount) }} learners</span>
+                            <span class="h-1 w-1 rounded-full bg-[#c9b89d]"></span>
+                            <span class="text-on-surface-variant">{{ $courseLevel }}</span>
                         </div>
-                        <span class="text-on-surface-variant">({{ number_format($reviewsCount) }} reviews)</span>
-                        <span class="text-on-surface-variant">{{ number_format($studentsCount) }} students</span>
-                    </div>
 
-                    <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-                        <div class="rounded-2xl bg-surface-container-low p-4">
-                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Duration</p>
-                            <p class="mt-2 font-bold">{{ $formattedDuration }}</p>
-                        </div>
-                        <div class="rounded-2xl bg-surface-container-low p-4">
-                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Level</p>
-                            <p class="mt-2 font-bold">{{ ucfirst($course->level ?: 'All levels') }}</p>
-                        </div>
-                        <div class="rounded-2xl bg-surface-container-low p-4">
-                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Lessons</p>
-                            <p class="mt-2 font-bold">{{ $totalLessons }}</p>
-                        </div>
-                        <div class="rounded-2xl bg-surface-container-low p-4">
-                            <p class="text-xs font-bold uppercase tracking-[0.2em] text-on-surface-variant">Language</p>
-                            <p class="mt-2 font-bold">{{ $course->language ?: 'English' }}</p>
-                        </div>
-                    </div>
-
-                    @if ($learningTopics->isNotEmpty())
-                        <div class="mt-10">
-                            <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">Tools you will learn</p>
-                            <div class="flex flex-wrap gap-3">
-                                @foreach ($learningTopics as $topic)
-                                    <span class="rounded-2xl bg-surface-container-lowest px-4 py-3 text-sm font-semibold shadow-sm ring-1 ring-slate-200/70">{{ $topic }}</span>
-                                @endforeach
+                        <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                            <div class="detail-stat rounded-[1.5rem] p-4">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Duration</p>
+                                <p class="mt-3 text-lg font-bold text-on-surface">{{ $formattedDuration }}</p>
+                            </div>
+                            <div class="detail-stat rounded-[1.5rem] p-4">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Lessons</p>
+                                <p class="mt-3 text-lg font-bold text-on-surface">{{ $totalLessons }}</p>
+                            </div>
+                            <div class="detail-stat rounded-[1.5rem] p-4">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Language</p>
+                                <p class="mt-3 text-lg font-bold text-on-surface">{{ $courseLanguage }}</p>
+                            </div>
+                            <div class="detail-stat rounded-[1.5rem] p-4">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Access</p>
+                                <p class="mt-3 text-lg font-bold text-on-surface">{{ $courseValidity }}</p>
                             </div>
                         </div>
-                    @endif
 
-                    <div class="mt-10 flex flex-col gap-4 sm:flex-row">
-                        @auth
-                            @if ($isEnrolled)
-                                <a class="inline-flex items-center justify-center rounded-xl bg-tertiary px-8 py-4 text-lg font-bold text-white shadow-lg" href="{{ $continueUrl }}">
-                                    Continue Learning
-                                </a>
+                        @if ($learningTopics->isNotEmpty())
+                            <div class="mt-8">
+                                <p class="mb-4 text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">What you will work with</p>
+                                <div class="flex flex-wrap gap-3">
+                                    @foreach ($learningTopics as $topic)
+                                        <span class="premium-label rounded-full px-4 py-2.5 text-sm font-semibold text-on-surface">{{ $topic }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        <div class="my-10 editorial-divider"></div>
+
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            <div class="detail-stat rounded-[1.6rem] p-5">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Instructor</p>
+                                <div class="mt-4 flex items-center gap-3">
+                                    <img alt="{{ $course->user?->name }} avatar" class="h-12 w-12 rounded-full object-cover ring-1 ring-[#cbbba4]" src="{{ $course->user?->avatarUrl(96) }}" />
+                                    <div>
+                                        <p class="font-bold text-on-surface">{{ $course->user?->name }}</p>
+                                        <p class="text-sm text-on-surface-variant">Mentor-led experience</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail-stat rounded-[1.6rem] p-5">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Course Format</p>
+                                <p class="mt-4 font-headline text-2xl font-extrabold text-on-surface">Structured and outcome-focused</p>
+                                <p class="mt-2 text-sm leading-6 text-on-surface-variant">Built for guided progress with clear sections, lessons, and measurable outcomes.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+                            @auth
+                                @if ($isEnrolled)
+                                    <a class="inline-flex items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#8b6a34_0%,#b78c47_100%)] px-8 py-4 text-base font-bold text-white shadow-[0_20px_40px_rgba(94,72,40,0.18)]" href="{{ $continueUrl }}">
+                                        Continue Learning
+                                    </a>
+                                @else
+                                    <a class="inline-flex items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#8b6a34_0%,#b78c47_100%)] px-8 py-4 text-base font-bold text-white shadow-[0_20px_40px_rgba(94,72,40,0.18)]" href="{{ route('student.browse-courses') }}">
+                                        Continue to Enroll
+                                    </a>
+                                @endif
                             @else
-                                <a class="inline-flex items-center justify-center rounded-xl bg-primary-container px-8 py-4 text-lg font-bold text-white shadow-lg" href="{{ route('student.browse-courses') }}">
-                                    Continue to Enroll
+                                <a class="inline-flex items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#8b6a34_0%,#b78c47_100%)] px-8 py-4 text-base font-bold text-white shadow-[0_20px_40px_rgba(94,72,40,0.18)]" href="{{ route('login') }}">
+                                    Login to Enroll
                                 </a>
-                            @endif
-                        @else
-                            <a class="inline-flex items-center justify-center rounded-xl bg-primary-container px-8 py-4 text-lg font-bold text-white shadow-lg" href="{{ route('login') }}">
-                                Login to Enroll
+                            @endauth
+                            <a class="inline-flex items-center justify-center rounded-[1.2rem] border border-[#cbbba4] bg-white/70 px-8 py-4 text-base font-bold text-on-surface-variant" href="{{ $browseUrl }}">
+                                Browse More Courses
                             </a>
-                        @endauth
-                        <a class="inline-flex items-center justify-center rounded-xl border-2 border-slate-200 bg-surface-container-lowest px-8 py-4 text-lg font-bold text-on-surface-variant" href="{{ $browseUrl }}">
-                            Browse More Courses
-                        </a>
+                        </div>
                     </div>
-                </div>
 
-                <div class="lg:col-span-5">
-                    <div id="previewPlayerStage" class="player-stage relative overflow-hidden rounded-[2rem] shadow-2xl">
+                    <div class="reveal">
+                        <div id="previewPlayerStage" class="hero-glow hero-outline player-stage relative overflow-hidden rounded-[2rem]">
                         @if ($previewVideoUrl)
                             <div class="player-preview-area relative aspect-video overflow-hidden">
-                                <video id="coursePreviewVideo" class="h-full w-full bg-black object-contain" controlsList="nodownload noplaybackrate" data-preview-limit="{{ $previewLimitSeconds ?? 40 }}" poster="{{ $heroThumbnail }}" preload="metadata">
+                                <video id="coursePreviewVideo" class="h-full w-full bg-black object-contain" controlsList="nodownload noplaybackrate" data-preview-limit="{{ $previewSeconds }}" poster="{{ $heroThumbnail }}" preload="metadata">
                                     <source src="{{ $previewVideoUrl }}" type="{{ $previewVideoType }}" />
                                 </video>
                                 <button id="previewPosterOverlay" class="absolute inset-0 z-[5] flex items-center justify-center bg-black/20 transition-opacity duration-200" type="button">
@@ -288,7 +495,7 @@
                                 <div class="pointer-events-none absolute inset-x-0 top-0 z-10 p-4">
                                     <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-white backdrop-blur-xl">
                                         <span class="material-symbols-outlined text-sm">smart_display</span>
-                                        Preview 00:{{ str_pad((string) ($previewLimitSeconds ?? 40), 2, '0', STR_PAD_LEFT) }}
+                                        Preview 00:{{ str_pad((string) $previewSeconds, 2, '0', STR_PAD_LEFT) }}
                                     </div>
                                 </div>
                                 <div class="absolute inset-x-0 bottom-0 z-10 p-2.5 md:p-3">
@@ -296,7 +503,7 @@
                                         <div class="mb-2.5 flex items-center gap-2">
                                             <span id="previewCurrentTime" class="min-w-[44px] text-[11px] font-semibold text-slate-200">00:00</span>
                                             <input id="previewSeekBar" class="player-range h-4 w-full" max="100" min="0" step="0.1" type="range" value="0" />
-                                            <span id="previewDurationTime" class="min-w-[44px] text-right text-[11px] font-semibold text-slate-200">00:{{ str_pad((string) ($previewLimitSeconds ?? 40), 2, '0', STR_PAD_LEFT) }}</span>
+                                            <span id="previewDurationTime" class="min-w-[44px] text-right text-[11px] font-semibold text-slate-200">00:{{ str_pad((string) $previewSeconds, 2, '0', STR_PAD_LEFT) }}</span>
                                         </div>
                                         <div class="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
                                             <div class="flex flex-wrap items-center gap-2">
@@ -324,103 +531,95 @@
                         @else
                             <img alt="{{ $course->title }} thumbnail" class="aspect-video w-full object-cover opacity-85" src="{{ $heroThumbnail }}" />
                         @endif
-                        <div class="space-y-5 bg-surface-container-lowest p-8 text-on-surface">
-                            <div class="flex items-end justify-between gap-4">
+                        <div class="glass-card rounded-b-[2rem] p-6 sm:p-7 text-on-surface">
+                            <div class="flex items-start justify-between gap-4">
                                 <div>
-                                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">Current fee</p>
-                                    <p class="mt-2 font-headline text-4xl font-extrabold">Rs. {{ number_format((float) $course->price, 0) }}</p>
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Fee details</p>
+                                    <p class="mt-3 font-headline text-[1.8rem] font-extrabold leading-tight text-on-surface">Contact mentor or our team to know the current fee.</p>
                                 </div>
                                 @if ($isWishlisted)
-                                    <span class="rounded-full bg-amber-100 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-amber-700">Saved in wishlist</span>
+                                    <span class="premium-label rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-[#8b6a34]">Saved</span>
                                 @endif
                             </div>
-                            <div class="space-y-3 text-sm">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-on-surface-variant">Sections</span>
-                                    <span class="font-bold">{{ $totalSections }}</span>
+                            <div class="mt-5 grid gap-3 sm:grid-cols-3">
+                                <div class="detail-stat rounded-[1.2rem] p-4">
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Sections</p>
+                                    <p class="mt-2 text-base font-bold text-on-surface">{{ $totalSections }}</p>
                                 </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-on-surface-variant">Students</span>
-                                    <span class="font-bold">{{ number_format($studentsCount) }}</span>
+                                <div class="detail-stat rounded-[1.2rem] p-4">
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Students</p>
+                                    <p class="mt-2 text-base font-bold text-on-surface">{{ number_format($studentsCount) }}</p>
                                 </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-on-surface-variant">Validity</span>
-                                    <span class="font-bold">{{ $course->validity_in_days ? $course->validity_in_days.' days' : 'Lifetime access' }}</span>
+                                <div class="detail-stat rounded-[1.2rem] p-4">
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Preview</p>
+                                    <p class="mt-2 text-base font-bold text-on-surface">00:{{ str_pad((string) $previewSeconds, 2, '0', STR_PAD_LEFT) }}</p>
                                 </div>
                             </div>
-                            <div class="rounded-2xl bg-primary/5 p-5">
-                                <div class="flex items-center gap-3">
-                                    <img alt="{{ $course->user?->name }} avatar" class="h-12 w-12 rounded-full object-cover" src="{{ $course->user?->avatarUrl(96) }}" />
-                                    <div>
-                                        <p class="font-bold">{{ $course->user?->name }}</p>
-                                        <p class="text-xs text-on-surface-variant">Instructor</p>
-                                    </div>
+                            @if ($course->user?->bio)
+                                <div class="mt-5 rounded-[1.25rem] border border-[#d6cab8] bg-white/65 p-4">
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Instructor note</p>
+                                    <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $course->user->bio }}</p>
                                 </div>
-                                @if ($course->user?->bio)
-                                    <p class="mt-4 text-sm leading-6 text-on-surface-variant">{{ $course->user->bio }}</p>
-                                @endif
-                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <div class="sticky top-[72px] z-40 border-y border-slate-200/70 bg-white/95 shadow-sm backdrop-blur-md">
-            <div class="mx-auto flex max-w-7xl gap-10 overflow-x-auto px-6">
-                <a class="whitespace-nowrap border-b-2 border-primary py-5 text-sm font-bold text-primary" href="#overview">Overview</a>
-                <a class="whitespace-nowrap py-5 text-sm font-bold text-on-surface-variant hover:text-primary" href="#curriculum">Curriculum</a>
-                <a class="whitespace-nowrap py-5 text-sm font-bold text-on-surface-variant hover:text-primary" href="#reviews">Reviews</a>
-                <a class="whitespace-nowrap py-5 text-sm font-bold text-on-surface-variant hover:text-primary" href="#related">Related</a>
+        <div class="sticky top-[72px] z-40 mt-8 border-y border-[#ded3c5] bg-[#f9f4ec]/90 backdrop-blur-xl">
+            <div class="mx-auto flex max-w-7xl gap-8 overflow-x-auto px-4 sm:px-6">
+                <a class="whitespace-nowrap border-b-2 border-[#8b6a34] py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-[#8b6a34]" href="#overview">Overview</a>
+                <a class="whitespace-nowrap py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-on-surface-variant transition hover:text-[#8b6a34]" href="#curriculum">Curriculum</a>
+                <a class="whitespace-nowrap py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-on-surface-variant transition hover:text-[#8b6a34]" href="#reviews">Reviews</a>
+                <a class="whitespace-nowrap py-4 text-[12px] font-bold uppercase tracking-[0.18em] text-on-surface-variant transition hover:text-[#8b6a34]" href="#related">Related</a>
             </div>
         </div>
 
-        <div class="mx-auto mt-12 grid max-w-7xl gap-12 px-6 lg:grid-cols-12">
-            <div class="space-y-16 lg:col-span-8">
-                <section class="scroll-mt-32" id="overview">
-                    <h2 class="font-headline text-3xl font-extrabold">Course overview</h2>
-                    <p class="mt-5 text-lg leading-8 text-on-surface-variant">{{ $course->details }}</p>
-                    <div class="mt-8 grid gap-5 md:grid-cols-2">
-                        <div class="rounded-2xl bg-surface-container-low p-6">
-                            <span class="material-symbols-outlined text-primary">workspace_premium</span>
-                            <h3 class="mt-4 text-xl font-bold">Practical learning path</h3>
-                            <p class="mt-3 text-sm leading-6 text-on-surface-variant">Every published section and lesson is pulled from the real course builder, so students see the same content structure instructors create.</p>
+        <div class="mx-auto mt-10 grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-12">
+            <div class="space-y-8 lg:col-span-8">
+                <section class="soft-panel reveal scroll-mt-32 rounded-[1.8rem] p-6 sm:p-7" id="overview">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8b6a34]">Course Overview</p>
+                    <h2 class="mt-3 font-headline text-[1.9rem] font-extrabold tracking-[-0.03em] text-on-surface">A clear path from interest to mastery</h2>
+                    <p class="mt-5 text-[15px] leading-8 text-on-surface-variant">{{ $course->details }}</p>
+                    <div class="mt-7 grid gap-4 md:grid-cols-2">
+                        <div class="detail-stat rounded-[1.4rem] p-5">
+                            <span class="material-symbols-outlined text-[#8b6a34]">workspace_premium</span>
+                            <h3 class="mt-3 text-lg font-bold text-on-surface">Practical learning path</h3>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Each section moves from foundations into applied execution so the course stays structured and easy to follow.</p>
                         </div>
-                        <div class="rounded-2xl bg-surface-container-low p-6">
-                            <span class="material-symbols-outlined text-primary">play_circle</span>
-                            <h3 class="mt-4 text-xl font-bold">Player-ready content</h3>
-                            <p class="mt-3 text-sm leading-6 text-on-surface-variant">Once enrolled, this course opens directly in the student player with real lesson progress and Cloudflare Stream video playback support.</p>
+                        <div class="detail-stat rounded-[1.4rem] p-5">
+                            <span class="material-symbols-outlined text-[#8b6a34]">play_circle</span>
+                            <h3 class="mt-3 text-lg font-bold text-on-surface">Player-ready experience</h3>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Students can preview instantly and continue into the full course flow with saved lesson progress after enrollment.</p>
                         </div>
                     </div>
                 </section>
 
-                <section class="scroll-mt-32" id="curriculum">
-                    <div class="flex items-end justify-between gap-4">
-                        <div>
-                            <h2 class="font-headline text-3xl font-extrabold">Curriculum</h2>
-                            <p class="mt-2 text-sm text-on-surface-variant">{{ $totalSections }} sections • {{ $totalLessons }} lessons</p>
-                        </div>
-                    </div>
-                    <div class="mt-8 space-y-4">
+                <section class="soft-panel reveal scroll-mt-32 rounded-[1.8rem] p-6 sm:p-7" id="curriculum">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8b6a34]">Curriculum</p>
+                    <h2 class="mt-3 font-headline text-[1.9rem] font-extrabold tracking-[-0.03em] text-on-surface">Structured section by section</h2>
+                    <p class="mt-2 text-sm leading-7 text-on-surface-variant">{{ $totalSections }} sections • {{ $totalLessons }} lessons</p>
+                    <div class="mt-7 space-y-4">
                         @foreach ($sections as $index => $section)
-                            <div class="overflow-hidden rounded-2xl border border-slate-200/70 bg-surface-container-lowest shadow-sm">
-                                <div class="flex items-center justify-between bg-surface-container-low/70 px-5 py-4">
+                            <div class="glass-card overflow-hidden rounded-[1.5rem]">
+                                <div class="flex items-center justify-between border-b border-[#eadfce] px-5 py-4">
                                     <div class="flex items-center gap-4">
-                                        <span class="text-sm font-bold text-primary">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                                        <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f4ead7] text-sm font-bold text-[#8b6a34]">{{ str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT) }}</span>
                                         <div>
-                                            <h3 class="font-bold">{{ $section['title'] }}</h3>
-                                            <p class="text-xs text-on-surface-variant">{{ $section['lessons_count'] }} lessons</p>
+                                            <h3 class="font-bold text-on-surface">{{ $section['title'] }}</h3>
+                                            <p class="text-xs uppercase tracking-[0.14em] text-on-surface-variant">{{ $section['lessons_count'] }} lessons</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="space-y-3 px-6 py-5">
+                                <div class="space-y-3 px-5 py-5">
                                     @foreach ($section['lessons'] as $lesson)
-                                        <div class="flex items-center justify-between rounded-xl bg-surface-container-low px-4 py-3 text-sm">
-                                            <div class="flex items-center gap-3">
-                                                <span class="material-symbols-outlined text-secondary">play_circle</span>
-                                                <span>{{ $lesson['title'] }}</span>
+                                        <div class="curriculum-row flex items-center justify-between rounded-[1rem] px-4 py-3 text-sm">
+                                            <div class="flex min-w-0 items-center gap-3">
+                                                <span class="material-symbols-outlined shrink-0 text-[#8b6a34]">play_circle</span>
+                                                <span class="block text-on-surface">{{ $lesson['title'] }}</span>
                                             </div>
-                                            <span class="text-on-surface-variant">{{ $lesson['duration'] }}</span>
+                                            <span class="shrink-0 text-on-surface-variant">{{ $lesson['duration'] }}</span>
                                         </div>
                                     @endforeach
                                 </div>
@@ -429,36 +628,36 @@
                     </div>
                 </section>
 
-                <section class="scroll-mt-32" id="reviews">
-                    <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-                        <div class="rounded-[2rem] bg-surface-container-low p-8 text-center">
-                            <p class="font-headline text-6xl font-black">{{ number_format($rating > 0 ? $rating : 4.8, 1) }}</p>
-                            <div class="mt-3 flex justify-center text-amber-500">
+                <section class="soft-panel reveal scroll-mt-32 rounded-[1.8rem] p-6 sm:p-7" id="reviews">
+                    <div class="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+                        <div class="detail-stat rounded-[1.5rem] p-6 text-center">
+                            <p class="font-headline text-5xl font-black text-on-surface">{{ number_format($displayRating, 1) }}</p>
+                            <div class="mt-3 flex justify-center text-[#b78c47]">
                                 @for ($star = 1; $star <= 5; $star++)
                                     <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
                                 @endfor
                             </div>
                             <p class="mt-3 text-sm text-on-surface-variant">{{ number_format($reviewsCount) }} verified reviews</p>
                         </div>
-                        <div class="space-y-5">
+                        <div class="space-y-4">
                             @forelse ($reviews as $review)
-                                <article class="rounded-2xl border border-slate-200/70 bg-surface-container-lowest p-6 shadow-sm">
+                                <article class="detail-stat rounded-[1.4rem] p-5">
                                     <div class="flex items-center gap-4">
-                                        <img alt="{{ $review['name'] }} avatar" class="h-12 w-12 rounded-full object-cover" src="{{ $review['avatar'] }}" />
+                                        <img alt="{{ $review['name'] }} avatar" class="h-11 w-11 rounded-full object-cover ring-1 ring-[#d6cab8]" src="{{ $review['avatar'] }}" />
                                         <div>
-                                            <p class="font-bold">{{ $review['name'] }}</p>
-                                            <p class="text-xs text-on-surface-variant">{{ $review['created_at'] }}</p>
+                                            <p class="font-bold text-on-surface">{{ $review['name'] }}</p>
+                                            <p class="text-xs uppercase tracking-[0.14em] text-on-surface-variant">{{ $review['created_at'] }}</p>
                                         </div>
                                     </div>
-                                    <div class="mt-4 flex text-amber-500">
+                                    <div class="mt-4 flex text-[#b78c47]">
                                         @for ($star = 1; $star <= 5; $star++)
                                             <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $star <= $review['rating'] ? 1 : 0 }};">star</span>
                                         @endfor
                                     </div>
-                                    <p class="mt-4 text-sm leading-7 text-on-surface-variant">{{ $review['comment'] }}</p>
+                                    <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $review['comment'] }}</p>
                                 </article>
                             @empty
-                                <div class="rounded-2xl bg-surface-container-low p-8 text-sm text-on-surface-variant">Reviews will appear here as students rate the course.</div>
+                                <div class="detail-stat rounded-[1.4rem] p-6 text-sm text-on-surface-variant">Reviews will appear here as students rate the course.</div>
                             @endforelse
                         </div>
                     </div>
@@ -466,45 +665,48 @@
             </div>
 
             <aside class="space-y-6 lg:col-span-4">
-                <div class="sticky top-[150px] space-y-6">
-                    <div class="rounded-[2rem] bg-surface-container-lowest p-8 shadow-xl ring-1 ring-slate-200/70">
-                        <h3 class="font-headline text-2xl font-extrabold">Why this course works</h3>
-                        <div class="mt-6 space-y-4 text-sm">
+                <div class="sticky top-[132px] space-y-6">
+                    <div class="soft-panel reveal rounded-[1.8rem] p-6">
+                        <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8b6a34]">Why This Course Works</p>
+                        <div class="mt-5 space-y-4 text-sm leading-7 text-on-surface-variant">
                             <div class="flex items-start gap-3">
-                                <span class="material-symbols-outlined mt-0.5 text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                                <span>Published lessons and sections come directly from the instructor workflow.</span>
+                                <span class="material-symbols-outlined mt-0.5 text-[#8b6a34]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                <span>Published lessons and sections come directly from the live instructor workflow.</span>
                             </div>
                             <div class="flex items-start gap-3">
-                                <span class="material-symbols-outlined mt-0.5 text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                                <span>Student progress and player navigation continue from the same saved course structure.</span>
+                                <span class="material-symbols-outlined mt-0.5 text-[#8b6a34]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                <span>The preview player mirrors the real learning experience students get after enrollment.</span>
                             </div>
                             <div class="flex items-start gap-3">
-                                <span class="material-symbols-outlined mt-0.5 text-tertiary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                                <span>Course reviews, enrolled counts, and lesson totals are all live database values.</span>
+                                <span class="material-symbols-outlined mt-0.5 text-[#8b6a34]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                <span>Ratings, lesson totals, and student counts all come from live course data.</span>
                             </div>
                         </div>
                     </div>
 
-                    <section class="scroll-mt-32" id="related">
-                        <h3 class="font-headline text-2xl font-extrabold">Related courses</h3>
-                        <div class="mt-5 space-y-4">
+                    <section class="reveal scroll-mt-32" id="related">
+                        <div class="soft-panel rounded-[1.8rem] p-6">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8b6a34]">Related Courses</p>
+                            <h3 class="mt-3 font-headline text-[1.6rem] font-extrabold text-on-surface">Continue exploring</h3>
+                            <div class="mt-5 space-y-4">
                             @foreach ($relatedCourses as $relatedCourse)
-                                <a class="block overflow-hidden rounded-2xl bg-surface-container-lowest shadow-sm ring-1 ring-slate-200/70 transition hover:-translate-y-0.5 hover:shadow-lg" href="{{ $relatedCourse['details_url'] }}">
+                                <a class="related-card block overflow-hidden rounded-[1.4rem]" href="{{ $relatedCourse['details_url'] }}">
                                     <img alt="{{ $relatedCourse['title'] }} thumbnail" class="aspect-video w-full object-cover" src="{{ $relatedCourse['thumbnail'] }}" />
-                                    <div class="space-y-3 p-5">
-                                        <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary">{{ $relatedCourse['category'] }}</p>
-                                        <h4 class="font-bold">{{ $relatedCourse['title'] }}</h4>
-                                        <div class="flex items-center justify-between text-xs text-on-surface-variant">
-                                            <span>{{ $relatedCourse['instructor_name'] }}</span>
-                                            <span>{{ number_format($relatedCourse['rating'] > 0 ? $relatedCourse['rating'] : 4.8, 1) }} rating</span>
+                                    <div class="space-y-3 p-4">
+                                        <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8b6a34]">{{ $relatedCourse['category'] }}</p>
+                                        <h4 class="font-bold leading-6 text-on-surface">{{ $relatedCourse['title'] }}</h4>
+                                        <div class="flex items-center justify-between gap-3 text-xs text-on-surface-variant">
+                                            <span class="truncate">{{ $relatedCourse['instructor_name'] }}</span>
+                                            <span class="shrink-0">{{ number_format($relatedCourse['rating'] > 0 ? $relatedCourse['rating'] : 4.8, 1) }} rating</span>
                                         </div>
-                                        <div class="flex items-center justify-between">
-                                            <span class="font-headline text-xl font-extrabold">Rs. {{ number_format($relatedCourse['price'], 0) }}</span>
+                                        <div class="flex items-center justify-between gap-3">
+                                            <span class="font-headline text-sm font-extrabold uppercase tracking-[0.18em] text-on-surface">Contact for fee</span>
                                             <span class="text-xs text-on-surface-variant">{{ number_format($relatedCourse['students_count']) }} students</span>
                                         </div>
                                     </div>
                                 </a>
                             @endforeach
+                            </div>
                         </div>
                     </section>
                 </div>
@@ -513,6 +715,35 @@
     </main>
 
     <x-home.footer />
+    <script>
+        (function () {
+            var progressBar = document.getElementById('scroll-progress');
+            window.addEventListener('scroll', function () {
+                var doc = document.documentElement;
+                var total = doc.scrollHeight - doc.clientHeight;
+                var value = total > 0 ? (doc.scrollTop / total) * 100 : 0;
+                if (progressBar) progressBar.style.width = value + '%';
+            }, { passive: true });
+
+            var items = document.querySelectorAll('.reveal');
+            if (!items.length) {
+                return;
+            }
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+
+            items.forEach(function (item) {
+                observer.observe(item);
+            });
+        })();
+    </script>
     <script>
         (function () {
             var video = document.getElementById('coursePreviewVideo');
@@ -797,5 +1028,7 @@
     </script>
 </body>
 </html>
+
+
 
 

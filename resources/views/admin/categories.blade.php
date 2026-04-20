@@ -13,18 +13,18 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
+                        "primary": "#6a3378",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-low": "#f5eef8",
+                        "surface-container-high": "#efe5f4",
+                        "surface-container-highest": "#e7dcef",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        "outline-variant": "#d5e4ff",
-                        "primary-fixed": "#e8f3ff",
-                        "on-primary-fixed-variant": "#0a4b99",
+                        "on-surface-variant": "#6d5a76",
+                        "outline-variant": "#dbcde4",
+                        "primary-fixed": "#f0e6f4",
+                        "on-primary-fixed-variant": "#8f52a3",
                         "error": "#ba1a1a",
                         "error-container": "#ffdad6",
                         "on-error-container": "#93000a",
@@ -41,7 +41,7 @@
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         body { font-family: 'Inter', sans-serif; }
         .font-headline { font-family: 'Manrope', sans-serif; }
-        .primary-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
+        .primary-gradient { background: linear-gradient(135deg, #6a3378 0%, #b07ac3 100%); }
     </style>
 </head>
 <body class="bg-background font-body text-on-surface">
@@ -54,7 +54,7 @@
                 <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400 font-body" placeholder="Search..." type="text" />
             </div>
             <div class="ml-auto flex items-center gap-3">
-                <span class="hidden sm:block text-sm font-semibold text-[#0c4ea3]">{{ $admin->name }}</span>
+                <span class="hidden sm:block text-sm font-semibold text-[#6a3378]">{{ $admin->name }}</span>
                 <img alt="{{ $admin->name }}" class="w-9 h-9 rounded-full object-cover" src="{{ $profileAvatar }}" />
             </div>
         </header>
@@ -129,7 +129,7 @@
                                 <tr class="hover:bg-surface-container-low/30 transition-colors group">
                                     <td class="px-6 py-5">
                                         <div class="flex items-center gap-4">
-                                            <div class="w-10 h-10 rounded-lg bg-[#dcecff] text-[#0c4ea3] flex items-center justify-center">
+                                            <div class="w-10 h-10 rounded-lg bg-[#eadff1] text-[#6a3378] flex items-center justify-center">
                                                 <span class="material-symbols-outlined">category</span>
                                             </div>
                                             <span class="font-semibold text-on-surface font-headline">{{ $category->name }}</span>
@@ -213,5 +213,7 @@
     </main>
 </body>
 </html>
+
+
 
 

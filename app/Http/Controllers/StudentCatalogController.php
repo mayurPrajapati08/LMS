@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Course;
+use App\Models\OfflineCourse;
+use App\Support\PlatformSettings;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,11 +16,85 @@ class StudentCatalogController extends Controller
     public function browse(Request $request): View
     {
         $student = $request->user();
+        $onlineCatalogEnabled = PlatformSettings::bool('student_catalog_enabled', false) && PlatformSettings::bool('catalog_online_enabled', false);
+        $offlineCatalogEnabled = PlatformSettings::bool('catalog_offline_enabled', true);
+        $defaultMode = PlatformSettings::string('catalog_default_mode', 'offline');
+        $requestedMode = (string) $request->query('mode', $defaultMode);
+        $catalogMode = in_array($requestedMode, ['online', 'offline'], true) ? $requestedMode : $defaultMode;
+
+        if ($catalogMode === 'online' && ! $onlineCatalogEnabled) {
+            $catalogMode = $offlineCatalogEnabled ? 'offline' : 'online';
+        }
+
         $search = trim((string) $request->query('search', ''));
         $category = (string) $request->query('category', '');
         $level = (string) $request->query('level', '');
         $price = (string) $request->query('price', 'all');
         $sort = (string) $request->query('sort', 'relevant');
+
+        if ($catalogMode === 'offline') {
+            $offlineCourses = OfflineCourse::query()
+                ->where('is_active', true)
+                ->with('category:id,name')
+                ->when($search !== '', function ($query) use ($search) {
+                    $query->where(function ($nestedQuery) use ($search) {
+                        $nestedQuery
+                            ->where('title', 'like', "%{$search}%")
+                            ->orWhere('summary', 'like', "%{$search}%")
+                            ->orWhere('campus', 'like', "%{$search}%");
+                    });
+                })
+                ->when($category !== '', fn ($query) => $query->where('category_id', (int) $category))
+                ->orderBy('sort_order')
+                ->orderBy('title')
+                ->paginate(9)
+                ->withQueryString();
+
+            $courseCards = $offlineCourses->through(fn (OfflineCourse $course) => [
+                'id' => $course->id,
+                'mode' => 'offline',
+                'title' => $course->title,
+                'details' => $course->summary,
+                'thumbnail' => $course->thumbnail ?: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+                'category' => $course->category?->name ?? 'Offline Course',
+                'level' => ucfirst((string) ($course->level ?: 'All levels')),
+                'language' => $course->language ?: 'English',
+                'rating' => 5,
+                'reviews_count' => 0,
+                'students_count' => 0,
+                'sections_count' => 0,
+                'instructor_name' => 'Campus Mentor Team',
+                'instructor_avatar' => 'https://ui-avatars.com/api/?name=Campus+Mentor&background=EEF2FF&color=312E81&size=80',
+                'is_wishlisted' => false,
+                'is_in_cart' => false,
+                'is_enrolled' => false,
+                'details_url' => route('home.contact', ['topic' => 'offline-course', 'subject' => $course->title]),
+                'player_url' => route('home.contact', ['topic' => 'offline-course', 'subject' => $course->title]),
+                'checkout_url' => route('home.contact', ['topic' => 'offline-course', 'subject' => $course->title]),
+                'campus' => $course->campus ?: 'Campus details on request',
+                'schedule_label' => $course->schedule_label ?: 'Schedule shared by team',
+                'duration_label' => $course->duration_label ?: 'Classroom schedule',
+            ]);
+
+            $featuredCourse = collect($courseCards->items())->first();
+
+            return view('student.browse_course', [
+                'student' => $student,
+                'profileAvatar' => $student->avatarUrl(96),
+                'courseCards' => $courseCards,
+                'featuredCourse' => $featuredCourse,
+                'categories' => Category::query()->orderBy('name')->get(['id', 'name']),
+                'search' => $search,
+                'selectedCategory' => $category,
+                'selectedLevel' => $level,
+                'selectedPrice' => $price,
+                'selectedSort' => $sort,
+                'resultsCount' => $offlineCourses->total(),
+                'catalogMode' => $catalogMode,
+                'onlineCatalogEnabled' => $onlineCatalogEnabled,
+                'offlineCatalogEnabled' => $offlineCatalogEnabled,
+            ]);
+        }
 
         $courses = Course::query()
             ->where('status', 'published')
@@ -107,12 +184,32 @@ class StudentCatalogController extends Controller
             'selectedPrice' => $price,
             'selectedSort' => $sort,
             'resultsCount' => $paginatedCourses->total(),
+            'catalogMode' => $catalogMode,
+            'onlineCatalogEnabled' => $onlineCatalogEnabled,
+            'offlineCatalogEnabled' => $offlineCatalogEnabled,
         ]);
     }
 
-    public function courseDetails(Request $request): View
+    public function courseDetails(Request $request): RedirectResponse|View
     {
+        if (! $request->user()) {
+            $redirectTo = route('course.details', ['course' => (int) $request->query('course')], false);
+            $request->session()->put('url.intended', $request->fullUrl());
+
+            return redirect()->route('login', [
+                'redirect_to' => $redirectTo,
+            ])->with('status', 'Login or create an account to access course details.');
+        }
+
         $detailData = $this->buildCourseDetailData($request);
+        $gateContext = 'online-course-'.$detailData['course']->id;
+        $granted = (array) $request->session()->get('content_gate_access', []);
+
+        if (PlatformSettings::bool('public_lead_gate_enabled', true) && ! ($granted[$gateContext] ?? false)) {
+            return redirect()
+                ->route('home.courses', ['mode' => 'online'])
+                ->with('status', 'Please unlock the course details from the course page first.');
+        }
 
         return view('Home.course_detail', $detailData + [
             'browseUrl' => url('/course'),

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Support\PlatformSettings;
 
 class AppSetting extends Model
 {
@@ -10,4 +11,10 @@ class AppSetting extends Model
         'key',
         'value',
     ];
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => PlatformSettings::forget());
+        static::deleted(fn () => PlatformSettings::forget());
+    }
 }

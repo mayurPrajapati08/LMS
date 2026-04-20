@@ -15,53 +15,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#1570d8",
-                        "outline-variant": "#d5e4ff",
-                        "secondary-container": "#d7e9ff",
-                        "background": "#f4f9ff",
+                        "primary-container": "#b07ac3",
+                        "outline-variant": "#dbcde4",
+                        "secondary-container": "#eadcf1",
+                        "background": "#fcf9fe",
                         "on-tertiary": "#ffffff",
                         "tertiary": "#005523",
                         "tertiary-fixed": "#6bff8f",
-                        "on-surface-variant": "#4f6178",
+                        "on-surface-variant": "#6d5a76",
                         "surface-container-lowest": "#ffffff",
                         "on-primary-fixed": "#0f0069",
-                        "outline": "#7c8da7",
-                        "on-secondary-fixed-variant": "#315b90",
-                        "on-primary-fixed-variant": "#0a4b99",
-                        "surface-tint": "#1570d8",
-                        "on-primary-container": "#edf5ff",
+                        "outline": "#8f7a99",
+                        "on-secondary-fixed-variant": "#755b83",
+                        "on-primary-fixed-variant": "#8f52a3",
+                        "surface-tint": "#b07ac3",
+                        "on-primary-container": "#f5eef8",
                         "on-background": "#191c1d",
                         "on-tertiary-container": "#63f889",
                         "inverse-on-surface": "#f5fbff",
-                        "primary": "#0c4ea3",
-                        "surface-bright": "#f4f9ff",
-                        "secondary-fixed": "#e8f3ff",
-                        "primary-fixed-dim": "#b9dcff",
-                        "primary-fixed": "#e8f3ff",
+                        "primary": "#6a3378",
+                        "surface-bright": "#fcf9fe",
+                        "secondary-fixed": "#f0e6f4",
+                        "primary-fixed-dim": "#e1cde8",
+                        "primary-fixed": "#f0e6f4",
                         "error": "#ba1a1a",
-                        "surface-variant": "#dbe8ff",
-                        "secondary-fixed-dim": "#b9dcff",
-                        "surface": "#f4f9ff",
+                        "surface-variant": "#e7dcef",
+                        "secondary-fixed-dim": "#e1cde8",
+                        "surface": "#fcf9fe",
                         "on-error": "#ffffff",
-                        "surface-container-high": "#e3eeff",
+                        "surface-container-high": "#efe5f4",
                         "error-container": "#ffdad6",
                         "tertiary-fixed-dim": "#4ae176",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-highest": "#e7dcef",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-fixed-variant": "#005321",
-                        "surface-container-low": "#eef5ff",
+                        "surface-container-low": "#f5eef8",
                         "secondary": "#3b5f8d",
-                        "inverse-surface": "#18345f",
-                        "surface-container": "#e9f2ff",
+                        "inverse-surface": "#563060",
+                        "surface-container": "#f2e9f6",
                         "on-primary": "#ffffff",
                         "tertiary-container": "#007030",
                         "on-surface": "#191c1d",
-                        "inverse-primary": "#b9dcff",
+                        "inverse-primary": "#e1cde8",
                         "surface-dim": "#d4e3f8",
                         "on-secondary": "#ffffff",
                         "on-error-container": "#93000a",
-                        "on-secondary-container": "#41648d",
-                        "on-secondary-fixed": "#072a60"
+                        "on-secondary-container": "#715f7a",
+                        "on-secondary-fixed": "#4b2356"
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -86,7 +86,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f9ff;
+            background-color: #fcf9fe;
             color: #191c1d;
         }
 
@@ -109,7 +109,7 @@
     <x-instructor.navbar />
 
     <main class="md:ml-64 min-h-screen">
-        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/80 backdrop-blur-md flex justify-between items-center shadow-sm">
+        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/88 backdrop-blur-md border-b border-[#eadff1] flex justify-between items-center shadow-sm">
             <div class="flex items-center gap-4">
                 <span class="font-headline text-xl font-bold tracking-tight text-slate-900">Create New Course</span>
             </div>
@@ -128,19 +128,19 @@
             <section class="rounded-[28px] bg-gradient-to-br from-slate-900 via-indigo-900 to-violet-800 text-white overflow-hidden editorial-shadow">
                 <div class="grid gap-8 lg:grid-cols-[1.35fr_0.95fr] p-6 md:p-10">
                     <div class="space-y-6">
-                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#dcecff]">Step 3 of 4</div>
+                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#eadff1]">Step 3 of 4</div>
                         <div class="space-y-3">
                             <h1 class="font-headline text-4xl md:text-5xl font-bold leading-tight">Price the course so the offer feels clear and valuable.</h1>
-                            <p class="max-w-2xl text-sm md:text-base text-[#dcecff]/90 leading-relaxed">Choose the access model, duration, and learner-facing pricing details. This is where your course becomes a product, not just content.</p>
+                            <p class="max-w-2xl text-sm md:text-base text-[#eadff1]/90 leading-relaxed">Choose the access model, duration, and learner-facing pricing details. This is where your course becomes a product, not just content.</p>
                         </div>
                     </div>
                     <div class="rounded-[24px] border border-white/15 bg-white/10 p-5 md:p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#dcecff]/80">Build Flow</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#eadff1]/80">Build Flow</p>
                         <div class="mt-5 space-y-4">
-                            <div class="flex items-center gap-4 opacity-85"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg">1</div><div><p class="text-sm font-bold text-white">Basic Info</p><p class="text-xs text-[#dcecff]/80">Completed</p></div></div>
-                            <div class="flex items-center gap-4 opacity-85"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg">2</div><div><p class="text-sm font-bold text-white">Curriculum</p><p class="text-xs text-[#dcecff]/80">Completed</p></div></div>
-                            <div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg">3</div><div><p class="text-sm font-bold text-white">Pricing</p><p class="text-xs text-[#dcecff]/80">Current step</p></div></div>
-                            <div class="flex items-center gap-4 opacity-60"><div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-[#dcecff]">4</div><div><p class="text-sm font-semibold text-[#f5fbff]">Review</p><p class="text-xs text-[#dcecff]/70">Final check</p></div></div>
+                            <div class="flex items-center gap-4 opacity-85"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg">1</div><div><p class="text-sm font-bold text-white">Basic Info</p><p class="text-xs text-[#eadff1]/80">Completed</p></div></div>
+                            <div class="flex items-center gap-4 opacity-85"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg">2</div><div><p class="text-sm font-bold text-white">Curriculum</p><p class="text-xs text-[#eadff1]/80">Completed</p></div></div>
+                            <div class="flex items-center gap-4"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg">3</div><div><p class="text-sm font-bold text-white">Pricing</p><p class="text-xs text-[#eadff1]/80">Current step</p></div></div>
+                            <div class="flex items-center gap-4 opacity-60"><div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/20 bg-white/5 font-bold text-[#eadff1]">4</div><div><p class="text-sm font-semibold text-[#f5fbff]">Review</p><p class="text-xs text-[#eadff1]/70">Final check</p></div></div>
                         </div>
                     </div>
                 </div>
@@ -148,9 +148,9 @@
 
             <section class="rounded-[28px] bg-white p-6 md:p-8 editorial-shadow">
                 <div class="flex flex-wrap items-center gap-4 md:gap-6">
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">1</div><div><p class="text-sm font-bold text-slate-900">Basic Info</p><p class="text-xs text-slate-500">Done</p></div></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#eadff1]">1</div><div><p class="text-sm font-bold text-slate-900">Basic Info</p><p class="text-xs text-slate-500">Done</p></div></div>
                     <div class="hidden md:block h-px flex-1 bg-slate-200"></div>
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">2</div><div><p class="text-sm font-bold text-slate-900">Curriculum</p><p class="text-xs text-slate-500">Done</p></div></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#eadff1]">2</div><div><p class="text-sm font-bold text-slate-900">Curriculum</p><p class="text-xs text-slate-500">Done</p></div></div>
                     <div class="flex items-center gap-3"><div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white font-bold shadow-lg shadow-indigo-200">3</div><div><p class="text-sm font-bold text-slate-900">Pricing</p><p class="text-xs text-slate-500">Current step</p></div></div>
                     <div class="flex items-center gap-3 opacity-45"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 font-bold">4</div><p class="text-sm font-semibold text-slate-600">Review</p></div>
                 </div>
@@ -171,7 +171,7 @@
                         </div>
 
                         <div class="grid gap-6 md:grid-cols-2">
-                            <label class="rounded-[24px] {{ $selectedPricingModel === 'one_time' ? 'border-2 border-primary bg-[#edf5ff]' : 'border border-slate-200 bg-white hover:border-slate-300' }} p-5 cursor-pointer transition-colors">
+                            <label class="rounded-[24px] {{ $selectedPricingModel === 'one_time' ? 'border-2 border-primary bg-[#f5eef8]' : 'border border-slate-200 bg-white hover:border-slate-300' }} p-5 cursor-pointer transition-colors">
                                 <input class="sr-only pricing-model-input" name="pricing_model" type="radio" value="one_time" @checked($selectedPricingModel === 'one_time') />
                                 <div class="flex items-start justify-between gap-4">
                                     <div>
@@ -183,7 +183,7 @@
                                     </div>
                                 </div>
                             </label>
-                            <label class="rounded-[24px] {{ $selectedPricingModel === 'subscription' ? 'border-2 border-primary bg-[#edf5ff]' : 'border border-slate-200 bg-white hover:border-slate-300' }} p-5 cursor-pointer transition-colors">
+                            <label class="rounded-[24px] {{ $selectedPricingModel === 'subscription' ? 'border-2 border-primary bg-[#f5eef8]' : 'border border-slate-200 bg-white hover:border-slate-300' }} p-5 cursor-pointer transition-colors">
                                 <input class="sr-only pricing-model-input" name="pricing_model" type="radio" value="subscription" @checked($selectedPricingModel === 'subscription') />
                                 <div class="flex items-start justify-between gap-4">
                                     <div>
@@ -205,7 +205,7 @@
                                 <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Course Price</label>
                                 <div class="relative">
                                     <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">Rs.</span>
-                                    <input class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('price') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} pl-16 pr-5 py-4 text-on-surface outline-none transition-all" name="price" placeholder="2999" type="number" min="0" step="0.01" value="{{ old('price', $pricingCourse?->price) }}" />
+                                    <input class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('price') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#c79ad4] focus:ring-[#eadff1]' }} pl-16 pr-5 py-4 text-on-surface outline-none transition-all" name="price" placeholder="2999" type="number" min="0" step="0.01" value="{{ old('price', $pricingCourse?->price) }}" />
                                 </div>
                                 @error('price')
                                     <p class="text-xs font-medium text-red-600">{{ $message }}</p>
@@ -213,7 +213,7 @@
                             </div>
                             <div class="space-y-2 {{ $selectedPricingModel === 'subscription' ? 'hidden' : '' }}" id="validityField">
                                 <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Validity</label>
-                                <select class="w-full rounded-2xl bg-slate-50 border border-slate-200 px-5 py-4 text-on-surface outline-none transition-all focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff] appearance-none" name="validity_in_days">
+                                <select class="w-full rounded-2xl bg-slate-50 border border-slate-200 px-5 py-4 text-on-surface outline-none transition-all focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1] appearance-none" name="validity_in_days">
                                     <option value="" @selected($selectedValidity === null)>Lifetime Access</option>
                                     <option value="30" @selected((string) $selectedValidity === '30')>30 Days</option>
                                     <option value="90" @selected((string) $selectedValidity === '90')>90 Days</option>
@@ -222,7 +222,7 @@
                             </div>
                             <div class="space-y-2 {{ $selectedPricingModel === 'subscription' ? '' : 'hidden' }}" id="subscriptionCycleField">
                                 <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Subscription Cycle</label>
-                                <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('subscription_cycle') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#9eccff] focus:ring-[#dcecff]' }} px-5 py-4 text-on-surface outline-none transition-all focus:ring-4 appearance-none" name="subscription_cycle">
+                                <select class="w-full rounded-2xl bg-slate-50 border {{ $errors->has('subscription_cycle') ? 'border-red-300 focus:border-red-300 focus:ring-red-100' : 'border-slate-200 focus:border-[#c79ad4] focus:ring-[#eadff1]' }} px-5 py-4 text-on-surface outline-none transition-all focus:ring-4 appearance-none" name="subscription_cycle">
                                     <option value="" @selected(blank($selectedSubscriptionCycle))>Choose billing cycle</option>
                                     <option value="monthly" @selected($selectedSubscriptionCycle === 'monthly')>Monthly</option>
                                     <option value="quarterly" @selected($selectedSubscriptionCycle === 'quarterly')>Quarterly</option>
@@ -234,7 +234,7 @@
                             </div>
                             <div class="space-y-2 md:col-span-2">
                                 <label class="text-[0.75rem] font-bold text-primary uppercase tracking-wider font-label">Promotional Note</label>
-                                <input class="w-full rounded-2xl bg-slate-50 border border-slate-200 px-5 py-4 text-on-surface outline-none transition-all focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff] placeholder:text-slate-400" name="promotional_note" placeholder="Optional line shown during launch, e.g. Early-bird pricing for the first 100 learners" type="text" value="{{ $promotionalNote }}" />
+                                <input class="w-full rounded-2xl bg-slate-50 border border-slate-200 px-5 py-4 text-on-surface outline-none transition-all focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1] placeholder:text-slate-400" name="promotional_note" placeholder="Optional line shown during launch, e.g. Early-bird pricing for the first 100 learners" type="text" value="{{ $promotionalNote }}" />
                             </div>
                         </div>
                     </div>
@@ -264,9 +264,9 @@
                             <span class="rounded-full bg-amber-50 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-amber-600">Draft</span>
                         </div>
                             <div class="rounded-[24px] bg-gradient-to-br from-primary to-primary-container p-6 text-white">
-                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#dcecff]">Suggested Public Price</p>
+                                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[#eadff1]">Suggested Public Price</p>
                             <p class="mt-3 font-headline text-4xl font-bold">Rs. {{ number_format((float) old('price', $pricingCourse?->price ?? 0), 0) }}</p>
-                            <p class="mt-2 text-sm text-[#dcecff]/85" id="pricingSnapshotMessage">
+                            <p class="mt-2 text-sm text-[#eadff1]/85" id="pricingSnapshotMessage">
                                 {{ $selectedPricingModel === 'subscription'
                                     ? 'Recurring access is active for your learning library offer.'
                                     : 'Strong mid-tier positioning for a premium guided course.' }}
@@ -328,7 +328,7 @@
                     var isActive = input.checked;
                     card.classList.toggle('border-2', isActive);
                     card.classList.toggle('border-primary', isActive);
-                    card.classList.toggle('bg-[#edf5ff]', isActive);
+                    card.classList.toggle('bg-[#f5eef8]', isActive);
                     card.classList.toggle('border', !isActive);
                     card.classList.toggle('border-slate-200', !isActive);
                     card.classList.toggle('bg-white', !isActive);
@@ -374,6 +374,7 @@
 </body>
 
 </html>
+
 
 
 

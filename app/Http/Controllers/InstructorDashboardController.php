@@ -99,7 +99,7 @@ class InstructorDashboardController extends Controller
         $recentEnrollments = Enrollment::query()
             ->whereIn('course_id', $courseIds)
             ->where('status', 'completed')
-            ->with(['user:id,name,email', 'course:id,title', 'payment:id,amount'])
+            ->with(['user:id,name,email,avatar_path', 'course:id,title', 'payment:id,amount'])
             ->orderByDesc(DB::raw('COALESCE(enrolled_at, created_at)'))
             ->limit(3)
             ->get();
@@ -123,7 +123,7 @@ class InstructorDashboardController extends Controller
                 'description' => $draftCoursesCount === 1
                     ? '1 draft course is waiting to be published.'
                     : $draftCoursesCount.' draft courses are waiting to be published.',
-                'href' => '/instructor/mycourse',
+                'href' => route('instructor.mycourse'),
             ] : null,
             $recentReviews->count() > 0 ? [
                 'icon' => 'star',
@@ -131,7 +131,7 @@ class InstructorDashboardController extends Controller
                 'icon_text' => 'text-emerald-700',
                 'title' => 'Review latest feedback',
                 'description' => $recentReviews->count().' recent student review'.($recentReviews->count() > 1 ? 's' : '').' need attention.',
-                'href' => '/instructor/reviews',
+                'href' => route('instructor.reviews'),
             ] : null,
             $unreviewedCoursesCount > 0 ? [
                 'icon' => 'library_books',
@@ -139,7 +139,7 @@ class InstructorDashboardController extends Controller
                 'icon_text' => 'text-indigo-700',
                 'title' => 'Boost course engagement',
                 'description' => $unreviewedCoursesCount.' course'.($unreviewedCoursesCount > 1 ? 's have' : ' has').' no reviews yet.',
-                'href' => '/instructor/mycourse',
+                'href' => route('instructor.mycourse'),
             ] : null,
         ])->filter()->take(2)->values();
 
@@ -151,7 +151,7 @@ class InstructorDashboardController extends Controller
                     'icon_text' => 'text-indigo-700',
                     'title' => 'Create your next course',
                     'description' => 'Keep your catalog growing with a new publishing-ready course.',
-                    'href' => '/instructor/create-course',
+                    'href' => route('instructor.create-course'),
                 ],
             ]);
         }

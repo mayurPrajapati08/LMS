@@ -403,6 +403,7 @@ class AuthController extends Controller
 
         return match ($roleName) {
             'super admin', 'admin' => '/admin/dashboard',
+            'hr team' => '/hr/dashboard',
             'instructor' => '/instructor/dashboard',
             default => '/student/dashboard',
         };
@@ -526,4 +527,5 @@ class AuthController extends Controller
             'last_login_at' => now(),
         ])->save();
     }
+
 }

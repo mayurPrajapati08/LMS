@@ -13,9 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
-                        "primary": "#0c4ea3",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
+                        "primary": "#6a3378",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -32,7 +32,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f9ff;
+            background-color: #fcf9fe;
             color: #191c1d;
         }
 
@@ -54,7 +54,7 @@
     <x-instructor.navbar />
 
     <main class="md:ml-64 min-h-screen">
-        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/80 backdrop-blur-md flex justify-between items-center shadow-sm">
+        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/88 backdrop-blur-md border-b border-[#eadff1] flex justify-between items-center shadow-sm">
             <div class="flex items-center gap-2 md:gap-4 bg-slate-100 px-3 md:px-4 py-2 rounded-full w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:w-96">
                 <span class="material-symbols-outlined text-slate-400">search</span>
                 <input class="bg-transparent border-none outline-none w-full text-slate-600 focus:ring-0" placeholder="Search..." type="text" />
@@ -74,7 +74,7 @@
                         <p class="font-semibold text-slate-900 leading-none">{{ $instructorName }}</p>
                         <p class="text-xs text-slate-500 mt-1">Instructor</p>
                     </div>
-                    <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
+                    <img alt="Instructor Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-[#eadff1]" src="{{ $profileAvatar }}" />
                 </div>
             </div>
         </header>
@@ -84,13 +84,13 @@
                 <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">{{ session('status') }}</div>
             @endif
 
-            <section class="rounded-[28px] bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-800 text-white overflow-hidden editorial-shadow">
+            <section class="rounded-[28px] bg-gradient-to-br from-slate-950 via-[#4d255f] to-[#8f52a3] text-white overflow-hidden editorial-shadow">
                 <div class="grid gap-8 lg:grid-cols-[1.3fr_0.95fr] p-6 md:p-10">
                     <div class="space-y-5">
-                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#dcecff]">Instructor Library</div>
+                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#eadff1]">Instructor Library</div>
                         <div class="space-y-3">
                             <h1 class="font-headline text-4xl md:text-5xl font-bold leading-tight">Manage every draft, launch, and update from one place.</h1>
-                            <p class="max-w-2xl text-sm md:text-base text-[#dcecff]/90 leading-relaxed">Track live course performance, revisit drafts, and jump back into editing without breaking the design flow you already built.</p>
+                            <p class="max-w-2xl text-sm md:text-base text-[#eadff1]/90 leading-relaxed">Track live course performance, revisit drafts, and jump back into editing without breaking the design flow you already built.</p>
                         </div>
                         <a class="inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-primary hover:bg-slate-100 transition-colors" href="{{ route('instructor.create-course') }}">
                             <span class="material-symbols-outlined text-[1.1rem]">add_circle</span>
@@ -98,23 +98,23 @@
                         </a>
                     </div>
                     <div class="rounded-[24px] border border-white/15 bg-white/10 p-5 md:p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#dcecff]/80">Publishing Snapshot</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#eadff1]/80">Publishing Snapshot</p>
                         <div class="mt-5 grid grid-cols-2 gap-4">
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ $totalCourses }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Total Courses</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#eadff1]/80">Total Courses</p>
                             </div>
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ $publishedCourses }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Published</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#eadff1]/80">Published</p>
                             </div>
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ number_format($activeLearners) }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Learners</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#eadff1]/80">Learners</p>
                             </div>
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">Rs. {{ number_format((float) $monthlyEarnings, 0) }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">This Month</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#eadff1]/80">This Month</p>
                             </div>
                         </div>
                     </div>
@@ -124,10 +124,10 @@
             <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 <div class="rounded-[24px] bg-white p-6 border border-slate-200 editorial-shadow">
                     <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 rounded-2xl bg-[#edf5ff] text-primary flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-2xl bg-[#f5eef8] text-primary flex items-center justify-center">
                             <span class="material-symbols-outlined">menu_book</span>
                         </div>
-                        <span class="rounded-full bg-[#edf5ff] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#0c4ea3]">{{ $publishedCourses }} live</span>
+                        <span class="rounded-full bg-[#f5eef8] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#6a3378]">{{ $publishedCourses }} live</span>
                     </div>
                     <p class="text-sm font-medium text-slate-500">Total Courses</p>
                     <p class="mt-2 font-headline text-3xl font-bold text-slate-900">{{ $totalCourses }}</p>
@@ -256,7 +256,7 @@
                                 <tr>
                                     <td class="px-6 md:px-8 py-16 text-center" colspan="7">
                                         <div class="max-w-md mx-auto">
-                                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-[#edf5ff] text-primary">
+                                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-3xl bg-[#f5eef8] text-primary">
                                                 <span class="material-symbols-outlined text-3xl">library_books</span>
                                             </div>
                                             <h3 class="mt-5 font-headline text-2xl font-bold text-slate-900">No courses yet</h3>
@@ -288,6 +288,7 @@
     </main>
 </body>
 </html>
+
 
 
 

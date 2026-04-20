@@ -39,6 +39,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'bio',
         'avatar_path',
         'two_factor_enabled',
+        'show_on_homepage',
+        'faculty_sort_order',
+        'faculty_headline',
         'password',
         'role_id',
     ];
@@ -65,6 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'last_login_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_enabled' => 'boolean',
+            'show_on_homepage' => 'boolean',
         ];
     }
 
@@ -131,6 +135,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function inquiries()
     {
         return $this->hasMany(Inquiry::class);
+    }
+
+    public function assignedPublicContacts()
+    {
+        return $this->hasMany(PublicContact::class, 'assigned_to');
     }
 
     public function emailVerificationOtps()

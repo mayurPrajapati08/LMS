@@ -13,16 +13,16 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
+                        "primary": "#6a3378",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-low": "#f5eef8",
+                        "surface-container-high": "#efe5f4",
+                        "surface-container-highest": "#e7dcef",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        "outline-variant": "#d5e4ff",
+                        "on-surface-variant": "#6d5a76",
+                        "outline-variant": "#dbcde4",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -47,7 +47,7 @@
             <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
                 <div class="relative w-full md:max-w-md">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-                    <input class="w-full bg-slate-100 border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none transition-all" placeholder="Search..." type="text" />
+                    <input class="w-full bg-slate-100 border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none transition-all" placeholder="Search..." type="text" />
                 </div>
             </div>
             <div class="ml-auto flex items-center gap-3">
@@ -59,7 +59,7 @@
         <div class="mt-16 p-4 md:p-8 flex-1">
             <div class="flex items-end justify-between mb-10 gap-6">
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#0c4ea3] mb-2 block">Academy Inventory</span>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#6a3378] mb-2 block">Academy Inventory</span>
                     <h2 class="text-4xl font-extrabold tracking-tight font-headline leading-none">Course Management</h2>
                 </div>
                 <a class="bg-gradient-to-br from-primary to-primary-container text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-primary/20 flex items-center gap-2" href="{{ route('admin.courses') }}">
@@ -115,7 +115,7 @@
                                     <td class="py-5 px-6">
                                         <div class="flex items-center gap-4">
                                             <div class="h-14 w-20 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
-                                                <img alt="{{ $course->title }}" class="w-full h-full object-cover" src="{{ $course->thumbnail ?: 'https://placehold.co/160x96/e5e7eb/64748b?text=Course' }}" />
+                                                <img alt="{{ $course->title }}" class="w-full h-full object-cover" src="{{ $course->thumbnail ?: 'https://ui-avatars.com/api/?name='.urlencode($course->title).'&background=F3E8FF&color=6B21A8&size=320' }}" />
                                             </div>
                                             <div>
                                                 <div class="font-bold text-on-surface text-base">{{ $course->title }}</div>
@@ -128,7 +128,7 @@
                                     <td class="py-5 px-4 text-sm font-medium">{{ number_format($course->enrollments_count) }}</td>
                                     <td class="py-5 px-4 text-sm font-bold">Rs. {{ number_format($course->price, 0) }}</td>
                                     <td class="py-5 px-4 text-center">
-                                        <span class="inline-flex items-center rounded-full {{ $course->status === 'published' ? 'bg-[#dcecff] text-[#0b3f88]' : ($course->status === 'draft' ? 'bg-amber-100 text-amber-700' : 'bg-slate-200 text-slate-600') }} px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
+                                        <span class="inline-flex items-center rounded-full {{ $course->status === 'published' ? 'bg-[#eadff1] text-[#7c4190]' : ($course->status === 'draft' ? 'bg-amber-100 text-amber-700' : 'bg-slate-200 text-slate-600') }} px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
                                             {{ $course->status }}
                                         </span>
                                     </td>
@@ -170,5 +170,7 @@
     </main>
 </body>
 </html>
+
+
 
 

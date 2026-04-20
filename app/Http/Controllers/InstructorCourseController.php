@@ -14,9 +14,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use RuntimeException;
@@ -266,16 +267,6 @@ class InstructorCourseController extends Controller
 
         foreach ($validated['sections'] as $sectionIndex => $sectionData) {
             foreach ($sectionData['lessons'] as $lessonIndex => $lessonData) {
-                $existingVideoUrl = $lessonData['existing_video_url'] ?? null;
-
-                if (! $existingVideoUrl) {
-                    return back()
-                        ->withErrors([
-                            "sections.{$sectionIndex}.lessons.{$lessonIndex}.existing_video_url" => 'Upload a lesson video before continuing.',
-                        ])
-                        ->withInput();
-                }
-
                 foreach (($lessonData['materials'] ?? []) as $materialIndex => $materialData) {
                     $hasAnyMaterialField = filled($materialData['title'] ?? null)
                         || filled($materialData['file_url'] ?? null)
@@ -456,7 +447,7 @@ class InstructorCourseController extends Controller
         ]);
 
         return redirect()
-            ->to('/instructor/mycourse')
+            ->route('instructor.mycourse')
             ->with('status', 'Course published successfully.');
     }
 
@@ -472,6 +463,8 @@ class InstructorCourseController extends Controller
             'level' => ['required', Rule::in(['beginner', 'intermediate', 'advanced'])],
             'language' => ['required', 'string', 'max:255'],
             'learning_topics' => ['nullable', 'string', 'max:2000'],
+            'thumbnail_storage' => ['nullable', Rule::in(['cloudflare', 'cloudinary', 'local', 'url'])],
+            'thumbnail_url' => ['nullable', 'url', 'max:2000'],
             'thumbnail' => ['nullable', 'image', 'max:10240'],
         ], [
             'title.required' => 'Enter a course title.',
@@ -512,11 +505,16 @@ class InstructorCourseController extends Controller
             'learning_topics' => $topics,
         ]);
 
-        if ($request->hasFile('thumbnail')) {
+        $thumbnailStorage = (string) ($validated['thumbnail_storage'] ?? 'cloudflare');
+
+        if ($thumbnailStorage === 'url' && filled($validated['thumbnail_url'] ?? null)) {
+            $course->thumbnail = $validated['thumbnail_url'];
+        } elseif ($request->hasFile('thumbnail')) {
             try {
-                $course->thumbnail = $this->uploadThumbnailToR2(
+                $course->thumbnail = $this->uploadThumbnailByStorage(
                     $request->file('thumbnail'),
-                    $course->slug ?: Str::slug($validated['title'])
+                    $course->slug ?: Str::slug($validated['title']),
+                    $thumbnailStorage
                 );
             } catch (RuntimeException $exception) {
                 return back()
@@ -591,6 +589,15 @@ class InstructorCourseController extends Controller
         return $slug;
     }
 
+    private function uploadThumbnailByStorage(UploadedFile $file, string $slug, string $storage): string
+    {
+        return match ($storage) {
+            'local' => $this->uploadThumbnailToLocal($file, $slug),
+            'cloudinary' => $this->uploadThumbnailToCloudinary($file, $slug),
+            default => $this->uploadThumbnailToR2($file, $slug),
+        };
+    }
+
     private function uploadThumbnailToR2(UploadedFile $file, string $slug): string
     {
         $folder = trim((string) config('services.cloudflare_r2.thumbnail_folder', 'lms/course-thumbnails'), '/');
@@ -598,6 +605,52 @@ class InstructorCourseController extends Controller
         $path = $folder.'/'.Str::slug($slug).'-thumbnail.'.$extension;
 
         return CloudflareR2Storage::uploadPublicFile($file, $path);
+    }
+
+    private function uploadThumbnailToLocal(UploadedFile $file, string $slug): string
+    {
+        $folder = 'course-thumbnails';
+        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
+        $filename = Str::slug($slug).'-thumbnail.'.$extension;
+        $stored = Storage::disk('public')->putFileAs($folder, $file, $filename, ['visibility' => 'public']);
+
+        if (! $stored) {
+            throw new RuntimeException('Local thumbnail upload failed. Please try again.');
+        }
+
+        return Storage::disk('public')->url($stored);
+    }
+
+    private function uploadThumbnailToCloudinary(UploadedFile $file, string $slug): string
+    {
+        $cloudName = (string) config('services.cloudinary.cloud_name');
+        $apiKey = (string) config('services.cloudinary.api_key');
+        $apiSecret = (string) config('services.cloudinary.api_secret');
+        $folder = trim((string) config('services.cloudinary.folder', 'lms/course-thumbnails'), '/');
+
+        if ($cloudName === '' || $apiKey === '' || $apiSecret === '') {
+            throw new RuntimeException('Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET first.');
+        }
+
+        $publicId = $folder.'/'.Str::slug($slug).'-thumbnail';
+        $timestamp = time();
+        $signature = sha1('folder='.$folder.'&public_id='.$publicId.'&timestamp='.$timestamp.$apiSecret);
+
+        $response = Http::asMultipart()
+            ->attach('file', fopen($file->getRealPath(), 'r'), $file->getClientOriginalName())
+            ->post('https://api.cloudinary.com/v1_1/'.$cloudName.'/image/upload', [
+                'api_key' => $apiKey,
+                'timestamp' => $timestamp,
+                'folder' => $folder,
+                'public_id' => $publicId,
+                'signature' => $signature,
+            ]);
+
+        if ($response->failed()) {
+            throw new RuntimeException($response->json('error.message') ?: 'Cloudinary thumbnail upload failed. Please try again.');
+        }
+
+        return (string) ($response->json('secure_url') ?: $response->json('url') ?: '');
     }
 
 }

@@ -36,7 +36,7 @@
                         "surface-container-highest": "#e0e3e8",
                         "on-tertiary-fixed": "#002106",
                         "primary-container": "#0070ea",
-                        "surface-tint": "#005bc0",
+                        "surface-tint": "#6a3378",
                         "on-tertiary-fixed-variant": "#00531a",
                         "surface-dim": "#d7dadf",
                         "secondary-fixed-dim": "#bec6e3",
@@ -47,7 +47,7 @@
                         "error": "#ba1a1a",
                         "on-secondary-fixed-variant": "#3e465e",
                         "on-background": "#181c20",
-                        "primary": "#0059bb",
+                        "primary": "#6a3378",
                         "on-surface": "#181c20",
                         "error-container": "#ffdad6",
                         "surface-container-low": "#f1f4f9",
@@ -80,14 +80,49 @@
         }
     </script>
     <style>
+        html {
+            scrollbar-gutter: stable;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(106, 51, 120, 0.76) rgba(236, 240, 248, 0.96);
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        html::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+            background:
+                linear-gradient(180deg, rgba(246, 249, 255, 0.98), rgba(228, 234, 245, 0.98));
+            border-left: 1px solid rgba(205, 214, 231, 0.72);
+        }
+
+        html::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb {
+            background:
+                linear-gradient(180deg, rgba(106, 51, 120, 0.90), rgba(0, 112, 234, 0.78));
+            border: 2px solid rgba(246, 249, 255, 0.96);
+            border-radius: 9999px;
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.24),
+                0 6px 16px rgba(59, 53, 109, 0.14);
+        }
+
+        html::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover {
+            background:
+                linear-gradient(180deg, rgba(90, 41, 104, 0.94), rgba(0, 91, 192, 0.84));
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
 
         .glass-card {
-            background: linear-gradient(180deg, rgba(8, 30, 76, 0.74), rgba(13, 57, 128, 0.56));
+            background: linear-gradient(180deg, rgba(75, 35, 86, 0.74), rgba(106, 51, 120, 0.56));
             backdrop-filter: blur(14px);
-            box-shadow: 0 18px 40px rgba(8, 30, 76, 0.24);
+            box-shadow: 0 18px 40px rgba(75, 35, 86, 0.24);
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -103,6 +138,8 @@
         $primaryError = $errors->first('email') ?: $errors->first('password') ?: $errors->first('otp') ?: $errors->first('first_name') ?: $errors->first('last_name') ?: $errors->first('terms');
     @endphp
 
+    <x-shared.back-to-top />
+
     <main class="flex min-h-screen">
         <section class="hidden lg:flex lg:w-1/2 relative flex-col justify-center p-20 overflow-hidden bg-[#071c4a]">
             <div class="absolute inset-0 z-0 opacity-40">
@@ -111,14 +148,8 @@
             <div class="absolute inset-0 z-10 bg-gradient-to-br from-[#0b2a6d]/88 via-[#0c4ea3]/84 to-[#071c4a]/92"></div>
             <div class="relative z-20 max-w-lg">
                 <div class="mb-12">
-                    <div class="flex items-center gap-4">
-                        <span class="flex h-14 w-14 items-center justify-center overflow-hidden rounded-3xl bg-white p-2 shadow-[0_16px_32px_rgba(7,28,74,0.18)]">
-                            <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
-                        </span>
-                        <div>
-                            <span class="block text-white font-headline font-black text-3xl tracking-tighter">CodeInYourself</span>
-                            <span class="block text-[#9fdcff] text-xs font-bold uppercase tracking-[0.22em] mt-1">Industry-ready engineering careers</span>
-                        </div>
+                    <div class="flex items-center justify-center lg:justify-start">
+                        <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-auto w-full max-w-[20rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                     </div>
                 </div>
                 <h1 class="font-headline text-5xl font-extrabold text-white leading-tight mb-6">
@@ -153,11 +184,8 @@
         <section class="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 py-8 sm:px-6 md:p-16 lg:p-24 bg-surface">
             <div class="w-full max-w-md">
                 <div class="lg:hidden mb-8">
-                    <div class="flex items-center gap-3">
-                        <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-[#d5e4ff] shadow-[0_12px_26px_rgba(12,78,163,0.16)]">
-                            <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
-                        </span>
-                        <span class="text-[#08275c] font-headline font-black text-2xl tracking-tighter">CodeInYourself</span>
+                    <div class="flex items-center justify-center">
+                        <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-auto w-full max-w-[20rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                     </div>
                 </div>
 
@@ -509,3 +537,6 @@
 </body>
 
 </html>
+
+
+

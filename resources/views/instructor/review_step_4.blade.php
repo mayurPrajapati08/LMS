@@ -13,9 +13,9 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
-                        "primary": "#0c4ea3",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
+                        "primary": "#6a3378",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -33,7 +33,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f4f9ff;
+            background-color: #fcf9fe;
             color: #191c1d;
         }
 
@@ -69,7 +69,7 @@
     <x-instructor.navbar />
 
     <main class="md:ml-64 min-h-screen">
-        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/80 backdrop-blur-md flex justify-between items-center shadow-sm">
+        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/88 backdrop-blur-md border-b border-[#eadff1] flex justify-between items-center shadow-sm">
             <div class="flex items-center gap-4">
                 <span class="font-headline text-xl font-bold tracking-tight text-slate-900">Create New Course</span>
             </div>
@@ -86,7 +86,7 @@
                 <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">{{ session('status') }}</div>
             @endif
 
-            <section class="rounded-[28px] bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-800 text-white overflow-hidden editorial-shadow">
+            <section class="rounded-[28px] bg-gradient-to-br from-slate-950 via-[#452157] to-[#8f52a3] text-white overflow-hidden editorial-shadow">
                 <div class="grid gap-8 lg:grid-cols-[1.35fr_0.95fr] p-6 md:p-10">
                     <div class="space-y-6">
                         <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-100">Step 4 of 4</div>
@@ -109,10 +109,10 @@
 
             <section class="rounded-[28px] bg-white p-6 md:p-8 editorial-shadow">
                 <div class="flex flex-wrap items-center gap-4 md:gap-6">
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">1</div><p class="text-sm font-semibold text-slate-700">Basic Info</p></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#eadff1]">1</div><p class="text-sm font-semibold text-slate-700">Basic Info</p></div>
                     <div class="hidden md:block h-px flex-1 bg-slate-200"></div>
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">2</div><p class="text-sm font-semibold text-slate-700">Curriculum</p></div>
-                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#dcecff]">3</div><p class="text-sm font-semibold text-slate-700">Pricing</p></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#eadff1]">2</div><p class="text-sm font-semibold text-slate-700">Curriculum</p></div>
+                    <div class="flex items-center gap-3 opacity-70"><div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary font-bold shadow-lg border border-[#eadff1]">3</div><p class="text-sm font-semibold text-slate-700">Pricing</p></div>
                     <div class="flex items-center gap-3"><div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white font-bold shadow-lg shadow-indigo-200">4</div><div><p class="text-sm font-bold text-slate-900">Review</p><p class="text-xs text-slate-500">Final step</p></div></div>
                 </div>
             </section>
@@ -168,7 +168,7 @@
                                     </div>
                                 </div>
                                 @if($reviewPromotionalNote)
-                                    <div class="rounded-2xl border border-[#dcecff] bg-[#edf5ff]/70 p-5">
+                                    <div class="rounded-2xl border border-[#eadff1] bg-[#f5eef8]/70 p-5">
                                         <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Promotional Note</p>
                                         <p class="mt-3 text-sm font-medium text-slate-700">{{ $reviewPromotionalNote }}</p>
                                     </div>
@@ -188,7 +188,7 @@
                                                     'html' => ['border-orange-100', 'bg-orange-50', 'text-orange-600', 'language', 'Semantic page structure'],
                                                     'css' => ['border-sky-100', 'bg-sky-50', 'text-sky-600', 'palette', 'Responsive UI styling'],
                                                     'javascript' => ['border-amber-100', 'bg-amber-50', 'text-amber-600', 'terminal', 'Interactive app logic'],
-                                                    'react' => ['border-[#dcecff]', 'bg-[#edf5ff]', 'text-[#0c4ea3]', 'view_comfy', 'Modern component UI'],
+                                                    'react' => ['border-[#eadff1]', 'bg-[#f5eef8]', 'text-[#6a3378]', 'view_comfy', 'Modern component UI'],
                                                     'node.js', 'nodejs', 'node' => ['border-emerald-100', 'bg-emerald-50', 'text-emerald-600', 'hub', 'Backend foundations'],
                                                     'git' => ['border-slate-200', 'bg-slate-100', 'text-slate-700', 'source_branch', 'Version control workflow'],
                                                     default => ['border-violet-100', 'bg-violet-50', 'text-violet-600', 'deployed_code', 'Core project technology'],
@@ -268,6 +268,7 @@
     </main>
 </body>
 </html>
+
 
 
 

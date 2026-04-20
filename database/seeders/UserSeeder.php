@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -14,45 +13,51 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        //
-        DB::table('users')->insert([
+        $roles = [
+            'super admin' => Role::query()->firstOrCreate(['name' => 'super admin'])->id,
+            'admin' => Role::query()->firstOrCreate(['name' => 'admin'])->id,
+            'instructor' => Role::query()->firstOrCreate(['name' => 'instructor'])->id,
+            'user' => Role::query()->firstOrCreate(['name' => 'user'])->id,
+            'hr team' => Role::query()->firstOrCreate(['name' => 'hr team'])->id,
+        ];
+
+        $users = [
             [
                 'name' => 'Super Admin',
                 'email' => 'superadmin@test.com',
-                'password' => Hash::make('123456'),
-                'role_id' => 1, // super admin
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'password' => '123456',
+                'role_id' => $roles['super admin'],
             ],
             [
                 'name' => 'Mayur',
                 'email' => 'mayurprajapati0805@gmail.com',
-                'password' => Hash::make('123456'),
-                'role_id' => 2, // admin
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'password' => '123456',
+                'role_id' => $roles['admin'],
             ],
             [
                 'name' => 'Mukesh Patel',
                 'email' => 'joshipatel348@gmail.com',
-                'password' => Hash::make('12345678'),
-                'role_id' => 3, // instructor
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'password' => '12345678',
+                'role_id' => $roles['instructor'],
             ],
             [
                 'name' => 'Mayur Prajapati',
                 'email' => 'mayurprjpati03@gmail.com',
-                'password' => Hash::make('12345678'),
-                'role_id' => 4, // user
-                'email_verified_at' => now(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                'password' => '12345678',
+                'role_id' => $roles['user'],
             ],
-        ]);
+        ];
 
+        foreach ($users as $user) {
+            User::query()->updateOrCreate(
+                ['email' => $user['email']],
+                [
+                    'name' => $user['name'],
+                    'password' => $user['password'],
+                    'role_id' => $user['role_id'],
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
     }
 }

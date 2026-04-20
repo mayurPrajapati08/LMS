@@ -13,21 +13,21 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
+                        "primary": "#6a3378",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-low": "#f5eef8",
+                        "surface-container-high": "#efe5f4",
+                        "surface-container-highest": "#e7dcef",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        "outline-variant": "#d5e4ff",
+                        "on-surface-variant": "#6d5a76",
+                        "outline-variant": "#dbcde4",
                         "error": "#ba1a1a",
                         "error-container": "#ffdad6",
                         "on-error-container": "#93000a",
-                        "primary-fixed": "#e8f3ff",
-                        "on-primary-fixed-variant": "#0a4b99",
+                        "primary-fixed": "#f0e6f4",
+                        "on-primary-fixed-variant": "#8f52a3",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -51,7 +51,7 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -86,6 +86,10 @@
                     <div class="bg-surface-container-lowest rounded-2xl px-5 py-4 shadow-sm">
                         <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Super Admins</p>
                         <p class="text-3xl font-extrabold font-headline">{{ number_format($superAdminCount) }}</p>
+                    </div>
+                    <div class="bg-surface-container-lowest rounded-2xl px-5 py-4 shadow-sm col-span-2">
+                        <p class="text-[10px] font-bold uppercase tracking-widest text-slate-400">HR Team</p>
+                        <p class="text-3xl font-extrabold font-headline">{{ number_format($hrTeamCount) }}</p>
                     </div>
                 </div>
             </div>
@@ -183,6 +187,7 @@
                             <div class="relative">
                                 <select class="admin-select w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20" name="role">
                                     <option value="admin" @selected(old('role', $editingAdmin?->role?->name ?? 'admin') === 'admin')>Admin</option>
+                                    <option value="hr team" @selected(old('role', $editingAdmin?->role?->name) === 'hr team')>HR Team</option>
                                     <option value="super admin" @selected(old('role', $editingAdmin?->role?->name) === 'super admin')>Super Admin</option>
                                 </select>
                                 <span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">expand_more</span>
@@ -214,5 +219,7 @@
     </main>
 </body>
 </html>
+
+
 
 

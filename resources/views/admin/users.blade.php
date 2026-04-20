@@ -13,16 +13,16 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
+                        "primary": "#6a3378",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-low": "#f5eef8",
+                        "surface-container-high": "#efe5f4",
+                        "surface-container-highest": "#e7dcef",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        "outline-variant": "#d5e4ff",
+                        "on-surface-variant": "#6d5a76",
+                        "outline-variant": "#dbcde4",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -46,7 +46,7 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -135,7 +135,7 @@
                                             <span class="text-[10px] font-bold text-primary">{{ $user->progress_average }}%</span>
                                         </div>
                                         <div class="w-full h-1 bg-surface-container-high overflow-hidden">
-                                            <div class="h-full bg-gradient-to-r from-primary to-primary-container" style="width: {{ max(4, $user->progress_average) }}%"></div>
+                                            <div class="h-full bg-gradient-to-r from-[#6a3378] to-[#b07ac3]" style="width: {{ max(4, $user->progress_average) }}%"></div>
                                         </div>
                                     </div>
                                 </td>
@@ -164,8 +164,8 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-[#0c4ea3] rounded-3xl p-6 text-white">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-[#b9dcff]">Total Database</p>
+                <div class="bg-[#6a3378] rounded-3xl p-6 text-white">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-[#e1cde8]">Total Database</p>
                     <h3 class="text-5xl font-extrabold font-headline">{{ number_format($studentCount) }}</h3>
                 </div>
                 <div class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/10 shadow-sm">
@@ -181,5 +181,8 @@
     </main>
 </body>
 </html>
+
+
+
 
 

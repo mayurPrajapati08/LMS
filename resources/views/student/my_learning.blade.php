@@ -1,205 +1,146 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
+<x-student.layout title="My Learning | CodeInYourself">
+<x-student.topbar>
+    <div>
+        <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-on-surface-variant">Learning Flow</p>
+        <p class="font-headline text-lg font-extrabold text-on-surface">My Learning</p>
+    </div>
 
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "secondary": "#3b5f8d",
-                        "surface-tint": "#1570d8",
-                        "inverse-on-surface": "#f5fbff",
-                        "secondary-fixed": "#e8f3ff",
-                        "on-primary-fixed": "#0f0069",
-                        "error-container": "#ffdad6",
-                        "tertiary": "#005523",
-                        "tertiary-container": "#007030",
-                        "on-secondary-fixed-variant": "#315b90",
-                        "tertiary-fixed": "#6bff8f",
-                        "secondary-fixed-dim": "#b9dcff",
-                        "on-tertiary": "#ffffff",
-                        "on-primary-fixed-variant": "#0a4b99",
-                        "error": "#ba1a1a",
-                        "surface-container-low": "#eef5ff",
-                        "secondary-container": "#d7e9ff",
-                        "on-primary": "#ffffff",
-                        "on-error": "#ffffff",
-                        "primary-fixed-dim": "#b9dcff",
-                        "outline-variant": "#d5e4ff",
-                        "on-surface": "#191c1d",
-                        "surface-dim": "#d4e3f8",
-                        "on-secondary-fixed": "#072a60",
-                        "inverse-primary": "#b9dcff",
-                        "on-surface-variant": "#4f6178",
-                        "tertiary-fixed-dim": "#4ae176",
-                        "on-primary-container": "#edf5ff",
-                        "inverse-surface": "#18345f",
-                        "outline": "#7c8da7",
-                        "primary-container": "#1570d8",
-                        "on-background": "#191c1d",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container": "#e9f2ff",
-                        "on-tertiary-fixed-variant": "#005321",
-                        "primary-fixed": "#e8f3ff",
-                        "surface-bright": "#f4f9ff",
-                        "on-tertiary-fixed": "#002109",
-                        "on-tertiary-container": "#63f889",
-                        "surface-container-highest": "#dbe8ff",
-                        "on-error-container": "#93000a",
-                        "background": "#f4f9ff",
-                        "surface-container-lowest": "#ffffff",
-                        "primary": "#0c4ea3",
-                        "on-secondary-container": "#41648d",
-                        "surface-variant": "#dbe8ff",
-                        "on-secondary": "#ffffff",
-                        "surface": "#f4f9ff"
-                    },
-                    fontFamily: {
-                        "headline": ["Manrope", "sans-serif"],
-                        "body": ["Inter", "sans-serif"],
-                        "label": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
+    <x-slot:center>
+        <label class="student-top-search">
+            <span class="material-symbols-outlined text-on-surface-variant">search</span>
+            <input placeholder="Search enrolled courses" type="text" />
+        </label>
+    </x-slot:center>
 
-        body {
-            background-color: #f4f9ff;
-            font-family: 'Inter', sans-serif;
-        }
+    <x-slot:right>
+        <a class="student-pill-button student-pill-button--ghost hidden md:inline-flex" href="{{ route('student.dashboard') }}">Dashboard</a>
+        <img alt="Student Profile" class="h-11 w-11 rounded-2xl object-cover ring-2 ring-white/80" src="{{ $studentAvatar }}" />
+    </x-slot:right>
+</x-student.topbar>
 
-        .editorial-shadow {
-            box-shadow: 0 32px 64px -12px rgba(25, 28, 29, 0.04);
-        }
-    </style>
-</head>
-
-<body class="text-on-surface">
-    <x-student.navbar />
-
-    <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 shadow-sm dark:shadow-none">
-        <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
-            <div class="relative w-full md:max-w-md group">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-xl py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 transition-all font-body" placeholder="Search..." type="text" />
+<main class="student-shell-main student-page">
+    <div class="student-page-inner space-y-8">
+        <section class="student-page-header">
+            <div>
+                <p class="student-eyebrow">Learning Flow</p>
+                <h1 class="student-page-title">Keep the streak alive</h1>
+                <p class="student-page-copy">{{ $hero['in_progress_count'] }} courses in progress, {{ $hero['completed_lessons_this_week'] }} lessons completed this week, and a tighter learning workspace around active work.</p>
             </div>
-        </div>
-        <div class="flex items-center gap-6">
-            <button class="relative text-slate-500 hover:text-[#1570d8] transition-all" type="button">
-                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-                <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
-            </button>
-            <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $studentAvatar }}" />
-        </div>
-    </header>
-
-    <main class="md:ml-64 pt-24 px-4 md:px-10 pb-12 min-h-screen">
-        <section class="mb-12 flex flex-col md:flex-row justify-between items-end gap-8">
-            <div class="space-y-4 max-w-2xl">
-                <h1 class="text-[3.5rem] font-bold font-headline leading-tight tracking-tight text-on-surface">
-                    Your Learning <span class="text-primary italic">Journey.</span>
-                </h1>
-                <p class="text-on-surface-variant font-body text-lg leading-relaxed">
-                    Continue where you left off. You have <span class="font-bold text-on-surface">{{ $hero['in_progress_count'] }} courses</span> in progress and have completed <span class="font-bold text-on-surface">{{ $hero['completed_lessons_this_week'] }} lessons</span> this week.
-                </p>
+            <div class="student-page-meta">
+                <span class="student-chip">{{ $courseCount }} visible course{{ $courseCount === 1 ? '' : 's' }}</span>
+                <span class="student-chip">{{ $streakDays }} day streak</span>
+                <span class="student-chip">{{ $hero['target_percent'] }}% weekly target</span>
             </div>
-            <div class="bg-surface-container-lowest editorial-shadow rounded-xl p-6 w-full sm:w-72 relative -mb-4 z-10 border border-slate-50">
-                <div class="flex justify-between items-start mb-4">
-                    <div class="bg-primary-fixed p-2 rounded-lg">
-                        <span class="material-symbols-outlined text-primary" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+        </section>
+
+        <section class="grid items-start gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <div class="student-section">
+                <div class="student-stats-strip">
+                    <div class="student-stat">
+                        <p class="student-stat-label">In Progress</p>
+                        <p class="student-stat-value">{{ $hero['in_progress_count'] }}</p>
+                        <p class="student-stat-copy">Courses moving forward</p>
                     </div>
-                    <span class="text-[0.75rem] font-bold font-label uppercase tracking-widest text-slate-400">Week Target</span>
+                    <div class="student-stat">
+                        <p class="student-stat-label">Lessons This Week</p>
+                        <p class="student-stat-value">{{ $hero['completed_lessons_this_week'] }}</p>
+                        <p class="student-stat-copy">Completed sessions</p>
+                    </div>
+                    <div class="student-stat">
+                        <p class="student-stat-label">Target</p>
+                        <p class="student-stat-value">{{ $hero['target_percent'] }}%</p>
+                        <p class="student-stat-copy">Weekly completion goal</p>
+                    </div>
                 </div>
-                <div class="space-y-1">
-                    <div class="text-2xl font-bold font-headline text-on-surface">{{ $hero['target_percent'] }}% Reach</div>
-                    <div class="w-full bg-surface-container-low h-1.5 rounded-full overflow-hidden">
-                        <div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full js-progress-fill" data-progress="{{ $hero['target_percent'] }}"></div>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-1">
+                <div class="rounded-[1.2rem] bg-[linear-gradient(135deg,#6f4ef6,#d16bf2)] p-5 text-white shadow-[0_16px_34px_rgba(149,85,246,0.22)]">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60">Week Target</p>
+                    <p class="mt-4 font-headline text-4xl font-extrabold">{{ $hero['target_percent'] }}%</p>
+                    <div class="mt-4 h-2 overflow-hidden rounded-full bg-white/15">
+                        <div class="js-progress-fill h-full rounded-full bg-gradient-to-r from-white via-[#d8ceff] to-[#a855f7]" data-progress="{{ $hero['target_percent'] }}"></div>
                     </div>
+                </div>
+
+                <div class="rounded-[1.6rem] bg-surface-container-lowest p-6">
+                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant">Achievement</p>
+                    <p class="mt-4 font-headline text-2xl font-extrabold text-on-surface">
+                        @if ($streakDays > 0)
+                            {{ $streakDays }} day consistency streak
+                        @else
+                            Start your next streak today
+                        @endif
+                    </p>
+                    <p class="mt-3 text-sm leading-7 text-on-surface-variant">A steadier rhythm leads to faster completions and stronger retention.</p>
                 </div>
             </div>
         </section>
 
-        <div class="flex items-center gap-2 mb-8 bg-surface-container-low p-1.5 rounded-xl w-fit">
-            <a @class([
-                'px-6 py-2.5 rounded-lg text-sm font-label transition-all',
-                'bg-surface-container-lowest text-primary font-bold editorial-shadow' => $activeTab === 'in-progress',
-                'text-slate-500 font-semibold hover:text-[#1570d8]' => $activeTab !== 'in-progress',
-            ]) href="{{ route('student.my-learning', ['tab' => 'in-progress']) }}">
-                In Progress
-            </a>
-            <a @class([
-                'px-6 py-2.5 rounded-lg text-sm font-label transition-all',
-                'bg-surface-container-lowest text-primary font-bold editorial-shadow' => $activeTab === 'completed',
-                'text-slate-500 font-semibold hover:text-[#1570d8]' => $activeTab !== 'completed',
-            ]) href="{{ route('student.my-learning', ['tab' => 'completed']) }}">
-                Completed
-            </a>
-            <a @class([
-                'px-6 py-2.5 rounded-lg text-sm font-label transition-all',
-                'bg-surface-container-lowest text-primary font-bold editorial-shadow' => $activeTab === 'archived',
-                'text-slate-500 font-semibold hover:text-[#1570d8]' => $activeTab !== 'archived',
-            ]) href="{{ route('student.my-learning', ['tab' => 'archived']) }}">
-                Archived
-            </a>
-        </div>
+        <section class="rounded-[1.6rem] bg-surface-container-lowest p-3 sm:p-4">
+            <div class="flex flex-wrap gap-2">
+                <a @class([
+                    'rounded-[1rem] px-5 py-3 text-sm font-bold transition-all',
+                    'bg-[linear-gradient(135deg,#6f4ef6,#d16bf2)] text-white shadow-[0_14px_26px_rgba(149,85,246,0.2)]' => $activeTab === 'in-progress',
+                    'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high' => $activeTab !== 'in-progress',
+                ]) href="{{ route('student.my-learning', ['tab' => 'in-progress']) }}">In Progress</a>
+                <a @class([
+                    'rounded-[1rem] px-5 py-3 text-sm font-bold transition-all',
+                    'bg-[linear-gradient(135deg,#6f4ef6,#d16bf2)] text-white shadow-[0_14px_26px_rgba(149,85,246,0.2)]' => $activeTab === 'completed',
+                    'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high' => $activeTab !== 'completed',
+                ]) href="{{ route('student.my-learning', ['tab' => 'completed']) }}">Completed</a>
+                <a @class([
+                    'rounded-[1rem] px-5 py-3 text-sm font-bold transition-all',
+                    'bg-[linear-gradient(135deg,#6f4ef6,#d16bf2)] text-white shadow-[0_14px_26px_rgba(149,85,246,0.2)]' => $activeTab === 'archived',
+                    'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high' => $activeTab !== 'archived',
+                ]) href="{{ route('student.my-learning', ['tab' => 'archived']) }}">Archived</a>
+            </div>
+        </section>
 
         @if ($courses->isNotEmpty())
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <section class="grid gap-6 md:grid-cols-2 2xl:grid-cols-3">
                 @foreach ($courses as $course)
-                    <div class="group bg-surface-container-lowest rounded-xl overflow-hidden editorial-shadow transition-all hover:-translate-y-1 flex flex-col">
-                        <div class="h-48 relative overflow-hidden">
-                            <img alt="{{ $course['title'] }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="{{ $course['thumbnail'] }}" />
-                            <div class="absolute top-4 left-4">
-                                <span class="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[0.7rem] font-bold font-label text-primary shadow-sm">{{ $course['badge'] }}</span>
+                    <article class="overflow-hidden rounded-[1.75rem] bg-surface-container-lowest">
+                        <div class="relative h-56 overflow-hidden">
+                            <img alt="{{ $course['title'] }}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" src="{{ $course['thumbnail'] }}" />
+                            <div class="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/65 to-transparent"></div>
+                            <div class="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{{ $course['badge'] }}</div>
+                            <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 text-white">
+                                <div>
+                                    <h3 class="font-headline text-xl font-extrabold">{{ $course['title'] }}</h3>
+                                    <p class="mt-1 text-xs text-white/70">{{ $course['instructor_name'] }}</p>
+                                </div>
+                                <span class="rounded-full bg-white/14 px-3 py-2 text-xs font-bold">{{ $course['lesson_text'] }}</span>
                             </div>
                         </div>
-                        <div class="p-6 flex-1 flex flex-col justify-between">
-                            <div>
-                                <h3 class="text-xl font-bold font-headline text-on-surface mb-2 group-hover:text-primary transition-colors">{{ $course['title'] }}</h3>
-                                <p class="text-sm text-on-surface-variant font-body mb-2 line-clamp-2">{{ $course['description'] }}</p>
-                                <p class="text-xs text-slate-500 font-medium mb-6">Next: {{ $course['next_lesson'] }} | {{ $course['instructor_name'] }}</p>
+                        <div class="p-6">
+                            <p class="text-sm leading-7 text-on-surface-variant">{{ \Illuminate\Support\Str::limit($course['description'], 135) }}</p>
+                            <div class="mt-5">
+                                <div class="mb-2 flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-on-surface-variant">
+                                    <span>{{ $course['progress_text'] }}</span>
+                                    <span>{{ $course['progress_percent'] }}%</span>
+                                </div>
+                                <div class="h-2 overflow-hidden rounded-full bg-surface-container-low">
+                                    <div class="{{ $course['accent_class'] }} js-progress-fill h-full rounded-full" data-progress="{{ $course['progress_percent'] }}"></div>
+                                </div>
                             </div>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center text-xs font-bold font-label uppercase tracking-wider">
-                                    <span class="text-tertiary">{{ $course['progress_text'] }}</span>
-                                    <span class="text-slate-400">{{ $course['lesson_text'] }}</span>
+                            <div class="mt-5 flex items-start justify-between gap-4">
+                                <div>
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-on-surface-variant">Next Lesson</p>
+                                    <p class="mt-2 text-sm font-semibold text-on-surface">{{ $course['next_lesson'] }}</p>
                                 </div>
-                                <div class="w-full bg-surface-container-low h-2 rounded-full overflow-hidden">
-                                    <div class="{{ $course['accent_class'] }} h-full rounded-full js-progress-fill" data-progress="{{ $course['progress_percent'] }}"></div>
-                                </div>
-                                <a class="w-full bg-surface-container-high hover:bg-primary hover:text-white text-primary font-bold py-3 rounded-xl transition-all font-label text-sm flex items-center justify-center gap-2" href="{{ $course['cta_url'] }}">
-                                    {{ $course['cta_label'] }}
-                                    <span class="material-symbols-outlined text-[18px]">play_circle</span>
-                                </a>
+                                <a class="student-pill-button student-pill-button--primary" href="{{ $course['cta_url'] }}">{{ $course['cta_label'] }}</a>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 @endforeach
-            </div>
+            </section>
         @else
-            <div class="bg-surface-container-lowest editorial-shadow rounded-xl border border-dashed border-[#c7e0ff] p-12 text-center">
-                <div class="mx-auto w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-4">
-                    <span class="material-symbols-outlined">school</span>
+            <section class="rounded-[1.3rem] bg-surface-container-lowest p-9 text-center">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-[1rem] bg-[#f0ebff] text-primary">
+                    <span class="material-symbols-outlined text-4xl">school</span>
                 </div>
-                <h2 class="text-2xl font-bold font-headline text-on-surface">
+                <h2 class="mt-5 font-headline text-[1.9rem] font-extrabold text-on-surface">
                     @if ($activeTab === 'completed')
                         No completed courses yet
                     @elseif ($activeTab === 'archived')
@@ -208,52 +149,25 @@
                         No active learning items yet
                     @endif
                 </h2>
-                <p class="mt-2 text-on-surface-variant max-w-xl mx-auto">
+                <p class="mx-auto mt-4 max-w-2xl text-sm leading-7 text-on-surface-variant">
                     @if ($activeTab === 'completed')
-                        Finish a course and it will appear here with its completed progress.
+                        Finish a course and it will appear here with completion status and polished progress summaries.
                     @elseif ($activeTab === 'archived')
                         Archived learning items will appear here once that workflow is added.
                     @else
                         Enroll in a course to start building your learning path and track your progress here.
                     @endif
                 </p>
-                <a class="inline-flex items-center gap-2 mt-6 bg-primary text-white px-5 py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/20" href="/student/browse-courses">
-                    <span class="material-symbols-outlined text-sm">explore</span>
-                    Browse Courses
-                </a>
-            </div>
+                <a class="student-pill-button student-pill-button--primary mt-8" href="{{ route('student.browse-courses') }}">Browse Courses</a>
+            </section>
         @endif
+    </div>
+</main>
 
-        <div class="h-12"></div>
-
-        <div class="fixed bottom-10 right-10 z-50 bg-white/70 backdrop-blur-xl editorial-shadow rounded-xl p-5 border-l-4 border-tertiary flex items-center gap-4 max-w-sm">
-            <div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center">
-                <span class="material-symbols-outlined text-tertiary text-[20px]">workspace_premium</span>
-            </div>
-            <div>
-                <p class="text-xs font-bold font-label text-tertiary uppercase tracking-widest mb-0.5">Achievement Unlocked</p>
-                <p class="text-sm font-body text-on-surface">
-                    @if ($streakDays > 0)
-                        Consistent Scholar: {{ $streakDays }} day learning streak!
-                    @else
-                        Start a lesson today to begin your learning streak.
-                    @endif
-                </p>
-            </div>
-            <button class="text-slate-400 hover:text-on-surface transition-all ml-2" onclick="this.parentElement.remove()" type="button">
-                <span class="material-symbols-outlined text-[18px]">close</span>
-            </button>
-        </div>
-    </main>
-
-    <script>
-        document.querySelectorAll('.js-progress-fill').forEach(function (element) {
-            var progress = Number(element.getAttribute('data-progress') || '0');
-            element.style.width = Math.max(0, Math.min(100, progress)) + '%';
-        });
-    </script>
-</body>
-
-</html>
-
-
+<script>
+    document.querySelectorAll('.js-progress-fill').forEach(function (element) {
+        var progress = Number(element.getAttribute('data-progress') || '0');
+        element.style.width = Math.max(0, Math.min(100, progress)) + '%';
+    });
+</script>
+</x-student.layout>

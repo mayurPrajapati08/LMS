@@ -14,18 +14,18 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#1570d8",
-                        "outline-variant": "#d5e4ff",
-                        "secondary-container": "#d7e9ff",
-                        "background": "#f4f9ff",
+                        "primary-container": "#b07ac3",
+                        "outline-variant": "#dbcde4",
+                        "secondary-container": "#eadcf1",
+                        "background": "#fcf9fe",
                         "on-tertiary": "#ffffff",
                         "tertiary": "#005523",
                         "tertiary-fixed": "#6bff8f",
-                        "on-surface-variant": "#4f6178",
+                        "on-surface-variant": "#6d5a76",
                         "surface-container-lowest": "#ffffff",
-                        "primary": "#0c4ea3",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-low": "#eef5ff",
+                        "primary": "#6a3378",
+                        "surface-container-high": "#efe5f4",
+                        "surface-container-low": "#f5eef8",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -37,7 +37,7 @@
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
-        body { font-family: 'Inter', sans-serif; background-color: #f4f9ff; color: #191c1d; }
+        body { font-family: 'Inter', sans-serif; background-color: #fcf9fe; color: #191c1d; }
         .editorial-shadow { box-shadow: 0 32px 64px -12px rgba(25, 28, 29, 0.05); }
     </style>
 </head>
@@ -96,7 +96,7 @@
     <x-instructor.navbar />
 
     <main class="md:ml-64 min-h-screen">
-        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/80 backdrop-blur-md flex justify-between items-center shadow-sm">
+        <header class="sticky top-0 z-40 w-full pl-16 pr-4 md:px-8 py-4 bg-white/88 backdrop-blur-md border-b border-[#eadff1] flex justify-between items-center shadow-sm">
             <div class="flex items-center gap-4">
                 <span class="font-headline text-xl font-bold tracking-tight text-slate-900">Create New Course</span>
             </div>
@@ -116,22 +116,22 @@
             <section class="rounded-[28px] bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-800 text-white overflow-hidden editorial-shadow">
                 <div class="grid gap-8 lg:grid-cols-[1.35fr_0.95fr] p-6 md:p-10">
                     <div class="space-y-6">
-                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#dcecff]">Step 2 of 4</div>
+                        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-[#eadff1]">Step 2 of 4</div>
                         <div class="space-y-3">
                             <h1 class="font-headline text-4xl md:text-5xl font-bold leading-tight">Build a curriculum that feels deliberate and easy to follow.</h1>
-                            <p class="max-w-2xl text-sm md:text-base text-[#dcecff]/90 leading-relaxed">Add structured sections, attach real lesson videos, and mark preview content that students can sample before enrolling.</p>
+                            <p class="max-w-2xl text-sm md:text-base text-[#eadff1]/90 leading-relaxed">Add structured sections, attach lesson videos when available, and mark preview content that students can sample before enrolling.</p>
                         </div>
                     </div>
                     <div class="rounded-[24px] border border-white/15 bg-white/10 p-5 md:p-6 backdrop-blur-sm">
-                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#dcecff]/80">Draft Summary</p>
+                        <p class="text-xs font-semibold uppercase tracking-[0.22em] text-[#eadff1]/80">Draft Summary</p>
                         <div class="mt-5 grid grid-cols-2 gap-4">
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ count($baseSections) }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Sections</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#eadff1]/80">Sections</p>
                             </div>
                             <div class="rounded-2xl bg-white/10 p-4">
                                 <p class="text-2xl font-bold">{{ $totalLessons }}</p>
-                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#dcecff]/80">Lessons</p>
+                                <p class="mt-1 text-xs uppercase tracking-[0.18em] text-[#eadff1]/80">Lessons</p>
                             </div>
                         </div>
                     </div>
@@ -163,9 +163,9 @@
                             <div class="grid gap-4 md:grid-cols-[1fr_220px] md:items-end">
                                 <div>
                                     <label class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Student Release Status</label>
-                                    <p class="mt-2 text-sm text-slate-600">Choose whether students should see this course as finished or still receiving more sections and videos.</p>
+                                    <p class="mt-2 text-sm text-slate-600">Choose whether students should see this course as finished or still receiving more sections and videos. Lessons can now be saved even if a video is not uploaded yet.</p>
                                 </div>
-                                <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="content_status">
+                                <select class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1]" name="content_status">
                                     <option value="pending" @selected($contentStatus === 'pending')>Pending More Content</option>
                                     <option value="completed" @selected($contentStatus === 'completed')>Course Completed</option>
                                 </select>
@@ -174,17 +174,17 @@
 
                         <div id="sectionsContainer" class="space-y-5">
                             @foreach($baseSections as $sectionIndex => $section)
-                                <div class="section-card overflow-hidden rounded-[24px] border border-[#dcecff] bg-gradient-to-br from-[#edf5ff]/80 via-white to-slate-50" data-section-index="{{ $sectionIndex }}">
+                                <div class="section-card overflow-hidden rounded-[24px] border border-[#eadff1] bg-gradient-to-br from-[#f5eef8]/80 via-white to-slate-50" data-section-index="{{ $sectionIndex }}">
                                     <input type="hidden" name="sections[{{ $sectionIndex }}][id]" value="{{ $section['id'] ?? '' }}" />
-                                    <div class="flex items-center justify-between gap-4 border-b border-[#dcecff] bg-[#edf5ff]/70 px-5 py-5">
+                                    <div class="flex items-center justify-between gap-4 border-b border-[#eadff1] bg-[#f5eef8]/70 px-5 py-5">
                                         <div class="flex items-center gap-4 min-w-0">
                                             <span class="material-symbols-outlined text-[#76c6ff] cursor-grab">drag_indicator</span>
                                             <div class="min-w-0">
                                                 <div class="flex items-center gap-3">
-                                                    <span class="inline-flex items-center rounded-full bg-[#0c4ea3] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">Course Section {{ $sectionIndex + 1 }}</span>
-                                                    <label class="text-xs font-semibold uppercase tracking-[0.18em] text-[#0b3f88]/80">Section Title</label>
+                                                    <span class="inline-flex items-center rounded-full bg-[#6a3378] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">Course Section {{ $sectionIndex + 1 }}</span>
+                                                    <label class="text-xs font-semibold uppercase tracking-[0.18em] text-[#6a3378]/80">Section Title</label>
                                                 </div>
-                                                <input class="mt-3 w-full rounded-xl border {{ $errors->has('sections.'.$sectionIndex.'.title') ? 'border-red-300' : 'border-[#dcecff]' }} bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="sections[{{ $sectionIndex }}][title]" placeholder="e.g. Introduction to Web Fundamentals" type="text" value="{{ $section['title'] ?? '' }}" />
+                                                <input class="mt-3 w-full rounded-xl border {{ $errors->has('sections.'.$sectionIndex.'.title') ? 'border-red-300' : 'border-[#eadff1]' }} bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1]" name="sections[{{ $sectionIndex }}][title]" placeholder="e.g. Introduction to Web Fundamentals" type="text" value="{{ $section['title'] ?? '' }}" />
                                                 @error('sections.'.$sectionIndex.'.title')
                                                     <p class="mt-2 text-xs font-medium text-red-600">{{ $message }}</p>
                                                 @enderror
@@ -192,7 +192,7 @@
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <button class="section-toggle p-2 rounded-full hover:bg-white/80 transition-colors" type="button" aria-expanded="{{ $sectionIndex === 0 ? 'true' : 'false' }}">
-                                                <span class="material-symbols-outlined text-[#0c4ea3] section-toggle-icon">{{ $sectionIndex === 0 ? 'expand_less' : 'expand_more' }}</span>
+                                                <span class="material-symbols-outlined text-[#6a3378] section-toggle-icon">{{ $sectionIndex === 0 ? 'expand_less' : 'expand_more' }}</span>
                                             </button>
                                             <button class="remove-section p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors" type="button">
                                                 <span class="material-symbols-outlined">delete</span>
@@ -209,7 +209,7 @@
                                                     <div class="flex items-start justify-between gap-4">
                                                         <div class="flex-1 space-y-2">
                                                             <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Lesson Title</label>
-                                                            <input class="w-full rounded-xl border {{ $errors->has('sections.'.$sectionIndex.'.lessons.'.$lessonIndex.'.title') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][title]" placeholder="e.g. HTML Foundations" type="text" value="{{ $lesson['title'] ?? '' }}" />
+                                                            <input class="w-full rounded-xl border {{ $errors->has('sections.'.$sectionIndex.'.lessons.'.$lessonIndex.'.title') ? 'border-red-300' : 'border-slate-200' }} bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1]" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][title]" placeholder="e.g. HTML Foundations" type="text" value="{{ $lesson['title'] ?? '' }}" />
                                                             @error('sections.'.$sectionIndex.'.lessons.'.$lessonIndex.'.title')
                                                                 <p class="text-xs font-medium text-red-600">{{ $message }}</p>
                                                             @enderror
@@ -223,7 +223,7 @@
                                                         <div class="space-y-2">
                                                             <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Video Upload</label>
                                                             <div class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 video-upload-panel">
-                                                                <input class="video-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#edf5ff] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#0b3f88] hover:file:bg-[#dcecff]" type="file" accept="video/mp4,video/quicktime,video/x-msvideo,video/x-matroska,video/webm" />
+                                                                <input class="video-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#f5eef8] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#6a3378] hover:file:bg-[#eadff1]" type="file" accept="video/mp4,video/quicktime,video/x-msvideo,video/x-matroska,video/webm" />
                                                                 <input class="existing-video-url" type="hidden" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][existing_video_url]" value="{{ $lesson['existing_video_url'] ?? '' }}" />
                                                                 <input class="existing-video-duration" type="hidden" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][existing_video_duration]" value="{{ (int) ($lesson['existing_video_duration'] ?? 0) }}" />
 
@@ -231,7 +231,7 @@
                                                                     @if(!empty($lesson['existing_video_url']))
                                                                         Video already uploaded and ready.
                                                                     @else
-                                                                        Select a lesson video to start the secure Cloudflare Stream upload.
+                                                                        Video upload is optional. Add one now or continue building the curriculum first.
                                                                     @endif
                                                                 </div>
 
@@ -246,7 +246,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <a class="uploaded-video-link {{ !empty($lesson['existing_video_url']) ? 'inline-flex' : 'hidden' }} items-center gap-2 text-xs font-semibold text-[#0c4ea3] hover:underline" href="{{ $lesson['existing_video_url'] ?? '#' }}" target="_blank">
+                                                                <a class="uploaded-video-link {{ !empty($lesson['existing_video_url']) ? 'inline-flex' : 'hidden' }} items-center gap-2 text-xs font-semibold text-[#6a3378] hover:underline" href="{{ $lesson['existing_video_url'] ?? '#' }}" target="_blank">
                                                                     <span class="material-symbols-outlined text-sm">play_circle</span>
                                                                     View uploaded video
                                                                 </a>
@@ -280,8 +280,8 @@
                                                                 <div class="material-card rounded-2xl border border-slate-200 bg-white p-4 space-y-3" data-material-index="{{ $materialIndex }}">
                                                                     <input type="hidden" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][materials][{{ $materialIndex }}][id]" value="{{ $material['id'] ?? '' }}" />
                                                                     <div class="grid gap-3 md:grid-cols-[1.1fr_0.75fr_auto]">
-                                                                        <input class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][materials][{{ $materialIndex }}][title]" placeholder="e.g. SQL Cheatsheet" type="text" value="{{ $material['title'] ?? '' }}" />
-                                                                        <select class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff] material-type-select" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][materials][{{ $materialIndex }}][type]">
+                                                                        <input class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1]" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][materials][{{ $materialIndex }}][title]" placeholder="e.g. SQL Cheatsheet" type="text" value="{{ $material['title'] ?? '' }}" />
+                                                                        <select class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1] material-type-select" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][materials][{{ $materialIndex }}][type]">
                                                                             <option value="">Select type</option>
                                                                             <option value="pdf" @selected(($material['type'] ?? '') === 'pdf')>PDF</option>
                                                                             <option value="zip" @selected(($material['type'] ?? '') === 'zip')>ZIP</option>
@@ -293,7 +293,7 @@
                                                                     </div>
 
                                                                     <div class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 material-upload-panel">
-                                                                        <input class="material-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#edf5ff] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#0b3f88] hover:file:bg-[#dcecff]" type="file" accept=".pdf,.zip,.docx,application/pdf,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                                                                        <input class="material-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#f5eef8] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#6a3378] hover:file:bg-[#eadff1]" type="file" accept=".pdf,.zip,.docx,application/pdf,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
                                                                         <input class="existing-material-url" type="hidden" name="sections[{{ $sectionIndex }}][lessons][{{ $lessonIndex }}][materials][{{ $materialIndex }}][file_url]" value="{{ $material['file_url'] ?? '' }}" />
                                                                         <div class="rounded-2xl bg-white px-4 py-3 text-sm text-slate-600 material-upload-status">
                                                                             @if(!empty($material['file_url']))
@@ -312,7 +312,7 @@
                                                                 <span class="material-progress-percent">{{ !empty($material['file_url']) ? '100%' : '0%' }}</span>
                                                             </div>
                                                                         </div>
-                                                                        <a class="uploaded-material-link {{ !empty($material['file_url']) ? 'inline-flex' : 'hidden' }} items-center gap-2 text-xs font-semibold text-[#0c4ea3] hover:underline" href="{{ $material['file_url'] ?? '#' }}" target="_blank">
+                                                                        <a class="uploaded-material-link {{ !empty($material['file_url']) ? 'inline-flex' : 'hidden' }} items-center gap-2 text-xs font-semibold text-[#6a3378] hover:underline" href="{{ $material['file_url'] ?? '#' }}" target="_blank">
                                                                             <span class="material-symbols-outlined text-sm">description</span>
                                                                             View uploaded resource
                                                                         </a>
@@ -332,7 +332,7 @@
                                     </div>
 
                                     <div class="px-5 pb-5">
-                                        <button class="add-lesson w-full rounded-2xl border-2 border-dashed border-slate-300 px-4 py-4 text-sm font-semibold text-slate-600 hover:border-[#9eccff] hover:text-primary transition-all" type="button">
+                                        <button class="add-lesson w-full rounded-2xl border-2 border-dashed border-slate-300 px-4 py-4 text-sm font-semibold text-slate-600 hover:border-[#c79ad4] hover:text-primary transition-all" type="button">
                                             <span class="material-symbols-outlined mr-2 text-base">add_circle</span>
                                             Add New Lesson
                                         </button>
@@ -342,7 +342,7 @@
                             @endforeach
                         </div>
 
-                        <button id="addSectionButtonMobile" class="mt-5 w-full rounded-[24px] border border-[#c7e0ff] bg-[#edf5ff]/70 px-6 py-5 text-center hover:bg-[#edf5ff] transition-colors" type="button">
+                        <button id="addSectionButtonMobile" class="mt-5 w-full rounded-[24px] border border-[#c7e0ff] bg-[#f5eef8]/70 px-6 py-5 text-center hover:bg-[#f5eef8] transition-colors" type="button">
                             <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg shadow-indigo-200">
                                 <span class="material-symbols-outlined">add</span>
                             </div>
@@ -355,7 +355,7 @@
                     <div class="rounded-[28px] bg-white p-6 md:p-8 editorial-shadow">
                         <div class="flex items-center justify-between mb-5">
                             <h3 class="font-headline text-xl font-bold text-slate-900">Curriculum Health</h3>
-                            <span class="rounded-full bg-[#edf5ff] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#0c4ea3]">{{ count($baseSections) > 0 ? 'Healthy' : 'Empty' }}</span>
+                            <span class="rounded-full bg-[#f5eef8] px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-[#6a3378]">{{ count($baseSections) > 0 ? 'Healthy' : 'Empty' }}</span>
                         </div>
                         <div class="space-y-5">
                             <div>
@@ -376,8 +376,8 @@
 
                     <div class="rounded-[28px] bg-gradient-to-br from-emerald-700 to-emerald-600 p-6 text-white shadow-xl">
                         <p class="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100 mb-2">Upload Note</p>
-                        <h3 class="font-headline text-xl font-bold">Lesson videos are uploaded to Cloudflare Stream.</h3>
-                        <p class="mt-3 text-sm leading-relaxed text-emerald-50/90">Large lesson videos use resumable Cloudflare Stream uploads, while course resources stay on Cloudflare R2.</p>
+                        <h3 class="font-headline text-xl font-bold">Lesson videos use Cloudflare Stream when you upload them.</h3>
+                        <p class="mt-3 text-sm leading-relaxed text-emerald-50/90">You can now continue without uploading a lesson video. When you do upload one, it still uses resumable Cloudflare Stream while resources stay on Cloudflare R2.</p>
                         <div id="uploadQueueNotice" class="mt-4 hidden rounded-2xl bg-white/10 px-4 py-3 text-sm font-medium text-emerald-50"></div>
                     </div>
 
@@ -399,28 +399,28 @@
     </main>
 
     <template id="sectionTemplate">
-        <div class="section-card overflow-hidden rounded-[24px] border border-[#dcecff] bg-gradient-to-br from-[#edf5ff]/80 via-white to-slate-50" data-section-index="__SECTION_INDEX__">
+        <div class="section-card overflow-hidden rounded-[24px] border border-[#eadff1] bg-gradient-to-br from-[#f5eef8]/80 via-white to-slate-50" data-section-index="__SECTION_INDEX__">
             <input type="hidden" name="sections[__SECTION_INDEX__][id]" value="" />
-            <div class="flex items-center justify-between gap-4 border-b border-[#dcecff] bg-[#edf5ff]/70 px-5 py-5">
+            <div class="flex items-center justify-between gap-4 border-b border-[#eadff1] bg-[#f5eef8]/70 px-5 py-5">
                 <div class="flex items-center gap-4 min-w-0">
                     <span class="material-symbols-outlined text-[#76c6ff] cursor-grab">drag_indicator</span>
                     <div class="min-w-0">
                         <div class="flex items-center gap-3">
-                            <span class="inline-flex items-center rounded-full bg-[#0c4ea3] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">Course Section __SECTION_NUMBER__</span>
-                            <label class="text-xs font-semibold uppercase tracking-[0.18em] text-[#0b3f88]/80">Section Title</label>
+                            <span class="inline-flex items-center rounded-full bg-[#6a3378] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">Course Section __SECTION_NUMBER__</span>
+                            <label class="text-xs font-semibold uppercase tracking-[0.18em] text-[#6a3378]/80">Section Title</label>
                         </div>
-                        <input class="mt-3 w-full rounded-xl border border-[#dcecff] bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="sections[__SECTION_INDEX__][title]" placeholder="e.g. Introduction to Web Fundamentals" type="text" />
+                        <input class="mt-3 w-full rounded-xl border border-[#eadff1] bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1]" name="sections[__SECTION_INDEX__][title]" placeholder="e.g. Introduction to Web Fundamentals" type="text" />
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button class="section-toggle p-2 rounded-full hover:bg-white/80 transition-colors" type="button" aria-expanded="true"><span class="material-symbols-outlined text-[#0c4ea3] section-toggle-icon">expand_less</span></button>
+                    <button class="section-toggle p-2 rounded-full hover:bg-white/80 transition-colors" type="button" aria-expanded="true"><span class="material-symbols-outlined text-[#6a3378] section-toggle-icon">expand_less</span></button>
                     <button class="remove-section p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors" type="button"><span class="material-symbols-outlined">delete</span></button>
                 </div>
             </div>
             <div class="section-body">
             <div class="p-5 space-y-4 lessons-container"></div>
             <div class="px-5 pb-5">
-                <button class="add-lesson w-full rounded-2xl border-2 border-dashed border-slate-300 px-4 py-4 text-sm font-semibold text-slate-600 hover:border-[#9eccff] hover:text-primary transition-all" type="button"><span class="material-symbols-outlined mr-2 text-base">add_circle</span>Add New Lesson</button>
+                <button class="add-lesson w-full rounded-2xl border-2 border-dashed border-slate-300 px-4 py-4 text-sm font-semibold text-slate-600 hover:border-[#c79ad4] hover:text-primary transition-all" type="button"><span class="material-symbols-outlined mr-2 text-base">add_circle</span>Add New Lesson</button>
             </div>
             </div>
         </div>
@@ -433,7 +433,7 @@
                 <div class="flex items-start justify-between gap-4">
                     <div class="flex-1 space-y-2">
                         <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Lesson Title</label>
-                        <input class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][title]" placeholder="e.g. HTML Foundations" type="text" />
+                        <input class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1]" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][title]" placeholder="e.g. HTML Foundations" type="text" />
                     </div>
                     <button class="remove-lesson p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors" type="button"><span class="material-symbols-outlined">delete</span></button>
                 </div>
@@ -441,10 +441,10 @@
                     <div class="space-y-2">
                         <label class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Video Upload</label>
                         <div class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 video-upload-panel">
-                            <input class="video-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#edf5ff] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#0b3f88] hover:file:bg-[#dcecff]" type="file" accept="video/mp4,video/quicktime,video/x-msvideo,video/x-matroska,video/webm" />
+                            <input class="video-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#f5eef8] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#6a3378] hover:file:bg-[#eadff1]" type="file" accept="video/mp4,video/quicktime,video/x-msvideo,video/x-matroska,video/webm" />
                             <input class="existing-video-url" type="hidden" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][existing_video_url]" value="" />
                             <input class="existing-video-duration" type="hidden" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][existing_video_duration]" value="0" />
-                            <div class="rounded-2xl bg-white px-4 py-3 text-sm text-slate-600 video-upload-status">Select a lesson video to start the secure Cloudflare Stream upload.</div>
+                            <div class="rounded-2xl bg-white px-4 py-3 text-sm text-slate-600 video-upload-status">Video upload is optional. Add a lesson video now or continue building first.</div>
                             <div class="video-progress-wrapper hidden">
                                 <div class="h-2 overflow-hidden rounded-full bg-slate-200">
                                     <div class="video-progress-bar h-full rounded-full bg-gradient-to-r from-indigo-600 to-sky-500 transition-all duration-300" style="width: 0%"></div>
@@ -455,7 +455,7 @@
                                     <span class="video-progress-percent">0%</span>
                                 </div>
                             </div>
-                            <a class="uploaded-video-link hidden items-center gap-2 text-xs font-semibold text-[#0c4ea3] hover:underline" href="#" target="_blank">
+                            <a class="uploaded-video-link hidden items-center gap-2 text-xs font-semibold text-[#6a3378] hover:underline" href="#" target="_blank">
                                 <span class="material-symbols-outlined text-sm">play_circle</span>
                                 View uploaded video
                             </a>
@@ -488,8 +488,8 @@
         <div class="material-card rounded-2xl border border-slate-200 bg-white p-4 space-y-3" data-material-index="__MATERIAL_INDEX__">
             <input type="hidden" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][materials][__MATERIAL_INDEX__][id]" value="" />
             <div class="grid gap-3 md:grid-cols-[1.1fr_0.75fr_auto]">
-                <input class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff]" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][materials][__MATERIAL_INDEX__][title]" placeholder="e.g. SQL Cheatsheet" type="text" />
-                <select class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#9eccff] focus:ring-4 focus:ring-[#dcecff] material-type-select" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][materials][__MATERIAL_INDEX__][type]">
+                <input class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1]" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][materials][__MATERIAL_INDEX__][title]" placeholder="e.g. SQL Cheatsheet" type="text" />
+                <select class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-900 outline-none focus:border-[#c79ad4] focus:ring-4 focus:ring-[#eadff1] material-type-select" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][materials][__MATERIAL_INDEX__][type]">
                     <option value="">Select type</option>
                     <option value="pdf">PDF</option>
                     <option value="zip">ZIP</option>
@@ -500,7 +500,7 @@
                 </button>
             </div>
             <div class="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 material-upload-panel">
-                <input class="material-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#edf5ff] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#0b3f88] hover:file:bg-[#dcecff]" type="file" accept=".pdf,.zip,.docx,application/pdf,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                <input class="material-file-input block w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#f5eef8] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#6a3378] hover:file:bg-[#eadff1]" type="file" accept=".pdf,.zip,.docx,application/pdf,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
                 <input class="existing-material-url" type="hidden" name="sections[__SECTION_INDEX__][lessons][__LESSON_INDEX__][materials][__MATERIAL_INDEX__][file_url]" value="" />
                 <div class="rounded-2xl bg-white px-4 py-3 text-sm text-slate-600 material-upload-status">Select a PDF, ZIP, or DOCX file to upload it for students.</div>
                 <div class="material-progress-wrapper hidden">
@@ -513,7 +513,7 @@
                         <span class="material-progress-percent">0%</span>
                     </div>
                 </div>
-                <a class="uploaded-material-link hidden items-center gap-2 text-xs font-semibold text-[#0c4ea3] hover:underline" href="#" target="_blank">
+                <a class="uploaded-material-link hidden items-center gap-2 text-xs font-semibold text-[#6a3378] hover:underline" href="#" target="_blank">
                     <span class="material-symbols-outlined text-sm">description</span>
                     View uploaded resource
                 </a>
@@ -1300,6 +1300,7 @@
     </script>
 </body>
 </html>
+
 
 
 

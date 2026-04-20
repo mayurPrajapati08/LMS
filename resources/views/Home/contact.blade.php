@@ -1,162 +1,286 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Contact Us | CodeInYourself</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            primary: "#08275c",
-            "on-primary": "#FFFFFF",
-            "primary-container": "#dcecff",
-            "on-primary-container": "#071c4a",
-            secondary: "#565E71",
-            "on-secondary": "#FFFFFF",
-            "secondary-container": "#DAE2F9",
-            "on-secondary-container": "#131C2C",
-            tertiary: "#006B24",
-            "on-tertiary": "#FFFFFF",
-            "tertiary-container": "#9EF7A0",
-            "on-tertiary-container": "#002106",
-            surface: "#f4f9ff",
-            background: "#f7fbff",
-            "surface-variant": "#E1E2EC",
-            "surface-container-low": "#f1f4f9",
-            "surface-container-high": "#e5e8ee",
-            "surface-container-lowest": "#ffffff",
-            "on-surface": "#1A1C1E",
-            "on-surface-variant": "#4f6178",
-            outline: "#7c8da7",
-            error: "#BA1A1A"
-          },
-          fontFamily: {
-            headline: ["Manrope"],
-            body: ["Inter"]
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-  </style>
-</head>
-<body class="bg-background font-body text-on-surface">
-  <x-home.navbar />
+@php
+    $officeAddress = '2nd floor, Choksi Building, Police Station, Udhana - Magdalla Road, above Kia showrooms, opp. Khatodara, Laxmi Nagar, Udhana, Surat, Gujarat 395002, India';
+    $officeEmail = 'Codeinyourself@gmail.com';
+    $officePhone = '+91 90164 27165';
+    $officeHours = [
+        ['label' => 'Admissions Desk', 'value' => 'Monday to Saturday · 9:00 AM to 6:00 PM'],
+        ['label' => 'Campus Visits', 'value' => 'By scheduled appointment'],
+        ['label' => 'Response Window', 'value' => 'Priority replies during business hours'],
+    ];
+    $contactPoints = [
+        [
+            'icon' => 'location_on',
+            'title' => 'Office Address',
+            'value' => $officeAddress,
+            'meta' => 'Official business location',
+        ],
+        [
+            'icon' => 'mail',
+            'title' => 'Email',
+            'value' => $officeEmail,
+            'meta' => 'Admissions, support, and business inquiries',
+        ],
+        [
+            'icon' => 'call',
+            'title' => 'Phone',
+            'value' => $officePhone,
+            'meta' => 'Call for direct assistance',
+        ],
+        [
+            'icon' => 'schedule',
+            'title' => 'Working Hours',
+            'value' => 'Mon - Sat, 9 AM to 6 PM',
+            'meta' => 'Platform support schedule',
+        ],
+    ];
+    $mapEmbedUrl = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7441.078347515685!2d72.8346707!3d21.1707299!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4f6c268f61f4c3b%3A0x30b784cc161e9dcc!2sCode%20in%20yourself%20%7C%20Best%20IT%20Institute%20for%20Data%20Science%2C%20Digital%20Marketing%2C%20Cloud%20Computing%2C...%7C%20100%25%20Job%20Guarantee*21!5e0!3m2!1sen!2sin!4v1776421835774!5m2!1sen!2sin';
+    
+@endphp
 
-  <main class="pt-24 pb-20">
-    <section class="max-w-7xl mx-auto px-6 py-16 text-center md:text-left">
-      <div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-        Connect With Us
-      </div>
-      <h1 class="font-headline text-5xl md:text-6xl font-extrabold text-on-surface tracking-tight leading-tight max-w-3xl">
-        Let's Engineer Your <span class="text-primary italic">Future.</span>
-      </h1>
-      <p class="mt-6 text-on-surface-variant text-lg max-w-2xl leading-relaxed">
-        Ask about a course, admissions, pricing, or your learning roadmap. Your message is now saved directly into the project so the team can manage it properly.
-      </p>
-    </section>
+<x-home.marketing-layout title="Contact | CodeInYourself">
+    <x-slot:head>
+        <style>
+            .contact-hero-shell {
+                position: relative;
+                overflow: hidden;
+                width: 100vw;
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                background:
+                    radial-gradient(circle at 15% 18%, rgba(255,255,255,0.16), transparent 22%),
+                    radial-gradient(circle at 82% 20%, rgba(216,180,254,0.18), transparent 24%),
+                    linear-gradient(135deg, #0a0315 0%, #20073c 30%, #4c1d95 68%, #7c3aed 100%);
+            }
 
-    <section class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-      <div class="bg-surface-container-lowest p-8 md:p-12 rounded-xl shadow-sm border border-slate-200/70">
-        @if (session('status'))
-          <div class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
-            {{ session('status') }}
-          </div>
-        @endif
+            .contact-hero-shell::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                    linear-gradient(180deg, rgba(255,255,255,0.05), transparent 24%),
+                    linear-gradient(180deg, transparent 70%, rgba(10,3,21,0.24) 100%);
+                pointer-events: none;
+            }
 
-        @if ($errors->any())
-          <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
-            {{ $errors->first() }}
-          </div>
-        @endif
+            .contact-hero-shell::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background-image:
+                    radial-gradient(1px 1px at 14% 16%, rgba(255,255,255,0.72) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 28% 10%, rgba(255,255,255,0.45) 0%, transparent 100%),
+                    radial-gradient(1.4px 1.4px at 70% 14%, rgba(255,255,255,0.56) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 86% 46%, rgba(255,255,255,0.32) 0%, transparent 100%),
+                    radial-gradient(1.4px 1.4px at 24% 76%, rgba(221,214,254,0.62) 0%, transparent 100%);
+                opacity: 0.85;
+                pointer-events: none;
+            }
 
-        <form action="{{ route('home.contact.submit') }}" class="space-y-6" method="POST">
-          @csrf
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label class="block text-sm font-semibold text-on-surface-variant ml-1">Full Name</label>
-              <input class="w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg px-4 py-3 transition-all placeholder:text-slate-400" name="name" placeholder="John Doe" type="text" value="{{ old('name') }}" />
+            .contact-shell {
+                overflow-x: clip;
+            }
+
+            @supports not (overflow: clip) {
+                .contact-shell {
+                    overflow-x: hidden;
+                }
+            }
+
+            .contact-floating-card {
+                border: 1px solid rgba(255,255,255,0.12);
+                background: rgba(255,255,255,0.10);
+                box-shadow: 0 18px 46px rgba(20, 6, 48, 0.18);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
+
+            .contact-kicker {
+                font-size: 0.72rem;
+                font-weight: 800;
+                letter-spacing: 0.24em;
+                text-transform: uppercase;
+            }
+
+            .contact-map-frame {
+                overflow: hidden;
+                border: 1px solid rgba(220, 205, 246, 0.76);
+                background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(250,246,255,0.96));
+                box-shadow: 0 24px 62px rgba(76, 29, 149, 0.11);
+            }
+        </style>
+    </x-slot:head>
+    
+
+    <main class="contact-shell pb-24 pt-5">
+        <section class="contact-hero-shell reveal px-4 pb-14 pt-10 text-white sm:px-6 md:px-8 md:pb-16 md:pt-12">
+            <div class="relative z-10 mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+                <div>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/8 px-4 py-2 text-white/78 backdrop-blur-sm">
+                        <span class="h-2 w-2 rounded-full bg-[#d8b4fe]"></span>
+                        <span class="contact-kicker">Contact CodeInYourself</span>
+                    </span>
+
+                    <h1 class="mt-7 max-w-3xl font-headline text-[1.8rem] font-extrabold leading-[1.04] sm:text-[2.05rem] md:text-[2.45rem] lg:text-[3rem]">
+                        Reach the team behind the platform
+                        <span class="block text-[#ead9ff]">through a clear and dependable contact experience.</span>
+                    </h1>
+
+                    <p class="mt-5 max-w-xl text-[0.92rem] leading-7 text-white/68 md:text-[0.97rem]">
+                        Contact us for admissions, mentor guidance, course selection, business training, or platform support. This page brings together office details, timing, map access, and a smooth inquiry flow in one place.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="mailto:{{ $officeEmail }}" class="cta-button inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-4 text-sm font-bold text-primary">
+                            {{ $officeEmail }}
+                        </a>
+                        <a href="#contact-form" class="cta-button inline-flex items-center gap-2 rounded-2xl border border-white/14 bg-white/10 px-6 py-4 text-sm font-bold text-white backdrop-blur-sm">
+                            Send Inquiry
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid gap-4">
+                    @foreach ($contactPoints as $point)
+                        <article class="contact-floating-card rounded-[1.7rem] p-5">
+                            <div class="flex items-start gap-4">
+                                <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/12 text-white">
+                                    <span class="material-symbols-outlined">{{ $point['icon'] }}</span>
+                                </span>
+                                <div class="min-w-0">
+                                    <p class="contact-kicker text-white/50">{{ $point['title'] }}</p>
+                                    <h2 class="mt-3 max-w-[26rem] break-words font-headline text-[1rem] font-semibold leading-[1.5] text-white">{{ $point['value'] }}</h2>
+                                    <p class="mt-2 text-[0.88rem] leading-6 text-white/68">{{ $point['meta'] }}</p>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
             </div>
-            <div class="space-y-2">
-              <label class="block text-sm font-semibold text-on-surface-variant ml-1">Email Address</label>
-              <input class="w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg px-4 py-3 transition-all placeholder:text-slate-400" name="email" placeholder="john@example.com" type="email" value="{{ old('email') }}" />
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="space-y-2">
-              <label class="block text-sm font-semibold text-on-surface-variant ml-1">Phone Number</label>
-              <input class="w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg px-4 py-3 transition-all placeholder:text-slate-400" name="phone" placeholder="+91 98765 43210" type="tel" value="{{ old('phone') }}" />
-            </div>
-            <div class="space-y-2">
-              <label class="block text-sm font-semibold text-on-surface-variant ml-1">Interested Course</label>
-              <select class="w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg px-4 py-3 transition-all text-on-surface-variant" name="course_id">
-                <option value="">Select a course</option>
-                @foreach ($courseOptions as $course)
-                  <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>{{ $course->title }}</option>
-                @endforeach
-              </select>
-            </div>
-          </div>
-          <div class="space-y-2">
-            <label class="block text-sm font-semibold text-on-surface-variant ml-1">Message</label>
-            <textarea class="w-full bg-surface-container-low border-transparent focus:border-primary focus:ring-0 rounded-lg px-4 py-3 transition-all placeholder:text-slate-400" name="message" placeholder="How can our mentors help you?" rows="5">{{ old('message') }}</textarea>
-          </div>
-          <button class="w-full bg-tertiary text-white font-bold py-4 rounded-lg shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
-            <span>Send Message</span>
-            <span class="material-symbols-outlined text-xl">send</span>
-          </button>
-        </form>
-      </div>
+        </section>
 
-      <div class="space-y-8">
-        <div class="group flex gap-6 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-all">
-          <div class="w-14 h-14 shrink-0 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-            <span class="material-symbols-outlined text-3xl">location_on</span>
-          </div>
-          <div>
-            <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Our Campus</h3>
-            <p class="text-on-surface-variant leading-relaxed">Ahmedabad, Gujarat<br />India</p>
-          </div>
-        </div>
-        <div class="group flex gap-6 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-all">
-          <div class="w-14 h-14 shrink-0 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-            <span class="material-symbols-outlined text-3xl">schedule</span>
-          </div>
-          <div>
-            <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Office Hours</h3>
-            <div class="space-y-1 text-on-surface-variant">
-              <p class="flex justify-between gap-8"><span class="font-medium">Monday - Friday</span> <span>9 AM - 6 PM</span></p>
-              <p class="flex justify-between gap-8"><span class="font-medium">Saturday</span> <span>10 AM - 2 PM</span></p>
+        <section class="mx-auto mt-4 max-w-7xl px-4 sm:px-6">
+            <div class="section-panel reveal rounded-[2rem] px-6 py-6 md:px-8">
+                <div class="relative z-10 grid gap-4 md:grid-cols-3">
+                    @foreach ($officeHours as $hour)
+                        <div class="rounded-[1.45rem] border border-[#914fd1e0]  p-4">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-primary/72">{{ $hour['label'] }}</p>
+                            <p class="mt-3 text-sm font-semibold leading-7 text-on-surface">{{ $hour['value'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-          </div>
-        </div>
-        <div class="group flex gap-6 p-6 rounded-xl bg-surface-container-low hover:bg-surface-container-high transition-all">
-          <div class="w-14 h-14 shrink-0 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-            <span class="material-symbols-outlined text-3xl">alternate_email</span>
-          </div>
-          <div>
-            <h3 class="font-headline text-xl font-bold text-on-surface mb-2">Email Us</h3>
-            <div class="space-y-1">
-              <a class="block text-primary font-medium hover:underline" href="mailto:admissions@codeinyourself.com">admissions@codeinyourself.com</a>
-              <a class="block text-primary font-medium hover:underline" href="mailto:support@codeinyourself.com">support@codeinyourself.com</a>
+        </section>
+
+        <section class="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+            <div class="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
+                <article class="glass-card premium-card reveal rounded-[2rem] p-6 md:p-8" id="contact-form">
+                    <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Send A Message</p>
+                    <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Tell us what you need and the right team can respond quickly.</h2>
+                    <p class="mt-4 text-sm leading-7 text-on-surface-variant">Use the form for admissions, guidance, business training, or help choosing the right course path. It stays integrated with the platform workflow you already have.</p>
+
+                    <div class="mt-6 rounded-[1.8rem] border border-outline/70 bg-white/72 p-5">
+                        @if (session('status'))
+                            <div class="mb-5 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        @if ($errors->any())
+                            <div class="mb-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
+
+                        <form action="{{ route('home.contact.submit') }}" class="space-y-5" method="POST">
+                            @csrf
+                            <input name="topic" type="hidden" value="{{ old('topic', $initialTopic ?? '') }}" />
+                            <div class="grid gap-5 md:grid-cols-2">
+                                <div>
+                                    <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Full Name</label>
+                                    <input class="w-full rounded-2xl border border-outline bg-white px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/70 focus:border-primary focus:ring-primary/20" name="name" placeholder="John Doe" type="text" value="{{ old('name') }}" />
+                                </div>
+                                <div>
+                                    <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Email Address</label>
+                                    <input class="w-full rounded-2xl border border-outline bg-white px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/70 focus:border-primary focus:ring-primary/20" name="email" placeholder="john@example.com" type="email" value="{{ old('email') }}" />
+                                </div>
+                            </div>
+
+                            <div class="grid gap-5 md:grid-cols-2">
+                                <div>
+                                    <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Phone Number</label>
+                                    <input class="w-full rounded-2xl border border-outline bg-white px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/70 focus:border-primary focus:ring-primary/20" name="phone" placeholder="+91 98765 43210" type="tel" value="{{ old('phone') }}" />
+                                </div>
+                                <div>
+                                    <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Interested Course</label>
+                                    <select class="w-full rounded-2xl border border-outline bg-white px-4 py-3 text-sm font-medium text-on-surface focus:border-primary focus:ring-primary/20" name="course_id">
+                                        <option value="">Select a course</option>
+                                        @foreach ($courseOptions as $course)
+                                            <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>{{ $course->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Subject</label>
+                                <input class="w-full rounded-2xl border border-outline bg-white px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/70 focus:border-primary focus:ring-primary/20" name="subject" placeholder="What do you want help with?" type="text" value="{{ old('subject', $initialSubject ?? '') }}" />
+                            </div>
+
+                            <div>
+                                <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Your Message</label>
+                                <textarea class="w-full rounded-[1.4rem] border border-outline bg-white px-4 py-3 text-sm leading-7 text-on-surface placeholder:text-on-surface-variant/70 focus:border-primary focus:ring-primary/20" name="message" placeholder="Tell us what you need help with..." rows="6">{{ old('message') }}</textarea>
+                            </div>
+
+                            <button class="cta-button inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#6f3381_0%,#ad83ff_100%)] px-6 py-4 text-sm font-bold uppercase tracking-[0.18em] text-white" type="submit">
+                                Send Message
+                                <span class="material-symbols-outlined text-[18px]">send</span>
+                            </button>
+                        </form>
+                    </div>
+                </article>
+
+                <div class="grid gap-6">
+                    <article class="contact-map-frame reveal rounded-[2rem] p-3">
+                        <div class="overflow-hidden rounded-[1.65rem]">
+                            <iframe
+                                title="CodeInYourself office location map"
+                                src="{{ $mapEmbedUrl }}"
+                                class="h-[25rem] w-full border-0"
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </article>
+
+                    <article class="section-panel reveal rounded-[2rem] p-6 md:p-8">
+                        <div class="relative z-10">
+                            <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Visit The Office</p>
+                            <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface">Direct company location and support details in one place.</h2>
+                            <div class="mt-5 space-y-4 text-sm leading-8 text-on-surface-variant">
+                                <p><span class="font-semibold text-on-surface">Address:</span> {{ $officeAddress }}</p>
+                                <p><span class="font-semibold text-on-surface">Email:</span> {{ $officeEmail }}</p>
+                                <p><span class="font-semibold text-on-surface">Phone:</span> {{ $officePhone }}</p>
+                                <p><span class="font-semibold text-on-surface">Office timing:</span> Monday to Saturday, 9:00 AM to 6:00 PM</p>
+                                <p><span class="font-semibold text-on-surface">Map access:</span> Use the embedded map above for direct navigation to the office location.</p>
+                            </div>
+
+                            <div class="mt-6 flex flex-wrap gap-4">
+                                <a href="mailto:{{ $officeEmail }}" class="cta-button inline-flex items-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-white">
+                                    Email Now
+                                </a>
+                                <a href="tel:{{ preg_replace('/\s+/', '', $officePhone) }}" class="cta-button inline-flex items-center gap-2 rounded-2xl border border-outline bg-white px-5 py-3 text-sm font-bold text-on-surface">
+                                    Call Now
+                                </a>
+                                <a href="https://maps.app.goo.gl/i34T1uhTnJGk4zg56" target="_blank" rel="noopener noreferrer" class="cta-button inline-flex items-center gap-2 rounded-2xl border border-outline bg-white px-5 py-3 text-sm font-bold text-on-surface">
+                                    Open In Maps
+                                    <span class="material-symbols-outlined text-[18px]">north_east</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <x-home.footer />
-</body>
-</html>
-
-
+        </section>
+    </main>
+</x-home.marketing-layout>

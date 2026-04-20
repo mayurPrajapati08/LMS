@@ -13,13 +13,13 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
+                        "primary": "#6a3378",
                         "secondary": "#3b5f8d",
                         "tertiary": "#7e3000",
-                        "background": "#f4f9ff",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
+                        "surface-container-low": "#f5eef8",
+                        "surface-container-high": "#efe5f4",
                         "on-surface": "#191c1d",
                     },
                     fontFamily: {
@@ -34,17 +34,17 @@
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .primary-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
+        .primary-gradient { background: linear-gradient(135deg, #6a3378 0%, #b07ac3 100%); }
     </style>
 </head>
 <body class="bg-surface text-on-surface">
     <x-admin.navbar />
 
-    <header class="fixed top-0 right-0 left-0 md:left-64 h-16 z-40 bg-white/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 w-full md:w-[calc(100%-16rem)] border-b border-slate-100">
+    <header class="fixed top-0 right-0 left-0 md:left-64 z-40 bg-white/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 w-full md:w-[calc(100%-16rem)] border-b border-slate-100">
         <div class="flex items-center gap-4 w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:w-1/3">
             <div class="relative w-full md:max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -53,7 +53,7 @@
         </div>
     </header>
 
-    <main class="md:ml-64 pt-16 min-h-screen">
+    <main class="md:ml-64 pt-20 min-h-screen">
         <div class="p-4 md:p-8 max-w-[1600px] mx-auto space-y-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
@@ -112,7 +112,7 @@
                             <div class="py-4 flex items-center justify-between">
                                 <div class="flex items-center gap-4">
                                     <div class="h-12 w-12 rounded-lg overflow-hidden bg-slate-100">
-                                        <img alt="{{ $course->title }}" class="h-full w-full object-cover" src="{{ $course->thumbnail ?: 'https://placehold.co/96x96/e5e7eb/64748b?text=Course' }}" />
+                                        <img alt="{{ $course->title }}" class="h-full w-full object-cover" src="{{ $course->thumbnail ?: 'https://ui-avatars.com/api/?name='.urlencode($course->title).'&background=F3E8FF&color=6B21A8&size=192' }}" />
                                     </div>
                                     <div>
                                         <p class="font-bold text-sm">{{ $course->title }}</p>
@@ -149,5 +149,7 @@
     </main>
 </body>
 </html>
+
+
 
 

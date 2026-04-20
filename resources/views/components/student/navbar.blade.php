@@ -15,149 +15,129 @@
         ->take(2)
         ->map(fn ($part) => strtoupper(substr($part, 0, 1)))
         ->implode('');
+    $primaryItems = [
+        ['href' => '/student/dashboard', 'label' => 'Dashboard', 'icon' => 'grid_view', 'active' => $isDashboard],
+        ['href' => '/student/browse-courses', 'label' => 'Explore', 'icon' => 'travel_explore', 'active' => $isBrowseCourses],
+        ['href' => '/student/my-learning', 'label' => 'Learning', 'icon' => 'play_circle', 'active' => $isMyLearning],
+        ['href' => '/student/wishlist', 'label' => 'Wishlist', 'icon' => 'favorite', 'active' => $isWishlist],
+    ];
+    $secondaryItems = [
+        ['href' => '/student/cart', 'label' => 'Cart', 'icon' => 'shopping_bag', 'active' => $isCart, 'badge' => $cartCount > 0 ? $cartCount : null],
+        ['href' => '/student/certificate', 'label' => 'Certificates', 'icon' => 'workspace_premium', 'active' => $isCertificates],
+        ['href' => '/student/payment', 'label' => 'Payments', 'icon' => 'receipt_long', 'active' => $isPayments],
+        ['href' => '/student/messages-support', 'label' => 'Support', 'icon' => 'chat', 'active' => $isSupport],
+        ['href' => '/student/seeting', 'label' => 'Settings', 'icon' => 'tune', 'active' => $isSettings],
+    ];
 @endphp
 
 <x-shared.page-loader />
 
-<button id="studentSidebarToggle" type="button" class="md:hidden fixed top-2.5 left-3 z-[70] w-10 h-10 rounded-xl border border-[#d5e4ff] bg-white text-[#0c4ea3] flex items-center justify-center shadow-sm transition-opacity duration-200" aria-label="Open student menu" onclick="toggleStudentSidebar(true)">
-    <span class="material-symbols-outlined">menu</span>
+<button id="studentSidebarToggle" type="button" class="md:hidden fixed top-3 left-3 z-[70] flex h-11 w-11 items-center justify-center rounded-[1rem] border border-[#e9e2fb] bg-white/90 text-[#3f336f] shadow-[0_10px_24px_rgba(32,20,75,0.10)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5" aria-label="Open student menu" onclick="toggleStudentSidebar(true)">
+    <span class="material-symbols-outlined text-[20px]">menu</span>
 </button>
 
-<div id="studentSidebarOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden" onclick="toggleStudentSidebar(false)"></div>
+<div id="studentSidebarOverlay" class="fixed inset-0 z-40 hidden bg-[rgba(20,14,36,0.44)] backdrop-blur-[3px] md:hidden" onclick="toggleStudentSidebar(false)"></div>
 
-<!-- SideNavBar -->
 <style>
+    #studentSidebar::-webkit-scrollbar { width: 5px; }
+    #studentSidebar::-webkit-scrollbar-thumb { background: rgba(95, 66, 234, 0.22); border-radius: 999px; }
+    #studentSidebar { scrollbar-width: thin; scrollbar-color: rgba(95, 66, 234, 0.22) transparent; }
+
     @media (max-width: 767px) {
         body > header.fixed,
         main > header.fixed {
-            padding-left: 5rem !important;
+            padding-left: 4.75rem !important;
             padding-right: 0.875rem !important;
-        }
-
-        body > header.fixed .text-sm.font-medium,
-        main > header.fixed .text-sm.font-medium {
-            display: none !important;
         }
     }
 </style>
 
-<aside id="studentSidebar" class="h-[100dvh] w-64 fixed left-0 top-0 flex flex-col p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] bg-[linear-gradient(180deg,#f5faff_0%,#eef5ff_100%)] z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 overflow-y-auto border-r border-[#dbe8ff]">
-    <div class="mb-8 flex items-center gap-3">
-        <span class="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-white p-1.5 ring-1 ring-[#d5e4ff] shadow-[0_12px_28px_rgba(12,78,163,0.16)]">
-            <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-full w-full object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
-        </span>
-        <div>
-            <div class="text-[1.05rem] font-extrabold tracking-[-0.03em] text-[#08275c] font-headline">CodeInYourself</div>
-            <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#1570d8] mt-1">Student Hub</div>
+<aside id="studentSidebar" class="fixed left-0 top-0 z-50 flex h-[100dvh] w-[15.5rem] max-w-[88vw] -translate-x-full flex-col overflow-y-auto border-r border-[#e9e3f7] bg-[linear-gradient(180deg,#f5f1ff_0%,#f8f6ff_48%,#fcfbff_100%)] px-3 py-3 shadow-[0_22px_60px_rgba(32,20,75,0.10)] transition-transform duration-300 md:translate-x-0">
+    <div class="mb-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="flex h-11 w-11 items-center justify-center rounded-[1.1rem] bg-[linear-gradient(135deg,#6f4ef6,#d16bf2)] text-white shadow-[0_14px_28px_rgba(149,85,246,0.22)]">
+                    <span class="text-sm font-bold tracking-[0.18em]">{{ $initials ?: 'CY' }}</span>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold uppercase tracking-[0.24em] text-[#7d6cab]">Student Hub</p>
+                    <p class="text-sm font-semibold text-[#1c1730]">CodeInYourself</p>
+                </div>
+            </div>
+            <span class="rounded-full border border-[#efdffd] bg-white/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-[#b445d7]">Live</span>
         </div>
     </div>
 
-    <nav class="flex-1 space-y-1">
-        <a href="/student/dashboard" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-all font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isDashboard,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isDashboard,
-        ])>
-            <span class="material-symbols-outlined" data-icon="dashboard" @if($isDashboard) style="font-variation-settings: 'FILL' 1;" @endif>dashboard</span>
-            Dashboard
-        </a>
-
-        <a href="/student/browse-courses" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isBrowseCourses,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isBrowseCourses,
-        ])>
-            <span class="material-symbols-outlined" data-icon="explore" @if($isBrowseCourses) style="font-variation-settings: 'FILL' 1;" @endif>explore</span>
-            Browse Courses
-        </a>
-
-        <a href="/student/my-learning" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isMyLearning,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isMyLearning,
-        ])>
-            <span class="material-symbols-outlined" data-icon="school" @if($isMyLearning) style="font-variation-settings: 'FILL' 1;" @endif>school</span>
-            My Learning
-        </a>
-
-        <a href="/student/wishlist" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isWishlist,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isWishlist,
-        ])>
-            <span class="material-symbols-outlined" data-icon="favorite" @if($isWishlist) style="font-variation-settings: 'FILL' 1;" @endif>favorite</span>
-            Wishlist
-        </a>
-
-        <a href="/student/cart" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center justify-between gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isCart,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isCart,
-        ])>
-            <span class="flex items-center gap-3">
-                <span class="material-symbols-outlined" data-icon="shopping_cart" @if($isCart) style="font-variation-settings: 'FILL' 1;" @endif>shopping_cart</span>
-                Cart
-            </span>
-            @if ($cartCount > 0)
-                <span class="inline-flex min-w-6 items-center justify-center rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold text-white">{{ $cartCount }}</span>
-            @endif
-        </a>
-
-        <a href="/student/certificate" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isCertificates,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isCertificates,
-        ])>
-            <span class="material-symbols-outlined" data-icon="workspace_premium" @if($isCertificates) style="font-variation-settings: 'FILL' 1;" @endif>workspace_premium</span>
-            Certificates
-        </a>
-
-        <div class="my-6 border-t border-surface-container-low opacity-20"></div>
-
-        <a href="/student/payment" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isPayments,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isPayments,
-        ])>
-            <span class="material-symbols-outlined" data-icon="payments" @if($isPayments) style="font-variation-settings: 'FILL' 1;" @endif>payments</span>
-            Payments
-        </a>
-
-        <a href="/student/messages-support" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isSupport,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isSupport,
-        ])>
-            <span class="material-symbols-outlined" data-icon="support_agent" @if($isSupport) style="font-variation-settings: 'FILL' 1;" @endif>support_agent</span>
-            Messages / Support
-        </a>
-
-        <a href="/student/seeting" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
-            "flex items-center gap-3 px-4 py-3 transition-colors duration-200 font-['Manrope'] text-sm tracking-tight",
-            'text-[#0c4ea3] dark:text-indigo-400 bg-slate-50 dark:bg-slate-800 font-bold border-r-4 border-[#1570d8]' => $isSettings,
-            'text-slate-500 dark:text-slate-400 hover:text-[#1570d8] hover:bg-slate-50 dark:hover:bg-slate-800' => !$isSettings,
-        ])>
-            <span class="material-symbols-outlined" data-icon="settings" @if($isSettings) style="font-variation-settings: 'FILL' 1;" @endif>settings</span>
-            Profile Settings
-        </a>
-    </nav>
-
-    <div class="mt-auto pt-6 border-t border-[#d7e6ff]">
+    <div class="mb-4 rounded-[1rem] border border-[#e7e0f8] bg-white/74 p-3">
         <div class="flex items-center gap-3">
             @if ($user?->avatar_path)
-                <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $user->avatarUrl(96) }}" />
+                <img alt="{{ $user->name }} avatar" class="h-12 w-12 rounded-[1rem] object-cover" src="{{ $user->avatarUrl(96) }}" />
             @else
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#0c4ea3] text-sm font-bold text-white">{{ $initials ?: 'U' }}</div>
+                <div class="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-[#ede8ff] text-sm font-bold text-[#4f3dd4]">{{ $initials ?: 'U' }}</div>
             @endif
-            <div class="overflow-hidden">
-                <p class="text-sm font-bold truncate">{{ $user->name }}</p>
-                <p class="text-xs text-on-surface-variant truncate">{{ $user->email }}</p>
+            <div class="min-w-0">
+                <p class="truncate text-sm font-semibold text-[#1c1730]">{{ $user->name }}</p>
+                <p class="truncate text-[11px] text-[#756b96]">{{ $user->email }}</p>
             </div>
         </div>
+    </div>
+
+    <div class="mb-3">
+        <p class="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#8f83b5]">Workspace</p>
+        <nav class="space-y-1">
+            @foreach ($primaryItems as $item)
+                <a href="{{ $item['href'] }}" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
+                    'group flex items-center gap-2.5 rounded-[0.9rem] px-2.5 py-2.5 text-[13px] transition-all duration-200',
+                    'bg-[linear-gradient(135deg,#6f4ef6,#d16bf2)] text-white shadow-[0_14px_28px_rgba(149,85,246,0.22)]' => $item['active'],
+                    'text-[#4f466d] hover:translate-x-1 hover:bg-white/78 hover:text-[#221a3d]' => ! $item['active'],
+                ])>
+                    <span @class([
+                        'flex h-8 w-8 items-center justify-center rounded-[0.75rem]',
+                        'bg-white/12 text-white' => $item['active'],
+                        'bg-[#f7edff] text-[#b445d7]' => ! $item['active'],
+                    ])>
+                        <span class="material-symbols-outlined text-[17px]" @if($item['active']) style="font-variation-settings: 'FILL' 1;" @endif>{{ $item['icon'] }}</span>
+                    </span>
+                    <span class="font-semibold">{{ $item['label'] }}</span>
+                </a>
+            @endforeach
+        </nav>
+    </div>
+
+    <div class="mb-3">
+        <p class="mb-2 px-1 text-[10px] font-bold uppercase tracking-[0.24em] text-[#8f83b5]">Manage</p>
+        <nav class="space-y-1">
+            @foreach ($secondaryItems as $item)
+                <a href="{{ $item['href'] }}" onclick="if (window.innerWidth < 768) toggleStudentSidebar(false)" @class([
+                    'group flex items-center justify-between gap-2.5 rounded-[0.9rem] px-2.5 py-2.5 text-[13px] transition-all duration-200',
+                    'bg-[linear-gradient(135deg,#6f4ef6,#d16bf2)] text-white shadow-[0_14px_28px_rgba(149,85,246,0.22)]' => $item['active'],
+                    'text-[#4f466d] hover:translate-x-1 hover:bg-white/78 hover:text-[#221a3d]' => ! $item['active'],
+                ])>
+                    <span class="flex min-w-0 items-center gap-3">
+                        <span @class([
+                            'flex h-8 w-8 items-center justify-center rounded-[0.75rem]',
+                            'bg-white/12 text-white' => $item['active'],
+                            'bg-[#f7edff] text-[#b445d7]' => ! $item['active'],
+                        ])>
+                            <span class="material-symbols-outlined text-[17px]" @if($item['active']) style="font-variation-settings: 'FILL' 1;" @endif>{{ $item['icon'] }}</span>
+                        </span>
+                        <span class="truncate font-semibold">{{ $item['label'] }}</span>
+                    </span>
+                    @if (!empty($item['badge']))
+                        <span class="inline-flex min-w-6 items-center justify-center rounded-full bg-white/90 px-2 py-1 text-[10px] font-bold text-[#4f3dd4]">{{ $item['badge'] }}</span>
+                    @endif
+                </a>
+            @endforeach
+        </nav>
+    </div>
+
+    <div class="mt-auto rounded-[1rem] border border-[#e7e0f8] bg-white/78 p-3.5">
+        <p class="text-[11px] font-semibold text-[#1c1730]">Keep moving through your learning flow.</p>
+        <p class="mt-1 text-xs leading-6 text-[#766d95]">Your courses, billing, certificates, and support now live inside one cleaner workspace.</p>
         <form method="POST" action="{{ route('logout') }}" class="mt-4">
             @csrf
-            <button class="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50" type="submit">
-                <span class="material-symbols-outlined" data-icon="logout">logout</span>
+            <button class="flex w-full items-center justify-center gap-2 rounded-[0.85rem] border border-[#eadce0] bg-[#fff6f7] px-4 py-2.5 text-sm font-semibold text-[#c43d4a] transition hover:bg-[#fff0f3]" type="submit">
+                <span class="material-symbols-outlined text-[18px]">logout</span>
                 Logout
             </button>
         </form>
@@ -183,4 +163,3 @@
         };
     }
 </script>
-

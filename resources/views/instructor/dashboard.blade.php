@@ -16,53 +16,53 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary-container": "#1570d8",
-                        "outline-variant": "#d5e4ff",
-                        "secondary-container": "#d7e9ff",
-                        "background": "#f4f9ff",
+                        "primary-container": "#b07ac3",
+                        "outline-variant": "#dbcde4",
+                        "secondary-container": "#eadcf1",
+                        "background": "#fcf9fe",
                         "on-tertiary": "#ffffff",
                         "tertiary": "#005523",
                         "tertiary-fixed": "#6bff8f",
-                        "on-surface-variant": "#4f6178",
+                        "on-surface-variant": "#6d5a76",
                         "surface-container-lowest": "#ffffff",
                         "on-primary-fixed": "#0f0069",
-                        "outline": "#7c8da7",
-                        "on-secondary-fixed-variant": "#315b90",
-                        "on-primary-fixed-variant": "#0a4b99",
-                        "surface-tint": "#1570d8",
-                        "on-primary-container": "#edf5ff",
+                        "outline": "#8f7a99",
+                        "on-secondary-fixed-variant": "#755b83",
+                        "on-primary-fixed-variant": "#8f52a3",
+                        "surface-tint": "#b07ac3",
+                        "on-primary-container": "#f5eef8",
                         "on-background": "#191c1d",
                         "on-tertiary-container": "#63f889",
                         "inverse-on-surface": "#f5fbff",
-                        "primary": "#0c4ea3",
-                        "surface-bright": "#f4f9ff",
-                        "secondary-fixed": "#e8f3ff",
-                        "primary-fixed-dim": "#b9dcff",
-                        "primary-fixed": "#e8f3ff",
+                        "primary": "#6a3378",
+                        "surface-bright": "#fcf9fe",
+                        "secondary-fixed": "#f0e6f4",
+                        "primary-fixed-dim": "#e1cde8",
+                        "primary-fixed": "#f0e6f4",
                         "error": "#ba1a1a",
-                        "surface-variant": "#dbe8ff",
-                        "secondary-fixed-dim": "#b9dcff",
-                        "surface": "#f4f9ff",
+                        "surface-variant": "#e7dcef",
+                        "secondary-fixed-dim": "#e1cde8",
+                        "surface": "#fcf9fe",
                         "on-error": "#ffffff",
-                        "surface-container-high": "#e3eeff",
+                        "surface-container-high": "#efe5f4",
                         "error-container": "#ffdad6",
                         "tertiary-fixed-dim": "#4ae176",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-highest": "#e7dcef",
                         "on-tertiary-fixed": "#002109",
                         "on-tertiary-fixed-variant": "#005321",
-                        "surface-container-low": "#eef5ff",
+                        "surface-container-low": "#f5eef8",
                         "secondary": "#3b5f8d",
-                        "inverse-surface": "#18345f",
-                        "surface-container": "#e9f2ff",
+                        "inverse-surface": "#563060",
+                        "surface-container": "#f2e9f6",
                         "on-primary": "#ffffff",
                         "tertiary-container": "#007030",
                         "on-surface": "#191c1d",
-                        "inverse-primary": "#b9dcff",
+                        "inverse-primary": "#e1cde8",
                         "surface-dim": "#d4e3f8",
                         "on-secondary": "#ffffff",
                         "on-error-container": "#93000a",
-                        "on-secondary-container": "#41648d",
-                        "on-secondary-fixed": "#072a60"
+                        "on-secondary-container": "#715f7a",
+                        "on-secondary-fixed": "#4b2356"
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -86,7 +86,7 @@
         }
 
         .editorial-gradient {
-            background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%);
+            background: linear-gradient(135deg, #6a3378 0%, #b07ac3 100%);
         }
 
         .glass-panel {
@@ -116,7 +116,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #dbe8ff;
+            background: #e7dcef;
             border-radius: 10px;
         }
     </style>
@@ -138,18 +138,18 @@
     <x-instructor.navbar />
 
     <main class="md:ml-64 min-h-screen">
-        <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md flex justify-between items-center w-full pl-16 pr-4 md:px-8 py-4 shadow-sm">
+        <header class="sticky top-0 z-40 bg-white/88 backdrop-blur-md border-b border-[#eadff1] flex justify-between items-center w-full pl-16 pr-4 md:px-8 py-4 shadow-sm">
             <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
                 <div class="relative w-full md:max-w-md">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                    <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-[#edf5ff]0/20" placeholder="Search..." type="text" />
+                    <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-[#f5eef8]0/20" placeholder="Search..." type="text" />
                 </div>
             </div>
-            <div class="ml-auto flex items-center gap-4 md:gap-6">
-                <div class="flex items-center gap-4 text-slate-500">
+            <div class="ml-auto flex items-center gap-3 md:gap-6">
+                <div class="hidden sm:flex items-center gap-4 text-slate-500">
                     <button class="hover:bg-slate-100 p-2 rounded-full transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
-                    <a class="hover:bg-slate-100 p-2 rounded-full transition-colors" href="/instructor/messages"><span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span></a>
-                    <a class="hover:bg-slate-100 p-2 rounded-full transition-colors" href="/instructor/settings"><span class="material-symbols-outlined" data-icon="settings">settings</span></a>
+                    <a class="hover:bg-slate-100 p-2 rounded-full transition-colors" href="{{ route('instructor.messages') }}"><span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span></a>
+                    <a class="hover:bg-slate-100 p-2 rounded-full transition-colors" href="{{ route('instructor.settings') }}"><span class="material-symbols-outlined" data-icon="settings">settings</span></a>
                 </div>
                 <div class="h-10 w-10 rounded-full overflow-hidden border-2 border-slate-100">
                     <img alt="Instructor Profile" class="w-full h-full object-cover" src="{{ $profileAvatar }}" />
@@ -157,20 +157,20 @@
             </div>
         </header>
         <div class="p-4 md:p-8 space-y-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
                 <div class="space-y-2">
-                    <p class="text-xs font-bold tracking-[0.2em] text-[#0c4ea3] uppercase font-label">Dashboard Overview</p>
-                    <h2 class="text-5xl font-bold font-headline text-slate-900 leading-tight">Welcome back, <br />{{ $welcomeName }}.</h2>
+                    <p class="text-xs font-bold tracking-[0.2em] text-[#6a3378] uppercase font-label">Dashboard Overview</p>
+                    <h2 class="text-3xl font-bold font-headline text-slate-900 leading-tight sm:text-4xl xl:text-5xl">Welcome back, <br />{{ $welcomeName }}.</h2>
                 </div>
-                <div class="flex gap-3">
-                    <a class="px-6 py-3 bg-white text-slate-700 font-semibold rounded-xl shadow-sm border border-slate-100 hover:bg-slate-50 transition-all inline-flex items-center justify-center" href="/instructor/mycourse">Manage Courses</a>
-                    <a class="px-6 py-3 editorial-gradient text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 transition-all hover:opacity-90 active:scale-95 inline-flex items-center justify-center" href="/instructor/create-course">Create New Course</a>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                    <a class="px-6 py-3 bg-white text-slate-700 font-semibold rounded-xl shadow-sm border border-slate-100 hover:bg-slate-50 transition-all inline-flex items-center justify-center" href="{{ route('instructor.mycourse') }}">Manage Courses</a>
+                    <a class="px-6 py-3 editorial-gradient text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 transition-all hover:opacity-90 active:scale-95 inline-flex items-center justify-center" href="{{ route('instructor.create-course') }}">Create New Course</a>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="md:col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm space-y-4">
                     <div class="flex justify-between items-start">
-                        <div class="p-3 bg-[#edf5ff] text-[#0c4ea3] rounded-lg">
+                        <div class="p-3 bg-[#f5eef8] text-[#6a3378] rounded-lg">
                             <span class="material-symbols-outlined" data-icon="payments">payments</span>
                         </div>
                         <span class="{{ $trendClass($totalRevenueTrend) }} font-semibold text-xs flex items-center gap-1">
@@ -187,7 +187,7 @@
                 </div>
                 <div class="md:col-span-1 bg-surface-container-lowest p-6 rounded-xl shadow-sm space-y-4">
                     <div class="flex justify-between items-start">
-                        <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                        <div class="p-3 bg-violet-50 text-violet-600 rounded-lg">
                             <span class="material-symbols-outlined" data-icon="group">group</span>
                         </div>
                         <span class="{{ $trendClass($totalStudentsTrend) }} font-semibold text-xs flex items-center gap-1">
@@ -245,7 +245,7 @@
                             <p class="text-slate-500 text-sm">Detailed revenue metrics over the last 30 days</p>
                         </div>
                         <div class="flex gap-2">
-                            <button class="px-4 py-2 bg-surface-container-low rounded-lg text-xs font-semibold text-[#0c4ea3]">30 Days</button>
+                            <button class="px-4 py-2 bg-surface-container-low rounded-lg text-xs font-semibold text-[#6a3378]">30 Days</button>
                             <button class="px-4 py-2 text-xs font-semibold text-slate-500 hover:bg-slate-50 rounded-lg transition-colors">90 Days</button>
                         </div>
                     </div>
@@ -253,11 +253,11 @@
                         <svg class="w-full h-full" viewbox="0 0 800 200">
                             <defs>
                                 <lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
-                                    <stop offset="0%" stop-color="#0c4ea3" stop-opacity="0.2"></stop>
-                                    <stop offset="100%" stop-color="#0c4ea3" stop-opacity="0"></stop>
+                                    <stop offset="0%" stop-color="#6a3378" stop-opacity="0.2"></stop>
+                                    <stop offset="100%" stop-color="#6a3378" stop-opacity="0"></stop>
                                 </lineargradient>
                             </defs>
-                            <path d="{{ $chartPath }}" fill="none" stroke="#0c4ea3" stroke-linecap="round" stroke-width="4"></path>
+                            <path d="{{ $chartPath }}" fill="none" stroke="#6a3378" stroke-linecap="round" stroke-width="4"></path>
                             <path d="{{ $chartAreaPath }}" fill="url(#chartGradient)"></path>
                         </svg>
                         @if($peakPoint)
@@ -321,7 +321,7 @@
                                         <p class="text-xs font-bold text-slate-900">{{ $action['title'] }}</p>
                                         <p class="text-[0.7rem] text-slate-500">{{ $action['description'] }}</p>
                                     </div>
-                                    <span class="material-symbols-outlined text-slate-300 ml-auto group-hover:text-[#0c4ea3] transition-colors">chevron_right</span>
+                                    <span class="material-symbols-outlined text-slate-300 ml-auto group-hover:text-[#6a3378] transition-colors">chevron_right</span>
                                 </a>
                             @endforeach
                         </div>
@@ -332,16 +332,16 @@
                 <section class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h4 class="text-xl font-bold font-headline">New Enrollments</h4>
-                        <a class="text-[#0c4ea3] text-xs font-bold hover:underline" href="/instructor/students">View all</a>
+                        <a class="text-[#6a3378] text-xs font-bold hover:underline" href="{{ route('instructor.students') }}">View all</a>
                     </div>
                     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                         <div class="divide-y divide-slate-50">
                             @forelse($recentEnrollments as $enrollment)
                                 <div class="flex items-center gap-4 p-5 hover:bg-slate-50 transition-colors">
-                                    <img alt="Student Avatar" class="w-10 h-10 rounded-full object-cover" src="https://ui-avatars.com/api/?name={{ urlencode($enrollment->user->name) }}&background=E2E8F0&color=334155&size=80" />
+                                    <img alt="Student Avatar" class="w-10 h-10 rounded-full object-cover" src="{{ $enrollment->user?->avatarUrl(80) }}" />
                                     <div class="flex-1">
                                         <p class="text-sm font-bold">{{ $enrollment->user->name }}</p>
-                                        <p class="text-[0.7rem] text-slate-500">Enrolled in <span class="font-semibold text-[#0c4ea3]">{{ $enrollment->course->title }}</span></p>
+                                        <p class="text-[0.7rem] text-slate-500">Enrolled in <span class="font-semibold text-[#6a3378]">{{ $enrollment->course->title }}</span></p>
                                     </div>
                                     <div class="text-right">
                                         <p class="text-sm font-bold">Rs. {{ number_format($enrollment->payment?->amount ?? $enrollment->amount, 2) }}</p>
@@ -360,7 +360,7 @@
                 <section class="space-y-4">
                     <div class="flex justify-between items-center">
                         <h4 class="text-xl font-bold font-headline">Recent Reviews</h4>
-                        <a class="text-[#0c4ea3] text-xs font-bold hover:underline" href="/instructor/reviews">Manage</a>
+                        <a class="text-[#6a3378] text-xs font-bold hover:underline" href="{{ route('instructor.reviews') }}">Manage</a>
                     </div>
                     <div class="grid grid-cols-1 gap-4">
                         @forelse($recentReviews as $review)
@@ -378,7 +378,7 @@
                                     <p class="text-xs text-slate-600 leading-relaxed italic">{{ \Illuminate\Support\Str::limit($review->comment ?: 'This course is already earning strong feedback from students.', 140) }}</p>
                                     <div class="mt-3 flex items-center justify-between gap-4">
                                         <p class="text-[0.65rem] font-bold text-slate-400 uppercase tracking-tighter">{{ $review->user->name }} • {{ $review->created_at->diffForHumans() }}</p>
-                                        <a class="text-xs font-bold text-[#0c4ea3] flex items-center gap-1 shrink-0" href="/instructor/reviews">Reply <span class="material-symbols-outlined text-sm">reply</span></a>
+                                        <a class="text-xs font-bold text-[#6a3378] flex items-center gap-1 shrink-0" href="{{ route('instructor.reviews') }}">Reply <span class="material-symbols-outlined text-sm">reply</span></a>
                                     </div>
                                 </div>
                             </div>
@@ -433,6 +433,7 @@
 </body>
 
 </html>
+
 
 
 

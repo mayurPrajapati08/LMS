@@ -13,14 +13,14 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
+                        "primary": "#6a3378",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
+                        "surface-container-low": "#f5eef8",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        "outline-variant": "#d5e4ff",
+                        "on-surface-variant": "#6d5a76",
+                        "outline-variant": "#dbcde4",
                         "error": "#ba1a1a",
                         "error-container": "#ffdad6",
                         "on-error-container": "#93000a",
@@ -48,7 +48,7 @@
             <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
                 <div class="relative w-full md:max-w-md">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-                    <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none transition-all" placeholder="Search..." type="text" />
+                    <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none transition-all" placeholder="Search..." type="text" />
                 </div>
             </div>
             <div class="ml-auto flex items-center gap-3">
@@ -76,9 +76,9 @@
                     <p class="text-4xl font-bold font-headline text-primary">{{ number_format($openTickets) }}</p>
                     <p class="text-xs text-error mt-2">Live platform queue</p>
                 </div>
-                <div class="col-span-6 lg:col-span-3 bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-[#c7e0ff]">
+                <div class="col-span-6 lg:col-span-3 bg-surface-container-lowest p-6 rounded-xl shadow-sm border-l-4 border-[#e7d8ee]">
                     <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Resolved this week</p>
-                    <p class="text-4xl font-bold font-headline text-[#08275c]">{{ number_format($resolvedTickets) }}</p>
+                    <p class="text-4xl font-bold font-headline text-[#6a3378]">{{ number_format($resolvedTickets) }}</p>
                     <p class="text-xs text-primary mt-2">Avg response {{ $avgResponseHours }} hours</p>
                 </div>
             </div>
@@ -117,7 +117,7 @@
                                     <tr class="hover:bg-slate-50/50 transition-colors">
                                         <td class="px-6 py-5">
                                             <div class="flex items-center gap-3">
-                                                <img alt="{{ $inquiry->name }}" class="w-8 h-8 rounded-full object-cover bg-slate-100" src="{{ $inquiry->user?->avatarUrl(48) ?? 'https://placehold.co/48x48/e2e8f0/64748b?text=U' }}" />
+                                                <img alt="{{ $inquiry->name }}" class="w-8 h-8 rounded-full object-cover bg-slate-100" src="{{ $inquiry->user?->avatarUrl(48) ?? 'https://ui-avatars.com/api/?name='.urlencode($inquiry->name).'&background=E2E8F0&color=334155&size=96' }}" />
                                                 <div>
                                                     <p class="text-sm font-bold text-on-surface">{{ $inquiry->name }}</p>
                                                     <p class="text-xs text-slate-400">{{ $inquiry->email }}</p>
@@ -183,7 +183,7 @@
 
                     <div class="grid grid-cols-1 gap-6">
                         <div class="bg-surface-container-low p-5 rounded-xl flex items-center gap-4">
-                            <div class="w-12 h-12 bg-[#dcecff] rounded-lg flex items-center justify-center text-primary">
+                            <div class="w-12 h-12 bg-[#eadff1] rounded-lg flex items-center justify-center text-primary">
                                 <span class="material-symbols-outlined">timer</span>
                             </div>
                             <div>
@@ -207,5 +207,7 @@
     </main>
 </body>
 </html>
+
+
 
 

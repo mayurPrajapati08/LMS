@@ -13,16 +13,16 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
+                        "primary": "#6a3378",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-low": "#f5eef8",
+                        "surface-container-high": "#efe5f4",
+                        "surface-container-highest": "#e7dcef",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        "outline-variant": "#d5e4ff",
+                        "on-surface-variant": "#6d5a76",
+                        "outline-variant": "#dbcde4",
                     },
                     fontFamily: {
                         "headline": ["Manrope"],
@@ -34,7 +34,7 @@
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .editorial-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
+        .editorial-gradient { background: linear-gradient(135deg, #6a3378 0%, #b07ac3 100%); }
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
     </style>
@@ -43,12 +43,12 @@
     <x-admin.navbar />
 
     <main class="md:ml-64 flex-1 flex flex-col">
-        <header class="fixed top-0 right-0 left-0 md:left-64 h-16 z-40 bg-white/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 w-full md:w-[calc(100%-16rem)] border-b border-slate-100">
-            <div class="flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:px-4 md:gap-4 md:w-96 focus-within:ring-2 focus-within:ring-[#edf5ff]0/20 transition-all">
+        <header class="fixed top-0 right-0 left-0 md:left-64 z-40 bg-white/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 w-full md:w-[calc(100%-16rem)] border-b border-slate-100">
+            <div class="flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:px-4 md:gap-4 md:w-96 focus-within:ring-2 focus-within:ring-[#f5eef8]0/20 transition-all">
                 <span class="material-symbols-outlined text-slate-400">search</span>
                 <input class="bg-transparent border-none text-sm focus:ring-0 w-full placeholder:text-slate-400" placeholder="Search..." type="text" />
             </div>
-            <div class="ml-auto flex items-center gap-4 md:gap-6">
+            <div class="ml-auto flex items-center gap-3 md:gap-6">
                 <div class="hidden md:block h-8 w-[1px] bg-slate-200"></div>
                 <div class="flex items-center gap-3">
                     <div class="text-right">
@@ -60,15 +60,15 @@
             </div>
         </header>
 
-        <div class="mt-16 p-4 md:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
-            <div class="flex justify-between items-end pb-4 gap-6">
+        <div class="mt-20 p-4 md:p-8 space-y-8 max-w-[1600px] mx-auto w-full">
+            <div class="flex flex-col justify-between gap-4 pb-4 md:flex-row md:items-end">
                 <div>
                     <span class="text-[0.75rem] font-bold uppercase tracking-[0.1em] text-primary mb-2 block">System Overview</span>
                     <h2 class="text-4xl font-extrabold tracking-tight">Executive Dashboard</h2>
                 </div>
-                <div class="flex gap-3">
-                    <a class="px-6 py-3 rounded-xl bg-surface-container-high text-on-surface font-semibold text-sm" href="{{ route('admin.analytics') }}">Download Report</a>
-                    <a class="px-6 py-3 rounded-xl editorial-gradient text-white font-bold text-sm shadow-lg shadow-primary/20" href="{{ route('admin.courses') }}">Manage Courses</a>
+                <div class="flex flex-col gap-3 sm:flex-row">
+                    <a class="px-6 py-3 rounded-xl bg-surface-container-high text-on-surface font-semibold text-sm text-center" href="{{ route('admin.analytics') }}">Download Report</a>
+                    <a class="px-6 py-3 rounded-xl editorial-gradient text-white font-bold text-sm text-center shadow-lg shadow-primary/20" href="{{ route('admin.courses') }}">Manage Courses</a>
                 </div>
             </div>
 
@@ -143,7 +143,7 @@
                         @forelse ($topCourses as $course)
                             <div class="flex items-center gap-4">
                                 <div class="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 flex-shrink-0">
-                                    <img alt="{{ $course->title }}" class="w-full h-full object-cover" src="{{ $course->thumbnail ?: 'https://placehold.co/160x96/e5e7eb/64748b?text=Course' }}" />
+                                    <img alt="{{ $course->title }}" class="w-full h-full object-cover" src="{{ $course->thumbnail ?: 'https://ui-avatars.com/api/?name='.urlencode($course->title).'&background=F3E8FF&color=6B21A8&size=320' }}" />
                                 </div>
                                 <div class="flex-1">
                                     <h4 class="font-bold line-clamp-1">{{ $course->title }}</h4>
@@ -185,7 +185,7 @@
                                         </td>
                                         <td class="py-4 text-slate-600">{{ $enrollment->course?->title ?: 'Course unavailable' }}</td>
                                         <td class="py-4 text-slate-500">{{ $enrollment->created_at?->diffForHumans() }}</td>
-                                        <td class="py-4"><span class="bg-[#edf5ff] text-[#0c4ea3] text-[10px] font-bold uppercase px-2 py-1 rounded-full">{{ $enrollment->status }}</span></td>
+                                        <td class="py-4"><span class="bg-[#f5eef8] text-[#6a3378] text-[10px] font-bold uppercase px-2 py-1 rounded-full">{{ $enrollment->status }}</span></td>
                                     </tr>
                                 @empty
                                     <tr>
@@ -223,10 +223,10 @@
 
                 <div class="lg:col-span-2 bg-[#0a2f73] rounded-3xl p-4 md:p-8 relative overflow-hidden group">
                     <div class="relative z-10 h-full flex flex-col justify-center">
-                        <span class="text-[#76c6ff] text-xs font-bold uppercase tracking-[0.2em] mb-2">Curator Intelligence</span>
+                        <span class="text-[#d6b8e0] text-xs font-bold uppercase tracking-[0.2em] mb-2">Curator Intelligence</span>
                         <h3 class="text-3xl font-bold text-white mb-4 leading-tight">{{ $insightTitle }}</h3>
-                        <p class="text-[#b9dcff]/70 max-w-md text-sm mb-6">{{ $insightText }}</p>
-                        <a class="bg-white text-[#08275c] px-6 py-3 rounded-xl font-bold text-sm self-start" href="{{ route('admin.analytics') }}">Explore AI Forecast</a>
+                        <p class="text-[#e1cde8]/70 max-w-md text-sm mb-6">{{ $insightText }}</p>
+                        <a class="bg-white text-[#6a3378] px-6 py-3 rounded-xl font-bold text-sm self-start" href="{{ route('admin.analytics') }}">Explore AI Forecast</a>
                     </div>
                 </div>
             </div>
@@ -234,5 +234,7 @@
     </main>
 </body>
 </html>
+
+
 
 

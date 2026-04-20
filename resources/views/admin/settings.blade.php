@@ -13,18 +13,18 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        "background": "#f4f9ff",
+                        "primary": "#6a3378",
+                        "primary-container": "#b07ac3",
+                        "background": "#fcf9fe",
                         "surface-container-lowest": "#ffffff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-highest": "#dbe8ff",
+                        "surface-container-low": "#f5eef8",
+                        "surface-container-high": "#efe5f4",
+                        "surface-container-highest": "#e7dcef",
                         "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        "outline-variant": "#d5e4ff",
-                        "primary-fixed": "#e8f3ff",
-                        "on-primary-fixed-variant": "#0a4b99",
+                        "on-surface-variant": "#6d5a76",
+                        "outline-variant": "#dbcde4",
+                        "primary-fixed": "#f0e6f4",
+                        "on-primary-fixed-variant": "#8f52a3",
                         "error-container": "#ffdad6",
                         "on-error-container": "#93000a",
                     },
@@ -38,10 +38,10 @@
     </script>
     <style>
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        body { font-family: 'Inter', sans-serif; background-color: #f4f9ff; color: #191c1d; }
+        body { font-family: 'Inter', sans-serif; background-color: #fcf9fe; color: #191c1d; }
         h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
         .editorial-shadow { box-shadow: 0 32px 64px -12px rgba(25, 28, 29, 0.04); }
-        .primary-gradient { background: linear-gradient(135deg, #0c4ea3 0%, #1570d8 100%); }
+        .primary-gradient { background: linear-gradient(135deg, #6a3378 0%, #b07ac3 100%); }
         .tab-panel[hidden] { display: none !important; }
         .admin-select {
             appearance: none;
@@ -59,7 +59,7 @@
         <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
             <div class="relative w-full md:max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
-                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-[#edf5ff]0/20 outline-none transition-all" placeholder="Search..." type="text" />
+                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none transition-all" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -91,6 +91,7 @@
                                 'profile' => 'Admin Profile',
                                 'institution' => 'Institution Settings',
                                 'payments' => 'Payment Gateways',
+                                'catalog' => 'Catalog & Access',
                                 'notifications' => 'Email & Notifications',
                                 'integrations' => 'API & Integrations',
                             ];
@@ -166,7 +167,7 @@
                             </div>
 
                             <div class="flex justify-end">
-                                <button class="px-10 py-3 text-sm font-bold uppercase tracking-widest text-white primary-gradient rounded-xl shadow-lg hover:shadow-indigo-500/20 active:scale-[0.98] transition-all" type="submit">Save Configuration</button>
+                                <button class="px-10 py-3 text-sm font-bold uppercase tracking-widest text-white primary-gradient rounded-xl shadow-lg hover:shadow-[#b07ac3]/20 active:scale-[0.98] transition-all" type="submit">Save Configuration</button>
                             </div>
                         </form>
                     </section>
@@ -262,6 +263,71 @@
                         </form>
                     </section>
 
+                    <section class="tab-panel bg-surface-container-lowest rounded-xl editorial-shadow overflow-hidden" data-panel="catalog" @if($activeTab !== 'catalog') hidden @endif>
+                        <div class="bg-surface-container-highest px-4 md:px-8 py-5">
+                            <h2 class="text-lg font-bold">Catalog & Access Control</h2>
+                        </div>
+                        <form action="{{ route('admin.settings.platform') }}" class="p-4 md:p-8 space-y-6" method="POST">
+                            @csrf
+                            <input name="section" type="hidden" value="catalog" />
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Default Public Catalog</label>
+                                    <div class="relative">
+                                        <select class="admin-select w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="catalog_default_mode">
+                                            <option value="offline" @selected(old('catalog_default_mode', $platformSettings['catalog_default_mode']) === 'offline')>Offline first</option>
+                                            <option value="online" @selected(old('catalog_default_mode', $platformSettings['catalog_default_mode']) === 'online')>Online first</option>
+                                        </select>
+                                        <span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">expand_more</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Online Student Access Mode</label>
+                                    <div class="relative">
+                                        <select class="admin-select w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="online_student_access_mode">
+                                            <option value="disabled" @selected(old('online_student_access_mode', $platformSettings['online_student_access_mode']) === 'disabled')>Disabled</option>
+                                            <option value="limited" @selected(old('online_student_access_mode', $platformSettings['online_student_access_mode']) === 'limited')>Limited</option>
+                                        </select>
+                                        <span class="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">expand_more</span>
+                                    </div>
+                                </div>
+                                <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    @foreach ([
+                                        'catalog_offline_enabled' => 'Show offline public catalog',
+                                        'catalog_online_enabled' => 'Show online public catalog',
+                                        'public_lead_gate_enabled' => 'Require lead form before course details',
+                                        'workshop_lead_gate_enabled' => 'Require lead form before workshop details',
+                                    ] as $key => $label)
+                                        <label class="rounded-xl bg-surface-container-low px-4 py-4 flex items-center justify-between gap-4">
+                                            <span class="font-semibold">{{ $label }}</span>
+                                            <input @checked(old($key, $platformSettings[$key]) === '1') class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary/20" name="{{ $key }}" type="checkbox" value="1" />
+                                        </label>
+                                    @endforeach
+                                </div>
+                                <div class="md:col-span-2">
+                                    <p class="text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-3">Student Online Features</p>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        @foreach ([
+                                            'student_catalog_enabled' => 'Browse online courses',
+                                            'student_wishlist_enabled' => 'Wishlist access',
+                                            'student_cart_enabled' => 'Cart access',
+                                            'student_checkout_enabled' => 'Checkout and payments',
+                                            'student_payments_enabled' => 'Payments history',
+                                        ] as $key => $label)
+                                            <label class="rounded-xl bg-surface-container-low px-4 py-4 flex items-center justify-between gap-4">
+                                                <span class="font-semibold">{{ $label }}</span>
+                                                <input @checked(old($key, $platformSettings[$key]) === '1') class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary/20" name="{{ $key }}" type="checkbox" value="1" />
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-end">
+                                <button class="px-6 py-3 text-sm font-bold text-white primary-gradient rounded-xl shadow-lg" type="submit">Save Catalog Settings</button>
+                            </div>
+                        </form>
+                    </section>
+
                     <section class="tab-panel bg-surface-container-lowest rounded-xl editorial-shadow overflow-hidden" data-panel="notifications" @if($activeTab !== 'notifications') hidden @endif>
                         <div class="bg-surface-container-highest px-4 md:px-8 py-5">
                             <h2 class="text-lg font-bold">Email & Notifications</h2>
@@ -281,6 +347,10 @@
                                 <div class="space-y-2 md:col-span-2">
                                     <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Support Inbox</label>
                                     <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="email_support_address" type="email" value="{{ old('email_support_address', $platformSettings['email_support_address']) }}" />
+                                </div>
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Exception Alert Inbox</label>
+                                    <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="exception_alert_email" type="email" value="{{ old('exception_alert_email', $platformSettings['exception_alert_email']) }}" />
                                 </div>
                                 <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     @foreach ([
@@ -428,6 +498,9 @@
     </script>
 </body>
 </html>
+
+
+
 
 
 

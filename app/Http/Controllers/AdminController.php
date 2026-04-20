@@ -22,7 +22,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 use RuntimeException;
 
@@ -293,11 +295,11 @@ class AdminController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 'min:8'],
+            'password' => ['required', 'confirmed', $this->passwordRule()],
             'bio' => ['nullable', 'string', 'max:1000'],
         ]);
 
-        $role = Role::query()->where('name', 'instructor')->firstOrFail();
+        $role = Role::query()->firstOrCreate(['name' => 'instructor']);
 
         User::create([
             'name' => $validated['name'],
@@ -314,6 +316,12 @@ class AdminController extends Controller
             'Instructor',
             route('login')
         );
+
+        Log::info('Instructor account created by admin', [
+            'admin_id' => $request->user()->id,
+            'admin_email' => $request->user()->email,
+            'instructor_email' => $validated['email'],
+        ]);
 
         return redirect()
             ->route('admin.instructors')
@@ -510,9 +518,21 @@ class AdminController extends Controller
             'payment_stripe_enabled' => '1',
             'payment_razorpay_enabled' => '1',
             'payment_manual_enabled' => '0',
+            'catalog_default_mode' => 'offline',
+            'catalog_online_enabled' => '0',
+            'catalog_offline_enabled' => '1',
+            'online_student_access_mode' => 'disabled',
+            'student_catalog_enabled' => '0',
+            'student_wishlist_enabled' => '0',
+            'student_cart_enabled' => '0',
+            'student_checkout_enabled' => '0',
+            'student_payments_enabled' => '0',
+            'public_lead_gate_enabled' => '1',
+            'workshop_lead_gate_enabled' => '1',
             'email_from_name' => 'Code In Yourself',
             'email_from_address' => 'noreply@codeinyourself.in',
             'email_support_address' => 'support@codeinyourself.in',
+            'exception_alert_email' => 'support@codeinyourself.in',
             'notification_new_enrollment' => '1',
             'notification_new_review' => '1',
             'notification_support_alerts' => '1',
@@ -533,9 +553,10 @@ class AdminController extends Controller
 
     public function updateSettings(Request $request): RedirectResponse
     {
+        $adminUser = $request->user();
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$request->user()->id],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$adminUser->id],
             'bio' => ['nullable', 'string', 'max:1000'],
             'avatar' => ['nullable', 'image', 'max:5120'],
             'two_factor_enabled' => ['nullable', 'boolean'],
@@ -551,12 +572,18 @@ class AdminController extends Controller
         if ($request->hasFile('avatar')) {
             $payload['avatar_path'] = $this->uploadAvatarToR2(
                 $request->file('avatar'),
-                $request->user()->id,
+                $adminUser->id,
                 $validated['name']
             );
         }
 
-        $request->user()->update($payload);
+        $adminUser->update($payload);
+
+        Log::info('Admin profile updated', [
+            'admin_id' => $adminUser->id,
+            'admin_email' => $adminUser->email,
+            'two_factor_enabled' => $payload['two_factor_enabled'],
+        ]);
 
         return redirect()
             ->route('admin.settings')
@@ -565,19 +592,25 @@ class AdminController extends Controller
 
     public function updatePassword(Request $request): RedirectResponse
     {
+        $adminUser = $request->user();
         $validated = $request->validate([
             'current_password' => ['required'],
-            'password' => ['required', 'confirmed', 'min:8'],
+            'password' => ['required', 'confirmed', $this->passwordRule()],
         ]);
 
-        if (! Hash::check($validated['current_password'], $request->user()->password)) {
+        if (! Hash::check($validated['current_password'], $adminUser->password)) {
             return back()->withErrors([
                 'current_password' => 'The current password is incorrect.',
             ]);
         }
 
-        $request->user()->update([
+        $adminUser->update([
             'password' => $validated['password'],
+        ]);
+
+        Log::warning('Admin password updated', [
+            'admin_id' => $adminUser->id,
+            'admin_email' => $adminUser->email,
         ]);
 
         return redirect()
@@ -605,10 +638,24 @@ class AdminController extends Controller
                 'payment_razorpay_enabled' => ['nullable', 'boolean'],
                 'payment_manual_enabled' => ['nullable', 'boolean'],
             ],
+            'catalog' => [
+                'catalog_default_mode' => ['required', 'in:offline,online'],
+                'catalog_online_enabled' => ['nullable', 'boolean'],
+                'catalog_offline_enabled' => ['nullable', 'boolean'],
+                'online_student_access_mode' => ['required', 'in:disabled,limited'],
+                'student_catalog_enabled' => ['nullable', 'boolean'],
+                'student_wishlist_enabled' => ['nullable', 'boolean'],
+                'student_cart_enabled' => ['nullable', 'boolean'],
+                'student_checkout_enabled' => ['nullable', 'boolean'],
+                'student_payments_enabled' => ['nullable', 'boolean'],
+                'public_lead_gate_enabled' => ['nullable', 'boolean'],
+                'workshop_lead_gate_enabled' => ['nullable', 'boolean'],
+            ],
             'notifications' => [
                 'email_from_name' => ['required', 'string', 'max:255'],
                 'email_from_address' => ['required', 'email', 'max:255'],
                 'email_support_address' => ['required', 'email', 'max:255'],
+                'exception_alert_email' => ['required', 'email', 'max:255'],
                 'notification_new_enrollment' => ['nullable', 'boolean'],
                 'notification_new_review' => ['nullable', 'boolean'],
                 'notification_support_alerts' => ['nullable', 'boolean'],
@@ -630,11 +677,28 @@ class AdminController extends Controller
             'payment_stripe_enabled',
             'payment_razorpay_enabled',
             'payment_manual_enabled',
+            'catalog_online_enabled',
+            'catalog_offline_enabled',
+            'student_catalog_enabled',
+            'student_wishlist_enabled',
+            'student_cart_enabled',
+            'student_checkout_enabled',
+            'student_payments_enabled',
+            'public_lead_gate_enabled',
+            'workshop_lead_gate_enabled',
             'notification_new_enrollment',
             'notification_new_review',
             'notification_support_alerts',
             'notification_daily_digest',
         ];
+
+        if ($section === 'catalog' && ! $request->boolean('catalog_online_enabled') && ($validated['online_student_access_mode'] ?? 'disabled') === 'disabled') {
+            $validated['student_catalog_enabled'] = false;
+            $validated['student_wishlist_enabled'] = false;
+            $validated['student_cart_enabled'] = false;
+            $validated['student_checkout_enabled'] = false;
+            $validated['student_payments_enabled'] = false;
+        }
 
         foreach ($rules as $key => $unused) {
             $value = in_array($key, $booleanFields, true)
@@ -646,6 +710,12 @@ class AdminController extends Controller
                 ['value' => $value]
             );
         }
+
+        Log::info('Platform settings updated', [
+            'section' => $section,
+            'admin_id' => $request->user()->id,
+            'admin_email' => $request->user()->email,
+        ]);
 
         return redirect()
             ->route('admin.settings', ['tab' => $section])
@@ -727,7 +797,7 @@ class AdminController extends Controller
 
         $admin = $request->user();
         $admins = User::query()
-            ->whereHas('role', fn ($query) => $query->whereIn('name', ['super admin', 'admin']))
+            ->whereHas('role', fn ($query) => $query->whereIn('name', ['super admin', 'admin', 'hr team']))
             ->with('role:id,name')
             ->latest()
             ->paginate(8)
@@ -736,7 +806,7 @@ class AdminController extends Controller
         $editingAdmin = null;
         if ($request->filled('edit')) {
             $editingAdmin = User::query()
-                ->whereHas('role', fn ($query) => $query->whereIn('name', ['super admin', 'admin']))
+                ->whereHas('role', fn ($query) => $query->whereIn('name', ['super admin', 'admin', 'hr team']))
                 ->with('role:id,name')
                 ->find($request->integer('edit'));
         }
@@ -748,6 +818,7 @@ class AdminController extends Controller
             'editingAdmin' => $editingAdmin,
             'adminCount' => User::query()->whereHas('role', fn ($query) => $query->where('name', 'admin'))->count(),
             'superAdminCount' => User::query()->whereHas('role', fn ($query) => $query->where('name', 'super admin'))->count(),
+            'hrTeamCount' => User::query()->whereHas('role', fn ($query) => $query->where('name', 'hr team'))->count(),
         ]);
     }
 
@@ -758,11 +829,11 @@ class AdminController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 'min:8'],
-            'role' => ['required', 'in:admin,super admin'],
+            'password' => ['required', 'confirmed', $this->passwordRule()],
+            'role' => ['required', 'in:admin,super admin,hr team'],
         ]);
 
-        $role = Role::query()->where('name', $validated['role'])->firstOrFail();
+        $role = Role::query()->firstOrCreate(['name' => $validated['role']]);
 
         User::create([
             'name' => $validated['name'],
@@ -775,9 +846,20 @@ class AdminController extends Controller
             $validated['name'],
             $validated['email'],
             $validated['password'],
-            $validated['role'] === 'super admin' ? 'Super Admin' : 'Admin',
+            match ($validated['role']) {
+                'super admin' => 'Super Admin',
+                'hr team' => 'HR Team',
+                default => 'Admin',
+            },
             route('login')
         );
+
+        Log::warning('Privileged account created', [
+            'created_by_id' => $request->user()->id,
+            'created_by_email' => $request->user()->email,
+            'role' => $validated['role'],
+            'account_email' => $validated['email'],
+        ]);
 
         return redirect()
             ->route('admin.admins')
@@ -787,16 +869,16 @@ class AdminController extends Controller
     public function updateAdmin(Request $request, User $managedAdmin): RedirectResponse
     {
         abort_unless($request->user()->role?->name === 'super admin', 403);
-        abort_unless(in_array($managedAdmin->role?->name, ['admin', 'super admin'], true), 404);
+        abort_unless(in_array($managedAdmin->role?->name, ['admin', 'super admin', 'hr team'], true), 404);
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$managedAdmin->id],
-            'role' => ['required', 'in:admin,super admin'],
-            'password' => ['nullable', 'confirmed', 'min:8'],
+            'role' => ['required', 'in:admin,super admin,hr team'],
+            'password' => ['nullable', 'confirmed', $this->passwordRule()],
         ]);
 
-        $role = Role::query()->where('name', $validated['role'])->firstOrFail();
+        $role = Role::query()->firstOrCreate(['name' => $validated['role']]);
 
         $payload = [
             'name' => $validated['name'],
@@ -810,6 +892,15 @@ class AdminController extends Controller
 
         $managedAdmin->update($payload);
 
+        Log::warning('Privileged account updated', [
+            'updated_by_id' => $request->user()->id,
+            'updated_by_email' => $request->user()->email,
+            'account_id' => $managedAdmin->id,
+            'account_email' => $managedAdmin->email,
+            'role' => $validated['role'],
+            'password_changed' => ! empty($validated['password']),
+        ]);
+
         return redirect()
             ->route('admin.admins')
             ->with('status', 'Admin account updated successfully.');
@@ -818,13 +909,21 @@ class AdminController extends Controller
     public function destroyAdmin(Request $request, User $managedAdmin): RedirectResponse
     {
         abort_unless($request->user()->role?->name === 'super admin', 403);
-        abort_unless(in_array($managedAdmin->role?->name, ['admin', 'super admin'], true), 404);
+        abort_unless(in_array($managedAdmin->role?->name, ['admin', 'super admin', 'hr team'], true), 404);
 
         if ($request->user()->is($managedAdmin)) {
             return redirect()
                 ->route('admin.admins')
                 ->withErrors(['admin' => 'You cannot remove the account you are currently using.']);
         }
+
+        Log::warning('Privileged account removed', [
+            'removed_by_id' => $request->user()->id,
+            'removed_by_email' => $request->user()->email,
+            'account_id' => $managedAdmin->id,
+            'account_email' => $managedAdmin->email,
+            'role' => $managedAdmin->role?->name,
+        ]);
 
         $managedAdmin->delete();
 
@@ -840,6 +939,14 @@ class AdminController extends Controller
         $path = $folder.'/admin-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar.'.$extension;
 
         return CloudflareR2Storage::uploadPublicFile($file, $path);
+    }
+
+    private function passwordRule(): Password
+    {
+        return Password::min(10)
+            ->mixedCase()
+            ->numbers()
+            ->symbols();
     }
 
     private function resolveInstructorDirectoryStatus(User $instructor): array

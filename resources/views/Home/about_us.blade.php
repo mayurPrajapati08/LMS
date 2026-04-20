@@ -1,282 +1,404 @@
-<!DOCTYPE html>
+@php
+    $companyHighlights = [
+        ['label' => 'Platform Type', 'value' => 'Career-focused learning platform'],
+        ['label' => 'Core Delivery', 'value' => 'Mentor-guided project learning'],
+        ['label' => 'Primary Audience', 'value' => 'Students, freshers, and professionals'],
+        ['label' => 'Operating Style', 'value' => 'Professional brand with practical training'],
+    ];
 
-<html class="scroll-smooth" lang="en">
+    $brandPillars = [
+        [
+            'icon' => 'workspace_premium',
+            'title' => 'Professional experience',
+            'description' => 'The public brand, learner journey, and platform experience are built to feel clear, trusted, and well organized.',
+        ],
+        [
+            'icon' => 'terminal',
+            'title' => 'Practical skill building',
+            'description' => 'Programs focus on application, projects, and learning that feels closer to real work than passive course consumption.',
+        ],
+        [
+            'icon' => 'groups',
+            'title' => 'Mentor-backed progress',
+            'description' => 'Learners are supported through feedback, guidance, and a delivery model that keeps momentum visible.',
+        ],
+        [
+            'icon' => 'trending_up',
+            'title' => 'Career-oriented outcomes',
+            'description' => 'Courses, certificates, reviews, and placement readiness all contribute to a stronger outcome-driven academy identity.',
+        ],
+    ];
 
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>About Us | CodeInYourself</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "tertiary-container": "#008730",
-            "secondary-container": "#d7dffd",
-            "inverse-on-surface": "#eef1f6",
-            "surface-container-lowest": "#ffffff",
-            "primary-fixed": "#d8e2ff",
-            "tertiary-fixed": "#83fc8e",
-            "on-background": "#181c20",
-            "surface-container-highest": "#e0e3e8",
-            "surface-tint": "#005bc0",
-            "secondary-fixed": "#dae2ff",
-            "on-error": "#ffffff",
-            "surface": "#f7f9ff",
-            "outline-variant": "#c1c6d7",
-            "tertiary-fixed-dim": "#66df75",
-            "surface-dim": "#d7dadf",
-            "inverse-primary": "#adc7ff",
-            "on-surface": "#181c20",
-            "primary-fixed-dim": "#adc7ff",
-            "tertiary": "#006b24",
-            "outline": "#717786",
-            "surface-variant": "#e0e3e8",
-            "primary": "#0059bb",
-            "on-surface-variant": "#414754",
-            "on-tertiary-fixed": "#002106",
-            "surface-container-low": "#f1f4f9",
-            "on-secondary-fixed": "#131b30",
-            "error": "#ba1a1a",
-            "surface-container-high": "#e5e8ee",
-            "on-secondary-container": "#5a627b",
-            "on-secondary-fixed-variant": "#3e465e",
-            "inverse-surface": "#2d3135",
-            "surface-container": "#ebeef3",
-            "on-tertiary-container": "#f7fff2",
-            "secondary-fixed-dim": "#bec6e3",
-            "on-tertiary-fixed-variant": "#00531a",
-            "background": "#f7f9ff",
-            "on-tertiary": "#ffffff",
-            "primary-container": "#0070ea",
-            "on-primary-fixed": "#001a41",
-            "error-container": "#ffdad6",
-            "secondary": "#565e77",
-            "on-error-container": "#93000a",
-            "surface-bright": "#f7f9ff",
-            "on-primary": "#ffffff",
-            "on-primary-fixed-variant": "#004493",
-            "on-primary-container": "#fefcff",
-            "on-secondary": "#ffffff"
-          },
-          fontFamily: {
-            "headline": ["Manrope"],
-            "body": ["Inter"],
-            "label": ["Inter"]
-          },
-          borderRadius: {
-            "DEFAULT": "0.25rem",
-            "lg": "0.5rem",
-            "xl": "0.75rem",
-            "full": "9999px"
-          },
-        },
-      },
-    }
-  </script>
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
+    $timeline = [
+        [
+            'step' => '01',
+            'title' => 'Discover the direction',
+            'description' => 'Learners first meet a clear company identity, structured guidance, and a platform that looks serious about their future.',
+        ],
+        [
+            'step' => '02',
+            'title' => 'Train with structure',
+            'description' => 'Programs combine curriculum, mentors, projects, and visible platform movement instead of isolated learning screens.',
+        ],
+        [
+            'step' => '03',
+            'title' => 'Build confidence',
+            'description' => 'Reviews, course progress, certificates, and enrollments make the learner journey feel active and credible.',
+        ],
+        [
+            'step' => '04',
+            'title' => 'Move toward outcomes',
+            'description' => 'Placement support, career paths, and professional positioning help learning stay connected to opportunity.',
+        ],
+    ];
+@endphp
 
-    .glass-header {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(12px);
-    }
-  </style>
-</head>
+<x-home.marketing-layout title="About | CodeInYourself">
+    
+    <x-slot:head>
+        <style>
+            .about-hero-shell {
+                position: relative;
+                overflow: hidden;
+                width: 100vw;
+                margin-left: calc(50% - 50vw);
+                margin-right: calc(50% - 50vw);
+                background:
+                    radial-gradient(circle at 14% 20%, rgba(255,255,255,0.16), transparent 20%),
+                    radial-gradient(circle at 82% 18%, rgba(216,180,254,0.18), transparent 24%),
+                    radial-gradient(circle at 78% 76%, rgba(255,255,255,0.10), transparent 24%),
+                    linear-gradient(135deg, #0b0316 0%, #220942 28%, #4c1d95 62%, #8b5cf6 100%);
+            }
 
-<body class="bg-background text-on-background font-body">
+            .about-hero-shell::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                    linear-gradient(180deg, rgba(255,255,255,0.04), transparent 24%),
+                    linear-gradient(180deg, transparent 70%, rgba(11,3,22,0.30) 100%);
+                pointer-events: none;
+            }
 
-  <!-- Navbar -->
-  <x-home.navbar />
-  
-  <main class="pt-20">
-    <!-- Hero Section -->
-    <section class="relative min-h-[716px] flex items-center overflow-hidden">
-      <div class="absolute inset-0 z-0">
-        <img alt="Office Background" class="w-full h-full object-cover brightness-[0.4]" data-alt="Modern spacious tech office with glass walls, ergonomic furniture, and soft natural sunlight filtering through large windows at midday" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs1lJmqNV49u7kS5ruuPPJ_Qj38DT52DSEdnYydtP5BddpPat5HzJ5skTYy-jS7z-hxsoE6VZsELOu1lzFTyYpXb-kgKGpzlRH424V_fm9mrCJ9Kepd8pBT7SaQP_46NIhqgoCsOxlWcE3kPfrh-KS98tu8bQmy7av3IkXvQl3dmQoIOK3hxrc-yasPe_ZFYq5Au5UWUZ7kS_hx_O9odVMx2hmD6fh9PBL9fc-B4RT95KA1lY0qK8bfOYkvRx1jUDJta7cXcoOepnh" />
-      </div>
-      <div class="relative z-10 max-w-7xl mx-auto px-6 py-24">
-        <div class="max-w-3xl">
-          <span class="inline-block py-1 px-3 rounded-full bg-primary/20 text-primary-fixed border border-primary/30 text-xs font-bold uppercase tracking-widest mb-6">Our Mission</span>
-          <h1 class="font-headline text-5xl md:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-8">
-            Transforming Aspiring Individuals into <span class="text-primary-fixed">Industry-Ready</span> Professionals
-          </h1>
-          <p class="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl leading-relaxed">
-            We bridge the gap between academic theory and corporate reality through immersive, mentor-led engineering bootcamps.
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <button class="bg-primary text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-primary-container transition-all shadow-xl shadow-primary/20">Explore Our Story</button>
-            <button class="bg-white/10 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/20 transition-all">View Milestones</button>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Our Story Section -->
-    <section class="py-32 bg-surface">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid md:grid-cols-2 gap-20 items-center">
-          <div class="order-2 md:order-1">
-            <div class="relative group">
-              <div class="absolute -inset-4 bg-primary/10 rounded-[2rem] transform rotate-3 transition-transform group-hover:rotate-1"></div>
-              <img alt="Students and Mentors" class="relative rounded-[1.5rem] shadow-2xl object-cover aspect-[4/5] w-full" data-alt="A group of diverse young tech students collaborating around a laptop with a professional mentor in a bright modern classroom" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUzN8jOdiNI40TtpbcxuInIE-UlQyN_4c2QFUTf2P7xRuBM66u5_DGoqIleAzTUdPLajRtXTRCj5P13dABy6O8lAn-ME8fKAaHVYKmvozWIn3_XLJU3Ms3vJz79nrlAuwN5HmYfG71BgjjsFlUhXpV1v6zCAqsBbY31te7577TaTiUPxdObyjArOQa1BV0J3pgWFqCPxenbSKwgGeqTzvnIpMciWrgDDA_VVv_bkbg_s6jmeytsSiOacy894olUm6ASB4MAMGs3HDf" />
-              <div class="absolute -bottom-8 -right-8 bg-white p-6 rounded-2xl shadow-xl hidden lg:block border border-slate-100">
-                <p class="font-headline font-bold text-4xl text-primary">{{ number_format($siteStats['students']) }}+</p>
-                <p class="text-secondary text-sm font-medium">Learners Guided</p>
-              </div>
-            </div>
-          </div>
-          <div class="order-1 md:order-2">
-            <h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface mb-8 leading-tight">
-              Engineering Futures, One Coder at a Time.
-            </h2>
-            <div class="space-y-6 text-on-surface-variant text-lg leading-relaxed">
-              <p>
-                Founded in 2020, CodeInYourself began with a singular observation: traditional education was failing to keep pace with the hyper-evolved tech landscape.
-              </p>
-              <p>
-                We didn't want to build another tutorial platform. We wanted to build a career forge. Our approach combines rigorous technical training with the soft skills and real-world project experience that top-tier companies actually demand.
-              </p>
-              <p>
-                Today, we are a community of mentors, engineers, and dreamers dedicated to the philosophy that anyone can "code in themselves" the mindset of a professional.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Our Values Section (Bento Style) -->
-    <section class="py-32 bg-surface-container-low">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-20">
-          <h2 class="font-headline text-4xl font-extrabold text-on-surface mb-4">The Values That Drive Us</h2>
-          <p class="text-on-surface-variant max-w-2xl mx-auto">The core principles that guide every curriculum decision and student interaction.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <!-- Value 1 -->
-          <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-lg mb-6">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
-            </div>
-            <h3 class="font-headline font-bold text-xl mb-3">Innovation</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed">Constantly evolving our curriculum to match the cutting edge of AI, Cloud, and Software Engineering.</p>
-          </div>
-          <!-- Value 2 -->
-          <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-tertiary/10 text-tertiary flex items-center justify-center rounded-lg mb-6">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
-            </div>
-            <h3 class="font-headline font-bold text-xl mb-3">Integrity</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed">Honest career guidance and realistic job expectations. We value your trust above all else.</p>
-          </div>
-          <!-- Value 3 -->
-          <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-secondary/10 text-secondary flex items-center justify-center rounded-lg mb-6">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person_pin</span>
-            </div>
-            <h3 class="font-headline font-bold text-xl mb-3">Student-First</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed">Every student is a unique project. Personalized mentorship is the cornerstone of our success.</p>
-          </div>
-          <!-- Value 4 -->
-          <div class="bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md transition-shadow">
-            <div class="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-lg mb-6">
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
-            </div>
-            <h3 class="font-headline font-bold text-xl mb-3">Excellence</h3>
-            <p class="text-on-surface-variant text-sm leading-relaxed">Good enough isn't enough. We strive for excellence in code quality and professional ethics.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Team Section -->
-    <section class="py-32 bg-surface">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div class="max-w-xl">
-            <h2 class="font-headline text-4xl font-extrabold text-on-surface mb-4">Meet the Mentors</h2>
-            <p class="text-on-surface-variant">Industry veterans from Fortune 500 companies dedicated to your growth.</p>
-          </div>
-          <a class="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all" href="{{ route('home.contact') }}">
-            Connect with mentors <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          @foreach ($mentorCards as $mentor)
-            <div class="group">
-              <div class="relative overflow-hidden rounded-2xl mb-4 aspect-square">
-                <img alt="{{ $mentor['name'] }}" class="w-full h-full object-cover transition-all duration-500 scale-100 group-hover:scale-105" src="{{ $mentor['avatar'] }}" />
-              </div>
-              <h4 class="font-headline font-bold text-lg text-on-surface">{{ $mentor['name'] }}</h4>
-              <p class="text-primary font-medium text-sm mb-2">{{ $mentor['headline'] }}</p>
-              <p class="text-on-surface-variant text-xs leading-relaxed">{{ $mentor['bio'] }}</p>
-            </div>
-          @endforeach
-        </div>
-      </div>
-    </section>
-    <!-- Milestones Section -->
-    <section class="py-32 bg-surface-container-highest/30">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-24">
-          <h2 class="font-headline text-4xl font-extrabold text-on-surface mb-4">Our Growth Story</h2>
-          <p class="text-on-surface-variant">A timeline of how we became a leader in tech education.</p>
-        </div>
-        <div class="relative">
-          <!-- Vertical Line -->
-          <div class="absolute left-1/2 -translate-x-1/2 h-full w-px bg-outline-variant/50 hidden md:block"></div>
-          <div class="space-y-24">
-            <!-- 2020 -->
-            <div class="relative flex flex-col md:flex-row items-center justify-between">
-              <div class="md:w-[45%] mb-8 md:mb-0 text-right pr-0 md:pr-12">
-                <h4 class="font-headline text-3xl font-extrabold text-primary mb-2">2020</h4>
-                <h5 class="text-xl font-bold text-on-surface mb-4">The Spark</h5>
-                <p class="text-on-surface-variant leading-relaxed">CodeInYourself launches with its first batch of 20 students in a small home office, focusing purely on Full-Stack Development.</p>
-              </div>
-              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-white z-10 hidden md:block"></div>
-              <div class="md:w-[45%] pl-0 md:pl-12 opacity-40">
-                <img alt="2020" class="rounded-xl grayscale" data-alt="Close up of computer screens with lines of code in a dimly lit, cozy home office environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIIpQEgesyPe1fa6CuQeBOicoGxahuADsRQrsfQS6MJNuSC0_rCiYq6Svd2cTSj-eCJxnLwrLxhw0Z-6GEQAS8jOHHd28dlWrtiN4l3BgbjPW07nD7ZkOOSG_6gg7ycvA5KbYeiFV7RCGtiJJLpYVNc5yLhgNGBagD15EukXqT5WOQu4IviPy8phxO5o2cxEke7PBdbL67D0Z64hfYXLawZzhhefHyuLWTzm24rJ7W5MzkqzfabVESUc5cO1vVcLYZBdNDq33lD-xe" />
-              </div>
-            </div>
-            <!-- 2022 -->
-            <div class="relative flex flex-col md:flex-row-reverse items-center justify-between">
-              <div class="md:w-[45%] mb-8 md:mb-0 text-left pl-0 md:pl-12">
-                <h4 class="font-headline text-3xl font-extrabold text-primary mb-2">2022</h4>
-                <h5 class="text-xl font-bold text-on-surface mb-4">Scaling Up</h5>
-                <p class="text-on-surface-variant leading-relaxed">Expansion into AI and Cloud Engineering. Our student base grows to 1,000+, and we establish partnerships with 50+ tech giants.</p>
-              </div>
-              <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary border-4 border-white z-10 hidden md:block"></div>
-              <div class="md:w-[45%] pr-0 md:pr-12 opacity-40">
-                <img alt="2022" class="rounded-xl grayscale" data-alt="A professional handshake between two people in a glass-walled meeting room representing business growth and partnership" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPyHeQRTfIpiV89NwCPdGeUORepnmtl-akAIIbEMrJhRhRk2ng0j_J3Ha0TrusiQ5POaCgemKUuxeVUG6x9JswJIcp1gt0lZAGsJhScdBYejhVuWsFCN_ttl2f143ejJ77xer8Xy-u4uiAue-AHdx7sCZaovYi69OTPcwZpZrFNuYE2jeVKnDQm-Ex_N4MPvWQCgx88RQpRXEfcAWDww6OHQGt75IJFsKg4s9pZn68a43RZqmmQF91d5pxkTH4iTZjB-TUjZfckjO7" />
-              </div>
-            </div>
-            <!-- 2024 -->
-            <div class="relative flex flex-col md:flex-row items-center justify-between">
-              <div class="md:w-[45%] mb-8 md:mb-0 text-right pr-0 md:pr-12">
-                <h4 class="font-headline text-3xl font-extrabold text-primary mb-2">Now</h4>
-                <h5 class="text-xl font-bold text-on-surface mb-4">Industry Leader</h5>
-                <p class="text-on-surface-variant leading-relaxed">Named the #1 Bootcamp for Engineering Excellence. Launching our global virtual campus connecting students worldwide.</p>
-              </div>
-              <div class="absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-primary border-4 border-white z-10 hidden md:block shadow-lg shadow-primary/40"></div>
-              <div class="md:w-[45%] pl-0 md:pl-12">
-                <img alt="Now" class="rounded-xl shadow-xl" data-alt="Modern high-tech auditorium filled with diverse students at a graduation ceremony, with bright stage lights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcf8naAvM6JDVfAXANDPjODxLP0kkXu0O9lS39YNNpsrrepG1csX7bgZSTVqLwPkxdFnASpCJcZC95TN09EAFXBNY1gKcITC6LqbFXliiNp7HME8FInQblyMsReT8VlJ5W2VjM7mnHaJ9YIS8IRyABCaSmCK2MN7jwkt_GcNz-blIxK0p4GVWH9K6Jmqcbjz-zCZbIKyZfp0-ef19C8zixAO3FxPzyaHPIM309fC-bNjbKsgrjCFP3ml2fXEZgypcoo2wz1U_9uc-E" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+            .about-hero-shell::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background-image:
+                    radial-gradient(1px 1px at 10% 18%, rgba(255,255,255,0.75) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 30% 11%, rgba(255,255,255,0.48) 0%, transparent 100%),
+                    radial-gradient(1.5px 1.5px at 72% 16%, rgba(255,255,255,0.55) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 88% 46%, rgba(255,255,255,0.30) 0%, transparent 100%),
+                    radial-gradient(1.3px 1.3px at 22% 76%, rgba(221,214,254,0.65) 0%, transparent 100%),
+                    radial-gradient(1px 1px at 64% 73%, rgba(255,255,255,0.44) 0%, transparent 100%);
+                opacity: 0.9;
+                pointer-events: none;
+            }
 
-    <!-- Footer -->
-    <x-home.footer />
-  
-</body>
+            .about-hero-grid {
+                position: relative;
+                z-index: 1;
+            }
 
-</html>
+            .about-hero-frame {
+                position: relative;
+                overflow: hidden;
+                border-radius: 2rem;
+                border: 1px solid rgba(255,255,255,0.14);
+                background: rgba(255,255,255,0.08);
+                box-shadow: 0 28px 90px rgba(20, 6, 48, 0.26);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+            }
 
+            .about-hero-frame::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(180deg, rgba(255,255,255,0.10), transparent 26%, transparent 72%, rgba(11,3,22,0.18) 100%);
+                pointer-events: none;
+            }
+
+            .about-hero-gridline {
+                position: absolute;
+                inset: 10% 8% 12% auto;
+                width: 38%;
+                background-image:
+                    linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+                background-size: 2.5rem 2.5rem;
+                mask-image: radial-gradient(circle at center, black 30%, transparent 78%);
+                opacity: 0.55;
+                pointer-events: none;
+            }
+
+            .about-floating-card {
+                border: 1px solid rgba(255,255,255,0.12);
+                background: rgba(255,255,255,0.10);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                box-shadow: 0 18px 44px rgba(21, 7, 50, 0.18);
+            }
+
+            .about-kicker {
+                font-size: 0.72rem;
+                font-weight: 800;
+                letter-spacing: 0.24em;
+                text-transform: uppercase;
+            }
+
+            .about-company-band {
+                position: relative;
+                overflow: hidden;
+                border: 1px solid rgba(220, 205, 246, 0.72);
+                background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(249,245,255,0.94));
+                box-shadow: 0 24px 58px rgba(76, 29, 149, 0.10);
+            }
+
+            .about-company-band::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(circle at top left, rgba(168,85,247,0.08), transparent 24%),
+                    radial-gradient(circle at bottom right, rgba(124,58,237,0.07), transparent 26%);
+                pointer-events: none;
+            }
+
+            .about-page-shell {
+                overflow-x: clip;
+            }
+
+            @supports not (overflow: clip) {
+                .about-page-shell {
+                    overflow-x: hidden;
+                }
+            }
+        </style>
+    </x-slot:head>
+
+    <main class="about-page-shell pb-24 pt-5">
+        <section class="about-hero-shell reveal min-h-[calc(100vh-5rem)] px-4 pb-14 pt-10 text-white sm:px-6 md:px-8 md:pb-16 md:pt-12">
+            <div class="about-hero-grid mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+                <div>
+                    <span class="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/8 px-4 py-2 text-white/78 backdrop-blur-sm">
+                        <span class="h-2 w-2 rounded-full bg-[#d8b4fe]"></span>
+                        <span class="about-kicker">About CodeInYourself</span>
+                    </span>
+
+                    <h1 class="mt-7 max-w-3xl font-headline text-[1.8rem] font-extrabold leading-[1.04] sm:text-[2.05rem] md:text-[2.45rem] lg:text-[3rem]">
+                        Building a learning company
+                        <span class="block text-[#ead9ff]">where clear guidance supports practical career growth.</span>
+                    </h1>
+
+                    <p class="mt-5 max-w-xl text-[0.92rem] leading-7 text-white/68 md:text-[0.97rem]">
+                        CodeInYourself is built as a modern education brand and learning ecosystem. We combine mentor-led delivery, project-focused learning, and learner support so the platform feels credible and growth-oriented.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="{{ route('home.courses') }}" class="cta-button inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-4 text-sm font-bold text-primary">
+                            Explore Programs
+                            <span class="material-symbols-outlined text-[18px]">north_east</span>
+                        </a>
+                        <a href="{{ route('home.contact') }}" class="cta-button inline-flex items-center gap-2 rounded-2xl border border-white/14 bg-white/10 px-6 py-4 text-sm font-bold text-white backdrop-blur-sm">
+                            Talk To The Team
+                        </a>
+                    </div>
+
+                    <div class="mt-10 grid gap-4 sm:grid-cols-3">
+                        <div class="about-floating-card rounded-[1.6rem] p-4">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/52">Learners</p>
+                            <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['students']) }}+</p>
+                        </div>
+                        <div class="about-floating-card rounded-[1.6rem] p-4">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/52">Programs</p>
+                            <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['published_courses']) }}+</p>
+                        </div>
+                        <div class="about-floating-card rounded-[1.6rem] p-4">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/52">Mentors</p>
+                            <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['mentors']) }}+</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative min-h-[27rem] lg:min-h-[36rem]">
+                    <div class="about-hero-gridline"></div>
+
+                    <div class="about-floating-card absolute left-0 top-0 max-w-[14rem] rounded-[1.6rem] p-4">
+                        <p class="about-kicker text-white/50">Company Position</p>
+                        <p class="mt-3 font-headline text-2xl font-extrabold leading-tight text-white">A learning platform built on clear delivery and practical value.</p>
+                    </div>
+
+                    <div class="about-hero-frame absolute right-0 top-16 w-full max-w-[22rem] p-3">
+                        <div class="overflow-hidden rounded-[1.55rem] bg-[linear-gradient(180deg,rgba(29,10,57,0.78),rgba(102,45,188,0.68))] p-3">
+                            <img src="{{ asset('images/owner 1.0.jpeg') }}" alt="Founder portrait" class="h-[26rem] w-full rounded-[1.35rem] object-cover object-top" />
+                        </div>
+                    </div>
+
+                    <div class="about-floating-card absolute bottom-0 left-10 right-0 rounded-[1.7rem] p-5">
+                        <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                            <div>
+                                <p class="about-kicker text-white/50">Brand Promise</p>
+                                <p class="mt-3 max-w-md text-sm leading-7 text-white/76">A connected experience for discovery, enrollment, mentoring, learning progress, and career movement.</p>
+                            </div>
+                            <div class="text-left sm:text-right">
+                                <p class="font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['enrollments']) }}+</p>
+                                <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/50">Completed enrollments</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mx-auto -mt-8 max-w-7xl px-4 sm:px-6">
+            <div class="about-company-band reveal rounded-[2rem] px-6 py-6 md:px-8">
+                <div class="relative z-10 grid gap-4 md:grid-cols-4">
+                    @foreach ($companyHighlights as $highlight)
+                        <div class="rounded-[1.5rem] border border-white/70 bg-white/70 p-4">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-primary/70">{{ $highlight['label'] }}</p>
+                            <p class="mt-3 text-sm font-semibold leading-7 text-on-surface">{{ $highlight['value'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
+        <section class="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+            <div class="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
+                <article class="glass-card premium-card reveal rounded-[2rem] p-6 md:p-8">
+                    <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Who We Are</p>
+                    <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A modern learning company built around clarity, trust, and outcomes.</h2>
+                    <div class="mt-5 space-y-4 text-sm leading-8 text-on-surface-variant md:text-base">
+                        <p>CodeInYourself is not presented as a generic course page. It is shaped like a real company, with a defined identity, visible leadership, live learning activity, and a delivery model centered on practical capability.</p>
+                        <p>The academy combines public brand storytelling with a structured LMS experience so learners can discover the platform, choose a path, learn with guidance, track progress, and move toward certificates or placement support in one flow.</p>
+                        <p>That balance between visual polish and operational clarity is what makes the About page important. It should communicate trust, ambition, and professionalism without feeling overloaded or artificial.</p>
+                    </div>
+                </article>
+
+                <article class="section-panel reveal rounded-[2rem] p-6 md:p-8">
+                    <div class="relative z-10">
+                        <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">What Defines The Brand</p>
+                        <div class="mt-5 grid gap-4 sm:grid-cols-2">
+                            @foreach ($brandPillars as $pillar)
+                                <div class="soft-strip rounded-[1.5rem] p-4">
+                                    <span class="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                                        <span class="material-symbols-outlined">{{ $pillar['icon'] }}</span>
+                                    </span>
+                                    <h3 class="mt-4 font-headline text-xl font-extrabold text-on-surface">{{ $pillar['title'] }}</h3>
+                                    <p class="mt-2 text-sm leading-7 text-on-surface-variant">{{ $pillar['description'] }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+            <div class="grid gap-6 lg:grid-cols-[0.96fr_1.04fr]">
+                <article class="glass-card premium-card reveal rounded-[2rem] p-6 md:p-8">
+                    <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">How We Operate</p>
+                    <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A strong academy experience starts with clear structure and consistent support.</h2>
+
+                    <div class="mt-6 space-y-4">
+                        @foreach ($timeline as $item)
+                            <div class="rounded-[1.5rem] border border-outline/70 bg-white/72 p-4">
+                                <div class="flex items-start gap-4">
+                                    <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 font-headline text-lg font-extrabold text-primary">{{ $item['step'] }}</span>
+                                    <div>
+                                        <h3 class="font-headline text-xl font-extrabold text-on-surface">{{ $item['title'] }}</h3>
+                                        <p class="mt-2 text-sm leading-7 text-on-surface-variant">{{ $item['description'] }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </article>
+
+                <article class="hero-panel reveal rounded-[2rem] px-6 py-8 text-white md:px-8">
+                    <div class="relative z-10">
+                        <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/62">Platform Snapshot</p>
+                        <h2 class="mt-3 font-headline text-3xl font-extrabold md:text-4xl">Live platform activity reinforces the company story with real signals.</h2>
+
+                        <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                            <div class="hero-stat rounded-[1.5rem] p-5">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/52">Certificates</p>
+                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['certificates']) }}+</p>
+                                <p class="mt-2 text-sm leading-7 text-white/72">Learner achievement is visible and documented through the platform.</p>
+                            </div>
+
+                            <div class="hero-stat rounded-[1.5rem] p-5">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/52">Reviews</p>
+                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['reviews_count']) }}+</p>
+                                <p class="mt-2 text-sm leading-7 text-white/72">Feedback and learner response make the academy feel active and trusted.</p>
+                            </div>
+
+                            <div class="hero-stat rounded-[1.5rem] p-5 sm:col-span-2">
+                                <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                                    <div>
+                                        <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/52">Average Rating</p>
+                                        <p class="mt-3 font-headline text-4xl font-extrabold text-white">{{ number_format($siteStats['avg_rating'], 1) }}/5</p>
+                                    </div>
+                                    <p class="max-w-md text-sm leading-7 text-white/72">Good brand experience matters more when it is supported by real learner movement, working mentors, and visible academic outcomes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+            <div class="section-panel reveal rounded-[2.2rem] px-6 py-8 md:px-8">
+                <div class="relative z-10 mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Mentor Network</p>
+                        <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">The people who help turn the brand promise into an actual learning experience.</h2>
+                    </div>
+                    <p class="max-w-xl text-sm leading-7 text-on-surface-variant">These cards are powered by live instructor data, so the About page reflects the real mentor presence behind the LMS.</p>
+                </div>
+
+                @if ($mentorCards->isNotEmpty())
+                    <div class="relative z-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                        @foreach ($mentorCards as $index => $mentor)
+                            <article class="glass-card premium-card reveal stagger-{{ ($index % 4) + 1 }} rounded-[1.9rem] p-5">
+                                <img alt="{{ $mentor['name'] }}" class="h-64 w-full rounded-[1.5rem] object-cover" src="{{ $mentor['avatar'] }}" />
+                                <h3 class="mt-5 font-headline text-2xl font-extrabold text-on-surface">{{ $mentor['name'] }}</h3>
+                                <p class="mt-2 text-sm font-bold uppercase tracking-[0.16em] text-primary">{{ $mentor['headline'] }}</p>
+                                <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $mentor['bio'] }}</p>
+                            </article>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="relative z-10 rounded-[1.8rem] border border-dashed border-outline bg-white/70 p-8 text-center">
+                        <h3 class="font-headline text-2xl font-extrabold text-on-surface">Mentor profiles will appear here</h3>
+                        <p class="mt-3 text-sm leading-7 text-on-surface-variant">Instructor profiles will appear here once mentor records are available.</p>
+                    </div>
+                @endif
+            </div>
+        </section>
+
+        <section class="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+            <div class="hero-panel reveal rounded-[2.2rem] px-6 py-10 text-white sm:px-8 md:px-10">
+                <div class="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="max-w-2xl">
+                        <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/62">Start With Confidence</p>
+                        <h2 class="mt-3 font-headline text-3xl font-extrabold md:text-4xl">Explore a platform built around clarity, guidance, and real learner progress.</h2>
+                        <p class="mt-4 text-sm leading-7 text-white/76 md:text-base">From the first impression to the final milestone, the goal is to create an academy experience that stays professional and purposeful.</p>
+                    </div>
+
+                    <div class="flex flex-wrap gap-4">
+                        <a class="cta-button inline-flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-4 text-sm font-bold uppercase tracking-[0.16em] text-primary" href="{{ route('home.courses') }}">
+                            Explore Programs
+                            <span class="material-symbols-outlined text-[18px]">north_east</span>
+                        </a>
+                        <a class="cta-button inline-flex items-center justify-center gap-2 rounded-2xl border border-white/14 bg-white/10 px-6 py-4 text-sm font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm" href="{{ route('home.contact') }}">
+                            Contact The Team
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</x-home.marketing-layout>

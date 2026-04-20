@@ -198,7 +198,7 @@ class StudentDashboardController extends Controller
                 'title' => 'Achievement Insight',
                 'message' => 'You already have '.$certificateCount.' certificate'.($certificateCount === 1 ? '' : 's').'. Keep that momentum going with your next course milestone.',
                 'button_label' => 'View Certificates',
-                'href' => '/student/certificate',
+                'href' => route('student.certificates'),
             ];
         }
 
@@ -207,7 +207,7 @@ class StudentDashboardController extends Controller
                 'title' => 'Curator Insight',
                 'message' => 'You still have '.$wishlistCount.' saved course'.($wishlistCount === 1 ? '' : 's').' waiting in your wishlist. Picking one up can keep your learning streak fresh.',
                 'button_label' => 'Open Wishlist',
-                'href' => '/student/wishlist',
+                'href' => route('student.wishlist'),
             ];
         }
 
@@ -215,7 +215,7 @@ class StudentDashboardController extends Controller
             'title' => 'Curator Insight',
             'message' => 'Your dashboard is ready. Enroll in a course and your learning progress, hours, and milestones will start showing up here.',
             'button_label' => 'Browse Courses',
-            'href' => '/student/browse-courses',
+            'href' => route('student.browse-courses'),
         ];
     }
 

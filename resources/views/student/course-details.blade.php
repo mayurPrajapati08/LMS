@@ -1,48 +1,16 @@
-<!DOCTYPE html>
-<html class="light" lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>{{ $course->title }} | Student Course Details</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<x-student.layout :title="$course->title.' | Student Course Details'">
+    <x-slot:head>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#0c4ea3",
-                        "primary-container": "#1570d8",
-                        surface: "#f4f9ff",
-                        "surface-container-low": "#eef5ff",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container-lowest": "#ffffff",
-                        "on-surface": "#191c1d",
-                        "on-surface-variant": "#4f6178",
-                        outline: "#7c8da7",
-                        tertiary: "#007030",
-                        secondary: "#3b5f8d"
-                    },
-                    fontFamily: {
-                        headline: ["Manrope"],
-                        body: ["Inter"]
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         .font-variation-settings-fill {
             font-variation-settings: 'FILL' 1;
         }
-        .player-stage { background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.26), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
+        .player-stage { background: radial-gradient(circle at top right, rgba(22, 184, 238, 0.18), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
         .player-range { -webkit-appearance: none; appearance: none; background: transparent; }
-        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #1570d8 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
-        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(12, 78, 163, 0.32); }
+        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #b07ac3 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
+        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(106, 51, 120, 0.22); }
         .player-range::-moz-range-track { height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.16); }
-        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #1570d8; }
+        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #b07ac3; }
         .player-range::-moz-range-thumb { height: 16px; width: 16px; border: none; border-radius: 9999px; background: #ffffff; }
         .player-feedback {
             --feedback-x: -50%;
@@ -154,36 +122,38 @@
             }
         }
     </style>
-</head>
-<body class="bg-surface font-body text-on-surface antialiased">
+    </x-slot:head>
+
     @php($previewVideoType = str_contains((string) $previewVideoUrl, '.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/mp4')
-    <x-student.navbar />
 
-    <header class="fixed top-0 right-0 z-40 flex h-16 w-full items-center justify-between bg-white/80 px-4 shadow-sm backdrop-blur-md md:w-[calc(100%-16rem)] md:px-8">
-        <div class="flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
-            <div class="relative">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-                <input class="w-full rounded-xl border-none bg-surface-container-low py-2.5 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Search..." type="text" />
-            </div>
+    <x-student.topbar>
+        <div>
+            <p class="text-[11px] font-bold uppercase tracking-[0.26em] text-on-surface-variant">Course Preview</p>
+            <p class="font-headline text-lg font-extrabold text-on-surface">Course Details</p>
         </div>
-        <div class="ml-auto flex items-center gap-4">
-            <a class="hidden rounded-full bg-surface-container-low px-4 py-2 text-sm font-semibold text-primary md:inline-flex" href="{{ $browseUrl }}">
-                Browse courses
-            </a>
-            <img alt="{{ $student->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $profileAvatar }}" />
-        </div>
-    </header>
+        <x-slot:center>
+            <label class="student-top-search">
+                <span class="material-symbols-outlined text-on-surface-variant">search</span>
+                <input placeholder="Search courses" type="text" />
+            </label>
+        </x-slot:center>
+        <x-slot:right>
+            <a class="student-pill-button student-pill-button--ghost" href="{{ $browseUrl }}">Browse courses</a>
+            <img alt="{{ $student->name }} avatar" class="h-11 w-11 rounded-2xl object-cover ring-2 ring-white/80" src="{{ $profileAvatar }}" />
+        </x-slot:right>
+    </x-student.topbar>
 
-    <main class="min-h-screen p-4 pt-24 md:ml-64 md:p-8 md:pt-24">
+    <main class="student-shell-main student-page">
         @if (session('status'))
-            <div class="mx-auto mb-6 max-w-7xl rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">
+            <div class="student-page-inner mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">
                 {{ session('status') }}
             </div>
         @endif
 
-        <div class="mx-auto flex max-w-7xl flex-col gap-8 xl:flex-row">
+        <div class="student-page-inner flex flex-col gap-8 xl:flex-row">
             <div class="flex-1 space-y-8">
                 <section class="space-y-6">
+                    <div class="student-section">
                     <nav class="flex items-center gap-2 text-sm text-on-surface-variant">
                         <a class="hover:text-primary" href="{{ route('student.dashboard') }}">Dashboard</a>
                         <span class="material-symbols-outlined text-xs">chevron_right</span>
@@ -192,16 +162,17 @@
                         <span class="font-medium text-primary">{{ $course->title }}</span>
                     </nav>
 
-                    <div class="space-y-3">
+                    <div class="mt-6 space-y-3">
                         <div class="flex flex-wrap gap-2">
-                            <span class="rounded-full bg-[#dcecff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
+                            <span class="rounded-full bg-[#eadff1] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-primary">{{ $course->category?->name ?? 'Course' }}</span>
                             <span class="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-emerald-700">{{ ucfirst($course->level ?: 'all levels') }}</span>
                             @if ($isEnrolled)
                                 <span class="rounded-full bg-amber-100 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-700">Enrolled</span>
                             @endif
                         </div>
-                        <h1 class="font-headline text-4xl font-extrabold tracking-tight leading-[1.1] md:text-5xl">{{ $course->title }}</h1>
-                        <p class="max-w-3xl text-lg text-on-surface-variant">{{ $course->details }}</p>
+                        <h1 class="student-page-title max-w-4xl">{{ $course->title }}</h1>
+                        <p class="student-page-copy max-w-3xl">{{ $course->details }}</p>
+                    </div>
                     </div>
 
                     <div id="previewPlayerStage" class="player-stage overflow-hidden rounded-[1.5rem] shadow-xl">
@@ -379,11 +350,11 @@
                         </div>
                         <div class="mt-6 space-y-3">
                             @if ($isEnrolled)
-                                <a class="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-container px-6 py-4 text-sm font-bold text-white shadow-lg shadow-primary/20" href="{{ $continueUrl }}">
+                                <a class="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#6a3378] to-[#b07ac3] px-6 py-4 text-sm font-bold text-white shadow-lg shadow-primary/20" href="{{ $continueUrl }}">
                                     Continue Learning
                                 </a>
                             @else
-                                <a class="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-primary to-primary-container px-6 py-4 text-sm font-bold text-white shadow-lg shadow-primary/20" href="{{ $checkoutUrl }}">
+                                <a class="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#6a3378] to-[#b07ac3] px-6 py-4 text-sm font-bold text-white shadow-lg shadow-primary/20" href="{{ $checkoutUrl }}">
                                     Buy Now
                                 </a>
                             @endif
@@ -393,7 +364,7 @@
                             @unless ($isEnrolled)
                                 <form action="{{ route('student.cart.add', ['course' => $course->id]) }}" method="POST">
                                     @csrf
-                                    <button class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary/15 px-6 py-4 text-sm font-bold transition-all {{ $isInCart ? 'bg-[#edf5ff] text-primary' : 'bg-white text-on-surface-variant hover:bg-[#edf5ff] hover:text-primary' }}" type="submit">
+                                    <button class="flex w-full items-center justify-center gap-2 rounded-xl border border-primary/15 px-6 py-4 text-sm font-bold transition-all {{ $isInCart ? 'bg-[#f5eef8] text-primary' : 'bg-white text-on-surface-variant hover:bg-[#f5eef8] hover:text-primary' }}" type="submit">
                                         <span class="material-symbols-outlined" @if($isInCart) style="font-variation-settings: 'FILL' 1;" @endif>shopping_cart</span>
                                         {{ $isInCart ? 'Already in Cart' : 'Add to Cart' }}
                                     </button>
@@ -710,7 +681,5 @@
             updateTimeline();
         })();
     </script>
-</body>
-</html>
-
+</x-student.layout>
 

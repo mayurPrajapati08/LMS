@@ -1,85 +1,8 @@
 
-<!DOCTYPE html>
-<html class="light" lang="en">
-
-<head>
-    <meta charset="utf-8" />
+<x-student.layout title='Course Player - CodeInYourself'>
+    <x-slot:head>
     <meta content="{{ csrf_token() }}" name="csrf-token" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Course Player - CodeInYourself</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "secondary": "#3b5f8d",
-                        "surface-tint": "#1570d8",
-                        "inverse-on-surface": "#f5fbff",
-                        "secondary-fixed": "#e8f3ff",
-                        "on-primary-fixed": "#0f0069",
-                        "error-container": "#ffdad6",
-                        "tertiary": "#005523",
-                        "tertiary-container": "#007030",
-                        "on-secondary-fixed-variant": "#315b90",
-                        "tertiary-fixed": "#6bff8f",
-                        "secondary-fixed-dim": "#b9dcff",
-                        "on-tertiary": "#ffffff",
-                        "on-primary-fixed-variant": "#0a4b99",
-                        "error": "#ba1a1a",
-                        "surface-container-low": "#eef5ff",
-                        "secondary-container": "#d7e9ff",
-                        "on-primary": "#ffffff",
-                        "on-error": "#ffffff",
-                        "primary-fixed-dim": "#b9dcff",
-                        "outline-variant": "#d5e4ff",
-                        "on-surface": "#191c1d",
-                        "surface-dim": "#d4e3f8",
-                        "on-secondary-fixed": "#072a60",
-                        "inverse-primary": "#b9dcff",
-                        "on-surface-variant": "#4f6178",
-                        "tertiary-fixed-dim": "#4ae176",
-                        "on-primary-container": "#edf5ff",
-                        "inverse-surface": "#18345f",
-                        "outline": "#7c8da7",
-                        "primary-container": "#1570d8",
-                        "on-background": "#191c1d",
-                        "surface-container-high": "#e3eeff",
-                        "surface-container": "#e9f2ff",
-                        "on-tertiary-fixed-variant": "#005321",
-                        "primary-fixed": "#e8f3ff",
-                        "surface-bright": "#f4f9ff",
-                        "on-tertiary-fixed": "#002109",
-                        "on-tertiary-container": "#63f889",
-                        "surface-container-highest": "#dbe8ff",
-                        "on-error-container": "#93000a",
-                        "background": "#f4f9ff",
-                        "surface-container-lowest": "#ffffff",
-                        "primary": "#0c4ea3",
-                        "on-secondary-container": "#41648d",
-                        "surface-variant": "#dbe8ff",
-                        "on-secondary": "#ffffff",
-                        "surface": "#f4f9ff"
-                    },
-                    fontFamily: {
-                        "headline": ["Manrope", "sans-serif"],
-                        "body": ["Inter", "sans-serif"],
-                        "label": ["Inter", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.75rem",
-                        "xl": "1rem",
-                        "full": "9999px"
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         .material-symbols-outlined {
             font-family: 'Material Symbols Outlined';
@@ -100,12 +23,12 @@
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .glass-effect { backdrop-filter: blur(12px); background-color: rgba(248, 249, 250, 0.8); }
-        .player-stage { background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.26), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
+        .player-stage { background: radial-gradient(circle at top right, rgba(22, 184, 238, 0.18), transparent 32%), linear-gradient(180deg, #111827 0%, #0f172a 100%); }
         .player-range { -webkit-appearance: none; appearance: none; background: transparent; }
-        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #1570d8 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
-        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(12, 78, 163, 0.32); }
+        .player-range::-webkit-slider-runnable-track { height: 6px; border-radius: 9999px; background: linear-gradient(90deg, #b07ac3 var(--range-progress, 0%), rgba(255,255,255,0.16) var(--range-progress, 0%)); }
+        .player-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; height: 16px; width: 16px; border-radius: 9999px; background: #ffffff; margin-top: -5px; box-shadow: 0 10px 24px rgba(106, 51, 120, 0.22); }
         .player-range::-moz-range-track { height: 6px; border-radius: 9999px; background: rgba(255,255,255,0.16); }
-        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #1570d8; }
+        .player-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: #b07ac3; }
         .player-range::-moz-range-thumb { height: 16px; width: 16px; border: none; border-radius: 9999px; background: #ffffff; }
         .player-interactive.is-idle { cursor: none; }
         .player-interactive.is-idle .player-fade { opacity: 0; transform: translateY(8px); }
@@ -282,42 +205,39 @@
             }
         }
     </style>
-</head>
+    </x-slot:head>
 
-<body class="bg-background text-on-surface font-body antialiased">
     @php($activeTab = request()->query('tab', 'description'))
     @php($lessonVideoType = str_contains((string) $currentLesson->video_url, '.m3u8') ? 'application/vnd.apple.mpegurl' : 'video/mp4')
-    <x-student.navbar />
 
-    <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 glass-effect z-40 flex items-center justify-between px-4 md:px-8">
-        <div class="flex items-center gap-4">
-            <a class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors" href="{{ route('student.my-learning') }}">
-                <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-                <span class="text-sm font-medium font-label">Back to My Learning</span>
-            </a>
-        </div>
-        <div class="flex-1 max-w-xl mx-4 md:mx-12">
+    <x-student.topbar>
+        <a class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors" href="{{ route('student.my-learning') }}">
+            <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+            <span class="text-sm font-medium font-label">Back to My Learning</span>
+        </a>
+        <x-slot:center>
             <div class="flex flex-col gap-1">
                 <div class="flex justify-between items-end">
                     <span class="text-[10px] font-bold text-primary uppercase tracking-tighter">Your Progress: {{ $progressPercent }}%</span>
                     <span class="text-[10px] font-medium text-on-surface-variant">{{ $completedCount }}/{{ $totalLessons }} Lessons</span>
                 </div>
                 <div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
-                    <div class="js-progress-fill h-full bg-gradient-to-r from-primary to-primary-container rounded-full" data-progress="{{ max(0, min(100, $progressPercent)) }}"></div>
+                    <div class="js-progress-fill h-full bg-gradient-to-r from-[#6f4ef6] to-[#d16bf2] rounded-full" data-progress="{{ max(0, min(100, $progressPercent)) }}"></div>
                 </div>
             </div>
-        </div>
-        <div class="flex items-center gap-6">
-            <button class="relative p-2 text-on-surface-variant hover:text-primary transition-colors" type="button">
-                <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-                <span class="absolute top-2 right-2 h-2 w-2 bg-error rounded-full border-2 border-white"></span>
+        </x-slot:center>
+        <x-slot:right>
+            <button class="student-pill-button student-pill-button--ghost" type="button">
+                <span class="material-symbols-outlined text-base" data-icon="notifications">notifications</span>
+                Alerts
             </button>
-            <img alt="Student Profile" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#dcecff]" src="{{ $studentAvatar }}" />
-        </div>
-    </header>
+            <img alt="Student Profile" class="h-11 w-11 rounded-2xl object-cover ring-2 ring-white/80" src="{{ $studentAvatar }}" />
+        </x-slot:right>
+    </x-student.topbar>
 
-    <main class="md:ml-64 pt-16 min-h-screen flex flex-col xl:flex-row">
-        <div class="flex-1 flex flex-col p-4 md:p-8 overflow-y-auto">
+    <main class="student-shell-main student-page min-h-screen">
+        <div class="student-page-inner flex flex-col gap-6 xl:flex-row">
+        <div class="flex-1 flex flex-col overflow-y-auto">
             @if (session('status'))
                 <div class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm font-medium text-emerald-700">
                     {{ session('status') }}
@@ -330,7 +250,19 @@
                 </div>
             @endif
 
-            <div id="playerStage" class="player-stage rounded-xl overflow-hidden shadow-2xl transition-all duration-500">
+            <section class="student-page-header mb-6">
+                <div>
+                    <p class="student-eyebrow">Lesson Player</p>
+                    <h1 class="student-page-title">{{ $currentLesson->title }}</h1>
+                    <p class="student-page-copy">Part of {{ $course->title }}. The page now keeps the focus on the lesson instead of oversized wrapper UI.</p>
+                </div>
+                <div class="student-page-meta">
+                    <span class="student-chip">{{ $completedCount }}/{{ $totalLessons }} lessons completed</span>
+                    <span class="student-chip">{{ $progressPercent }}% progress</span>
+                </div>
+            </section>
+
+            <div id="playerStage" class="player-stage rounded-[1.2rem] overflow-hidden shadow-2xl transition-all duration-500">
                 <div id="playerInteractiveArea" class="player-interactive relative aspect-video overflow-hidden">
                     @if ($currentLesson->video_url)
                         <video data-course-id="{{ $course->id }}" data-lesson-id="{{ $currentLesson->id }}" data-resume-seconds="{{ $resumeSeconds }}" data-save-progress-url="{{ $saveProgressUrl }}" data-completion-threshold="{{ max(1, $currentLessonDurationSeconds > 0 ? $currentLessonDurationSeconds - 3 : 1) }}" data-lesson-completed="{{ $isCurrentLessonCompleted ? '1' : '0' }}" id="lessonVideo" class="w-full h-full bg-black object-contain" poster="{{ $course->thumbnail ?: '' }}" preload="metadata">
@@ -355,7 +287,7 @@
 
                     <div class="player-top absolute left-5 right-5 top-5 flex items-start justify-between gap-4 transition-all duration-300">
                         <div class="rounded-full bg-black/35 px-4 py-2 backdrop-blur-md">
-                            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#b9dcff]">{{ $course->title }}</p>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-[#e1cde8]">{{ $course->title }}</p>
                             <p class="mt-1 text-sm font-semibold text-white">{{ $currentLesson->title }}</p>
                         </div>
                         <div class="rounded-full bg-black/35 px-4 py-2 text-xs font-semibold text-slate-200 backdrop-blur-md">{{ $completedCount }}/{{ $totalLessons }} completed</div>
@@ -398,7 +330,7 @@
             </div>
             <div class="mt-8 flex flex-col xl:flex-row xl:items-start xl:justify-between gap-8">
                 <div class="max-w-2xl">
-                    <h1 class="text-3xl font-headline font-extrabold tracking-tight text-on-surface">{{ $currentLesson->title }}</h1>
+                    <h2 class="text-2xl font-headline font-extrabold tracking-tight text-on-surface">{{ $currentLesson->title }}</h2>
                     <p class="mt-2 text-on-surface-variant font-medium">Part of: <span class="text-primary font-semibold">{{ $course->title }}</span> | Instructor: {{ $course->user?->name ?: 'Instructor' }}</p>
                 </div>
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -424,7 +356,7 @@
                         <button id="markCompleteButton" @class([
                             'px-8 py-3 font-bold rounded-lg shadow-lg transition-all scale-100',
                             'bg-surface-container-high text-primary hover:bg-surface-container-highest' => $isCurrentLessonCompleted,
-                            'bg-gradient-to-r from-primary to-primary-container text-on-primary shadow-primary/20 hover:opacity-90 active:scale-95' => ! $isCurrentLessonCompleted && $canMarkCurrentLessonComplete,
+                            'bg-gradient-to-r from-[#6a3378] to-[#b07ac3] text-on-primary shadow-primary/20 hover:opacity-90 active:scale-95' => ! $isCurrentLessonCompleted && $canMarkCurrentLessonComplete,
                             'bg-surface-container text-on-surface-variant cursor-not-allowed' => ! $isCurrentLessonCompleted && ! $canMarkCurrentLessonComplete,
                         ]) @disabled(! $isCurrentLessonCompleted && ! $canMarkCurrentLessonComplete) type="submit">
                             {{ $isCurrentLessonCompleted ? 'Completed' : ($canMarkCurrentLessonComplete ? 'Mark as Complete' : 'Finish Video to Complete') }}
@@ -625,7 +557,7 @@
             </div>
         </div>
 
-        <aside class="w-full xl:w-96 bg-surface-container-low border-l-0 overflow-y-auto xl:h-[calc(100vh-4rem)] p-6 scrollbar-hide">
+        <aside class="w-full xl:w-96 rounded-[1.4rem] bg-surface-container-low border-l-0 overflow-y-auto xl:h-[calc(100vh-4rem)] p-6 scrollbar-hide">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-xl font-headline font-bold text-on-surface">Course Content</h2>
                 <span class="text-xs font-bold text-on-surface-variant bg-surface-container-high px-2 py-1 rounded">{{ $totalLessons }} Lessons</span>
@@ -704,6 +636,7 @@
                 </div>
             </div>
         </aside>
+        </div>
     </main>
     <script>
         (function () {
@@ -1118,8 +1051,5 @@
             setActiveTab('{{ $activeTab }}');
         })();
     </script>
-</body>
-
-</html>
-
+</x-student.layout>
 

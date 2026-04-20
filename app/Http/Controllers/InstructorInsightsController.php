@@ -94,7 +94,7 @@ class InstructorInsightsController extends Controller
         $enrollments = Enrollment::query()
             ->whereIn('course_id', $courseIds)
             ->where('status', 'completed')
-            ->with(['user:id,name,email', 'course:id,title'])
+            ->with(['user:id,name,email,avatar_path', 'course:id,title'])
             ->orderByDesc(DB::raw('COALESCE(enrolled_at, created_at)'))
             ->paginate(10)
             ->withQueryString();
@@ -166,7 +166,7 @@ class InstructorInsightsController extends Controller
         $courseIds = $instructor->courses()->pluck('id');
         $reviews = Review::query()
             ->whereIn('course_id', $courseIds)
-            ->with(['user:id,name,email', 'course:id,title'])
+            ->with(['user:id,name,email,avatar_path', 'course:id,title'])
             ->latest()
             ->paginate(8)
             ->withQueryString();

@@ -7,7 +7,9 @@ use App\Support\CloudflareR2Storage;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 use RuntimeException;
 
@@ -20,7 +22,7 @@ class InstructorCommunicationController extends Controller
 
         $inquiries = Inquiry::query()
             ->whereIn('course_id', $courseIds)
-            ->with(['course:id,title', 'user:id,name,email'])
+            ->with(['course:id,title', 'user:id,name,email,avatar_path'])
             ->latest()
             ->get();
 
@@ -71,9 +73,10 @@ class InstructorCommunicationController extends Controller
 
     public function updateProfile(Request $request): RedirectResponse
     {
+        $instructor = $request->user();
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$request->user()->id],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$instructor->id],
             'bio' => ['nullable', 'string', 'max:1000'],
             'avatar' => ['nullable', 'image', 'max:5120'],
             'two_factor_enabled' => ['nullable', 'boolean'],
@@ -90,7 +93,7 @@ class InstructorCommunicationController extends Controller
             try {
                 $payload['avatar_path'] = $this->uploadAvatarToR2(
                     $request->file('avatar'),
-                    $request->user()->id,
+                    $instructor->id,
                     $validated['name']
                 );
             } catch (RuntimeException $exception) {
@@ -100,7 +103,13 @@ class InstructorCommunicationController extends Controller
             }
         }
 
-        $request->user()->update($payload);
+        $instructor->update($payload);
+
+        Log::info('Instructor profile updated', [
+            'instructor_id' => $instructor->id,
+            'instructor_email' => $instructor->email,
+            'two_factor_enabled' => $payload['two_factor_enabled'],
+        ]);
 
         return redirect()
             ->route('instructor.settings')
@@ -109,24 +118,38 @@ class InstructorCommunicationController extends Controller
 
     public function updatePassword(Request $request): RedirectResponse
     {
+        $instructor = $request->user();
         $validated = $request->validate([
             'current_password' => ['required'],
-            'password' => ['required', 'confirmed', 'min:8'],
+            'password' => ['required', 'confirmed', $this->passwordRule()],
         ]);
 
-        if (! Hash::check($validated['current_password'], $request->user()->password)) {
+        if (! Hash::check($validated['current_password'], $instructor->password)) {
             return back()->withErrors([
                 'current_password' => 'The current password is incorrect.',
             ])->withInput();
         }
 
-        $request->user()->update([
+        $instructor->update([
             'password' => $validated['password'],
+        ]);
+
+        Log::warning('Instructor password updated', [
+            'instructor_id' => $instructor->id,
+            'instructor_email' => $instructor->email,
         ]);
 
         return redirect()
             ->route('instructor.settings')
             ->with('status', 'Password updated successfully.');
+    }
+
+    private function passwordRule(): Password
+    {
+        return Password::min(10)
+            ->mixedCase()
+            ->numbers()
+            ->symbols();
     }
 
     private function uploadAvatarToR2($file, int $userId, string $name): string
