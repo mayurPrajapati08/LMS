@@ -16,11 +16,13 @@ use App\Models\User;
 use App\Models\Workshop;
 use App\Support\CloudflareR2Storage;
 use App\Support\PlatformSettings;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -118,18 +120,18 @@ class HrController extends Controller
                 'title' => ['nullable', 'string', 'max:255'],
                 'description' => ['nullable', 'string', 'max:2000'],
                 'badge' => ['nullable', 'string', 'max:255'],
-                'video_provider' => ['nullable', 'in:url,local,cloud'],
+                'video_provider' => ['nullable', 'in:url,local,cloud,cloudflare,cloudinary'],
                 'video_url' => ['nullable', 'string', 'max:2000'],
                 'video_file' => ['nullable', 'file', 'max:153600', 'mimetypes:video/mp4,video/webm,video/ogg,video/quicktime'],
-                'poster_provider' => ['nullable', 'in:url,local,cloud'],
+                'poster_provider' => ['nullable', 'in:url,local,cloud,cloudflare,cloudinary'],
                 'poster_url' => ['nullable', 'string', 'max:2000'],
                 'poster_file' => ['nullable', 'file', 'max:51200', 'mimetypes:image/jpeg,image/png,image/webp,image/gif'],
                 'is_active' => ['nullable', 'boolean'],
             ]);
 
             $validated['is_active'] = $request->boolean('is_active');
-            $validated['video_provider'] = $validated['video_provider'] ?? ($record->video_provider ?? 'url');
-            $validated['poster_provider'] = $validated['poster_provider'] ?? ($record->poster_provider ?? 'url');
+            $validated['video_provider'] = $this->normalizeMediaProvider($validated['video_provider'] ?? ($record->video_provider ?? 'url'));
+            $validated['poster_provider'] = $this->normalizeMediaProvider($validated['poster_provider'] ?? ($record->poster_provider ?? 'url'));
             $validated['video_url'] = $this->resolveUploadedMedia(
                 $request,
                 'video_url',
@@ -166,7 +168,12 @@ class HrController extends Controller
     public function storeSlide(Request $request): RedirectResponse
     {
         abort_unless(Schema::hasTable('home_slides'), 503, 'Run migrations to enable slide management.');
-        HomeSlide::query()->create($this->validateSlide($request));
+
+        try {
+            HomeSlide::query()->create($this->validateSlide($request));
+        } catch (RuntimeException $exception) {
+            return redirect()->back()->withInput()->withErrors(['slide' => $exception->getMessage()]);
+        }
 
         return redirect()->route('hr.slides')->with('status', 'Home slide created successfully.');
     }
@@ -174,7 +181,12 @@ class HrController extends Controller
     public function updateSlide(Request $request, HomeSlide $slide): RedirectResponse
     {
         abort_unless(Schema::hasTable('home_slides'), 503, 'Run migrations to enable slide management.');
-        $slide->update($this->validateSlide($request));
+
+        try {
+            $slide->update($this->validateSlide($request, $slide));
+        } catch (RuntimeException $exception) {
+            return redirect()->back()->withInput()->withErrors(['slide' => $exception->getMessage()]);
+        }
 
         return redirect()->route('hr.slides')->with('status', 'Home slide updated successfully.');
     }
@@ -635,7 +647,7 @@ class HrController extends Controller
         return redirect()->back()->with('status', 'Inquiry updated successfully.');
     }
 
-    private function validateSlide(Request $request): array
+    private function validateSlide(Request $request, ?HomeSlide $slide = null): array
     {
         $validated = $request->validate([
             'eyebrow' => ['nullable', 'string', 'max:255'],
@@ -647,6 +659,8 @@ class HrController extends Controller
             'stat_label' => ['nullable', 'string', 'max:255'],
             'stat_value' => ['nullable', 'string', 'max:255'],
             'image' => ['nullable', 'string', 'max:2000'],
+            'image_provider' => ['nullable', 'in:url,local,cloud,cloudflare,cloudinary'],
+            'image_file' => ['nullable', 'file', 'max:51200', 'mimetypes:image/jpeg,image/png,image/webp,image/gif'],
             'primary_url' => ['nullable', 'string', 'max:2000'],
             'primary_label' => ['nullable', 'string', 'max:255'],
             'secondary_url' => ['nullable', 'string', 'max:2000'],
@@ -657,6 +671,19 @@ class HrController extends Controller
 
         $validated['is_active'] = $request->boolean('is_active');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
+        $validated['image_provider'] = $this->normalizeMediaProvider($validated['image_provider'] ?? 'url');
+        $validated['image'] = $this->resolveUploadedMedia(
+            $request,
+            'image',
+            'image_file',
+            $validated['image_provider'],
+            'home/slides',
+            ($validated['title'] ?? 'home-slide').'-image',
+            $slide?->image
+        );
+
+        unset($validated['image_provider'], $validated['image_file']);
+
         return $validated;
     }
 
@@ -718,7 +745,7 @@ class HrController extends Controller
             'course' => ['nullable', 'string', 'max:255'],
             'comment' => ['required', 'string', 'max:3000'],
             'avatar' => ['nullable', 'string', 'max:2000'],
-            'media_provider' => ['nullable', 'in:url,local,cloud'],
+            'media_provider' => ['nullable', 'in:url,local,cloud,cloudflare,cloudinary'],
             'media_type' => ['nullable', 'in:image,video'],
             'media_file' => ['nullable', 'file', 'max:51200', 'mimetypes:image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg,video/quicktime'],
             'rating' => ['nullable', 'integer', 'min:1', 'max:5'],
@@ -735,7 +762,7 @@ class HrController extends Controller
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['is_active'] = $request->boolean('is_active');
         $validated['show_in_placement_hero'] = $validated['type'] === 'placement' ? $request->boolean('show_in_placement_hero') : false;
-        $validated['media_provider'] = $validated['media_provider'] ?? ($story->media_provider ?? 'url');
+        $validated['media_provider'] = $this->normalizeMediaProvider($validated['media_provider'] ?? ($story->media_provider ?? 'url'));
         $validated['media_type'] = $validated['media_type'] ?? ($story->media_type ?? 'image');
         $validated['avatar'] = $this->resolveUploadedMedia(
             $request,
@@ -765,7 +792,7 @@ class HrController extends Controller
             'summary' => ['required', 'string', 'max:1200'],
             'details' => ['nullable', 'string', 'max:10000'],
             'thumbnail' => ['nullable', 'string', 'max:2000'],
-            'thumbnail_provider' => ['nullable', 'in:url,local,cloud'],
+            'thumbnail_provider' => ['nullable', 'in:url,local,cloud,cloudflare,cloudinary'],
             'thumbnail_file' => ['nullable', 'file', 'max:51200', 'mimetypes:image/jpeg,image/png,image/webp,image/gif'],
             'campus' => ['nullable', 'string', 'max:255'],
             'schedule_label' => ['nullable', 'string', 'max:255'],
@@ -783,14 +810,16 @@ class HrController extends Controller
             'curriculum_modules' => ['nullable', 'array'],
             'curriculum_modules.*.title' => ['nullable', 'string', 'max:255'],
             'curriculum_modules.*.duration' => ['nullable', 'string', 'max:255'],
-            'curriculum_modules.*.topics' => ['nullable', 'string', 'max:4000'],
+            'curriculum_modules.*.topics' => ['nullable', 'array'],
+            'curriculum_modules.*.topics.*.title' => ['nullable', 'string', 'max:255'],
+            'curriculum_modules.*.topics.*.details' => ['nullable', 'string', 'max:4000'],
             'curriculum_modules.*.project' => ['nullable', 'string', 'max:1000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
-        $validated['thumbnail_provider'] = $validated['thumbnail_provider'] ?? ($course?->thumbnail_provider ?? 'url');
+        $validated['thumbnail_provider'] = $this->normalizeMediaProvider($validated['thumbnail_provider'] ?? ($course?->thumbnail_provider ?? 'url'));
         $validated['thumbnail'] = $this->resolveUploadedMedia(
             $request,
             'thumbnail',
@@ -815,7 +844,29 @@ class HrController extends Controller
             ->map(function (array $module) {
                 $title = trim((string) ($module['title'] ?? ''));
                 $duration = trim((string) ($module['duration'] ?? ''));
-                $topics = $this->normalizeListInput((string) ($module['topics'] ?? ''));
+                $topics = collect($module['topics'] ?? [])
+                    ->map(function ($topic) {
+                        if (! is_array($topic)) {
+                            $title = trim((string) $topic);
+
+                            return $title !== '' ? ['title' => $title, 'details' => ''] : null;
+                        }
+
+                        $title = trim((string) ($topic['title'] ?? ''));
+                        $details = trim((string) ($topic['details'] ?? ''));
+
+                        if ($title === '' && $details === '') {
+                            return null;
+                        }
+
+                        return [
+                            'title' => $title,
+                            'details' => $details,
+                        ];
+                    })
+                    ->filter()
+                    ->values()
+                    ->all();
                 $project = trim((string) ($module['project'] ?? ''));
 
                 if ($title === '' && $duration === '' && $topics === [] && $project === '') {
@@ -855,7 +906,7 @@ class HrController extends Controller
             'icon' => ['nullable', 'string', 'max:100'],
             'points' => ['nullable', 'string', 'max:3000'],
             'media_url' => ['nullable', 'string', 'max:2000'],
-            'media_provider' => ['nullable', 'in:url,local,cloud'],
+            'media_provider' => ['nullable', 'in:url,local,cloud,cloudflare,cloudinary'],
             'media_type' => ['nullable', 'in:image,video'],
             'media_file' => ['nullable', 'file', 'max:153600', 'mimetypes:image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm,video/ogg,video/quicktime'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
@@ -865,7 +916,7 @@ class HrController extends Controller
         $validated['points'] = $this->normalizeListInput($validated['points'] ?? '');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['is_active'] = $request->boolean('is_active');
-        $validated['media_provider'] = $validated['media_provider'] ?? ($achievement->media_provider ?? 'url');
+        $validated['media_provider'] = $this->normalizeMediaProvider($validated['media_provider'] ?? ($achievement->media_provider ?? 'url'));
         $validated['media_type'] = $validated['media_type'] ?? ($achievement->media_type ?? 'image');
         $validated['media_url'] = $this->resolveUploadedMedia(
             $request,
@@ -925,6 +976,8 @@ class HrController extends Controller
         string $name,
         ?string $existing = null
     ): ?string {
+        $provider = $this->normalizeMediaProvider($provider);
+
         if ($provider === 'url') {
             return $request->input($urlField) ?: $existing;
         }
@@ -938,26 +991,100 @@ class HrController extends Controller
 
     private function uploadContentMedia(UploadedFile $file, string $provider, string $folder, string $name): string
     {
+        $provider = $this->normalizeMediaProvider($provider);
         $extension = strtolower((string) ($file->getClientOriginalExtension() ?: $file->extension() ?: 'bin'));
         $filename = Str::slug($name !== '' ? $name : 'media').'-'.Str::lower(Str::random(8)).'.'.$extension;
         $folder = trim($folder, '/');
         $path = $folder.'/'.$filename;
 
-        if ($provider === 'cloud') {
-            return CloudflareR2Storage::uploadPublicFile($file, $path);
+        if ($provider === 'cloudflare') {
+            return CloudflareR2Storage::uploadPublicFile($file, $path, [
+                'allowed_extensions' => ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp4', 'webm', 'ogg', 'mov'],
+                'allowed_mime_types' => [
+                    'image/jpeg',
+                    'image/png',
+                    'image/webp',
+                    'image/gif',
+                    'video/mp4',
+                    'video/webm',
+                    'video/ogg',
+                    'video/quicktime',
+                ],
+                'max_bytes' => 150 * 1024 * 1024,
+            ]);
+        }
+
+        if ($provider === 'cloudinary') {
+            return $this->uploadContentMediaToCloudinary($file, $folder, $name);
         }
 
         if ($provider === 'local') {
-            $stored = Storage::disk('public')->putFileAs($folder, $file, $filename, ['visibility' => 'public']);
+            /** @var FilesystemAdapter $publicDisk */
+            $publicDisk = Storage::disk('public');
+            $stored = $publicDisk->putFileAs($folder, $file, $filename, ['visibility' => 'public']);
 
             if (! $stored) {
                 throw new RuntimeException('Local upload failed. Please try again.');
             }
 
-            return Storage::disk('public')->url($stored);
+            return $publicDisk->url($stored);
         }
 
         throw new RuntimeException('Unsupported media provider selected.');
+    }
+
+    private function normalizeMediaProvider(?string $provider): string
+    {
+        return match ($provider) {
+            'cloud', 'cloudflare' => 'cloudflare',
+            'cloudinary' => 'cloudinary',
+            'local' => 'local',
+            default => 'url',
+        };
+    }
+
+    private function uploadContentMediaToCloudinary(UploadedFile $file, string $folder, string $name): string
+    {
+        $cloudName = (string) config('services.cloudinary.cloud_name');
+        $apiKey = (string) config('services.cloudinary.api_key');
+        $apiSecret = (string) config('services.cloudinary.api_secret');
+
+        if ($cloudName === '' || $apiKey === '' || $apiSecret === '') {
+            throw new RuntimeException('Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET first.');
+        }
+
+        $baseFolder = trim((string) config('services.cloudinary.folder', 'lms/media'), '/');
+        $targetFolder = trim($baseFolder.'/'.trim($folder, '/'), '/');
+        $publicId = Str::slug($name !== '' ? $name : 'media').'-'.Str::lower(Str::random(8));
+        $timestamp = time();
+
+        $signaturePayload = [
+            'folder' => $targetFolder,
+            'public_id' => $publicId,
+            'timestamp' => $timestamp,
+        ];
+
+        ksort($signaturePayload);
+
+        $signature = sha1(collect($signaturePayload)
+            ->map(fn ($value, $key) => $key.'='.$value)
+            ->implode('&').$apiSecret);
+
+        $response = Http::asMultipart()
+            ->attach('file', fopen($file->getRealPath(), 'r'), $file->getClientOriginalName())
+            ->post('https://api.cloudinary.com/v1_1/'.$cloudName.'/auto/upload', [
+                'api_key' => $apiKey,
+                'timestamp' => $timestamp,
+                'folder' => $targetFolder,
+                'public_id' => $publicId,
+                'signature' => $signature,
+            ]);
+
+        if ($response->failed()) {
+            throw new RuntimeException($response->json('error.message') ?: 'Cloudinary upload failed. Please try again.');
+        }
+
+        return (string) ($response->json('secure_url') ?: $response->json('url') ?: '');
     }
 
     private function facultyMembers(?int $instructorRoleId): Collection
@@ -991,7 +1118,7 @@ class HrController extends Controller
             12,
             1,
             [
-                'path' => request()->url(),
+                'path' => url()->current(),
                 'query' => request()->query(),
             ]
         );

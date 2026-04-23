@@ -340,7 +340,7 @@
                                 <span class="material-symbols-outlined text-[18px]">north_east</span>
                             </a>
                             <a href="{{ route('home.courses') }}" class="cta-button inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-7 py-4 text-sm font-bold text-white">
-                                View Learning Catalog
+                                View Training Program Catalog
                             </a>
                         </div>
                         <div class="mt-10 grid gap-4 sm:grid-cols-3">

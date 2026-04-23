@@ -7,23 +7,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Http\Request;
-use Throwable;
 
 class SystemExceptionAlertMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public function __construct(
-        public Throwable $exception,
-        public ?Request $request = null,
+        public array $report,
     ) {
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Production Exception Alert: '.class_basename($this->exception),
+            subject: 'Production Exception Alert: '.($this->report['exception']['short_class'] ?? 'Application Error'),
         );
     }
 
@@ -32,8 +29,7 @@ class SystemExceptionAlertMail extends Mailable
         return new Content(
             view: 'emails.system_exception_alert',
             with: [
-                'exception' => $this->exception,
-                'requestData' => $this->request,
+                'report' => $this->report,
             ],
         );
     }

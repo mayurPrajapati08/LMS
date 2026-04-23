@@ -10,14 +10,21 @@
 <body style="margin:0;padding:0;background:#fcf9fe;font-family:Arial,sans-serif;color:#231a28;">
     @php
         $isLoginOtp = ($purpose ?? 'email_verification') === 'login_two_factor';
-        $headline = $isLoginOtp ? 'Your Login OTP is ready' : 'Your Signup OTP is ready';
+        $isPasswordResetOtp = ($purpose ?? 'email_verification') === 'password_reset';
+        $headline = $isLoginOtp
+            ? 'Your Login OTP is ready'
+            : ($isPasswordResetOtp ? 'Your Password Reset OTP is ready' : 'Your Signup OTP is ready');
         $intro = $isLoginOtp
             ? 'Hi '.$user->name.', use the login OTP below to finish signing in to your account.'
-            : 'Hi '.$user->name.', welcome to CodeInYourself. Use the signup OTP below to finish creating your account.';
+            : ($isPasswordResetOtp
+                ? 'Hi '.$user->name.', use the password reset OTP below to continue changing your account password.'
+                : 'Hi '.$user->name.', welcome to CodeInYourself. Use the signup OTP below to finish creating your account.');
         $finalNote = $isLoginOtp
             ? 'If you did not try to sign in, change your password right away and review your account activity.'
-            : 'If you did not create this account, you can ignore this no-reply email safely.';
-        $otpLabel = $isLoginOtp ? 'Login OTP' : 'Signup OTP';
+            : ($isPasswordResetOtp
+                ? 'If you did not request a password reset, ignore this email and keep your current password private.'
+                : 'If you did not create this account, you can ignore this no-reply email safely.');
+        $otpLabel = $isLoginOtp ? 'Login OTP' : ($isPasswordResetOtp ? 'Password Reset OTP' : 'Signup OTP');
     @endphp
     <div style="width:100%;background:linear-gradient(180deg,#2f1236 0%,#6a3378 100%);padding:34px 18px;">
         <div style="max-width:640px;margin:0 auto;">
@@ -97,4 +104,3 @@
 </body>
 
 </html>
-

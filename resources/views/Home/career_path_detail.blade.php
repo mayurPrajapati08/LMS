@@ -12,6 +12,11 @@
     $roadmapCount = count($careerPath['weeks'] ?? []);
     $supportCount = count($careerPath['placement_support'] ?? []);
     $toolCount = count($careerPath['skills'] ?? []);
+    $roadmapStructureText = $roadmapCount > 0
+        ? ($roadmapCount.' guided module'.($roadmapCount === 1 ? '' : 's').' with project checkpoints')
+        : 'Guided module flow with project checkpoints';
+    $roadmapFocusText = collect($careerPath['skills'] ?? [])->take(3)->implode(', ');
+    $roadmapOutcomeText = collect($deliverables)->take(2)->implode(' and ');
     $heroThemes = [
         'data-analyst' => 'from-[#14314b] via-[#0f766e] to-[#7dd3c8]',
         'full-stack-developer' => 'from-[#1d1242] via-[#1d4ed8] to-[#2dd4bf]',
@@ -238,9 +243,20 @@
             }
             .career-project {
                 align-self: start;
+                display: flex;
+                height: 100%;
+                flex-direction: column;
             }
             .career-project:hover img {
                 transform: scale(1.06);
+            }
+            .career-project-body {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+            }
+            .career-project-copy {
+                min-height: 8.75rem;
             }
             .skill-coverage-grid {
                 display: grid;
@@ -415,8 +431,8 @@
                                     <p class="mt-2 text-sm font-semibold text-white">{{ implode(' / ', array_slice($outcomes, 0, 2)) }}</p>
                                 </div>
                                 <div class="rounded-[1.25rem] border border-white/14 bg-white/10 px-4 py-4">
-                                    <p class="text-[0.7rem] font-bold uppercase tracking-[0.22em] text-white/56">Price</p>
-                                    <p class="mt-2 text-lg font-extrabold text-white">Rs. {{ number_format($careerPath['price'], 0) }}</p>
+                                    <p class="text-[0.7rem] font-bold uppercase tracking-[0.22em] text-white/56">Fee Details</p>
+                                    <p class="mt-2 text-lg font-extrabold text-white">Contact team / mentor</p>
                                 </div>
                             </div>
                         </div>
@@ -511,21 +527,21 @@
                             <p class="text-xs font-bold uppercase tracking-[0.26em] text-primary">Roadmap</p>
                             <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-[2.5rem]">{{ $careerPath['title'] }} roadmap</h2>
                         </div>
-                        <p class="max-w-xl text-sm leading-7 text-on-surface-variant">A structured module flow covering foundations, design, optimisation, automation, governance, and interview readiness.</p>
+                        <p class="max-w-xl text-sm leading-7 text-on-surface-variant">A guided sequence that takes you from fundamentals to project delivery, stronger portfolio work, and interview preparation.</p>
                     </div>
 
                     <div class="mt-8 grid gap-4 md:grid-cols-3">
                         <div class="career-card rounded-[1.4rem] px-5 py-5">
                             <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Structure</p>
-                            <p class="mt-2 text-sm font-bold text-on-surface">Weekly progression with project checkpoints</p>
+                            <p class="mt-2 text-sm font-bold text-on-surface">{{ $roadmapStructureText }}</p>
                         </div>
                         <div class="career-card rounded-[1.4rem] px-5 py-5">
                             <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Focus</p>
-                            <p class="mt-2 text-sm font-bold text-on-surface">SQL engineering, optimisation, and delivery</p>
+                            <p class="mt-2 text-sm font-bold text-on-surface">{{ $roadmapFocusText !== '' ? $roadmapFocusText : 'Role-specific tools and practical delivery' }}</p>
                         </div>
                         <div class="career-card rounded-[1.4rem] px-5 py-5">
                             <p class="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Outcome</p>
-                            <p class="mt-2 text-sm font-bold text-on-surface">Production-ready SQL assets and job readiness</p>
+                            <p class="mt-2 text-sm font-bold text-on-surface">{{ $roadmapOutcomeText !== '' ? $roadmapOutcomeText : 'Portfolio output and job readiness' }}</p>
                         </div>
                     </div>
 
@@ -652,9 +668,9 @@
                 <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Toolkit + Portfolio</p>
-                        <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-[2.35rem]">Tools, portfolio work, and stronger project presentation.</h2>
+                        <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-[2.35rem]">Tools, capstone work, and role-ready presentation.</h2>
                     </div>
-                    <p class="max-w-md text-sm leading-7 text-on-surface-variant">The tools, projects, and hiring lens now sit together so the page feels more complete and conversion-ready.</p>
+                    <p class="max-w-md text-sm leading-7 text-on-surface-variant">This section brings together the core tools, project output, and hiring expectations learners should prepare for in this path.</p>
                 </div>
 
                 <div class="skill-coverage-grid mt-8">
@@ -687,9 +703,15 @@
                                     <div class="absolute inset-0 bg-gradient-to-t from-[#120520]/70 via-[#120520]/12 to-transparent"></div>
                                     <span class="absolute bottom-4 left-4 rounded-full border border-white/14 bg-white/12 px-3 py-2 text-[0.7rem] font-bold uppercase tracking-[0.22em] text-white backdrop-blur-sm">Capstone Project</span>
                                 </div>
-                                <div class="p-5">
-                                    <h3 class="font-headline text-2xl font-extrabold text-on-surface">{{ $project['title'] }}</h3>
-                                    <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $project['subtitle'] }}</p>
+                                <div class="career-project-body p-5">
+                                    <div class="career-project-copy">
+                                        <h3 class="font-headline text-2xl font-extrabold text-on-surface">{{ $project['title'] }}</h3>
+                                        <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $project['subtitle'] }}</p>
+                                    </div>
+                                    <div class="mt-5 border-t border-outline/70 pt-4">
+                                        <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">Fee Details</p>
+                                        <p class="mt-2 text-sm font-semibold text-on-surface">Contact team / mentor to know the current fee.</p>
+                                    </div>
                                 </div>
                             </article>
                         @endforeach

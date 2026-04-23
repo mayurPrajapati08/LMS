@@ -373,7 +373,7 @@
                 <nav class="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-on-surface-variant/80">
                     <span>Home</span>
                     <span class="material-symbols-outlined text-[14px]">chevron_right</span>
-                    <a class="transition hover:text-primary" href="{{ $browseUrl }}">Courses</a>
+                    <a class="transition hover:text-primary" href="{{ $browseUrl }}">Training Programs</a>
                     <span class="material-symbols-outlined text-[14px]">chevron_right</span>
                     <span class="text-primary">{{ $course->title }}</span>
                 </nav>
@@ -470,7 +470,7 @@
                                 </a>
                             @endauth
                             <a class="inline-flex items-center justify-center rounded-[1.2rem] border border-[#cbbba4] bg-white/70 px-8 py-4 text-base font-bold text-on-surface-variant" href="{{ $browseUrl }}">
-                                Browse More Courses
+                                Browse More Training Programs
                             </a>
                         </div>
                     </div>
@@ -686,7 +686,7 @@
 
                     <section class="reveal scroll-mt-32" id="related">
                         <div class="soft-panel rounded-[1.8rem] p-6">
-                            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8b6a34]">Related Courses</p>
+                            <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8b6a34]">Related Training Programs</p>
                             <h3 class="mt-3 font-headline text-[1.6rem] font-extrabold text-on-surface">Continue exploring</h3>
                             <div class="mt-5 space-y-4">
                             @foreach ($relatedCourses as $relatedCourse)
@@ -1028,7 +1028,6 @@
     </script>
 </body>
 </html>
-
 
 
 

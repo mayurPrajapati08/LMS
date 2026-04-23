@@ -16,9 +16,9 @@ class AccountCredentialsMail extends Mailable
     public function __construct(
         public string $recipientName,
         public string $email,
-        public string $password,
         public string $roleLabel,
-        public string $loginUrl
+        public string $loginUrl,
+        public string $passwordSetupUrl,
     ) {
     }
 

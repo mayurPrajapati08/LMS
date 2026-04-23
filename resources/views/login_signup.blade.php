@@ -6,6 +6,8 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Login &amp; Signup | CodeInYourself</title>
+    <link rel="stylesheet" href="{{ asset('chatbot/chatbot.css') }}">
+    <script src="{{ asset('chatbot/chatbot.js') }}" defer></script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -125,8 +127,98 @@
             box-shadow: 0 18px 40px rgba(75, 35, 86, 0.24);
         }
 
+        .auth-hero {
+            background:
+                radial-gradient(circle at top left, rgba(96, 165, 250, 0.20), transparent 34%),
+                linear-gradient(160deg, #07152f 0%, #0a2558 55%, #081424 100%);
+        }
+
+        .auth-hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 36%);
+            pointer-events: none;
+        }
+
+        .auth-hero::after {
+            content: "";
+            position: absolute;
+            right: 3rem;
+            top: 3rem;
+            height: 12rem;
+            width: 12rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.06);
+            filter: blur(40px);
+            pointer-events: none;
+        }
+
+        .auth-logo-shell {
+            position: relative;
+            display: flex;
+            width: min(100%, 21rem);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: 0 22px 55px rgba(8, 20, 36, 0.24);
+        }
+
+        .auth-logo-shell::after {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border-radius: 1.1rem;
+            border: 1px solid rgba(103, 80, 164, 0.10);
+            pointer-events: none;
+        }
+
+        .auth-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.875rem;
+            padding: 0.95rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         .no-scrollbar::-webkit-scrollbar {
             display: none;
+        }
+
+        #cyi-chatbot-root {
+            left: auto;
+            right: 1.25rem;
+            bottom: 1.25rem;
+        }
+
+        #cyi-chatbot-root .cyi-chatbot__panel {
+            left: auto;
+            right: 0;
+            transform-origin: right bottom;
+        }
+
+        @media (max-width: 640px) {
+            #cyi-chatbot-root {
+                left: auto;
+                right: 0.75rem;
+                bottom: 0.75rem;
+            }
+
+            #cyi-chatbot-root .cyi-chatbot__panel {
+                left: auto;
+                right: 0;
+            }
         }
     </style>
 </head>
@@ -135,82 +227,160 @@
     @php
         $isSignup = request()->is('register');
         $isOtpVerification = request()->routeIs('verification.notice');
-        $primaryError = $errors->first('email') ?: $errors->first('password') ?: $errors->first('otp') ?: $errors->first('first_name') ?: $errors->first('last_name') ?: $errors->first('terms');
+        $isForgotPasswordRequest = request()->routeIs('password.request');
+        $isForgotPasswordOtp = request()->routeIs('password.otp.notice');
+        $isForgotPasswordReset = request()->routeIs('password.reset.form');
+        $isPasswordResetFlow = $isForgotPasswordRequest || $isForgotPasswordOtp || $isForgotPasswordReset;
+        $passwordResetEmail = session('password_reset.email');
+
+        $primaryError = $errors->first('email')
+            ?: $errors->first('password')
+            ?: $errors->first('otp')
+            ?: $errors->first('first_name')
+            ?: $errors->first('last_name')
+            ?: $errors->first('terms');
+
+        if ($isOtpVerification) {
+            $pageTitle = 'Verify Your Email';
+            $pageDescription = 'Enter the 6-digit code sent to '.auth()->user()->email.' to finish verification.';
+            $submitText = 'Verify Email Address';
+            $submitLoadingText = 'Verifying...';
+            $errorTitle = 'Verification failed';
+        } elseif ($isForgotPasswordRequest) {
+            $pageTitle = 'Forgot Your Password?';
+            $pageDescription = 'Enter your account email and we will send you a 6-digit OTP to reset your password.';
+            $submitText = 'Send Password Reset OTP';
+            $submitLoadingText = 'Sending OTP...';
+            $errorTitle = 'Password reset could not be started';
+        } elseif ($isForgotPasswordOtp) {
+            $pageTitle = 'Verify Password Reset OTP';
+            $pageDescription = 'Enter the 6-digit OTP sent to '.($passwordResetEmail ?: 'your email').' to continue.';
+            $submitText = 'Verify OTP';
+            $submitLoadingText = 'Verifying OTP...';
+            $errorTitle = 'OTP verification failed';
+        } elseif ($isForgotPasswordReset) {
+            $pageTitle = 'Set a New Password';
+            $pageDescription = 'Create a strong new password for '.($passwordResetEmail ?: 'your account').'.';
+            $submitText = 'Update Password';
+            $submitLoadingText = 'Updating password...';
+            $errorTitle = 'Password could not be updated';
+        } elseif ($isSignup) {
+            $pageTitle = 'Create Your Account';
+            $pageDescription = 'Start your learning journey with a new student account.';
+            $submitText = 'Create Student Account';
+            $submitLoadingText = 'Creating account and sending OTP...';
+            $errorTitle = 'Signup could not be completed';
+        } else {
+            $pageTitle = 'Welcome Back';
+            $pageDescription = 'Continue your learning journey today.';
+            $submitText = 'Sign In to Account';
+            $submitLoadingText = 'Signing in...';
+            $errorTitle = 'Login could not be completed';
+        }
+
+        if ($isOtpVerification) {
+            $formAction = route('verification.verify', absolute: false);
+        } elseif ($isForgotPasswordRequest) {
+            $formAction = route('password.email', absolute: false);
+        } elseif ($isForgotPasswordOtp) {
+            $formAction = route('password.otp.verify', absolute: false);
+        } elseif ($isForgotPasswordReset) {
+            $formAction = route('password.update', absolute: false);
+        } elseif ($isSignup) {
+            $formAction = route('register.store', absolute: false);
+        } else {
+            $formAction = route('login.attempt', absolute: false);
+        }
+
+        $brandLogo = asset('images/cyis logo 4.png');
+
+        if ($isSignup) {
+            $heroBadge = 'Student Signup';
+            $heroTitle = 'Simple signup. Clear start.';
+            $heroDescription = 'Create your account with a cleaner layout and begin your learning journey without distractions.';
+            $heroPoints = [
+                'Use your email or Google account to get started quickly.',
+                'Secure OTP verification keeps your account protected.',
+                'Access lessons, workshops, and mentorship after signup.',
+            ];
+        } else {
+            $heroBadge = 'Welcome Back';
+            $heroTitle = 'Continue learning with focus.';
+            $heroDescription = 'Return to your account and pick up where you left off with a clean, familiar workspace.';
+            $heroPoints = [
+                'Open your dashboard and resume your progress.',
+                'Review lessons, projects, and recent activity in one place.',
+                'Get back to workshops and support without extra steps.',
+            ];
+        }
     @endphp
 
     <x-shared.back-to-top />
 
-    <main class="flex min-h-screen">
-        <section class="hidden lg:flex lg:w-1/2 relative flex-col justify-center p-20 overflow-hidden bg-[#071c4a]">
-            <div class="absolute inset-0 z-0 opacity-40">
-                <img class="w-full h-full object-cover" data-alt="Abstract futuristic digital circuit board pattern with glowing blue lines and data points on a dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoELogDO6sM2n2QAcB2QZpmRcfPpJFNdlsfuvORIOqAJzKm7wxdHbTrZ54Vl1m9Q7QJCQn2QyNKQa6IGjjVsc8T-8p-CXeikLOWwG8Zr_AmCOj6IfVSKMkTew5zwPmXTRrP4QFIV2RzqQEPAKe-OkIfm4WQN_U0mZs9j2RF3xphe4CwK_DpRqDm2wJzwrnQiWnqb2gY13ipGACqcWs0J-I22vf2txyb_XORE8gYmiTd1ghABCEelyljHTPYKX5Hsbv9vrUQiaA7Lkz" />
-            </div>
-            <div class="absolute inset-0 z-10 bg-gradient-to-br from-[#0b2a6d]/88 via-[#0c4ea3]/84 to-[#071c4a]/92"></div>
-            <div class="relative z-20 max-w-lg">
-                <div class="mb-12">
-                    <div class="flex items-center justify-center lg:justify-start">
-                        <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-auto w-full max-w-[20rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+    <main class="flex min-h-screen flex-col lg:flex-row">
+        <section class="auth-hero relative hidden overflow-hidden lg:flex lg:min-h-screen lg:w-[45%] lg:self-stretch">
+            <div class="relative z-10 flex w-full flex-col justify-center px-12 py-12 xl:px-16 lg:sticky lg:top-0 lg:min-h-screen">
+                <div class="max-w-xl">
+                    <div class="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[0.72rem] font-bold uppercase tracking-[0.26em] text-white/80 backdrop-blur-xl">
+                        <span class="h-2.5 w-2.5 rounded-full bg-emerald-300 shadow-[0_0_14px_rgba(110,231,183,0.9)]"></span>
+                        {{ $heroBadge }}
                     </div>
-                </div>
-                <h1 class="font-headline text-5xl font-extrabold text-white leading-tight mb-6">
-                    Engineering <span class="text-primary-fixed-dim">Next-Gen</span> Careers.
-                </h1>
-                <p class="text-primary-fixed text-lg leading-relaxed mb-10">
-                    Join a community of professional developers. Master full-stack engineering with our production-grade curriculum and AI-powered mentorship.
-                </p>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="glass-card p-6 rounded-xl border border-white/20">
-                        <span class="material-symbols-outlined text-primary-fixed-dim block mb-2" data-icon="groups">groups</span>
-                        <div class="text-white font-extrabold text-2xl tracking-tight">15k+</div>
-                        <div class="text-white/80 text-sm font-medium">Active Students</div>
+
+                    <div class="auth-logo-shell mt-6">
+                        <img src="{{ $brandLogo }}" alt="CodeInYourself logo" class="mx-auto block h-auto w-full max-w-[16.5rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                     </div>
-                    <div class="glass-card p-6 rounded-xl border border-white/20">
-                        <span class="material-symbols-outlined text-primary-fixed-dim block mb-2" data-icon="rocket_launch">rocket_launch</span>
-                        <div class="text-white font-extrabold text-2xl tracking-tight">94%</div>
-                        <div class="text-white/80 text-sm font-medium">Placement Rate</div>
+
+                    <h1 class="mt-8 font-headline text-4xl font-extrabold leading-tight text-white xl:text-5xl">
+                        {{ $heroTitle }}
+                    </h1>
+                    <p class="mt-4 max-w-lg text-base leading-7 text-slate-200/90 xl:text-lg">
+                        {{ $heroDescription }}
+                    </p>
+
+                    <div class="mt-8 space-y-3">
+                        @foreach ($heroPoints as $point)
+                            <div class="auth-point">
+                                <span class="material-symbols-outlined text-[1.15rem] text-emerald-200">check_circle</span>
+                                <p class="text-sm leading-6 text-slate-100 xl:text-base">
+                                    {{ $point }}
+                                </p>
+                            </div>
+                        @endforeach
                     </div>
-                </div>
-                <div class="mt-12 flex items-center gap-4">
-                    <div class="flex -space-x-3">
-                        <img class="w-10 h-10 rounded-full border-2 border-slate-900 object-cover" data-alt="Portrait of a young male professional smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdcnr3pI5SoHbVZ-Kg4CGE0BT_2hvQVlBDKPqZOm9uQTK3hIbjN6We5FGhtmfo7MuOBKycIixhrhUGFCa6-C0hAw-1H-elGMLxFlE4v7LeQNoQ9N_pgo5R6d9b-luDMz5gqVIl8ZooWn1-lP8PrtN2UCSehBmBeJgo4NSB_QfKmnU44Xsn3_iDvurD8QdOOo9YpKWs5XrVT1lUs7Nr_B3uzKQiRjVfhQIOqfDSNlIxpuVGBdD6xrYIPGcvPPNZXnog-pZ4eQG6OVnz" />
-                        <img class="w-10 h-10 rounded-full border-2 border-slate-900 object-cover" data-alt="Portrait of a female developer with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6wrEg_-apWY0feH5jrog363imAwvhKq1xHjk_ttSeoLa0y_3fxG9H_i-5ZFWmYFL7t93VoGO-RJVAzu9KMkI3pjgG0YJfjj9OxIIZMMdxPSAURd7-F2yFnzUoXVZUszIYF7p8taeocFN0WkqgfyBXtoA8EgqUaZEz4hkkzrjABcKXkBJkm1ZVKqp4Uas0mmMV3j3EVQ4XxYMXLV-qxRQXF0NN8Al4Jwd48J2XWLQwrj7aYBnbkY_IA-UlNXx0UXdzo-hm1KpV9Hg-" />
-                        <img class="w-10 h-10 rounded-full border-2 border-slate-900 object-cover" data-alt="Portrait of a tech lead in a modern office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzj2hgZ1IeAPFJbeZ5iLiIFLzdKi9Mu-UciiR0E-vwftdGAgs0Vf0JfXc3lPQzaMv2TZrk8FW5emfKqY7-H7Amgotigg8ngn21uGwwxmlDqqcfm1FYuy7HKM0y-PTLDwkktjVI7y61rJm4Up0lun4fIOrMUjmvjPmB_NXmqBbNipDqA-DrMJeeBGQWZmAyicKJGlL1knA4Dsq_OdoYlDZhAbXtPxobCfCv_Lf0c4dCESOpmU07Eu0Q43pMvzlmJ88JzXy9FvvwaHqf" />
-                    </div>
-                    <p class="text-primary-fixed text-sm">Join 500+ students starting today</p>
                 </div>
             </div>
         </section>
 
-        <section class="w-full lg:w-1/2 flex flex-col items-center justify-center px-4 py-8 sm:px-6 md:p-16 lg:p-24 bg-surface">
-            <div class="w-full max-w-md">
-                <div class="lg:hidden mb-8">
-                    <div class="flex items-center justify-center">
-                        <img src="https://www.codeinyourself.com/assets/img/logo.webp" alt="CodeInYourself logo" class="h-auto w-full max-w-[20rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+        <section class="flex w-full flex-col items-center bg-surface px-4 py-8 sm:px-6 md:px-10 md:py-10 lg:min-h-screen lg:w-[55%] lg:justify-center lg:px-12 lg:py-12 xl:px-16 xl:py-14">
+            <div class="w-full max-w-md lg:max-w-[28rem]">
+                <div class="mb-6 lg:hidden">
+                    <div class="mx-auto flex max-w-xs justify-center rounded-[1.5rem] border border-outline-variant/40 bg-white px-5 py-4 shadow-[0_18px_40px_rgba(50,70,120,0.12)]">
+                        <img src="{{ $brandLogo }}" alt="CodeInYourself logo" class="mx-auto block h-auto w-full max-w-[14rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                     </div>
                 </div>
 
-                <header class="mb-8">
-                    <h2 class="text-3xl font-headline font-extrabold text-on-surface mb-2">
-                        {{ $isOtpVerification ? 'Verify Your Email' : ($isSignup ? 'Create Your Account' : 'Welcome Back') }}
+                <header class="mb-6">
+                    <h2 class="mb-2 text-3xl font-headline font-extrabold text-on-surface">
+                        {{ $pageTitle }}
                     </h2>
-                    <p class="text-on-surface-variant font-medium">
-                        {{ $isOtpVerification ? 'Enter the 6-digit code sent to '.auth()->user()->email.' to finish verification.' : ($isSignup ? 'Start your learning journey with a new student account.' : 'Continue your learning journey today.') }}
+                    <p class="font-medium text-on-surface-variant">
+                        {{ $pageDescription }}
                     </p>
                 </header>
 
-                @unless ($isOtpVerification)
-                    <div class="bg-surface-container-low p-1.5 rounded-xl flex mb-8">
+                @unless ($isOtpVerification || $isPasswordResetFlow)
+                    <div class="mb-6 flex rounded-xl bg-surface-container-low p-1.5">
                         <a href="{{ route('login', absolute: false) }}"
-                            class="flex-1 py-2.5 text-center text-sm font-semibold rounded-lg transition-all {{ $isSignup ? 'text-on-surface-variant hover:text-on-surface' : 'bg-surface-container-lowest text-primary shadow-sm' }}">
+                            class="flex-1 rounded-lg py-2.5 text-center text-sm font-semibold transition-all {{ $isSignup ? 'text-on-surface-variant hover:text-on-surface' : 'bg-surface-container-lowest text-primary shadow-sm' }}">
                             Login
                         </a>
                         <a href="{{ route('register', absolute: false) }}"
-                            class="flex-1 py-2.5 text-center text-sm font-semibold rounded-lg transition-all {{ $isSignup ? 'bg-surface-container-lowest text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}">
+                            class="flex-1 rounded-lg py-2.5 text-center text-sm font-semibold transition-all {{ $isSignup ? 'bg-surface-container-lowest text-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}">
                             Signup
                         </a>
                     </div>
 
-                    <div class="space-y-4 mb-8">
+                    <div class="mb-6 space-y-3">
                         <a href="{{ route('login.google.redirect', absolute: false) }}" class="w-full flex items-center justify-center gap-3 bg-surface-container-lowest border border-outline-variant py-3 px-4 rounded-xl font-semibold text-on-surface hover:bg-surface-container transition-colors active:scale-[0.98] duration-200">
                             <svg class="w-5 h-5" viewbox="0 0 24 24">
                                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
@@ -222,7 +392,7 @@
                         </a>
                     </div>
 
-                    <div class="relative mb-8">
+                    <div class="relative mb-6">
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-outline-variant/30"></div>
                         </div>
@@ -241,7 +411,7 @@
                 @if ($errors->any())
                     <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
                         <p class="font-semibold">
-                            {{ $isOtpVerification ? 'Verification failed' : ($isSignup ? 'Signup could not be completed' : 'Login could not be completed') }}
+                            {{ $errorTitle }}
                         </p>
                         @if ($primaryError)
                             <p class="mt-1">{{ $primaryError }}</p>
@@ -249,12 +419,14 @@
                     </div>
                 @endif
 
-                <form action="{{ $isOtpVerification ? route('verification.verify', absolute: false) : ($isSignup ? route('register.store', absolute: false) : route('login.attempt', absolute: false)) }}" method="POST" class="space-y-6">
+                <form action="{{ $formAction }}" method="POST" class="space-y-5 lg:space-y-4">
                     @csrf
-                    @if ($isOtpVerification)
+                    @if ($isOtpVerification || $isForgotPasswordOtp)
                         <div class="space-y-2 rounded-2xl border border-outline-variant/30 bg-surface-container-low px-5 py-4">
-                            <p class="text-sm font-semibold text-on-surface">Email Verification Code</p>
-                            <p class="text-sm text-on-surface-variant">Check your inbox and enter the 6-digit OTP below.</p>
+                            <p class="text-sm font-semibold text-on-surface">{{ $isOtpVerification ? 'Email Verification Code' : 'Password Reset Code' }}</p>
+                            <p class="text-sm text-on-surface-variant">
+                                {{ $isOtpVerification ? 'Check your inbox and enter the 6-digit OTP below.' : 'Check your inbox and enter the 6-digit OTP we sent for password reset.' }}
+                            </p>
                         </div>
 
                         <div class="space-y-1.5">
@@ -264,8 +436,68 @@
                                 <p class="ml-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
+                    @elseif ($isForgotPasswordReset)
+                        <div class="space-y-1.5">
+                            <label class="block text-sm font-semibold text-on-surface-variant" for="password">New Password</label>
+                            <div class="relative">
+                                <input class="w-full bg-surface-container-lowest border rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline {{ $errors->has('password') ? 'border-red-400' : 'border-outline-variant/50' }}" id="password" name="password" placeholder="........" type="password" autocomplete="new-password" />
+                                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors" type="button" data-password-toggle="password" aria-label="Show password">
+                                    <span class="material-symbols-outlined text-sm" data-password-toggle-icon="password">visibility</span>
+                                </button>
+                            </div>
+                            <div id="passwordStrengthPanel" class="hidden rounded-xl border border-outline-variant/30 bg-surface-container-low px-3 py-3">
+                                <div class="flex items-center gap-3">
+                                    <p class="shrink-0 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Strength</p>
+                                    <div class="grid flex-1 grid-cols-4 gap-1.5">
+                                        <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                        <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                        <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                        <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                    </div>
+                                    <span id="passwordStrengthLabel" class="shrink-0 text-xs font-bold uppercase tracking-wide text-on-surface-variant">Too weak</span>
+                                </div>
+                                <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                                    <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="length">
+                                        <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                        8+ chars
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="lower">
+                                        <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                        lowercase
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="upper">
+                                        <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                        uppercase
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="number">
+                                        <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                        number
+                                    </span>
+                                    <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="symbol">
+                                        <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                        symbol
+                                    </span>
+                                </div>
+                            </div>
+                            @error('password')
+                                <p class="ml-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-sm font-semibold text-on-surface-variant ml-1" for="confirm_password">Confirm New Password</label>
+                            <div class="relative">
+                                <input class="w-full bg-surface-container-lowest border rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline {{ $errors->has('password') ? 'border-red-400' : 'border-outline-variant/50' }}" id="confirm_password" name="password_confirmation" placeholder="........" type="password" autocomplete="new-password" />
+                                <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors" type="button" data-password-toggle="confirm_password" aria-label="Show confirm password">
+                                    <span class="material-symbols-outlined text-sm" data-password-toggle-icon="confirm_password">visibility</span>
+                                </button>
+                            </div>
+                            @if ($errors->has('password'))
+                                <p class="ml-1 text-sm text-red-600">Confirm your password exactly the same.</p>
+                            @endif
+                        </div>
                     @elseif ($isSignup)
-                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div class="space-y-1.5">
                                 <label class="block text-sm font-semibold text-on-surface-variant ml-1" for="first_name">First Name</label>
                                 <input class="w-full bg-surface-container-lowest border rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline {{ $errors->has('first_name') ? 'border-red-400' : 'border-outline-variant/50' }}" id="first_name" name="first_name" placeholder="First Name" type="text" maxlength="255" autocomplete="given-name" value="{{ old('first_name') }}" />
@@ -283,70 +515,72 @@
                         </div>
                     @endif
 
-                    @unless ($isOtpVerification)
+                    @unless ($isOtpVerification || $isForgotPasswordOtp || $isForgotPasswordReset)
                         <div class="space-y-1.5">
                             <label class="block text-sm font-semibold text-on-surface-variant ml-1" for="email">
-                                {{ $isSignup ? 'Email Address' : 'Work Email' }}
+                                {{ $isSignup || $isForgotPasswordRequest ? 'Email Address' : 'Work Email' }}
                             </label>
-                            <input class="w-full bg-surface-container-lowest border rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline {{ $errors->has('email') ? 'border-red-400' : 'border-outline-variant/50' }}" id="email" name="email" placeholder="{{ $isSignup ? 'you@example.com' : 'name@company.com' }}" type="email" maxlength="255" autocomplete="email" autocapitalize="off" spellcheck="false" value="{{ old('email') }}" />
+                            <input class="w-full bg-surface-container-lowest border rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline {{ $errors->has('email') ? 'border-red-400' : 'border-outline-variant/50' }}" id="email" name="email" placeholder="{{ $isSignup || $isForgotPasswordRequest ? 'you@example.com' : 'name@company.com' }}" type="email" maxlength="255" autocomplete="email" autocapitalize="off" spellcheck="false" value="{{ old('email', $isForgotPasswordRequest ? $passwordResetEmail : null) }}" />
                             @error('email')
                                 <p class="ml-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <div class="space-y-1.5">
-                            <div class="flex justify-between items-center ml-1">
-                                <label class="block text-sm font-semibold text-on-surface-variant" for="password">Password</label>
-                                @unless ($isSignup)
-                                    <a class="text-xs font-bold text-primary hover:underline underline-offset-4" href="#">Forgot Password?</a>
-                                @endunless
-                            </div>
+                        @unless ($isForgotPasswordRequest)
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center ml-1">
+                                    <label class="block text-sm font-semibold text-on-surface-variant" for="password">Password</label>
+                                    @unless ($isSignup)
+                                        <a class="text-xs font-bold text-primary hover:underline underline-offset-4" href="{{ route('password.request', absolute: false) }}">Forgot Password?</a>
+                                    @endunless
+                                </div>
                                 <div class="relative">
                                     <input class="w-full bg-surface-container-lowest border rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-outline {{ $errors->has('password') ? 'border-red-400' : 'border-outline-variant/50' }}" id="password" name="password" placeholder="........" type="password" autocomplete="{{ $isSignup ? 'new-password' : 'current-password' }}" />
                                     <button class="absolute right-4 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors" type="button" data-password-toggle="password" aria-label="Show password">
                                         <span class="material-symbols-outlined text-sm" data-password-toggle-icon="password">visibility</span>
-                                </button>
-                            </div>
-                            @if ($isSignup)
-                                <div id="passwordStrengthPanel" class="hidden rounded-xl border border-outline-variant/30 bg-surface-container-low px-3 py-3">
-                                    <div class="flex items-center gap-3">
-                                        <p class="shrink-0 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Strength</p>
-                                        <div class="grid flex-1 grid-cols-4 gap-1.5">
-                                            <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
-                                            <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
-                                            <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
-                                            <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
-                                        </div>
-                                        <span id="passwordStrengthLabel" class="shrink-0 text-xs font-bold uppercase tracking-wide text-on-surface-variant">Too weak</span>
-                                    </div>
-                                    <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                                        <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="length">
-                                            <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
-                                            8+ chars
-                                        </span>
-                                        <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="lower">
-                                            <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
-                                            lowercase
-                                        </span>
-                                        <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="upper">
-                                            <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
-                                            uppercase
-                                        </span>
-                                        <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="number">
-                                            <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
-                                            number
-                                        </span>
-                                        <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="symbol">
-                                            <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
-                                            symbol
-                                        </span>
-                                    </div>
+                                    </button>
                                 </div>
-                            @endif
-                            @error('password')
-                                <p class="ml-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                                @if ($isSignup)
+                                    <div id="passwordStrengthPanel" class="hidden rounded-xl border border-outline-variant/30 bg-surface-container-low px-3 py-3">
+                                        <div class="flex items-center gap-3">
+                                            <p class="shrink-0 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">Strength</p>
+                                            <div class="grid flex-1 grid-cols-4 gap-1.5">
+                                                <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                                <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                                <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                                <span class="h-1.5 rounded-full bg-surface-variant" data-strength-bar></span>
+                                            </div>
+                                            <span id="passwordStrengthLabel" class="shrink-0 text-xs font-bold uppercase tracking-wide text-on-surface-variant">Too weak</span>
+                                        </div>
+                                        <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                                            <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="length">
+                                                <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                                8+ chars
+                                            </span>
+                                            <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="lower">
+                                                <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                                lowercase
+                                            </span>
+                                            <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="upper">
+                                                <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                                uppercase
+                                            </span>
+                                            <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="number">
+                                                <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                                number
+                                            </span>
+                                            <span class="inline-flex items-center gap-1 text-on-surface-variant" data-password-rule="symbol">
+                                                <span class="material-symbols-outlined text-sm">radio_button_unchecked</span>
+                                                symbol
+                                            </span>
+                                        </div>
+                                    </div>
+                                @endif
+                                @error('password')
+                                    <p class="ml-1 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @endunless
 
                         @if ($isSignup)
                             <div class="space-y-1.5">
@@ -363,21 +597,23 @@
                             </div>
                         @endif
 
-                        <div class="flex items-start gap-2 ml-1">
-                            <input class="mt-1 w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-surface-container-lowest" id="{{ $isSignup ? 'terms' : 'remember' }}" name="{{ $isSignup ? 'terms' : 'remember' }}" type="checkbox" value="1" {{ old($isSignup ? 'terms' : 'remember') ? 'checked' : '' }} />
-                            <label class="text-sm font-medium text-on-surface-variant" for="{{ $isSignup ? 'terms' : 'remember' }}">
-                                {{ $isSignup ? 'I agree to the Terms of Service, Privacy Policy, and student community guidelines.' : 'Keep me logged in' }}
-                            </label>
-                        </div>
-                        @if ($isSignup)
-                            @error('terms')
-                                <p class="ml-1 -mt-4 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        @endif
+                        @unless ($isForgotPasswordRequest)
+                            <div class="flex items-start gap-2 ml-1">
+                                <input class="mt-1 w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-surface-container-lowest" id="{{ $isSignup ? 'terms' : 'remember' }}" name="{{ $isSignup ? 'terms' : 'remember' }}" type="checkbox" value="1" {{ old($isSignup ? 'terms' : 'remember') ? 'checked' : '' }} />
+                                <label class="text-sm font-medium text-on-surface-variant" for="{{ $isSignup ? 'terms' : 'remember' }}">
+                                    {{ $isSignup ? 'I agree to the Terms of Service, Privacy Policy, and student community guidelines.' : 'Keep me logged in' }}
+                                </label>
+                            </div>
+                            @if ($isSignup)
+                                @error('terms')
+                                    <p class="ml-1 -mt-4 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            @endif
+                        @endunless
                     @endunless
 
-                    <button class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-4 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary transition-all active:scale-[0.98] duration-200 disabled:cursor-not-allowed disabled:opacity-70" type="submit" data-submit-button data-loading-text="{{ $isOtpVerification ? 'Verifying...' : ($isSignup ? 'Creating account and sending OTP...' : 'Signing in...') }}">
-                        {{ $isOtpVerification ? 'Verify Email Address' : ($isSignup ? 'Create Student Account' : 'Sign In to Account') }}
+                    <button class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-3.5 rounded-xl shadow-lg shadow-primary/20 hover:bg-primary transition-all active:scale-[0.98] duration-200 disabled:cursor-not-allowed disabled:opacity-70" type="submit" data-submit-button data-loading-text="{{ $submitLoadingText }}">
+                        {{ $submitText }}
                     </button>
                 </form>
 
@@ -388,15 +624,33 @@
                             Resend OTP
                         </button>
                     </form>
+                @elseif ($isForgotPasswordOtp)
+                    <form action="{{ route('password.otp.resend', absolute: false) }}" method="POST" class="mt-4">
+                        @csrf
+                        <button class="w-full bg-surface-container-lowest border border-outline-variant/50 text-on-surface font-semibold py-3 rounded-xl hover:bg-surface-container transition-all disabled:cursor-not-allowed disabled:opacity-70" type="submit" data-submit-button data-loading-text="Sending new OTP...">
+                            Resend Password Reset OTP
+                        </button>
+                    </form>
                 @endif
 
-                <footer class="mt-12 text-center">
+                <footer class="mt-8 text-center lg:mt-6">
                     @if ($isOtpVerification)
                         <p class="text-sm text-on-surface-variant">Need a different account?</p>
                         <form action="{{ route('logout') }}" method="POST" class="mt-3">
                             @csrf
                             <button class="text-on-surface font-semibold hover:underline" type="submit">Logout</button>
                         </form>
+                    @elseif ($isPasswordResetFlow)
+                        <p class="text-sm text-on-surface-variant">
+                            Remembered your password?
+                            <a class="text-on-surface font-semibold hover:underline" href="{{ route('login', absolute: false) }}">Back to login</a>
+                        </p>
+                        @if ($isForgotPasswordOtp)
+                            <p class="mt-3 text-sm text-on-surface-variant">
+                                Need to use another email?
+                                <a class="text-on-surface font-semibold hover:underline" href="{{ route('password.request', absolute: false) }}">Start again</a>
+                            </p>
+                        @endif
                     @else
                         <p class="text-sm text-on-surface-variant">
                         @if ($isSignup)
@@ -415,17 +669,15 @@
         </section>
     </main>
 
-    <div class="fixed bottom-4 right-4 z-50 sm:bottom-6 sm:right-6">
-        <button class="bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 p-3 rounded-full shadow-2xl flex items-center gap-2 pr-5 hover:bg-surface-container-lowest transition-all group">
-            <div class="w-10 h-10 bg-tertiary-container rounded-full flex items-center justify-center text-on-tertiary-container">
-                <span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
-            </div>
-            <div class="hidden sm:block text-left">
-                <p class="text-[10px] uppercase tracking-tighter font-bold text-on-surface-variant">Help Center</p>
-                <p class="text-xs font-bold text-on-surface group-hover:text-primary transition-colors">Talk to a Mentor</p>
-            </div>
-        </button>
-    </div>
+  
+<div
+    id="cyi-chatbot-root"
+    data-health-url="{{ url('/api/chatbot/health') }}"
+    data-context-url="{{ url('/api/chatbot/context') }}"
+    data-inquiry-url="{{ url('/api/chatbot/inquiries') }}"
+    data-csrf-token="{{ csrf_token() }}"
+></div>
+
     <script>
         (function () {
             document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
@@ -537,6 +789,3 @@
 </body>
 
 </html>
-
-
-

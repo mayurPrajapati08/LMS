@@ -37,6 +37,20 @@
         h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .admin-select { appearance: none; -webkit-appearance: none; -moz-appearance: none; padding-right: 2.5rem; background-image: none; }
+        .user-progress {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: 0;
+            background: transparent;
+        }
+        .user-progress::-webkit-progress-bar { background: transparent; }
+        .user-progress::-webkit-progress-value,
+        .user-progress::-moz-progress-bar {
+            background: linear-gradient(90deg, #6a3378 0%, #b07ac3 100%);
+        }
     </style>
 </head>
 <body class="bg-background text-on-surface">
@@ -46,7 +60,7 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -134,8 +148,8 @@
                                         <div class="flex justify-between items-center mb-1">
                                             <span class="text-[10px] font-bold text-primary">{{ $user->progress_average }}%</span>
                                         </div>
-                                        <div class="w-full h-1 bg-surface-container-high overflow-hidden">
-                                            <div class="h-full bg-gradient-to-r from-[#6a3378] to-[#b07ac3]" style="width: {{ max(4, $user->progress_average) }}%"></div>
+                                        <div class="w-full h-1 bg-surface-container-high overflow-hidden rounded-full">
+                                            <progress class="user-progress" max="100" value="{{ max(4, $user->progress_average) }}">{{ $user->progress_average }}%</progress>
                                         </div>
                                     </div>
                                 </td>

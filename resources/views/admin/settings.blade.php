@@ -59,7 +59,7 @@
         <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
             <div class="relative w-full md:max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
-                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none transition-all" placeholder="Search..." type="text" />
+                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-surface-container-low border-none rounded-full text-sm focus:ring-2 focus:ring-[#f5eef8]/20 outline-none transition-all" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -211,6 +211,10 @@
                                     <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Platform Tagline</label>
                                     <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="institution_tagline" type="text" value="{{ old('institution_tagline', $platformSettings['institution_tagline']) }}" />
                                 </div>
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Your Current Password</label>
+                                    <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="current_password" type="password" />
+                                </div>
                             </div>
                             <div class="flex justify-end">
                                 <button class="px-6 py-3 text-sm font-bold text-white primary-gradient rounded-xl shadow-lg" type="submit">Save Institution Settings</button>
@@ -255,6 +259,10 @@
                                             <input @checked(old($key, $platformSettings[$key]) === '1') class="h-5 w-5 rounded border-slate-300 text-primary focus:ring-primary/20" name="{{ $key }}" type="checkbox" value="1" />
                                         </label>
                                     @endforeach
+                                </div>
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Your Current Password</label>
+                                    <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="current_password" type="password" />
                                 </div>
                             </div>
                             <div class="flex justify-end">
@@ -321,6 +329,10 @@
                                         @endforeach
                                     </div>
                                 </div>
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Your Current Password</label>
+                                    <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="current_password" type="password" />
+                                </div>
                             </div>
                             <div class="flex justify-end">
                                 <button class="px-6 py-3 text-sm font-bold text-white primary-gradient rounded-xl shadow-lg" type="submit">Save Catalog Settings</button>
@@ -365,6 +377,10 @@
                                         </label>
                                     @endforeach
                                 </div>
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Your Current Password</label>
+                                    <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="current_password" type="password" />
+                                </div>
                             </div>
                             <div class="flex justify-end">
                                 <button class="px-6 py-3 text-sm font-bold text-white primary-gradient rounded-xl shadow-lg" type="submit">Save Notification Settings</button>
@@ -395,6 +411,10 @@
                                 <div class="space-y-2 md:col-span-2">
                                     <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Webhook Secret</label>
                                     <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="integration_webhook_secret" type="text" value="{{ old('integration_webhook_secret', $platformSettings['integration_webhook_secret']) }}" />
+                                </div>
+                                <div class="space-y-2 md:col-span-2">
+                                    <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Your Current Password</label>
+                                    <input class="w-full bg-surface-container-low border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 transition-all" name="current_password" type="password" />
                                 </div>
                             </div>
                             <div class="flex justify-end">

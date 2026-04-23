@@ -1,11 +1,36 @@
 @php
     $courseCount = method_exists($offlineCourses, 'total') ? $offlineCourses->total() : $offlineCourses->count();
+    $activeThumbnailProvider = old('thumbnail_provider', $editingCourse->thumbnail_provider ?? 'local');
+    $activeThumbnailProvider = $activeThumbnailProvider === 'cloud' ? 'cloudflare' : $activeThumbnailProvider;
     $editingCurriculum = collect(old('curriculum_modules', $editingCourse->curriculum_modules ?? []))
         ->map(function ($module) {
+            $topics = collect($module['topics'] ?? [])
+                ->map(function ($topic) {
+                    if (is_array($topic)) {
+                        return [
+                            'title' => $topic['title'] ?? '',
+                            'details' => $topic['details'] ?? '',
+                        ];
+                    }
+
+                    return [
+                        'title' => (string) $topic,
+                        'details' => '',
+                    ];
+                })
+                ->values();
+
+            if ($topics->isEmpty()) {
+                $topics = collect([[
+                    'title' => '',
+                    'details' => '',
+                ]]);
+            }
+
             return [
                 'title' => $module['title'] ?? '',
                 'duration' => $module['duration'] ?? '',
-                'topics' => is_array($module['topics'] ?? null) ? implode(PHP_EOL, $module['topics']) : ($module['topics'] ?? ''),
+                'topics' => $topics,
                 'project' => $module['project'] ?? '',
             ];
         })
@@ -15,7 +40,10 @@
         $editingCurriculum = collect([[
             'title' => '',
             'duration' => '',
-            'topics' => '',
+            'topics' => [[
+                'title' => '',
+                'details' => '',
+            ]],
             'project' => '',
         ]]);
     }
@@ -86,6 +114,46 @@
             border-radius: 1.45rem;
             background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(239,246,255,0.92));
             padding: 1rem;
+        }
+        .topic-card {
+            border: 1px solid rgba(186, 230, 253, 0.92);
+            border-radius: 1.25rem;
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,252,255,0.94));
+            padding: 1rem;
+        }
+        .collapse-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(186, 230, 253, 0.92);
+            background: rgba(255,255,255,0.92);
+            color: rgb(3 105 161);
+            transition: transform .22s ease, background-color .22s ease, color .22s ease;
+        }
+        .collapse-toggle:hover {
+            background: rgb(239 246 255);
+        }
+        .collapse-toggle .material-symbols-outlined {
+            transition: transform .22s ease;
+        }
+        [data-collapsible].is-collapsed > [data-collapsible-header] .collapse-toggle .material-symbols-outlined {
+            transform: rotate(-180deg);
+        }
+        [data-collapsible-body] {
+            display: grid;
+            grid-template-rows: 1fr;
+            transition: grid-template-rows .28s ease, opacity .22s ease, margin-top .22s ease;
+        }
+        [data-collapsible-body] > div {
+            overflow: hidden;
+        }
+        [data-collapsible].is-collapsed > [data-collapsible-body] {
+            grid-template-rows: 0fr;
+            opacity: 0;
+            margin-top: 0 !important;
         }
     </style>
 </head>
@@ -279,35 +347,67 @@
                                 <div>
                                     <p class="text-xs font-bold uppercase tracking-[0.22em] text-sky-700">Curriculum</p>
                                     <h3 class="mt-2 font-headline text-2xl font-extrabold text-slate-900">Module-wise structure from the brochure</h3>
-                                    <p class="mt-2 text-sm leading-6 text-slate-500">Add each section with duration, bullet topics, and the module project.</p>
+                                    <p class="mt-2 text-sm leading-6 text-slate-500">Add each section with duration, structured topics, and the module project.</p>
                                 </div>
                                 <button type="button" id="addCurriculumModule" class="rounded-xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_12px_26px_rgba(2,132,199,0.22)]">Add Module</button>
                             </div>
 
                             <div id="curriculumModules" class="space-y-4">
                                 @foreach ($editingCurriculum as $index => $module)
-                                    <div class="curriculum-card" data-module-card>
-                                        <div class="mb-4 flex items-center justify-between gap-3">
-                                            <p class="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">Module <span data-module-number>{{ $index + 1 }}</span></p>
-                                            <button type="button" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-rose-600" data-remove-module>Remove</button>
+                                    <div class="curriculum-card" data-module-card data-collapsible>
+                                        <div class="flex items-center justify-between gap-3" data-collapsible-header>
+                                            <div>
+                                                <p class="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">Module <span data-module-number>{{ $index + 1 }}</span></p>
+                                                <p class="mt-1 text-sm font-semibold text-slate-600">{{ $module['title'] ?: 'New module' }}</p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <button type="button" class="collapse-toggle" data-toggle-collapse aria-label="Toggle module details">
+                                                    <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                                                </button>
+                                                <button type="button" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-rose-600" data-remove-module>Remove</button>
+                                            </div>
                                         </div>
+                                        <div class="mt-4" data-collapsible-body>
                                         <div class="grid gap-4 lg:grid-cols-2">
                                             <div>
                                                 <label class="label">Module Title</label>
-                                                <input type="text" class="field" name="curriculum_modules[{{ $index }}][title]" value="{{ $module['title'] }}" placeholder="Excel & Google Sheets" />
+                                                <input type="text" class="field" data-name="title" name="curriculum_modules[{{ $index }}][title]" value="{{ $module['title'] }}" placeholder="Excel & Google Sheets" />
                                             </div>
                                             <div>
                                                 <label class="label">Module Duration</label>
-                                                <input type="text" class="field" name="curriculum_modules[{{ $index }}][duration]" value="{{ $module['duration'] }}" placeholder="1 Month" />
+                                                <input type="text" class="field" data-name="duration" name="curriculum_modules[{{ $index }}][duration]" value="{{ $module['duration'] }}" placeholder="1 Month" />
                                             </div>
                                             <div class="lg:col-span-2">
-                                                <label class="label">Topics</label>
-                                                <textarea class="field" rows="6" name="curriculum_modules[{{ $index }}][topics]" placeholder="One topic per line">{{ $module['topics'] }}</textarea>
+                                                <div class="mb-3 flex items-center justify-between gap-3">
+                                                    <label class="label !mb-0">Topics</label>
+                                                    <button type="button" class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-sky-700" data-add-topic>Add Topic</button>
+                                                </div>
+                                                <div class="space-y-3" data-topics-container>
+                                                    @foreach ($module['topics'] as $topicIndex => $topic)
+                                                        <div class="topic-card" data-topic-card>
+                                                            <div class="mb-3 flex items-center justify-between gap-3">
+                                                                <p class="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">Topic <span data-topic-number>{{ $topicIndex + 1 }}</span></p>
+                                                                <button type="button" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-rose-600" data-remove-topic>Remove</button>
+                                                            </div>
+                                                            <div class="grid gap-3">
+                                                                <div>
+                                                                    <label class="label">Topic Title</label>
+                                                                    <input type="text" class="field" data-topic-field="title" name="curriculum_modules[{{ $index }}][topics][{{ $topicIndex }}][title]" value="{{ $topic['title'] ?? '' }}" placeholder="Formulas and Functions" />
+                                                                </div>
+                                                                <div>
+                                                                    <label class="label">Topic Details</label>
+                                                                    <textarea class="field" rows="4" data-topic-field="details" name="curriculum_modules[{{ $index }}][topics][{{ $topicIndex }}][details]" placeholder="Explain what is covered in this topic, tools used, or practical outcomes.">{{ $topic['details'] ?? '' }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                             <div class="lg:col-span-2">
                                                 <label class="label">Module Project</label>
-                                                <input type="text" class="field" name="curriculum_modules[{{ $index }}][project]" value="{{ $module['project'] }}" placeholder="Executive Sales Dashboard" />
+                                                <input type="text" class="field" data-name="project" name="curriculum_modules[{{ $index }}][project]" value="{{ $module['project'] }}" placeholder="Executive Sales Dashboard" />
                                             </div>
+                                        </div>
                                         </div>
                                     </div>
                                 @endforeach
@@ -347,9 +447,10 @@
                                 <div>
                                     <label class="label" for="thumbnail_provider">Thumbnail Source</label>
                                     <select id="thumbnail_provider" name="thumbnail_provider" class="field">
-                                        <option value="url" @selected(old('thumbnail_provider', 'local') === 'url')>Use image URL</option>
-                                        <option value="local" @selected(old('thumbnail_provider', 'local') === 'local')>Upload to local server</option>
-                                        <option value="cloud" @selected(old('thumbnail_provider', 'local') === 'cloud')>Upload to cloud</option>
+                                        <option value="url" @selected($activeThumbnailProvider === 'url')>Use image URL</option>
+                                        <option value="local" @selected($activeThumbnailProvider === 'local')>Upload to local server</option>
+                                        <option value="cloudflare" @selected($activeThumbnailProvider === 'cloudflare')>Upload to Cloudflare R2</option>
+                                        <option value="cloudinary" @selected($activeThumbnailProvider === 'cloudinary')>Upload to Cloudinary</option>
                                     </select>
                                 </div>
                                 <div>
@@ -396,7 +497,7 @@
                             <div class="space-y-3 text-sm leading-6 text-slate-600">
                                 <p><strong>Course Overview</strong> matches the intro paragraph from the PDF.</p>
                                 <p><strong>Duration, Validity, Mode, Placement</strong> match the top metadata line.</p>
-                                <p><strong>Curriculum Modules</strong> match each numbered section with topics and project.</p>
+                                <p><strong>Curriculum Modules</strong> match each numbered section with topic title, topic details, and project.</p>
                                 <p><strong>Additional Benefits</strong> match the checklist section at the end.</p>
                                 <p><strong>Note For Learners</strong> matches the final closing note.</p>
                             </div>
@@ -475,11 +576,20 @@
 </main>
 
 <template id="curriculumModuleTemplate">
-    <div class="curriculum-card" data-module-card>
-        <div class="mb-4 flex items-center justify-between gap-3">
-            <p class="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">Module <span data-module-number></span></p>
-            <button type="button" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-rose-600" data-remove-module>Remove</button>
+    <div class="curriculum-card" data-module-card data-collapsible>
+        <div class="flex items-center justify-between gap-3" data-collapsible-header>
+            <div>
+                <p class="text-sm font-bold uppercase tracking-[0.18em] text-sky-700">Module <span data-module-number></span></p>
+                <p class="mt-1 text-sm font-semibold text-slate-600">New module</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" class="collapse-toggle" data-toggle-collapse aria-label="Toggle module details">
+                    <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                </button>
+                <button type="button" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-rose-600" data-remove-module>Remove</button>
+            </div>
         </div>
+        <div class="mt-4" data-collapsible-body>
         <div class="grid gap-4 lg:grid-cols-2">
             <div>
                 <label class="label">Module Title</label>
@@ -490,13 +600,46 @@
                 <input type="text" class="field" data-name="duration" placeholder="1 Month" />
             </div>
             <div class="lg:col-span-2">
-                <label class="label">Topics</label>
-                <textarea class="field" rows="6" data-name="topics" placeholder="One topic per line"></textarea>
+                <div class="mb-3 flex items-center justify-between gap-3">
+                    <label class="label !mb-0">Topics</label>
+                    <button type="button" class="rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-xs font-bold uppercase tracking-[0.12em] text-sky-700" data-add-topic>Add Topic</button>
+                </div>
+                <div class="space-y-3" data-topics-container></div>
             </div>
             <div class="lg:col-span-2">
                 <label class="label">Module Project</label>
                 <input type="text" class="field" data-name="project" placeholder="Executive Sales Dashboard" />
             </div>
+        </div>
+        </div>
+    </div>
+</template>
+
+<template id="curriculumTopicTemplate">
+    <div class="topic-card" data-topic-card data-collapsible>
+        <div class="flex items-center justify-between gap-3" data-collapsible-header>
+            <div>
+                <p class="text-xs font-bold uppercase tracking-[0.16em] text-sky-700">Topic <span data-topic-number></span></p>
+                <p class="mt-1 text-sm font-semibold text-slate-600">New topic</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" class="collapse-toggle" data-toggle-collapse aria-label="Toggle topic details">
+                    <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                </button>
+                <button type="button" class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-rose-600" data-remove-topic>Remove</button>
+            </div>
+        </div>
+        <div class="mt-3" data-collapsible-body>
+        <div class="grid gap-3">
+            <div>
+                <label class="label">Topic Title</label>
+                <input type="text" class="field" data-topic-field="title" placeholder="Formulas and Functions" />
+            </div>
+            <div>
+                <label class="label">Topic Details</label>
+                <textarea class="field" rows="4" data-topic-field="details" placeholder="Explain what is covered in this topic, tools used, or practical outcomes."></textarea>
+            </div>
+        </div>
         </div>
     </div>
 </template>
@@ -505,8 +648,39 @@
     (function () {
         var container = document.getElementById('curriculumModules');
         var template = document.getElementById('curriculumModuleTemplate');
+        var topicTemplate = document.getElementById('curriculumTopicTemplate');
         var addButton = document.getElementById('addCurriculumModule');
-        if (!container || !template || !addButton) return;
+        if (!container || !template || !topicTemplate || !addButton) return;
+
+        function ensureTopicCard(topicsContainer) {
+            if (topicsContainer.querySelector('[data-topic-card]')) {
+                return;
+            }
+
+            topicsContainer.appendChild(topicTemplate.content.cloneNode(true));
+        }
+
+        function syncTopics(card, moduleIndex) {
+            var topicsContainer = card.querySelector('[data-topics-container]');
+            if (!topicsContainer) return;
+
+            ensureTopicCard(topicsContainer);
+
+            topicsContainer.querySelectorAll('[data-topic-card]').forEach(function (topicCard, topicIndex) {
+                var topicNumber = topicCard.querySelector('[data-topic-number]');
+                if (topicNumber) topicNumber.textContent = String(topicIndex + 1);
+
+                var titlePreview = topicCard.querySelector('[data-topic-field="title"]');
+                var topicPreviewText = topicCard.querySelector('[data-collapsible-header] p.text-sm');
+                if (topicPreviewText) {
+                    topicPreviewText.textContent = titlePreview && titlePreview.value.trim() !== '' ? titlePreview.value.trim() : 'New topic';
+                }
+
+                topicCard.querySelectorAll('[data-topic-field]').forEach(function (field) {
+                    field.name = 'curriculum_modules[' + moduleIndex + '][topics][' + topicIndex + '][' + field.getAttribute('data-topic-field') + ']';
+                });
+            });
+        }
 
         function syncModules() {
             var cards = container.querySelectorAll('[data-module-card]');
@@ -514,18 +688,17 @@
                 var number = card.querySelector('[data-module-number]');
                 if (number) number.textContent = String(index + 1);
 
+                var titlePreview = card.querySelector('[data-name="title"]');
+                var modulePreviewText = card.querySelector('[data-collapsible-header] p.text-sm');
+                if (modulePreviewText) {
+                    modulePreviewText.textContent = titlePreview && titlePreview.value.trim() !== '' ? titlePreview.value.trim() : 'New module';
+                }
+
                 card.querySelectorAll('[data-name]').forEach(function (field) {
                     field.name = 'curriculum_modules[' + index + '][' + field.getAttribute('data-name') + ']';
                 });
 
-                card.querySelectorAll('input[name^="curriculum_modules["], textarea[name^="curriculum_modules["]').forEach(function (field) {
-                    if (!field.hasAttribute('data-name')) {
-                        var match = field.name.match(/\]\[(.+)\]$/);
-                        if (match) {
-                            field.name = 'curriculum_modules[' + index + '][' + match[1] + ']';
-                        }
-                    }
-                });
+                syncTopics(card, index);
             });
         }
 
@@ -536,6 +709,45 @@
         });
 
         container.addEventListener('click', function (event) {
+            var toggleButton = event.target.closest('[data-toggle-collapse]');
+            if (toggleButton) {
+                var collapsible = toggleButton.closest('[data-collapsible]');
+                if (collapsible) {
+                    collapsible.classList.toggle('is-collapsed');
+                }
+                return;
+            }
+
+            var addTopicButton = event.target.closest('[data-add-topic]');
+            if (addTopicButton) {
+                var moduleCard = addTopicButton.closest('[data-module-card]');
+                var topicsContainer = moduleCard ? moduleCard.querySelector('[data-topics-container]') : null;
+                if (topicsContainer) {
+                    topicsContainer.appendChild(topicTemplate.content.cloneNode(true));
+                    syncModules();
+                }
+                return;
+            }
+
+            var removeTopicButton = event.target.closest('[data-remove-topic]');
+            if (removeTopicButton) {
+                var currentTopicCard = removeTopicButton.closest('[data-topic-card]');
+                var currentTopicsContainer = currentTopicCard ? currentTopicCard.parentElement : null;
+                if (!currentTopicCard || !currentTopicsContainer) return;
+
+                var topicCards = currentTopicsContainer.querySelectorAll('[data-topic-card]');
+                if (topicCards.length === 1) {
+                    currentTopicCard.querySelectorAll('input, textarea').forEach(function (field) {
+                        field.value = '';
+                    });
+                    return;
+                }
+
+                currentTopicCard.remove();
+                syncModules();
+                return;
+            }
+
             var button = event.target.closest('[data-remove-module]');
             if (!button) return;
 
@@ -549,6 +761,12 @@
 
             button.closest('[data-module-card]').remove();
             syncModules();
+        });
+
+        container.addEventListener('input', function (event) {
+            if (event.target.matches('[data-name="title"], [data-topic-field="title"]')) {
+                syncModules();
+            }
         });
 
         syncModules();

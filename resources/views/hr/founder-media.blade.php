@@ -1,6 +1,8 @@
 @php
     $activeVideoProvider = old('video_provider', $founderMedia->video_provider ?? 'url');
     $activePosterProvider = old('poster_provider', $founderMedia->poster_provider ?? 'url');
+    $activeVideoProvider = $activeVideoProvider === 'cloud' ? 'cloudflare' : $activeVideoProvider;
+    $activePosterProvider = $activePosterProvider === 'cloud' ? 'cloudflare' : $activePosterProvider;
 @endphp
 <!DOCTYPE html>
 <html class="light" lang="en">
@@ -44,7 +46,7 @@
                 </div>
                 <div class="rounded-[1.3rem] border border-white/20 bg-white/10 p-4 backdrop-blur-md">
                     <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-violet-100/70">Media Options</p>
-                    <p class="mt-2 text-sm font-semibold text-white">Use direct URLs or upload to local storage or cloud storage for both video and poster.</p>
+                    <p class="mt-2 text-sm font-semibold text-white">Use direct URLs or upload to local storage, Cloudflare R2, or Cloudinary for both video and poster.</p>
                 </div>
             </div>
         </section>
@@ -70,7 +72,7 @@
                         <span class="material-symbols-outlined rounded-full bg-sky-100 p-2 text-sky-700">smart_display</span>
                         <div>
                             <h3 class="font-headline text-xl font-extrabold text-slate-900">Video Setup</h3>
-                            <p class="mt-1 text-sm leading-6 text-slate-600">Choose the same media flow used elsewhere in HR: URL, local upload, or cloud upload.</p>
+                            <p class="mt-1 text-sm leading-6 text-slate-600">Choose the same media flow used elsewhere in HR: URL, local upload, Cloudflare R2, or Cloudinary.</p>
                         </div>
                     </div>
                     <div class="mt-5 grid gap-4 lg:grid-cols-2">
@@ -79,7 +81,8 @@
                             <select class="field-select" id="founder_video_provider" name="video_provider" data-provider-select="video">
                                 <option value="url" @selected($activeVideoProvider === 'url')>Use video URL</option>
                                 <option value="local" @selected($activeVideoProvider === 'local')>Upload to local storage</option>
-                                <option value="cloud" @selected($activeVideoProvider === 'cloud')>Upload to cloud storage</option>
+                                <option value="cloudflare" @selected($activeVideoProvider === 'cloudflare')>Upload to Cloudflare R2</option>
+                                <option value="cloudinary" @selected($activeVideoProvider === 'cloudinary')>Upload to Cloudinary</option>
                             </select>
                         </div>
                         <div class="field-shell" data-provider-mode="video" data-provider-view="file" @if ($activeVideoProvider === 'url') hidden @endif>
@@ -109,7 +112,8 @@
                             <select class="field-select" id="founder_poster_provider" name="poster_provider" data-provider-select="poster">
                                 <option value="url" @selected($activePosterProvider === 'url')>Use image URL</option>
                                 <option value="local" @selected($activePosterProvider === 'local')>Upload to local storage</option>
-                                <option value="cloud" @selected($activePosterProvider === 'cloud')>Upload to cloud storage</option>
+                                <option value="cloudflare" @selected($activePosterProvider === 'cloudflare')>Upload to Cloudflare R2</option>
+                                <option value="cloudinary" @selected($activePosterProvider === 'cloudinary')>Upload to Cloudinary</option>
                             </select>
                         </div>
                         <div class="field-shell" data-provider-mode="poster" data-provider-view="file" @if ($activePosterProvider === 'url') hidden @endif>

@@ -9,9 +9,10 @@ use RuntimeException;
 
 class CloudflareR2Storage
 {
-    public static function uploadPublicFile(UploadedFile $file, string $path): string
+    public static function uploadPublicFile(UploadedFile $file, string $path, array $options = []): string
     {
         self::ensureConfigured();
+        self::guardUpload($file, $path, $options);
 
         $disk = Storage::disk('r2');
         $stream = fopen($file->getRealPath(), 'r');
@@ -63,6 +64,43 @@ class CloudflareR2Storage
         self::ensureConfigured();
 
         return Storage::disk('r2')->url($path);
+    }
+
+    private static function guardUpload(UploadedFile $file, string $path, array $options): void
+    {
+        if (! $file->isValid()) {
+            throw new RuntimeException('The selected file upload is invalid. Please try again.');
+        }
+
+        $normalizedPath = trim(str_replace('\\', '/', $path), '/');
+
+        if ($normalizedPath === '' || str_contains($normalizedPath, '../') || str_contains($normalizedPath, '..\\')) {
+            throw new RuntimeException('The upload path is invalid.');
+        }
+
+        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: $file->extension() ?: ''));
+        $mimeType = strtolower((string) ($file->getMimeType() ?: 'application/octet-stream'));
+        $size = (int) ($file->getSize() ?? 0);
+        $blockedExtensions = ['php', 'phtml', 'phar', 'cgi', 'pl', 'py', 'js', 'jsp', 'asp', 'aspx', 'sh', 'exe', 'bat', 'cmd', 'dll', 'com', 'msi', 'svg', 'html', 'htm'];
+
+        if ($extension !== '' && in_array($extension, $blockedExtensions, true)) {
+            throw new RuntimeException('This file type is not allowed for upload.');
+        }
+
+        $allowedExtensions = array_map('strtolower', $options['allowed_extensions'] ?? []);
+        if ($allowedExtensions !== [] && ! in_array($extension, $allowedExtensions, true)) {
+            throw new RuntimeException('The selected file extension is not allowed.');
+        }
+
+        $allowedMimeTypes = array_map('strtolower', $options['allowed_mime_types'] ?? []);
+        if ($allowedMimeTypes !== [] && ! in_array($mimeType, $allowedMimeTypes, true)) {
+            throw new RuntimeException('The selected file type is not allowed.');
+        }
+
+        $maxBytes = (int) ($options['max_bytes'] ?? 0);
+        if ($maxBytes > 0 && $size > $maxBytes) {
+            throw new RuntimeException('The selected file is larger than the allowed upload limit.');
+        }
     }
 
     private static function client(): S3Client

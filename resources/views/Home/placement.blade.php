@@ -196,6 +196,7 @@
             }
             .hero-card-copy {
                 display: -webkit-box;
+                line-clamp: 4;
                 -webkit-line-clamp: 4;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
@@ -324,7 +325,7 @@
                         </p>
 
                         <div class="mt-8 flex flex-wrap gap-3">
-                            <a href="{{ route('home.courses') }}" class="rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-[#2a0f4c]">Explore Courses</a>
+                            <a href="{{ route('home.courses') }}" class="rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-[#2a0f4c]">Explore Training Programs</a>
                             <a href="{{ route('home.contact', ['topic' => 'mentorship', 'subject' => 'Placement guidance']) }}" class="placement-glass rounded-2xl px-6 py-3.5 text-sm font-bold text-white/88">Book Guidance</a>
                         </div>
 

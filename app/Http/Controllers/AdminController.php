@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\DeleteAdminRequest;
+use App\Http\Requests\Admin\ReplyInquiryRequest;
+use App\Http\Requests\Admin\StoreAdminRequest;
+use App\Http\Requests\Admin\StoreInstructorRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
+use App\Http\Requests\Admin\UpdatePlatformSettingsRequest;
 use App\Jobs\SendAccountCredentialsMail;
 use App\Models\AppSetting;
 use App\Models\Category;
@@ -13,6 +19,7 @@ use App\Models\PublicContact;
 use App\Models\Review;
 use App\Models\Role;
 use App\Models\User;
+use App\Support\AuditLogger;
 use App\Support\CloudflareR2Storage;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -290,21 +297,17 @@ class AdminController extends Controller
         ]);
     }
 
-    public function storeInstructor(Request $request): RedirectResponse
+    public function storeInstructor(StoreInstructorRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', $this->passwordRule()],
-            'bio' => ['nullable', 'string', 'max:1000'],
-        ]);
+        $validated = $request->validated();
 
         $role = Role::query()->firstOrCreate(['name' => 'instructor']);
+        $temporaryPassword = $this->provisionedPassword();
 
-        User::create([
+        $instructor = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            'password' => $temporaryPassword,
             'bio' => $validated['bio'] ?? null,
             'role_id' => $role->id,
         ]);
@@ -312,9 +315,9 @@ class AdminController extends Controller
         SendAccountCredentialsMail::dispatchAfterResponse(
             $validated['name'],
             $validated['email'],
-            $validated['password'],
             'Instructor',
-            route('login')
+            route('login'),
+            route('password.request')
         );
 
         Log::info('Instructor account created by admin', [
@@ -322,10 +325,13 @@ class AdminController extends Controller
             'admin_email' => $request->user()->email,
             'instructor_email' => $validated['email'],
         ]);
+        AuditLogger::record('instructor.created', $request, $instructor, [
+            'email' => $instructor->email,
+        ]);
 
         return redirect()
             ->route('admin.instructors')
-            ->with('status', 'Instructor account created successfully.');
+            ->with('status', 'Instructor account created successfully. A secure setup email has been sent.');
     }
 
     public function payments(Request $request): View
@@ -483,12 +489,9 @@ class AdminController extends Controller
         ]);
     }
 
-    public function replySupport(Request $request, Inquiry $inquiry): RedirectResponse
+    public function replySupport(ReplyInquiryRequest $request, Inquiry $inquiry): RedirectResponse
     {
-        $validated = $request->validate([
-            'admin_reply' => ['required', 'string', 'max:5000'],
-            'status' => ['nullable', 'in:pending,resolved'],
-        ]);
+        $validated = $request->validated();
 
         $inquiry->update([
             'admin_reply' => $validated['admin_reply'],
@@ -618,61 +621,13 @@ class AdminController extends Controller
             ->with('status', 'Admin password updated successfully.');
     }
 
-    public function updatePlatformSettings(Request $request): RedirectResponse
+    public function updatePlatformSettings(UpdatePlatformSettingsRequest $request): RedirectResponse
     {
         $section = (string) $request->input('section');
-
-        $rules = match ($section) {
-            'institution' => [
-                'institution_name' => ['required', 'string', 'max:255'],
-                'institution_email' => ['required', 'email', 'max:255'],
-                'institution_phone' => ['nullable', 'string', 'max:50'],
-                'institution_address' => ['nullable', 'string', 'max:255'],
-                'institution_timezone' => ['required', 'string', 'max:100'],
-                'institution_tagline' => ['nullable', 'string', 'max:255'],
-            ],
-            'payments' => [
-                'payment_currency' => ['required', 'string', 'max:10'],
-                'payment_tax_rate' => ['nullable', 'numeric', 'min:0', 'max:100'],
-                'payment_stripe_enabled' => ['nullable', 'boolean'],
-                'payment_razorpay_enabled' => ['nullable', 'boolean'],
-                'payment_manual_enabled' => ['nullable', 'boolean'],
-            ],
-            'catalog' => [
-                'catalog_default_mode' => ['required', 'in:offline,online'],
-                'catalog_online_enabled' => ['nullable', 'boolean'],
-                'catalog_offline_enabled' => ['nullable', 'boolean'],
-                'online_student_access_mode' => ['required', 'in:disabled,limited'],
-                'student_catalog_enabled' => ['nullable', 'boolean'],
-                'student_wishlist_enabled' => ['nullable', 'boolean'],
-                'student_cart_enabled' => ['nullable', 'boolean'],
-                'student_checkout_enabled' => ['nullable', 'boolean'],
-                'student_payments_enabled' => ['nullable', 'boolean'],
-                'public_lead_gate_enabled' => ['nullable', 'boolean'],
-                'workshop_lead_gate_enabled' => ['nullable', 'boolean'],
-            ],
-            'notifications' => [
-                'email_from_name' => ['required', 'string', 'max:255'],
-                'email_from_address' => ['required', 'email', 'max:255'],
-                'email_support_address' => ['required', 'email', 'max:255'],
-                'exception_alert_email' => ['required', 'email', 'max:255'],
-                'notification_new_enrollment' => ['nullable', 'boolean'],
-                'notification_new_review' => ['nullable', 'boolean'],
-                'notification_support_alerts' => ['nullable', 'boolean'],
-                'notification_daily_digest' => ['nullable', 'boolean'],
-            ],
-            'integrations' => [
-                'integration_cloudinary_folder' => ['nullable', 'string', 'max:255'],
-                'integration_razorpay_key' => ['nullable', 'string', 'max:255'],
-                'integration_app_url' => ['nullable', 'string', 'max:255'],
-                'integration_webhook_secret' => ['nullable', 'string', 'max:255'],
-            ],
-            default => [],
-        };
-
+        $rules = $request->rules();
         abort_if($rules === [], 404);
-
-        $validated = $request->validate($rules);
+        $validated = $request->validated();
+        $settingKeys = array_values(array_diff(array_keys($rules), ['current_password']));
         $booleanFields = [
             'payment_stripe_enabled',
             'payment_razorpay_enabled',
@@ -700,7 +655,7 @@ class AdminController extends Controller
             $validated['student_payments_enabled'] = false;
         }
 
-        foreach ($rules as $key => $unused) {
+        foreach ($settingKeys as $key) {
             $value = in_array($key, $booleanFields, true)
                 ? ($request->boolean($key) ? '1' : '0')
                 : (string) ($validated[$key] ?? '');
@@ -715,6 +670,10 @@ class AdminController extends Controller
             'section' => $section,
             'admin_id' => $request->user()->id,
             'admin_email' => $request->user()->email,
+        ]);
+        AuditLogger::record('platform.settings.updated', $request, AppSetting::class, [
+            'section' => $section,
+            'keys' => $settingKeys,
         ]);
 
         return redirect()
@@ -822,36 +781,30 @@ class AdminController extends Controller
         ]);
     }
 
-    public function storeAdmin(Request $request): RedirectResponse
+    public function storeAdmin(StoreAdminRequest $request): RedirectResponse
     {
-        abort_unless($request->user()->role?->name === 'super admin', 403);
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'password' => ['required', 'confirmed', $this->passwordRule()],
-            'role' => ['required', 'in:admin,super admin,hr team'],
-        ]);
+        $validated = $request->validated();
 
         $role = Role::query()->firstOrCreate(['name' => $validated['role']]);
+        $temporaryPassword = $this->provisionedPassword();
 
-        User::create([
+        $createdAdmin = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => $validated['password'],
+            'password' => $temporaryPassword,
             'role_id' => $role->id,
         ]);
 
         SendAccountCredentialsMail::dispatchAfterResponse(
             $validated['name'],
             $validated['email'],
-            $validated['password'],
             match ($validated['role']) {
                 'super admin' => 'Super Admin',
                 'hr team' => 'HR Team',
                 default => 'Admin',
             },
-            route('login')
+            route('login'),
+            route('password.request')
         );
 
         Log::warning('Privileged account created', [
@@ -860,23 +813,19 @@ class AdminController extends Controller
             'role' => $validated['role'],
             'account_email' => $validated['email'],
         ]);
+        AuditLogger::record('admin.created', $request, $createdAdmin, [
+            'role' => $validated['role'],
+            'email' => $createdAdmin->email,
+        ]);
 
         return redirect()
             ->route('admin.admins')
-            ->with('status', 'New admin account created successfully.');
+            ->with('status', 'New admin account created successfully. A secure setup email has been sent.');
     }
 
-    public function updateAdmin(Request $request, User $managedAdmin): RedirectResponse
+    public function updateAdmin(UpdateAdminRequest $request, User $managedAdmin): RedirectResponse
     {
-        abort_unless($request->user()->role?->name === 'super admin', 403);
-        abort_unless(in_array($managedAdmin->role?->name, ['admin', 'super admin', 'hr team'], true), 404);
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,'.$managedAdmin->id],
-            'role' => ['required', 'in:admin,super admin,hr team'],
-            'password' => ['nullable', 'confirmed', $this->passwordRule()],
-        ]);
+        $validated = $request->validated();
 
         $role = Role::query()->firstOrCreate(['name' => $validated['role']]);
 
@@ -886,10 +835,6 @@ class AdminController extends Controller
             'role_id' => $role->id,
         ];
 
-        if (! empty($validated['password'])) {
-            $payload['password'] = $validated['password'];
-        }
-
         $managedAdmin->update($payload);
 
         Log::warning('Privileged account updated', [
@@ -898,7 +843,10 @@ class AdminController extends Controller
             'account_id' => $managedAdmin->id,
             'account_email' => $managedAdmin->email,
             'role' => $validated['role'],
-            'password_changed' => ! empty($validated['password']),
+        ]);
+        AuditLogger::record('admin.updated', $request, $managedAdmin, [
+            'role' => $validated['role'],
+            'email' => $managedAdmin->email,
         ]);
 
         return redirect()
@@ -906,23 +854,18 @@ class AdminController extends Controller
             ->with('status', 'Admin account updated successfully.');
     }
 
-    public function destroyAdmin(Request $request, User $managedAdmin): RedirectResponse
+    public function destroyAdmin(DeleteAdminRequest $request, User $managedAdmin): RedirectResponse
     {
-        abort_unless($request->user()->role?->name === 'super admin', 403);
-        abort_unless(in_array($managedAdmin->role?->name, ['admin', 'super admin', 'hr team'], true), 404);
-
-        if ($request->user()->is($managedAdmin)) {
-            return redirect()
-                ->route('admin.admins')
-                ->withErrors(['admin' => 'You cannot remove the account you are currently using.']);
-        }
-
         Log::warning('Privileged account removed', [
             'removed_by_id' => $request->user()->id,
             'removed_by_email' => $request->user()->email,
             'account_id' => $managedAdmin->id,
             'account_email' => $managedAdmin->email,
             'role' => $managedAdmin->role?->name,
+        ]);
+        AuditLogger::record('admin.deleted', $request, $managedAdmin, [
+            'role' => $managedAdmin->role?->name,
+            'email' => $managedAdmin->email,
         ]);
 
         $managedAdmin->delete();
@@ -938,7 +881,16 @@ class AdminController extends Controller
         $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
         $path = $folder.'/admin-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar.'.$extension;
 
-        return CloudflareR2Storage::uploadPublicFile($file, $path);
+        return CloudflareR2Storage::uploadPublicFile($file, $path, [
+            'allowed_extensions' => ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+            'allowed_mime_types' => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+            'max_bytes' => 5 * 1024 * 1024,
+        ]);
+    }
+
+    private function provisionedPassword(): string
+    {
+        return Str::password(32);
     }
 
     private function passwordRule(): Password

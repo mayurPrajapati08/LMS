@@ -381,32 +381,16 @@ class StudentCoursePlayerController extends Controller
 
     public function viewResource(Request $request, CourseMaterial $material): RedirectResponse
     {
-        $student = $request->user();
         $material->loadMissing('video.section');
-
-        $courseId = (int) optional(optional($material->video)->section)->course_id;
-
-        Enrollment::query()
-            ->where('user_id', $student->id)
-            ->where('course_id', $courseId)
-            ->where('status', 'completed')
-            ->firstOrFail();
+        $this->authorize('view', $material);
 
         return redirect()->away($material->file_url);
     }
 
     public function downloadResource(Request $request, CourseMaterial $material): RedirectResponse
     {
-        $student = $request->user();
         $material->loadMissing('video.section');
-
-        $courseId = (int) optional(optional($material->video)->section)->course_id;
-
-        Enrollment::query()
-            ->where('user_id', $student->id)
-            ->where('course_id', $courseId)
-            ->where('status', 'completed')
-            ->firstOrFail();
+        $this->authorize('download', $material);
 
         return redirect()->away($this->downloadUrlForResource($material));
     }

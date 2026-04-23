@@ -149,9 +149,9 @@
                             </div>
                         </div>
                         <div class="mt-5 grid gap-4 lg:grid-cols-2">
-                            <div class="field-shell"><label class="field-label" for="achievement_media_provider">Storage Option</label><select class="field-select" id="achievement_media_provider" name="media_provider"><option value="url" @selected(old('media_provider', $editingAchievement->media_provider ?? 'url') === 'url')>Use media URL</option><option value="local" @selected(old('media_provider', $editingAchievement->media_provider ?? '') === 'local')>Upload to local storage</option><option value="cloud" @selected(old('media_provider', $editingAchievement->media_provider ?? '') === 'cloud')>Upload to cloud storage</option></select></div>
+                            <div class="field-shell"><label class="field-label" for="achievement_media_provider">Storage Option</label><select class="field-select" id="achievement_media_provider" name="media_provider"><option value="url" @selected(old('media_provider', $editingAchievement->media_provider ?? 'url') === 'url')>Use media URL</option><option value="local" @selected(old('media_provider', $editingAchievement->media_provider ?? '') === 'local')>Upload to local storage</option><option value="cloudflare" @selected(in_array(old('media_provider', $editingAchievement->media_provider ?? ''), ['cloud', 'cloudflare'], true))>Upload to Cloudflare R2</option><option value="cloudinary" @selected(old('media_provider', $editingAchievement->media_provider ?? '') === 'cloudinary')>Upload to Cloudinary</option></select></div>
                             <div class="field-shell"><label class="field-label" for="achievement_media_type">Media Type</label><select class="field-select" id="achievement_media_type" name="media_type"><option value="image" @selected(old('media_type', $editingAchievement->media_type ?? 'image') === 'image')>Image</option><option value="video" @selected(old('media_type', $editingAchievement->media_type ?? '') === 'video')>Video</option></select></div>
-                            <div class="field-shell lg:col-span-2"><label class="field-label" for="achievement_media_file">Upload From Device</label><input class="field-file" id="achievement_media_file" name="media_file" type="file" /><p class="field-help">Use this when storing locally or in cloud storage.</p></div>
+                            <div class="field-shell lg:col-span-2"><label class="field-label" for="achievement_media_file">Upload From Device</label><input class="field-file" id="achievement_media_file" name="media_file" type="file" /><p class="field-help">Use this when storing locally, in Cloudflare R2, or in Cloudinary.</p></div>
                             <div class="field-shell lg:col-span-2"><label class="field-label" for="achievement_media_url">Media URL</label><input class="field-input" id="achievement_media_url" name="media_url" type="text" value="{{ old('media_url', $editingAchievement->media_url ?? '') }}" /><p class="field-help">Paste a public image or video URL when URL mode is selected.</p></div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                                         <td><span class="row-chip kind-{{ $achievement->kind }}">{{ ucfirst($achievement->kind) }}</span></td>
                                         <td>
                                             <div class="font-medium text-slate-700">{{ strtoupper($achievement->media_type ?? 'image') }}</div>
-                                            <div class="mt-2 text-xs text-slate-500">{{ strtoupper($achievement->media_provider ?? 'url') }}</div>
+                                            <div class="mt-2 text-xs text-slate-500">{{ match($achievement->media_provider) { 'cloud', 'cloudflare' => 'CLOUDFLARE R2', 'cloudinary' => 'CLOUDINARY', 'local' => 'LOCAL', default => 'URL' } }}</div>
                                         </td>
                                         <td>
                                             @if (($achievementFilter ?? 'gallery') === 'gallery')

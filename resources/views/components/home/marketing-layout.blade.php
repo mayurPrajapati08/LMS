@@ -747,7 +747,7 @@
                     <div>
                         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-primary">Login Required</p>
                         <h3 id="marketingAuthGateTitle" class="mt-2 font-headline text-3xl font-extrabold text-on-surface">Login or create an account</h3>
-                        <p id="marketingAuthGateCopy" class="mt-3 text-sm leading-7 text-on-surface-variant">Sign in first to continue to the detailed course or roadmap page.</p>
+                        <p id="marketingAuthGateCopy" class="mt-3 text-sm leading-7 text-on-surface-variant">Sign in first to continue to the detailed training program or roadmap page.</p>
                     </div>
                     <button type="button" id="marketingAuthGateClose" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-surface-soft text-on-surface-variant">
                         <span class="material-symbols-outlined">close</span>
@@ -836,7 +836,7 @@
             function openGate(target) {
                 var redirectTo = target.getAttribute('data-auth-redirect') || window.location.pathname + window.location.search;
                 var gateTitle = target.getAttribute('data-auth-title') || 'Login or create an account';
-                var gateCopy = target.getAttribute('data-auth-copy') || 'Sign in first to continue to the detailed course or roadmap page.';
+                var gateCopy = target.getAttribute('data-auth-copy') || 'Sign in first to continue to the detailed training program or roadmap page.';
 
                 title.textContent = gateTitle;
                 copy.textContent = gateCopy;

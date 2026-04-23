@@ -5,7 +5,6 @@
         ->flatten()
         ->unique()
         ->values();
-    $startingPrice = $careerTracks->min('price');
     $learningPoints = [
         [
             'title' => 'Choose by role, not by confusion',
@@ -21,9 +20,29 @@
         ],
     ];
     $pagePrinciples = [
-        ['label' => 'Curated tracks', 'value' => 'Not random course lists'],
+        ['label' => 'Curated tracks', 'value' => 'Not random training program lists'],
         ['label' => 'Mentor-guided', 'value' => 'Clear next-step direction'],
         ['label' => 'Portfolio-backed', 'value' => 'Projects that show readiness'],
+    ];
+    $skillCollections = [
+        [
+            'label' => 'Analytics',
+            'title' => 'Reporting and decision-making tools',
+            'description' => 'Tracks in analytics and BI focus on data preparation, dashboards, KPI thinking, and business-facing reporting.',
+            'skills' => $allSkills->filter(fn ($skill) => in_array($skill, ['SQL', 'Database Design', 'ETL Basics', 'Power BI', 'Tableau', 'Data Modeling', 'DAX', 'Dashboards', 'Excel'], true))->values(),
+        ],
+        [
+            'label' => 'Development',
+            'title' => 'Product and application building skills',
+            'description' => 'Development tracks combine interface work, backend logic, databases, deployment, and delivery discipline.',
+            'skills' => $allSkills->filter(fn ($skill) => in_array($skill, ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Databases', 'Android', 'iOS', 'Kotlin', 'Swift'], true))->values(),
+        ],
+        [
+            'label' => 'AI + Cloud',
+            'title' => 'Automation, cloud, and future-focused capability',
+            'description' => 'AI and cloud paths help learners move from tools into useful workflows, scalable systems, and modern operations.',
+            'skills' => $allSkills->filter(fn ($skill) => in_array($skill, ['AWS', 'Azure', 'Linux', 'Networking', 'Security', 'Monitoring', 'Machine Learning', 'Deep Learning', 'NLP', 'LLMs', 'Prompt Engineering', 'AI Automation', 'Workflow Design', 'AI Tools', 'Python'], true))->values(),
+        ],
     ];
 @endphp
 
@@ -73,6 +92,9 @@
                 background:
                     linear-gradient(180deg, rgba(255,255,255,0.97), rgba(251,246,239,0.94));
                 box-shadow: 0 22px 56px rgba(45, 18, 73, 0.10);
+                height: 100%;
+                display: flex;
+                flex-direction: column;
             }
 
             .career-premium-shell .track-media {
@@ -96,6 +118,20 @@
             .career-premium-shell .track-meta {
                 border: 1px solid rgba(207, 180, 112, 0.16);
                 background: rgba(255, 250, 240, 0.88);
+            }
+
+            .career-premium-shell .track-content {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+            }
+
+            .career-premium-shell .track-copy {
+                min-height: 7.5rem;
+            }
+
+            .career-premium-shell .track-footer {
+                margin-top: auto;
             }
         </style>
     </x-slot:head>
@@ -140,14 +176,14 @@
                                 <p class="mt-2 text-sm leading-6 text-white/68">Focused roadmaps built around specific job outcomes.</p>
                             </div>
                             <div class="rounded-[1.45rem] border border-white/10 bg-black/10 p-4 backdrop-blur-sm">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/54">Starting investment</p>
-                                <p class="mt-2 font-headline text-[1.35rem] font-extrabold text-white">Rs. {{ number_format($startingPrice, 0) }}</p>
-                                <p class="mt-2 text-sm leading-6 text-white/68">Clear pricing for learners who want direction without guesswork.</p>
+                                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/54">Mentor support</p>
+                                <p class="mt-2 font-headline text-[1.35rem] font-extrabold text-white">Guided</p>
+                                <p class="mt-2 text-sm leading-6 text-white/68">Talk to our team or mentor to understand the right path and current fee details.</p>
                             </div>
                             <div class="rounded-[1.45rem] border border-white/10 bg-black/10 p-4 backdrop-blur-sm">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/54">Learning model</p>
-                                <p class="mt-2 font-headline text-[1.35rem] font-extrabold text-white">Projects first</p>
-                                <p class="mt-2 text-sm leading-6 text-white/68">Skills, portfolio proof, and placement-minded preparation together.</p>
+                                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/54">Core skills</p>
+                                <p class="mt-2 font-headline text-[1.35rem] font-extrabold text-white">{{ number_format($allSkills->count()) }}+</p>
+                                <p class="mt-2 text-sm leading-6 text-white/68">Skills spanning analytics, software, cloud, AI, and portfolio-focused delivery.</p>
                             </div>
                         </div>
 
@@ -203,8 +239,8 @@
 
                             <div class="relative mt-5 flex flex-col gap-3 border-t border-white/12 pt-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div class="rounded-[1.15rem] bg-white/8 px-4 py-2.5">
-                                    <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/52">Starting at</p>
-                                    <p class="mt-1 font-headline text-[1.35rem] font-extrabold text-white">Rs. {{ number_format($featuredTrack['price'], 0) }}</p>
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/52">Fee details</p>
+                                    <p class="mt-1 font-headline text-[1.15rem] font-extrabold text-white">Contact team or mentor</p>
                                 </div>
                                 <a href="{{ $featuredTrack['details_url'] }}"
                                    @guest
@@ -243,9 +279,9 @@
             <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
                 <div class="premium-surface reveal rounded-[2rem] p-6 md:p-8">
                     <p class="premium-tag text-[11px] font-bold uppercase">Path philosophy</p>
-                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A clear page for important career decisions.</h2>
+                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Clear roadmaps for learners who want direction.</h2>
                     <p class="mt-4 max-w-xl text-sm leading-7 text-on-surface-variant">
-                        This page focuses on clarity, trust, and direction by showing what matters most: the role, the tools, the structure, and the value behind each path.
+                        Each path is organised around a target role, a practical skill stack, guided projects, and mentor support so learners can choose with confidence.
                     </p>
                 </div>
 
@@ -265,10 +301,10 @@
             <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div class="reveal">
                     <p class="premium-tag text-[11px] font-bold uppercase">All paths</p>
-                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Role-focused tracks built to feel complete.</h2>
+                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Career tracks built with one consistent learning format.</h2>
                 </div>
                 <p class="reveal max-w-2xl text-sm leading-7 text-on-surface-variant">
-                    Every track includes a clear duration, practical tools, a defined learning mode, and a visible entry point for learners who want a roadmap instead of more noise.
+                    Every card follows the same structure so you can compare role, duration, skill stack, access, and next step without jumping through uneven layouts.
                 </p>
             </div>
 
@@ -284,9 +320,11 @@
                             </div>
                         </div>
 
-                        <div class="p-6">
-                            <h2 class="font-headline text-2xl font-extrabold text-on-surface">{{ $track['title'] }}</h2>
-                            <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $track['subtitle'] }}</p>
+                        <div class="track-content p-6">
+                            <div class="track-copy">
+                                <h2 class="font-headline text-2xl font-extrabold text-on-surface">{{ $track['title'] }}</h2>
+                                <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $track['subtitle'] }}</p>
+                            </div>
 
                             <div class="mt-5 flex flex-wrap gap-2">
                                 @foreach ($track['skills'] as $skill)
@@ -305,10 +343,10 @@
                                 </div>
                             </div>
 
-                            <div class="premium-line mt-6 flex items-center justify-between gap-4 border-t pt-5">
+                            <div class="track-footer premium-line mt-6 flex items-center justify-between gap-4 border-t pt-5">
                                 <div>
-                                    <p class="premium-tag text-[11px] font-bold uppercase">Price</p>
-                                    <p class="mt-1 font-headline text-2xl font-extrabold text-[#6a39a8]">Rs. {{ number_format($track['price'], 0) }}</p>
+                                    <p class="premium-tag text-[11px] font-bold uppercase">Fee details</p>
+                                    <p class="mt-1 text-sm font-bold text-on-surface">Contact team / mentor</p>
                                 </div>
                                 <a class="cta-button inline-flex items-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#2a112f_0%,#7040aa_52%,#c6a34d_100%)] px-5 py-3 text-[12px] font-bold text-white"
                                    href="{{ $track['details_url'] }}"
@@ -331,52 +369,59 @@
         <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6">
             <div class="grid gap-6 lg:grid-cols-[1fr_1.05fr]">
                 <div class="premium-surface reveal rounded-[2rem] p-6 md:p-8">
-                    <p class="premium-tag text-[11px] font-bold uppercase">What learners need</p>
-                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A path that reduces confusion and builds confidence.</h2>
+                    <p class="premium-tag text-[11px] font-bold uppercase">How The Journey Works</p>
+                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A cleaner path from basics to portfolio to interviews.</h2>
                     <div class="mt-8 space-y-4">
                         <div class="premium-card-quiet rounded-[1.5rem] p-5">
-                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 1. Build fundamentals properly</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Start with the tools and concepts that remove confusion early, so your learning feels steady instead of scattered.</p>
+                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 1. Learn the foundation with clarity</p>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Each track starts with the concepts, tools, and guided practice needed to remove early confusion and build confidence properly.</p>
                         </div>
                         <div class="premium-card-quiet rounded-[1.5rem] p-5">
-                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 2. Practice with real tools</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Use the same skill stack employers expect to see in portfolios, assignments, and project walkthroughs.</p>
+                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 2. Build practical work that proves skill</p>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Assignments, labs, and capstone work are structured to give learners visible output they can discuss in reviews and interviews.</p>
                         </div>
                         <div class="premium-card-quiet rounded-[1.5rem] p-5">
-                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 3. Move toward interviews</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Turn your learning into visible proof with projects, review cycles, and placement-oriented preparation support.</p>
+                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 3. Prepare for job movement</p>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Mentor support, portfolio guidance, and placement preparation help learners move from training program completion toward role readiness.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="premium-dark reveal rounded-[2rem] p-6 text-white md:p-8">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/58">Skill coverage</p>
-                    <h2 class="mt-3 max-w-lg font-headline text-3xl font-extrabold md:text-4xl">A stronger stack across analytics, development, and AI.</h2>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/58">Skill Areas</p>
+                    <h2 class="mt-3 max-w-lg font-headline text-3xl font-extrabold md:text-4xl">Built around real stacks learners can actually grow into.</h2>
                     <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
-                        These are the tools and capabilities learners repeatedly see across high-value career tracks, which makes the page feel more credible and better connected to outcomes.
+                        The paths cover the major stacks students usually compare: analytics, software development, and AI or cloud-enabled workflows.
                     </p>
 
-                    <div class="mt-8 flex flex-wrap gap-3">
-                        @foreach ($allSkills as $index => $skill)
-                            <span class="rounded-full border border-white/12 bg-white/8 px-4 py-3 text-sm font-semibold text-[#f8e7b3] backdrop-blur-sm">{{ $skill }}</span>
+                    <div class="mt-8 space-y-4">
+                        @foreach ($skillCollections as $collection)
+                            <div class="rounded-[1.5rem] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
+                                <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                                    <div>
+                                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/54">{{ $collection['label'] }}</p>
+                                        <p class="mt-2 font-headline text-2xl font-extrabold text-white">{{ $collection['title'] }}</p>
+                                        <p class="mt-2 max-w-xl text-sm leading-6 text-white/68">{{ $collection['description'] }}</p>
+                                    </div>
+                                    <span class="rounded-full border border-white/12 bg-black/15 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#f8e7b3]">
+                                        {{ $collection['skills']->count() }} skills
+                                    </span>
+                                </div>
+                                <div class="mt-4 flex flex-wrap gap-2">
+                                    @foreach ($collection['skills'] as $skill)
+                                        <span class="rounded-full border border-white/12 bg-white/8 px-4 py-2.5 text-sm font-semibold text-[#f8e7b3] backdrop-blur-sm">{{ $skill }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
                         @endforeach
-                    </div>
 
-                    <div class="mt-8 grid gap-4 sm:grid-cols-3">
-                        <div class="rounded-[1.5rem] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/54">Analytics</p>
-                            <p class="mt-3 font-headline text-2xl font-extrabold text-white">Dashboards</p>
-                            <p class="mt-2 text-sm leading-6 text-white/68">Excel, SQL, reporting, and decision-friendly visuals.</p>
-                        </div>
-                        <div class="rounded-[1.5rem] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/54">Development</p>
-                            <p class="mt-3 font-headline text-2xl font-extrabold text-white">Products</p>
-                            <p class="mt-2 text-sm leading-6 text-white/68">Frontend, backend, APIs, databases, and deployment.</p>
-                        </div>
-                        <div class="rounded-[1.5rem] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/54">AI</p>
-                            <p class="mt-3 font-headline text-2xl font-extrabold text-white">Workflows</p>
-                            <p class="mt-2 text-sm leading-6 text-white/68">Python, ML, GenAI, and production-style experiments.</p>
+                        <div class="rounded-[1.5rem] border border-white/10 bg-black/15 p-5">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/54">Need fee details?</p>
+                            <p class="mt-2 text-sm leading-6 text-white/76">Talk to our mentor or team to understand the best track, current batch details, and fee structure based on your goal.</p>
+                            <a class="mt-4 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-primary" href="/mentorship#talktomentor">
+                                Contact Team / Mentor
+                                <span class="material-symbols-outlined text-[18px]">north_east</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -400,7 +445,7 @@
                             <span class="material-symbols-outlined text-[18px]">call_made</span>
                         </a>
                         <a class="cta-button inline-flex items-center justify-center gap-2 rounded-2xl border border-[rgba(207,180,112,0.24)] bg-white px-6 py-4 text-sm font-bold uppercase tracking-[0.16em] text-on-surface" href="{{ route('home.courses') }}">
-                            Browse Courses
+                            Browse Training Programs
                         </a>
                     </div>
                 </div>

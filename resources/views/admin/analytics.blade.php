@@ -35,6 +35,21 @@
         h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .primary-gradient { background: linear-gradient(135deg, #6a3378 0%, #b07ac3 100%); }
+        .category-progress {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+            height: 100%;
+            display: block;
+            border: 0;
+            background: transparent;
+        }
+        .category-progress::-webkit-progress-bar { background: transparent; }
+        .category-progress::-webkit-progress-value,
+        .category-progress::-moz-progress-bar {
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #6a3378 0%, #b07ac3 100%);
+        }
     </style>
 </head>
 <body class="bg-surface text-on-surface">
@@ -44,7 +59,7 @@
         <div class="flex items-center gap-4 w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:w-1/3">
             <div class="relative w-full md:max-w-md">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -92,8 +107,8 @@
                                     <span>{{ $category['name'] }}</span>
                                     <span class="text-slate-500">{{ $category['score'] }}%</span>
                                 </div>
-                                <div class="h-3 bg-slate-100 rounded-full">
-                                    <div class="h-full primary-gradient rounded-full" style="width: {{ max(4, $category['score']) }}%"></div>
+                                <div class="h-3 bg-slate-100 rounded-full overflow-hidden">
+                                    <progress class="category-progress" max="100" value="{{ max(4, $category['score']) }}">{{ $category['score'] }}%</progress>
                                 </div>
                             </div>
                         @empty

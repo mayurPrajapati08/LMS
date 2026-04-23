@@ -44,7 +44,7 @@
 
     <main class="md:ml-64 flex-1 flex flex-col">
         <header class="fixed top-0 right-0 left-0 md:left-64 z-40 bg-white/80 backdrop-blur-md flex items-center justify-between px-4 md:px-8 w-full md:w-[calc(100%-16rem)] border-b border-slate-100">
-            <div class="flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:px-4 md:gap-4 md:w-96 focus-within:ring-2 focus-within:ring-[#f5eef8]0/20 transition-all">
+            <div class="flex items-center gap-2 bg-surface-container-low px-3 py-2 rounded-full w-full max-w-[10rem] sm:max-w-[12rem] md:max-w-none md:px-4 md:gap-4 md:w-96 focus-within:ring-2 focus-within:ring-[#f5eef8]/20 transition-all">
                 <span class="material-symbols-outlined text-slate-400">search</span>
                 <input class="bg-transparent border-none text-sm focus:ring-0 w-full placeholder:text-slate-400" placeholder="Search..." type="text" />
             </div>
@@ -103,7 +103,7 @@
                         <div class="absolute bottom-0 left-0 w-full h-[1px] bg-slate-100"></div>
                         <div class="flex items-end justify-between h-full px-4 gap-4">
                             @foreach ($monthlyRevenue as $month)
-                                <div class="flex-1 {{ $month['is_peak'] ? 'bg-primary ring-4 ring-primary/10' : 'bg-primary/5 hover:bg-primary/20' }} rounded-t-lg group relative transition-all" style="height: {{ $month['height'] }}%">
+                                <div class="flex-1 {{ $month['is_peak'] ? 'bg-primary ring-4 ring-primary/10' : 'bg-primary/5 hover:bg-primary/20' }} rounded-t-lg group relative transition-all js-dashboard-height-bar" data-height="{{ $month['height'] }}">
                                     <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-on-surface text-white text-[10px] px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Rs. {{ number_format($month['amount'], 0) }}</div>
                                 </div>
                             @endforeach
@@ -127,7 +127,7 @@
                                     <span>{{ number_format($month['count']) }}</span>
                                 </div>
                                 <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
-                                    <div class="editorial-gradient h-full" style="width: {{ $month['width'] }}%"></div>
+                                    <div class="editorial-gradient h-full js-dashboard-width-bar" data-width="{{ $month['width'] }}"></div>
                                 </div>
                             </div>
                         @endforeach
@@ -232,6 +232,17 @@
             </div>
         </div>
     </main>
+    <script>
+        document.querySelectorAll('.js-dashboard-height-bar').forEach((element) => {
+            const height = Number(element.dataset.height || 0);
+            element.style.height = `${Math.max(0, Math.min(100, height))}%`;
+        });
+
+        document.querySelectorAll('.js-dashboard-width-bar').forEach((element) => {
+            const width = Number(element.dataset.width || 0);
+            element.style.width = `${Math.max(0, Math.min(100, width))}%`;
+        });
+    </script>
 </body>
 </html>
 

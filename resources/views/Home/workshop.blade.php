@@ -1,37 +1,38 @@
 @php
     $heroStats = [
-        ['value' => '40+', 'label' => 'live workshop editions delivered with mentor support'],
-        ['value' => '92%', 'label' => 'learners who complete the guided practical task'],
-        ['value' => '7 Days', 'label' => 'average post-session access for notes, tasks, and recordings'],
+        ['value' => '40+', 'label' => 'live workshop editions'],
+        ['value' => '92%', 'label' => 'learners who finish the guided task'],
+        ['value' => '7 Days', 'label' => 'post-session notes and resources'],
     ];
 
     $experienceMoments = [
         [
             'icon' => 'bolt',
-            'title' => 'Fast concept breakdowns',
-            'description' => 'Every workshop starts with clear live explanations so beginners and serious learners can enter the topic with confidence.',
+            'title' => 'Concept Clarity Before You Build',
+            'description' => 'Every workshop begins with a simple explanation of the topic, the workflow, and the exact outcome learners will create during the session.',
+            'points' => ['Beginner-friendly explanation', 'Clear session goal', 'Step-by-step roadmap'],
+            'image' => asset('images/live projects.jpeg'),
         ],
         [
             'icon' => 'terminal',
-            'title' => 'Hands-on guided builds',
-            'description' => 'Mentors move from theory into task execution, code walkthroughs, tools, templates, and structured implementation steps.',
+            'title' => 'Live Practical Build With Mentors',
+            'description' => 'Students build in real time with mentor guidance, practical tasks, and live walkthroughs that make the session useful, not just theoretical.',
+            'points' => ['Hands-on task execution', 'Tool-by-tool guidance', 'Real project-style practice'],
+            'image' => asset('images/live projects.jpeg'),
         ],
         [
             'icon' => 'groups',
-            'title' => 'Interactive mentor support',
-            'description' => 'Learners get live doubt solving, review checkpoints, and practical guidance instead of a passive webinar format.',
-        ],
-        [
-            'icon' => 'workspace_premium',
-            'title' => 'Premium outcome layer',
-            'description' => 'Templates, tasks, recap notes, and career positioning tips make each workshop feel valuable even after the session ends.',
+            'title' => 'Support, Review, And Takeaway Resources',
+            'description' => 'Participants can ask questions, get live support, and leave with notes, practice material, and a clearer next step after the workshop.',
+            'points' => ['Live Q and A', 'Mentor feedback', 'Practice resources after session'],
+            'image' => asset('images/live projects.jpeg'),
         ],
     ];
 
     $workshopFlow = [
-        ['step' => '01', 'title' => 'Orientation and setup', 'copy' => 'Quick onboarding, session goal clarity, resource access, and tool readiness before the live build begins.'],
-        ['step' => '02', 'title' => 'Mentor-led execution', 'copy' => 'Real workflow demonstrations, guided checkpoints, practical examples, and interactive explanations through the core topic.'],
-        ['step' => '03', 'title' => 'Task and review', 'copy' => 'Participants complete an applied exercise, share questions, and understand how to keep practicing after the workshop.'],
+        ['step' => '01', 'title' => 'Join with clarity', 'copy' => 'We set the topic, tools, and learning outcome first so every learner understands what will be covered.'],
+        ['step' => '02', 'title' => 'Build with guidance', 'copy' => 'Mentors teach, demonstrate, and help students execute the practical part live during the session.'],
+        ['step' => '03', 'title' => 'Continue after class', 'copy' => 'Students leave with revision points, tasks, and resources they can use to keep practicing with confidence.'],
     ];
 
     $featuredWorkshops = $featuredWorkshops ?? [
@@ -795,13 +796,13 @@
                         Premium Live Workshop Experience
                     </span>
 
-                    <h1 class="mt-7 max-w-3xl font-headline text-[2.25rem] font-extrabold leading-[0.96] sm:text-[2.8rem] md:text-[3.6rem] lg:text-[4.35rem]">
+                    <h1 class="mt-7 max-w-3xl font-headline text-[2.25rem] font-extrabold leading-[0.96] sm:text-[2.8rem] md:text-[3.6rem] lg:text-[3.35rem]">
                         Workshops that feel
                         <span class="block text-[#ead9ff]">immersive, practical, and career-shaping.</span>
                     </h1>
 
                     <p class="mt-6 max-w-2xl text-[0.98rem] leading-8 text-white/72 md:text-[1.04rem]">
-                        The CodeInYourself workshop page extends the main brand with sessions built around mentor-led explanations, real task execution, guided resources, and a structured learning experience.
+                        Our workshops are built to give students clear concept teaching, live practical execution, mentor support during the session, and useful resources they can continue with after the class ends.
                     </p>
 
                     <div class="mt-9 flex flex-wrap gap-4">
@@ -834,7 +835,7 @@
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="font-headline text-xl font-extrabold text-white">Workshop Control Deck</p>
-                                    <p class="mt-1 text-sm text-white/56">Luxury visual system with practical learning flow</p>
+                                    <p class="mt-1 text-sm text-white/56">A premium workshop page that clearly shows what learners get inside each session</p>
                                 </div>
                                 <span class="rounded-full border border-white/12 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-[#ead9ff]">Live</span>
                             </div>
@@ -846,25 +847,25 @@
                             <div class="mt-8 grid gap-3 sm:grid-cols-2">
                                 <div class="hero-stage-chip rounded-2xl p-4">
                                     <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">Focus</p>
-                                    <p class="mt-3 text-sm font-semibold text-white">Guided build, mentor support, and structured delivery.</p>
+                                    <p class="mt-3 text-sm font-semibold text-white">Concept explanation, guided build, and live mentor support.</p>
                                 </div>
                                 <div class="hero-stage-chip rounded-2xl p-4">
                                     <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/48">Includes</p>
-                                    <p class="mt-3 text-sm font-semibold text-white">Task sheet, resources, visuals, and Q and A.</p>
+                                    <p class="mt-3 text-sm font-semibold text-white">Practice tasks, notes, resources, and doubt solving.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- <div class="hero-stage-card secondary animate-float">
-                        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/52">Signature Feel</p>
-                        <p class="mt-3 font-headline text-2xl font-extrabold text-white">Borderless hero. Rich motion. Premium depth.</p>
-                    </div> -->
+                    <div class="hero-stage-card secondary animate-float">
+                        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/52">What We Provide</p>
+                        <p class="mt-3 font-headline text-2xl font-extrabold text-white">Clear teaching. Practical work. Strong mentor guidance.</p>
+                    </div>
 
-                    <!-- <div class="hero-stage-card tertiary animate-float-delay">
-                        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/52">Session Promise</p>
-                        <p class="mt-3 text-sm leading-7 text-white/76">We combine visual polish with practical learning so the page looks elite and the workshop still feels real.</p>
-                    </div> -->
+                    <div class="hero-stage-card tertiary animate-float-delay">
+                        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/52">Workshop Outcome</p>
+                        <p class="mt-3 text-sm leading-7 text-white/76">Students leave each session with better understanding, hands-on practice, and a clear idea of what to do next.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -874,24 +875,38 @@
                 <article class="workshop-panel reveal rounded-[2rem] p-6 md:p-8">
                     <div class="relative z-10">
                         <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">What Happens In The Workshop</p>
-                        <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A workshop experience built to feel active, practical, and genuinely useful.</h2>
+                        <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">What students get inside every workshop.</h2>
                         <p class="mt-5 max-w-xl text-sm leading-8 text-on-surface-variant md:text-base">
-                            This section explains what learners actually experience inside the session, from guided teaching to practical tasks and mentor involvement.
+                            Each workshop is designed to be easy to follow, practical to attend, and valuable even after the session is over.
                         </p>
 
                         <div class="mt-8 grid gap-4">
                             @foreach ($experienceMoments as $moment)
-                                <div class="glass-card premium-card rounded-[1.5rem] p-5 {{ $loop->iteration > 1 ? 'reveal stagger-' . min($loop->iteration, 4) : 'reveal' }}">
-                                    <div class="flex gap-4">
-                                        <span class="feature-icon-shell shrink-0">
-                                            <span class="material-symbols-outlined text-[24px]">{{ $moment['icon'] }}</span>
-                                        </span>
-                                        <div>
-                                            <h3 class="font-headline text-xl font-bold text-on-surface">{{ $moment['title'] }}</h3>
-                                            <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $moment['description'] }}</p>
+                                <article class="glass-card premium-card overflow-hidden rounded-[1.6rem] {{ $loop->iteration > 1 ? 'reveal stagger-' . min($loop->iteration, 4) : 'reveal' }}">
+                                    <div class="grid gap-0 md:grid-cols-[0.82fr_1.18fr] md:items-center">
+                                        <div class="flex h-48 items-center justify-center bg-[#12081f] p-3 md:h-full">
+                                            <img src="{{ $moment['image'] }}" alt="{{ $moment['title'] }}" class="h-full w-full object-contain" />
+                                        </div>
+                                        <div class="p-5">
+                                            <div class="flex gap-4">
+                                                <span class="feature-icon-shell shrink-0">
+                                                    <span class="material-symbols-outlined text-[24px]">{{ $moment['icon'] }}</span>
+                                                </span>
+                                                <div>
+                                                    <h3 class="font-headline text-xl font-bold text-on-surface">{{ $moment['title'] }}</h3>
+                                                    <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $moment['description'] }}</p>
+                                                    @if (! empty($moment['points']))
+                                                        <div class="mt-4 flex flex-wrap gap-2">
+                                                            @foreach ($moment['points'] as $point)
+                                                                <span class="rounded-full bg-primary/8 px-3 py-2 text-[11px] font-semibold text-primary">{{ $point }}</span>
+                                                            @endforeach
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </article>
                             @endforeach
                         </div>
                     </div>
@@ -900,7 +915,12 @@
                 <article class="section-panel reveal rounded-[2rem] p-6 md:p-8">
                     <div class="relative z-10">
                         <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Inside The Flow</p>
-                        <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">From onboarding to outcome, the entire workshop is staged with intention.</h2>
+                        <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Three simple stages in the workshop flow.</h2>
+
+                         
+                        <div class="mt-8 overflow-hidden rounded-[1.7rem] bg-[linear-gradient(180deg,rgba(124,58,237,0.08),rgba(255,255,255,0.96))] p-5">
+                            <img src="{{ asset('images/live projects.jpeg') }}" alt="Online CodeInYourself workshop session" class="h-56 w-full rounded-[1.3rem] object-cover" />
+                        </div>
 
                         <div class="mt-8 space-y-8">
                             @foreach ($workshopFlow as $flow)
@@ -1024,10 +1044,10 @@
             <div class="reveal flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                     <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Past Workshops</p>
-                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">An archive of workshops, outcomes, and session highlights.</h2>
+                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Past workshops with cleaner visual cards.</h2>
                 </div>
                 <p class="max-w-xl text-sm leading-7 text-on-surface-variant">
-                    Each past workshop card includes a details view so we can surface images, tasks, and workshop outcomes in a richer format.
+                    Each card keeps the preview short, while the details modal still shows the full workshop story.
                 </p>
             </div>
 
@@ -1067,9 +1087,9 @@
                 <div class="relative z-10 grid gap-8 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
                     <div>
                         <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Final Call</p>
-                        <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A workshop page that fits the brand and keeps the learning experience front and center.</h2>
+                        <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A cleaner workshop page that feels more premium and easier to scan.</h2>
                         <p class="mt-5 max-w-2xl text-sm leading-8 text-on-surface-variant md:text-base">
-                            The page follows the same CodeInYourself visual language while giving workshops a clearer structure for session value, details, and registration.
+                            The layout now balances strong visuals, short copy, and quick access to registration.
                         </p>
                     </div>
 

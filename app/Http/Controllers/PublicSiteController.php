@@ -19,6 +19,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
@@ -103,6 +104,8 @@ class PublicSiteController extends Controller
             : collect();
 
         $homeFacultyCards = $this->featuredFacultyCards();
+        $workingProfessionalCourses = $this->homeAudienceCourseShowcase('working-professional');
+        $collegeStudentCourses = $this->homeAudienceCourseShowcase('college-student');
 
         return view('Home.home', [
             'siteStats' => $siteStats,
@@ -118,6 +121,8 @@ class PublicSiteController extends Controller
             'homePlacementStudents' => $homePlacementStudents,
             'homeSuccessStories' => $homeSuccessStories,
             'homeFacultyCards' => $homeFacultyCards,
+            'workingProfessionalCourses' => $workingProfessionalCourses,
+            'collegeStudentCourses' => $collegeStudentCourses,
         ]);
     }
 
@@ -129,8 +134,10 @@ class PublicSiteController extends Controller
         $search = trim((string) $request->query('search', ''));
         $category = (string) $request->query('category', '');
         $sort = (string) $request->query('sort', 'popular');
+        $audience = (string) $request->query('audience', '');
         $requestedMode = (string) $request->query('mode', $defaultMode);
         $catalogMode = in_array($requestedMode, ['online', 'offline'], true) ? $requestedMode : $defaultMode;
+        $selectedAudience = in_array($audience, ['working-professional', 'college-student'], true) ? $audience : '';
 
         if ($catalogMode === 'online' && ! $onlineCatalogEnabled) {
             $catalogMode = $offlineCatalogEnabled ? 'offline' : 'online';
@@ -155,20 +162,24 @@ class PublicSiteController extends Controller
                 ->when($category !== '', fn ($query) => $query->where('category_id', (int) $category))
                 ->orderBy('sort_order')
                 ->orderBy('title')
-                ->paginate(9)
-                ->withQueryString();
+                ->get()
+                ->filter(fn (OfflineCourse $course) => $selectedAudience === '' || $this->offlineCourseAudienceSegment($course) === $selectedAudience)
+                ->values();
+
+            $paginatedOfflineCourses = $this->paginateCollection($offlineCourses, 9, $request);
 
             return view('Home.course', [
                 'search' => $search,
                 'selectedCategory' => $category,
                 'selectedSort' => $sort,
+                'selectedAudience' => $selectedAudience,
                 'catalogMode' => $catalogMode,
                 'onlineCatalogEnabled' => $onlineCatalogEnabled,
                 'offlineCatalogEnabled' => $offlineCatalogEnabled,
                 'publicLeadGateEnabled' => PlatformSettings::bool('public_lead_gate_enabled', true),
                 'categories' => Category::query()->orderBy('name')->get(['id', 'name']),
-                'resultsCount' => $offlineCourses->total(),
-                'courseCards' => $offlineCourses->through(fn (OfflineCourse $course) => $this->mapOfflineCourseCard($course)),
+                'resultsCount' => $offlineCourses->count(),
+                'courseCards' => $paginatedOfflineCourses->through(fn (OfflineCourse $course) => $this->mapOfflineCourseCard($course)),
             ]);
         }
 
@@ -185,20 +196,51 @@ class PublicSiteController extends Controller
 
         $this->applySort($courses, $sort);
 
-        /** @var LengthAwarePaginator $paginatedCourses */
-        $paginatedCourses = $courses->paginate(9)->withQueryString();
+        $onlineCourses = $courses
+            ->get()
+            ->filter(fn (Course $course) => $selectedAudience === '' || $this->courseAudienceSegment($course) === $selectedAudience)
+            ->values();
+
+        $paginatedCourses = $this->paginateCollection($onlineCourses, 9, $request);
 
         return view('Home.course', [
             'search' => $search,
             'selectedCategory' => $category,
             'selectedSort' => $sort,
+            'selectedAudience' => $selectedAudience,
             'catalogMode' => $catalogMode,
             'onlineCatalogEnabled' => $onlineCatalogEnabled,
             'offlineCatalogEnabled' => $offlineCatalogEnabled,
             'publicLeadGateEnabled' => PlatformSettings::bool('public_lead_gate_enabled', true),
             'categories' => Category::query()->orderBy('name')->get(['id', 'name']),
-            'resultsCount' => $paginatedCourses->total(),
+            'resultsCount' => $onlineCourses->count(),
             'courseCards' => $paginatedCourses->through(fn (Course $course) => $this->mapCourseCard($course)),
+        ]);
+    }
+
+    public function offlineCourseDetail(Request $request, OfflineCourse $offlineCourse): RedirectResponse|View
+    {
+        abort_unless($offlineCourse->is_active, 404);
+
+        $gateContext = 'offline-course-'.$offlineCourse->id;
+        $granted = (array) $request->session()->get('content_gate_access', []);
+
+        if (PlatformSettings::bool('public_lead_gate_enabled', true) && ! ($granted[$gateContext] ?? false)) {
+            return redirect()
+                ->route('home.courses', [
+                    'mode' => 'offline',
+                    'audience' => $this->offlineCourseAudienceSegment($offlineCourse) ?: null,
+                ])
+                ->with('status', 'Please unlock the batch details from the training program page first.');
+        }
+
+        return view('Home.offline_course_detail', [
+            'course' => $offlineCourse->load('category:id,name'),
+            'browseUrl' => route('home.courses', [
+                'mode' => 'offline',
+                'audience' => $this->offlineCourseAudienceSegment($offlineCourse) ?: null,
+            ]),
+            'audienceLabel' => $this->audienceLabel($this->offlineCourseAudienceSegment($offlineCourse)),
         ]);
     }
 
@@ -295,6 +337,7 @@ class PublicSiteController extends Controller
         return view('Home.about_us', [
             'siteStats' => $siteStats,
             'mentorCards' => $mentorCards,
+            'achievementGallery' => $this->achievementGallery(),
         ]);
     }
 
@@ -419,25 +462,36 @@ class PublicSiteController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:50'],
+            'course_id' => ['nullable', 'integer', 'exists:courses,id'],
             'context' => ['required', 'string', 'max:255'],
             'topic' => ['nullable', 'string', 'max:100'],
+            'subject' => ['nullable', 'string', 'max:255'],
+            'audience' => ['nullable', 'string', 'max:100'],
             'message' => ['nullable', 'string', 'max:2000'],
             'redirect_to' => ['required', 'string', 'max:2000'],
         ]);
+        $safeRedirect = $this->sanitizeInternalRedirect(
+            $validated['redirect_to'],
+            route('home.courses', absolute: false)
+        );
 
         PublicContact::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
+            'course_id' => $validated['course_id'] ?? null,
             'message' => $validated['message'] ?? 'Requested access to gated public content.',
             'topic' => $validated['topic'] ?? 'lead_gate',
-            'subject' => 'Content access request',
+            'subject' => $validated['subject'] ?? 'Content access request',
             'status' => 'new',
-            'source_page' => 'content-gate',
+            'source_page' => 'course-catalog',
             'access_context' => $validated['context'],
             'access_granted_at' => now(),
             'details' => [
-                'redirect_to' => $validated['redirect_to'],
+                'redirect_to' => $safeRedirect,
+                'context' => $validated['context'],
+                'topic' => $validated['topic'] ?? 'lead_gate',
+                'audience_segment' => $validated['audience'] ?? null,
             ],
         ]);
 
@@ -445,7 +499,28 @@ class PublicSiteController extends Controller
         $granted[$validated['context']] = true;
         $request->session()->put('content_gate_access', $granted);
 
-        return redirect($validated['redirect_to'])->with('status', 'Thanks. Full details are now unlocked for you.');
+        return redirect($safeRedirect)->with('status', 'Thanks. Full details are now unlocked for you.');
+    }
+
+    private function sanitizeInternalRedirect(string $redirectTo, string $fallback): string
+    {
+        $redirectTo = trim($redirectTo);
+
+        if ($redirectTo === '' || str_contains($redirectTo, '\\')) {
+            return $fallback;
+        }
+
+        if (! str_starts_with($redirectTo, '/') || str_starts_with($redirectTo, '//')) {
+            return $fallback;
+        }
+
+        $parts = parse_url($redirectTo);
+
+        if ($parts === false || isset($parts['scheme']) || isset($parts['host'])) {
+            return $fallback;
+        }
+
+        return $redirectTo;
     }
 
     private function publishedCoursesBaseQuery()
@@ -495,6 +570,7 @@ class PublicSiteController extends Controller
         $durationSeconds = (int) $course->sections->flatMap->videos->sum(fn ($video) => (int) ($video->duration ?? 0));
         $rating = round((float) ($course->reviews_avg_rating ?? 0), 1) ?: 4.8;
         $studentsCount = (int) $course->students_count;
+        $lessonCount = (int) $course->sections->sum(fn ($section) => $section->videos->count());
         $iconSet = $this->courseIconSet($course);
         $badge = $studentsCount >= 20
             ? ['label' => 'Best Seller', 'class' => 'bg-primary text-white']
@@ -515,7 +591,12 @@ class PublicSiteController extends Controller
             'rating' => $rating,
             'reviews_count' => (int) $course->reviews_count,
             'students_count' => $studentsCount,
+            'lesson_count' => $lessonCount,
             'duration' => $this->formatDuration($durationSeconds),
+            'mentor' => $course->user?->name ?: 'Mentor-led program',
+            'validity_label' => $course->validity_in_days ? $course->validity_in_days.' days access' : 'Lifetime access',
+            'audience_segment' => $this->courseAudienceSegment($course),
+            'audience_label' => $this->audienceLabel($this->courseAudienceSegment($course)),
             'details_url' => route('course.details', ['course' => $course->id]),
             'badge_label' => $badge['label'],
             'badge_class' => $badge['class'],
@@ -543,7 +624,7 @@ class PublicSiteController extends Controller
             'reviews_count' => 0,
             'students_count' => 0,
             'duration' => $course->duration_label ?: 'Classroom schedule',
-            'details_url' => route('home.contact', ['topic' => 'offline-course', 'subject' => $course->title]),
+            'details_url' => route('offline-course.details', ['offlineCourse' => $course->slug]),
             'badge_label' => 'Offline Classroom',
             'badge_class' => 'bg-primary text-white',
             'icon_one' => 'apartment',
@@ -552,8 +633,119 @@ class PublicSiteController extends Controller
             'campus' => $course->campus ?: 'Campus details on request',
             'schedule_label' => $course->schedule_label ?: 'Batch timing shared by mentor',
             'batch_size' => $course->batch_size ?: 'Limited seats',
+            'audience' => $course->audience ?: 'Students and working professionals',
+            'placement_label' => $course->placement_label ?: 'Placement-focused guidance',
+            'delivery_mode' => $course->delivery_mode ?: 'Offline classroom',
+            'validity_label' => $course->validity_label ?: 'Access shared by team',
+            'learner_note' => $course->learner_note ?: 'Talk to the team to match the right batch, schedule, and mentor support.',
+            'audience_segment' => $this->offlineCourseAudienceSegment($course),
+            'audience_label' => $this->audienceLabel($this->offlineCourseAudienceSegment($course)),
             'highlights' => $highlights,
         ];
+    }
+
+    private function homeAudienceCourseShowcase(string $segment): Collection
+    {
+        $offline = OfflineCourse::query()
+            ->where('is_active', true)
+            ->with('category:id,name')
+            ->orderBy('sort_order')
+            ->orderBy('title')
+            ->get()
+            ->filter(fn (OfflineCourse $course) => $this->offlineCourseAudienceSegment($course) === $segment)
+            ->map(fn (OfflineCourse $course) => $this->mapOfflineCourseCard($course));
+
+        $online = $this->publishedCoursesBaseQuery()
+            ->limit(12)
+            ->get()
+            ->filter(fn (Course $course) => $this->courseAudienceSegment($course) === $segment)
+            ->map(fn (Course $course) => $this->mapCourseCard($course));
+
+        return $offline
+            ->concat($online)
+            ->take(3)
+            ->values();
+    }
+
+    private function courseAudienceSegment(Course $course): ?string
+    {
+        return $this->detectAudienceSegment(
+            implode(' ', array_filter([
+                $course->title,
+                $course->details,
+                $course->category?->name,
+                $course->level,
+            ]))
+        );
+    }
+
+    private function offlineCourseAudienceSegment(OfflineCourse $course): ?string
+    {
+        return $this->detectAudienceSegment(
+            implode(' ', array_filter([
+                $course->audience,
+                $course->title,
+                $course->summary,
+                $course->details,
+                $course->level,
+            ]))
+        );
+    }
+
+    private function detectAudienceSegment(?string $value): ?string
+    {
+        $text = strtolower((string) $value);
+
+        if ($text === '') {
+            return null;
+        }
+
+        if (
+            str_contains($text, 'working')
+            || str_contains($text, 'professional')
+            || str_contains($text, 'upskill')
+            || str_contains($text, 'career switch')
+            || str_contains($text, 'employee')
+        ) {
+            return 'working-professional';
+        }
+
+        if (
+            str_contains($text, 'college')
+            || str_contains($text, 'student')
+            || str_contains($text, 'fresher')
+            || str_contains($text, 'beginner')
+            || str_contains($text, 'campus')
+        ) {
+            return 'college-student';
+        }
+
+        return null;
+    }
+
+    private function audienceLabel(?string $segment): ?string
+    {
+        return match ($segment) {
+            'working-professional' => 'Working Professional',
+            'college-student' => 'College Student',
+            default => null,
+        };
+    }
+
+    private function paginateCollection(Collection $items, int $perPage, Request $request): LengthAwarePaginator
+    {
+        $page = max(1, (int) $request->query('page', 1));
+
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $items->forPage($page, $perPage)->values(),
+            $items->count(),
+            $perPage,
+            $page,
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]
+        );
     }
 
     private function courseIconSet(Course $course): array
@@ -783,7 +975,7 @@ class PublicSiteController extends Controller
                     ],
                 ],
                 'projects' => [
-                    ['title' => 'Learning Platform App', 'subtitle' => 'Authentication, dashboards, courses, and admin flows in one product.', 'image' => 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80'],
+                    ['title' => 'Learning Platform App', 'subtitle' => 'Authentication, dashboards, training programs, and admin flows in one product.', 'image' => 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80'],
                     ['title' => 'Service Marketplace', 'subtitle' => 'Build APIs, bookings, dashboards, and a deployable web app.', 'image' => 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80'],
                 ],
                 'placement_support' => [
@@ -1758,7 +1950,7 @@ class PublicSiteController extends Controller
                     'primary_url' => route('home.career-paths.show', ['path' => 'ai-engineer']),
                     'primary_label' => 'View Program',
                     'secondary_url' => route('home.courses'),
-                    'secondary_label' => 'Browse Courses',
+                    'secondary_label' => 'Browse Training Programs',
                 ],
                 [
                     'eyebrow' => 'Career Launch',
@@ -1810,7 +2002,7 @@ class PublicSiteController extends Controller
                 $payload['primary_url'] = $slide->primary_url ?: route('home.contact');
                 $payload['primary_label'] = $slide->primary_label ?: 'Learn More';
                 $payload['secondary_url'] = $slide->secondary_url ?: route('home.courses');
-                $payload['secondary_label'] = $slide->secondary_label ?: 'Browse Courses';
+                $payload['secondary_label'] = $slide->secondary_label ?: 'Browse Training Programs';
                 $payload['accent_style'] = $this->resolveGradientStyle($slide->accent, '90deg');
 
                 return $payload;
@@ -1851,7 +2043,7 @@ class PublicSiteController extends Controller
                 'primary_url' => route('home.career-paths.show', ['path' => 'ai-engineer']),
                 'primary_label' => 'View Program',
                 'secondary_url' => route('home.courses'),
-                'secondary_label' => 'Browse Courses',
+                'secondary_label' => 'Browse Training Programs',
                 'accent_style' => 'linear-gradient(90deg, #140a2d 0%, #5b21b6 50%, #f59e0b 100%)',
             ],
             [

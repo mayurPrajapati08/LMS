@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -58,9 +59,14 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             try {
-                Mail::to($recipient)->send(new \App\Mail\SystemExceptionAlertMail($exception, request()));
-            } catch (\Throwable) {
+                $report = \App\Support\ExceptionReport::build($exception, request());
+
+                Mail::to($recipient)->send(new \App\Mail\SystemExceptionAlertMail($report));
+            } catch (\Throwable $mailException) {
                 // Avoid exception-reporting loops when mail transport fails.
+                Log::error('Unable to send system exception alert email.', [
+                    'mail_exception' => $mailException->getMessage(),
+                ]);
             }
         });
     })->create();

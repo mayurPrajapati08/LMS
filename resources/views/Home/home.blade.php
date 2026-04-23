@@ -258,6 +258,10 @@
             border: 1px solid rgba(212,197,240,0.5);
             box-shadow: 0 18px 40px rgba(124,58,237,0.10);
         }
+        main > section:not(:first-of-type) {
+            content-visibility: auto;
+            contain-intrinsic-size: 900px;
+        }
 
         .owner-showcase-card {
             background:
@@ -1694,7 +1698,7 @@
                         </div>
                         <div>
                             <p class="font-headline text-2xl font-extrabold text-on-surface">
-                                <span class="counter-num" data-target="{{ max(20, $siteStats['students']) }}">0</span>+
+                                <span class="counter-num" data-target="{{ max(300, $siteStats['students']) }}"></span>+
                             </p>
                             <p class="text-xs font-semibold text-on-surface-variant">Students Placed</p>
                             <p class="text-[10px] text-on-surface-variant/70">Across classroom and online learning formats</p>
@@ -1734,9 +1738,9 @@
             <div class="relative z-10 mx-auto max-w-7xl">
                 <div class="reveal mb-12 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
                     <div>
-                        <p class="text-[1rem] font-bold uppercase tracking-[0.28em] text-[#8f67b8]">Popular Roadmaps & Offline Courses</p>
+                        <p class="text-[1rem] font-bold uppercase tracking-[0.28em] text-[#8f67b8]">Popular Roadmaps</p>
                         <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-[1.2rem]">
-                            Explore our most in-demand learning paths & courses in AI, data, and analytics.
+                            Explore our most in-demand learning paths in AI, data, and analytics.
                         </h2>
                         <p class="mt-4 max-w-2xl text-sm leading-7 text-on-surface-variant">
                             Compare the programs learners choose most often when they want stronger technical foundations, guided projects, and clearer career direction.
@@ -1744,7 +1748,7 @@
                     </div>
                     <a href="{{ route('home.career-paths') }}"
                        class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#281126_0%,#6d3aa7_52%,#c8a34b_100%)] px-6 py-4 text-sm font-bold uppercase tracking-[0.14em] text-white shadow-[0_18px_36px_rgba(106,51,120,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_44px_rgba(106,51,120,0.22)]">
-                        View All Roadmaps & Offline Courses
+                        View All Roadmaps
                         <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                     </a>
                 </div>
@@ -1753,7 +1757,7 @@
                     @foreach ($popularRoadmaps as $index => $roadmap)
                         <article class="reveal stagger-{{ ($index % 4) + 1 }} overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
                             <div class="relative aspect-[16/10] overflow-hidden">
-                                <img src="{{ $roadmap['thumbnail'] }}" alt="{{ $roadmap['title'] }}" class="h-full w-full object-cover" />
+                                <img src="{{ $roadmap['thumbnail'] }}" alt="{{ $roadmap['title'] }}" class="h-full w-full object-cover" loading="lazy" />
                                 <div class="absolute inset-0 bg-gradient-to-t from-[rgba(35,20,54,0.16)] via-transparent to-transparent"></div>
                                 <div class="absolute left-5 top-5">
                                     <span class="rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#6e5317] shadow-[0_10px_20px_rgba(110,83,23,0.08)]">{{ $roadmap['label'] }}</span>
@@ -1803,6 +1807,110 @@
         <!-- ════════════════════════════════════════
              WHY CHOOSE  (uses $corporateHighlights)
         ════════════════════════════════════════ -->
+        <section class="relative overflow-hidden px-4 py-22 md:px-6 md:py-24">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.06),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(192,132,252,0.08),transparent_28%),linear-gradient(180deg,#fffefe_0%,#faf6ff_52%,#f6effd_100%)]"></div>
+            <div class="absolute inset-0 opacity-60" style="background-image: linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px); background-size: 6rem 6rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.18));"></div>
+            <div class="relative z-10 mx-auto max-w-7xl space-y-10">
+                <div class="reveal flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="text-[1rem] font-bold uppercase tracking-[0.28em] text-[#8f67b8]">Working Professionals</p>
+                        <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-[2.45rem]">Training programs designed for upskilling, role change, and career growth.</h2>
+                        <p class="mt-4 max-w-2xl text-sm leading-7 text-on-surface-variant">These programs are a strong fit for professionals who want practical delivery skills, guided projects, and clearer transition support.</p>
+                    </div>
+                    <a href="{{ route('home.courses', ['audience' => 'working-professional']) }}#catalog-results" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#281126_0%,#6d3aa7_52%,#c8a34b_100%)] px-6 py-4 text-sm font-bold uppercase tracking-[0.14em] text-white shadow-[0_18px_36px_rgba(106,51,120,0.18)] transition hover:-translate-y-0.5">
+                        Browse All Training Programs
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                    @foreach ($workingProfessionalCourses as $index => $course)
+                        <article class="reveal stagger-{{ ($index % 4) + 1 }} overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
+                            <div class="relative aspect-[16/10] overflow-hidden">
+                                <img src="{{ $course['thumbnail'] }}" alt="{{ $course['title'] }}" class="h-full w-full object-cover" loading="lazy" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-[rgba(35,20,54,0.16)] via-transparent to-transparent"></div>
+                                <div class="absolute left-5 top-5 flex flex-wrap gap-2">
+                                    <span class="rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#6e5317] shadow-[0_10px_20px_rgba(110,83,23,0.08)]">{{ $course['category'] }}</span>
+                                    <span class="rounded-full bg-[#f8e8ff] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7a4ca2]">{{ $course['mode'] === 'offline' ? 'Offline' : 'Online' }}</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">{{ $course['duration'] }}</p>
+                                <h3 class="mt-3 font-headline text-2xl font-extrabold text-on-surface">{{ $course['title'] }}</h3>
+                                <p class="mt-4 text-sm leading-7 text-on-surface-variant">{{ \Illuminate\Support\Str::limit($course['details'], 130) }}</p>
+                                <div class="mt-5 flex flex-wrap gap-2">
+                                    <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['audience_label'] ?? 'Working Professional' }}</span>
+                                    <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['language'] }}</span>
+                                </div>
+                                <div class="mt-6 flex items-center justify-between gap-4 border-t border-[#f0e6f8] pt-5">
+                                    <div>
+                                        <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8f67b8]">Catalog Access</p>
+                                        <p class="mt-1 text-sm font-semibold text-on-surface">View details in the training program catalog</p>
+                                    </div>
+                                    <a href="{{ route('home.courses', ['audience' => 'working-professional']) }}#catalog-results" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#281126_0%,#6d3aa7_52%,#c8a34b_100%)] px-5 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
+        <section class="relative overflow-hidden px-4 py-22 md:px-6 md:py-24">
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.06),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(192,132,252,0.08),transparent_28%),linear-gradient(180deg,#fffefe_0%,#faf6ff_52%,#f6effd_100%)]"></div>
+            <div class="absolute inset-0 opacity-60" style="background-image: linear-gradient(rgba(124,58,237,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.04) 1px, transparent 1px); background-size: 6rem 6rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.18));"></div>
+            <div class="relative z-10 mx-auto max-w-7xl space-y-10">
+                <div class="reveal flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="text-[1rem] font-bold uppercase tracking-[0.28em] text-[#8f67b8]">College Students</p>
+                        <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-[2.45rem]">Training programs built for students who want stronger fundamentals and career direction.</h2>
+                        <p class="mt-4 max-w-2xl text-sm leading-7 text-on-surface-variant">These picks are shaped for students and freshers who need structured learning, mentor support, and practical confidence before placement rounds.</p>
+                    </div>
+                    <a href="{{ route('home.courses', ['audience' => 'college-student']) }}#catalog-results" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#41205d_0%,#9b5dd1_100%)] px-6 py-4 text-sm font-bold uppercase tracking-[0.14em] text-white shadow-[0_18px_36px_rgba(106,51,120,0.18)] transition hover:-translate-y-0.5">
+                        Browse All Training Programs
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                    @foreach ($collegeStudentCourses as $index => $course)
+                        <article class="reveal stagger-{{ ($index % 4) + 1 }} overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
+                            <div class="relative aspect-[16/10] overflow-hidden">
+                                <img src="{{ $course['thumbnail'] }}" alt="{{ $course['title'] }}" class="h-full w-full object-cover" loading="lazy" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-[rgba(54,28,78,0.36)] via-transparent to-transparent"></div>
+                                <div class="absolute left-5 top-5 flex flex-wrap gap-2">
+                                    <span class="rounded-full bg-white/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#6e5317]">{{ $course['category'] }}</span>
+                                    <span class="rounded-full bg-[#f8e8ff] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7a4ca2]">{{ $course['mode'] === 'offline' ? 'Offline' : 'Online' }}</span>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">{{ $course['duration'] }}</p>
+                                <h3 class="mt-3 font-headline text-2xl font-extrabold text-on-surface">{{ $course['title'] }}</h3>
+                                <p class="mt-4 text-sm leading-7 text-on-surface-variant">{{ \Illuminate\Support\Str::limit($course['details'], 130) }}</p>
+                                <div class="mt-5 flex flex-wrap gap-2">
+                                    <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['audience_label'] ?? 'College Student' }}</span>
+                                    <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['language'] }}</span>
+                                </div>
+                                <div class="mt-6 flex items-center justify-between gap-4 border-t border-[#f0e6f8] pt-5">
+                                    <div>
+                                        <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8f67b8]">Catalog Access</p>
+                                        <p class="mt-1 text-sm font-semibold text-on-surface">View details in the training program catalog</p>
+                                    </div>
+                                    <a href="{{ route('home.courses', ['audience' => 'college-student']) }}#catalog-results" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#281126_0%,#6d3aa7_52%,#c8a34b_100%)] px-5 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:-translate-y-0.5">
+                                        View Details
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+
         <section id="corporate-training" class="relative overflow-hidden px-4 py-20 md:px-6 md:py-20">
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(124,58,237,0.08),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(192,132,252,0.10),transparent_28%),linear-gradient(180deg,#fffefe_0%,#faf6ff_52%,#f6effd_100%)]"></div>
             <div class="absolute inset-0 opacity-60" style="background-image: linear-gradient(rgba(124,58,237,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.05) 1px, transparent 1px); background-size: 6rem 6rem; mask-image: linear-gradient(180deg, rgba(0,0,0,0.65), rgba(0,0,0,0.2));"></div>
@@ -1810,9 +1918,11 @@
             <div class="relative z-10 mx-auto max-w-7xl">
                 @php
                     $whyChooseVisuals = collect([
-                        asset('images/home/why-choose-mentorship.svg'),
-                        asset('images/home/why-choose-projects.svg'),
-                        asset('images/home/why-choose-community.svg'),
+                        asset('images/tailored training.jpeg'),
+                        asset('images/live projects.jpeg'),
+                        asset('images/Carrer.jpeg'),
+                        asset('images/industry experts.jpeg'),
+                        asset('images/Supportive community.jpeg'),
                     ]);
                 @endphp
 
@@ -1851,7 +1961,7 @@
                                             <div class="overflow-hidden rounded-[1.7rem] bg-white/60 shadow-[0_14px_24px_rgba(157,120,186,0.08)] backdrop-blur-[2px]">
                                                 <div class="aspect-[16/10] overflow-hidden bg-[#f3ecfa]">
                                                     <img
-                                                        src="{{ $whyChooseVisuals->get($index % max($whyChooseVisuals->count(), 1), asset('images/home/why-choose-mentorship.svg')) }}"
+                                                        src="{{ $whyChooseVisuals->get($index % max($whyChooseVisuals->count(), 1), asset('images/tailored training.jpeg')) }}"
                                                         alt="{{ $item['title'] }}"
                                                         class="h-full w-full object-cover"
                                                         loading="lazy"
@@ -1868,7 +1978,7 @@
                                             <div class="overflow-hidden rounded-[1.7rem] bg-white/60 shadow-[0_14px_24px_rgba(157,120,186,0.08)] backdrop-blur-[2px]">
                                                 <div class="aspect-[16/10] overflow-hidden bg-[#f3ecfa]">
                                                     <img
-                                                        src="{{ $whyChooseVisuals->get($index % max($whyChooseVisuals->count(), 1), asset('images/home/why-choose-mentorship.svg')) }}"
+                                                        src="{{ $whyChooseVisuals->get($index % max($whyChooseVisuals->count(), 1), asset('images/tailored training.jpeg')) }}"
                                                         alt="{{ $item['title'] }}"
                                                         class="h-full w-full object-cover"
                                                         loading="lazy"

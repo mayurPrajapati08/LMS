@@ -159,4 +159,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=EEF2FF&color=312E81&size='.$size;
     }
+
+    public function hasRole(string $role): bool
+    {
+        return strtolower((string) $this->role?->name) === strtolower($role);
+    }
+
+    public function hasAnyRole(array $roles): bool
+    {
+        $normalizedRoles = array_map(static fn (string $role) => strtolower($role), $roles);
+
+        return in_array(strtolower((string) $this->role?->name), $normalizedRoles, true);
+    }
 }

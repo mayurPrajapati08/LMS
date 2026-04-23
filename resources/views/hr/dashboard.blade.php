@@ -105,7 +105,7 @@
                                 <img alt="{{ $user->name }}" class="h-14 w-14 rounded-2xl border border-white/25 object-cover" src="{{ $profileAvatar }}" />
                                 <div>
                                     <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-sky-100/72">Signed In</p>
-                                    <p class="mt-1 text-lg font-extrabold text-white">{{ $user->name }}</p>
+                                    <p class="mt-1 text-lg uppercase font-extrabold text-white">{{ $user->name }}</p>
                                 </div>
                             </div>
                             <p class="mt-4 text-sm leading-6 text-sky-50/78">Use this dashboard to update homepage content and stay responsive to incoming leads.</p>

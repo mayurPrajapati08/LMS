@@ -126,7 +126,7 @@
                     </h1>
 
                     <p class="mt-5 max-w-xl text-[0.92rem] leading-7 text-white/68 md:text-[0.97rem]">
-                        Contact us for admissions, mentor guidance, course selection, business training, or platform support. This page brings together office details, timing, map access, and a smooth inquiry flow in one place.
+                        Contact us for admissions, mentor guidance, training program selection, business training, or platform support. This page brings together office details, timing, map access, and a smooth inquiry flow in one place.
                     </p>
 
                     <div class="mt-8 flex flex-wrap gap-4">
@@ -176,7 +176,7 @@
                 <article class="glass-card premium-card reveal rounded-[2rem] p-6 md:p-8" id="contact-form">
                     <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Send A Message</p>
                     <h2 class="mt-4 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Tell us what you need and the right team can respond quickly.</h2>
-                    <p class="mt-4 text-sm leading-7 text-on-surface-variant">Use the form for admissions, guidance, business training, or help choosing the right course path. It stays integrated with the platform workflow you already have.</p>
+                    <p class="mt-4 text-sm leading-7 text-on-surface-variant">Use the form for admissions, guidance, business training, or help choosing the right training program path. It stays integrated with the platform workflow you already have.</p>
 
                     <div class="mt-6 rounded-[1.8rem] border border-outline/70 bg-white/72 p-5">
                         @if (session('status'))
@@ -211,9 +211,9 @@
                                     <input class="w-full rounded-2xl border border-outline bg-white px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/70 focus:border-primary focus:ring-primary/20" name="phone" placeholder="+91 98765 43210" type="tel" value="{{ old('phone') }}" />
                                 </div>
                                 <div>
-                                    <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Interested Course</label>
+                                    <label class="mb-2 block text-[11px] font-bold uppercase tracking-[0.22em] text-on-surface-variant">Interested Training Program</label>
                                     <select class="w-full rounded-2xl border border-outline bg-white px-4 py-3 text-sm font-medium text-on-surface focus:border-primary focus:ring-primary/20" name="course_id">
-                                        <option value="">Select a course</option>
+                                        <option value="">Select a training program</option>
                                         @foreach ($courseOptions as $course)
                                             <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>{{ $course->title }}</option>
                                         @endforeach

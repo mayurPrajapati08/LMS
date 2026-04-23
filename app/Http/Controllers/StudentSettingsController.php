@@ -117,6 +117,10 @@ class StudentSettingsController extends Controller
         $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
         $path = $folder.'/student-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar.'.$extension;
 
-        return CloudflareR2Storage::uploadPublicFile($file, $path);
+        return CloudflareR2Storage::uploadPublicFile($file, $path, [
+            'allowed_extensions' => ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+            'allowed_mime_types' => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+            'max_bytes' => 5 * 1024 * 1024,
+        ]);
     }
 }

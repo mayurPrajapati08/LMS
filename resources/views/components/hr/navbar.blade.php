@@ -3,7 +3,7 @@
     $items = [
         ['route' => 'hr.dashboard', 'label' => 'Dashboard', 'icon' => 'dashboard'],
         ['route' => 'hr.inquiries', 'label' => 'All Inquiries', 'icon' => 'support_agent'],
-        ['route' => 'hr.mentorship', 'label' => 'Mentorship', 'icon' => 'groups'],
+        ['route' => 'hr.offline-courses', 'label' => 'Course Management', 'icon' => 'menu_book'],
         ['route' => 'hr.slides', 'label' => 'Slides', 'icon' => 'slideshow'],
         ['route' => 'hr.founder-media', 'label' => 'Founder Media', 'icon' => 'play_circle'],
         ['route' => 'hr.stories', 'label' => 'Stories', 'icon' => 'auto_stories'],
@@ -11,7 +11,6 @@
         ['route' => 'hr.jobs', 'label' => 'Jobs', 'icon' => 'work'],
         ['route' => 'hr.faculty', 'label' => 'Faculty', 'icon' => 'school'],
         ['route' => 'hr.workshops', 'label' => 'Workshops', 'icon' => 'edit_calendar'],
-        ['route' => 'hr.offline-courses', 'label' => 'Course Management', 'icon' => 'menu_book'],
     ];
 @endphp
 

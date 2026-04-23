@@ -9,6 +9,7 @@ use App\Models\Review;
 use App\Models\Section;
 use App\Models\Video;
 use App\Support\CloudflareR2Storage;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -156,6 +157,14 @@ class InstructorCourseController extends Controller
             ], 422);
         }
 
+        $maxUploadBytes = max(50 * 1024 * 1024, (int) config('services.cloudflare_stream.max_upload_bytes', 2 * 1024 * 1024 * 1024));
+
+        if ((int) $uploadLength > $maxUploadBytes) {
+            return response()->json([
+                'message' => 'The selected video is larger than the allowed upload size.',
+            ], 422);
+        }
+
         $lessonSlug = Str::slug((string) ($validated['lesson_title'] ?? 'lesson video'));
         $displayName = trim(Str::headline(str_replace('-', ' ', $lessonSlug !== '' ? $lessonSlug : 'lesson video')));
         $metadataParts = array_filter([
@@ -211,6 +220,14 @@ class InstructorCourseController extends Controller
             'file_name' => ['nullable', 'string', 'max:255'],
         ]);
         $expectedExtension = strtolower((string) $validated['material_type']);
+        $providedFilename = strtolower((string) ($validated['file_name'] ?? ''));
+
+        if ($providedFilename !== '' && pathinfo($providedFilename, PATHINFO_EXTENSION) !== $expectedExtension) {
+            return response()->json([
+                'message' => 'The uploaded file extension does not match the selected material type.',
+            ], 422);
+        }
+
         $folder = trim((string) config('services.cloudflare_r2.material_folder', 'lms/course-materials'), '/');
         $filename = Str::slug($course->slug)
             .'-section-'.($validated['section_index'] + 1)
@@ -604,7 +621,11 @@ class InstructorCourseController extends Controller
         $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
         $path = $folder.'/'.Str::slug($slug).'-thumbnail.'.$extension;
 
-        return CloudflareR2Storage::uploadPublicFile($file, $path);
+        return CloudflareR2Storage::uploadPublicFile($file, $path, [
+            'allowed_extensions' => ['jpg', 'jpeg', 'png', 'webp', 'gif'],
+            'allowed_mime_types' => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
+            'max_bytes' => 5 * 1024 * 1024,
+        ]);
     }
 
     private function uploadThumbnailToLocal(UploadedFile $file, string $slug): string
@@ -612,13 +633,15 @@ class InstructorCourseController extends Controller
         $folder = 'course-thumbnails';
         $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
         $filename = Str::slug($slug).'-thumbnail.'.$extension;
-        $stored = Storage::disk('public')->putFileAs($folder, $file, $filename, ['visibility' => 'public']);
+        /** @var FilesystemAdapter $publicDisk */
+        $publicDisk = Storage::disk('public');
+        $stored = $publicDisk->putFileAs($folder, $file, $filename, ['visibility' => 'public']);
 
         if (! $stored) {
             throw new RuntimeException('Local thumbnail upload failed. Please try again.');
         }
 
-        return Storage::disk('public')->url($stored);
+        return $publicDisk->url($stored);
     }
 
     private function uploadThumbnailToCloudinary(UploadedFile $file, string $slug): string

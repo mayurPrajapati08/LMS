@@ -51,7 +51,7 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-3 md:pr-4 text-sm focus:ring-2 focus:ring-[#f5eef8]/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -133,9 +133,10 @@
                                             <div class="flex items-center justify-end gap-2">
                                                 <a class="px-3 py-2 text-xs font-bold text-primary hover:bg-primary/5 rounded-lg" href="{{ route('admin.admins', ['edit' => $managedAdmin->id]) }}">Edit</a>
                                                 @if (! $admin->is($managedAdmin))
-                                                    <form action="{{ route('admin.admins.destroy', $managedAdmin) }}" method="POST">
+                                                    <form action="{{ route('admin.admins.destroy', $managedAdmin) }}" class="admin-delete-form" method="POST">
                                                         @csrf
                                                         @method('DELETE')
+                                                        <input type="hidden" name="current_password" />
                                                         <button class="px-3 py-2 text-xs font-bold text-error hover:bg-error-container/60 rounded-lg" type="submit">Remove</button>
                                                     </form>
                                                 @endif
@@ -172,6 +173,10 @@
                             @method('PUT')
                         @endif
 
+                        <div class="rounded-2xl border border-outline-variant/30 bg-primary-fixed/40 px-4 py-4 text-sm text-slate-600">
+                            New privileged accounts are now provisioned securely. No password will be emailed; the user will set their own password through the recovery flow.
+                        </div>
+
                         <div class="space-y-2">
                             <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Full Name</label>
                             <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20" name="name" type="text" value="{{ old('name', $editingAdmin->name ?? '') }}" />
@@ -195,13 +200,9 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">{{ $editingAdmin ? 'New Password (Optional)' : 'Password' }}</label>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20" name="password" type="password" />
-                        </div>
-
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Confirm Password</label>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20" name="password_confirmation" type="password" />
+                            <label class="text-xs font-bold uppercase tracking-widest text-slate-400">Your Current Password</label>
+                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20" name="current_password" type="password" />
+                            <p class="text-xs text-slate-500">Required to create, update, or remove privileged accounts.</p>
                         </div>
 
                         <div class="flex items-center gap-3 pt-2">
@@ -217,6 +218,24 @@
             </div>
         </div>
     </main>
+    <script>
+        document.querySelectorAll('.admin-delete-form').forEach((form) => {
+            form.addEventListener('submit', (event) => {
+                const password = window.prompt('Enter your current password to remove this admin account.');
+
+                if (!password) {
+                    event.preventDefault();
+                    return;
+                }
+
+                const input = form.querySelector('input[name="current_password"]');
+
+                if (input) {
+                    input.value = password;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 

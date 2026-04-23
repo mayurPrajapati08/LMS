@@ -142,7 +142,7 @@
             <div class="flex items-center gap-4 flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-none">
                 <div class="relative w-full md:max-w-md">
                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
-                    <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-[#f5eef8]0/20" placeholder="Search..." type="text" />
+                    <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-[#f5eef8]/20" placeholder="Search..." type="text" />
                 </div>
             </div>
             <div class="ml-auto flex items-center gap-3 md:gap-6">

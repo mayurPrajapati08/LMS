@@ -43,7 +43,7 @@
         <div class="flex items-center flex-1 max-w-[10rem] sm:max-w-[12rem] md:max-w-xl">
             <div class="relative w-full">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-[#f5eef8]0/20 outline-none" placeholder="Search..." type="text" />
+                <input class="w-full pl-10 pr-3 md:pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-[#f5eef8]/20 outline-none" placeholder="Search..." type="text" />
             </div>
         </div>
         <div class="ml-auto flex items-center gap-3">
@@ -106,6 +106,10 @@
                     <form action="{{ route('admin.instructors.store') }}" class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-5" method="POST">
                         @csrf
 
+                        <div class="lg:col-span-2 rounded-2xl bg-slate-50 px-4 py-4 text-sm text-slate-600">
+                            Instructor accounts are created without sending a password by email. The instructor will receive a secure setup email and create their own password through the recovery flow.
+                        </div>
+
                         <div class="space-y-2">
                             <label class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Full Name</label>
                             <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none" name="name" type="text" value="{{ old('name') }}" />
@@ -121,14 +125,10 @@
                             <textarea class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none min-h-[110px]" name="bio" placeholder="Short introduction for the instructor profile.">{{ old('bio') }}</textarea>
                         </div>
 
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Temporary Password</label>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none" name="password" type="password" />
-                        </div>
-
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Confirm Password</label>
-                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none" name="password_confirmation" type="password" />
+                        <div class="space-y-2 lg:col-span-2">
+                            <label class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Your Current Password</label>
+                            <input class="w-full rounded-xl bg-surface-container-low border-none px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none" name="current_password" type="password" />
+                            <p class="text-xs text-slate-500">Required before a new instructor account can be provisioned.</p>
                         </div>
 
                         <div class="lg:col-span-2 flex items-center gap-3 pt-1">

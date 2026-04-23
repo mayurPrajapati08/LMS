@@ -20,6 +20,7 @@ class HomeStory extends Model
         'package',
         'shared_at',
         'is_active',
+        'show_in_placement_hero',
         'sort_order',
     ];
 
@@ -29,6 +30,7 @@ class HomeStory extends Model
             'rating' => 'integer',
             'shared_at' => 'date',
             'is_active' => 'boolean',
+            'show_in_placement_hero' => 'boolean',
         ];
     }
 }

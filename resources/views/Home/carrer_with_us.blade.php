@@ -86,7 +86,7 @@
             'eyebrow' => 'Knowledge Operations',
             'name' => 'Content & Curriculum Team',
             'role' => 'Learning Experience Builders',
-            'bio' => 'Transforms domain knowledge into structured courses, workshop assets, recruiter-focused practice material, and polished learner journeys.',
+            'bio' => 'Transforms domain knowledge into structured training programs, workshop assets, recruiter-focused practice material, and polished learner journeys.',
             'highlights' => ['Curriculum design', 'Learning quality', 'Assessment flow'],
             'icon' => 'library_books',
         ],
@@ -556,7 +556,7 @@
         <section class="px-4 pb-20 md:px-6 md:pb-24">
             <div class="mx-auto max-w-5xl">
                 <div class="reveal rounded-[2.3rem] bg-[linear-gradient(135deg,#120520_0%,#4c1d95_52%,#a855f7_100%)] px-6 py-10 text-center text-white shadow-[0_30px_90px_rgba(76,29,149,0.28)] md:px-10 md:py-14">
-                    <p class="text-xs font-bold uppercase tracking-[0.32em] text-white/54">Let�s Build Together</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.32em] text-white/54">Let's Build Together</p>
                     <h2 class="mt-4 font-headline text-3xl font-extrabold leading-tight md:text-[2.8rem]">See a role that fits you? Start the conversation with our team.</h2>
                     <p class="mx-auto mt-5 max-w-3xl text-sm leading-8 text-white/72 md:text-[15px]">
                         Send your profile, portfolio, teaching background, or hiring query through our contact page and the HR team will connect with you for the next steps.

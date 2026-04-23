@@ -23,11 +23,15 @@ class EmailVerificationOtpMail extends Mailable
 
     public function envelope(): Envelope
     {
+        $subject = match ($this->purpose) {
+            'login_two_factor' => 'Your CodeInYourself Login OTP',
+            'password_reset' => 'Your CodeInYourself Password Reset OTP',
+            default => 'Your CodeInYourself Signup OTP',
+        };
+
         return new Envelope(
             from: new Address(config('mail.from.address'), 'No-Reply | CodeInYourself'),
-            subject: $this->purpose === 'login_two_factor'
-                ? 'Your CodeInYourself Login OTP'
-                : 'Your CodeInYourself Signup OTP',
+            subject: $subject,
         );
     }
 

@@ -1,30 +1,29 @@
 @php
     $heroStats = [
-        ['value' => '1:1', 'label' => 'mentor-led guidance focused on your real next step'],
-        ['value' => 'Free', 'label' => 'booking support for students who need clarity before joining'],
-        ['value' => '3 Steps', 'label' => 'book, attend, then enter the right class with confidence'],
+        ['value' => '1:1', 'label' => 'personal guidance based on your background'],
+        ['value' => 'Free', 'label' => 'no-cost discussion before choosing a program'],
+        ['value' => '3 Steps', 'label' => 'book, talk, and move ahead with clarity'],
     ];
 
     $mentorshipBenefits = [
-        ['icon' => 'school', 'title' => 'Right path selection', 'description' => 'Students understand which class, roadmap, or skill track actually matches their background and target role.'],
-        ['icon' => 'calendar_month', 'title' => 'Easy appointment booking', 'description' => 'Choose your preferred day and time so the team can arrange a comfortable mentorship slot for you.'],
-        ['icon' => 'forum', 'title' => 'Doubt solving guidance', 'description' => 'Talk through confusion about technology, projects, internships, placement preparation, and class readiness.'],
-        ['icon' => 'meeting_room', 'title' => 'Class visit direction', 'description' => 'After booking, students can be guided toward the most suitable class experience and next learning action.'],
+        ['icon' => 'school', 'title' => 'Right Program Selection', 'description' => 'Understand which course, workshop, or roadmap fits your current level and goal.'],
+        ['icon' => 'forum', 'title' => 'Practical Doubt Solving', 'description' => 'Ask about skills, projects, internships, placements, or how to start from zero.'],
+        ['icon' => 'meeting_room', 'title' => 'Clear Next Step', 'description' => 'Leave the session with a practical action plan instead of confusion.'],
     ];
 
     $mentorshipFlow = [
-        ['step' => '01', 'title' => 'Book your free mentorship slot', 'copy' => 'Fill the appointment form with your contact details, study stage, preferred time, and the kind of help you need.'],
-        ['step' => '02', 'title' => 'Talk with a mentor', 'copy' => 'A mentor understands your current level, your goals, and what is stopping you from choosing the right learning direction.'],
-        ['step' => '03', 'title' => 'Visit the right class and move forward', 'copy' => 'Based on the session, you get guidance toward the right class, learning path, and next action with better confidence.'],
+        ['step' => '01', 'title' => 'Book your slot', 'copy' => 'Share your basic details, preferred date, and preferred time for the mentorship discussion.'],
+        ['step' => '02', 'title' => 'Speak with a mentor', 'copy' => 'Discuss your background, your doubts, your goal, and the areas where you need proper guidance.'],
+        ['step' => '03', 'title' => 'Get the right direction', 'copy' => 'Receive clear advice on the right course, learning path, practice plan, or next move.'],
     ];
 
     $guidanceAreas = [
-        'Career direction for college students and freshers',
-        'Which class or roadmap is best for your background',
-        'Skill gap clarity before placements or internships',
-        'Portfolio, project, and confidence-building advice',
-        'How to start even if you feel confused or behind',
-        'Offline or online learning preference guidance',
+        'Which course is right for your background',
+        'How to start from beginner level',
+        'Placement and internship preparation',
+        'Projects and portfolio improvement',
+        'Technology or career path confusion',
+        'Online or offline learning guidance',
     ];
 @endphp
 
@@ -434,10 +433,10 @@
                                 Free Mentorship Appointment
                             </div>
                             <h1 class="mt-6 font-headline text-4xl font-extrabold leading-[0.95] tracking-[-0.05em] md:text-[3.6rem]">
-                                Book your free mentorship time and enter the right class with clarity.
+                                Book a free mentorship session and get clear guidance for your next step.
                             </h1>
                             <p class="mt-6 max-w-2xl text-base leading-8 text-white/74 md:text-[1.05rem]">
-                                This page helps students schedule a free mentorship appointment, speak with a mentor, and get guided toward the right class, roadmap, or learning direction for their goals.
+                                This mentorship session is for students who need real guidance before choosing a course, starting a career path, preparing for placements, or planning the right learning direction.
                             </p>
                             <div class="mt-8 grid gap-4 sm:grid-cols-3">
                                 @foreach ($heroStats as $stat)
@@ -459,7 +458,7 @@
                             </div>
 
                             <div class="mt-10 hero-scroll-cue">
-                                <span>Scroll For Student Journey</span>
+                                <span>Scroll For Mentorship Details</span>
                                 <span><span class="material-symbols-outlined text-[18px]">south</span></span>
                             </div>
                         </div>
@@ -467,41 +466,41 @@
                         <div class="reveal-lift stagger-1">
                             <div class="hero-visual-card p-5 md:p-6">
                                 <div class="hero-grid"></div>
-                                <div class="hero-word">Guide</div>
+                                <div class="hero-word">Mentor</div>
                                 <div class="hero-path"></div>
                                 <div class="journey-line"></div>
                                 <div class="hero-glow-beam"></div>
                                 <div class="grid gap-4">
                                     <div class="journey-node ml-auto max-w-[15rem] rounded-[1.6rem] p-4 text-white" data-parallax data-speed="0.08">
                                         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">Step One</p>
-                                        <p class="mt-2 font-headline text-2xl font-extrabold">Book Time</p>
-                                        <p class="mt-2 text-sm leading-7 text-white/72">Choose your preferred date and slot in a simple student form.</p>
+                                        <p class="mt-2 font-headline text-2xl font-extrabold">Book Your Slot</p>
+                                        <p class="mt-2 text-sm leading-7 text-white/72">Choose a suitable date, time, and mode for your free mentorship session.</p>
                                     </div>
                                     <div class="journey-node max-w-[16rem] rounded-[1.6rem] p-4 text-white" data-parallax data-speed="0.14">
                                         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">Step Two</p>
-                                        <p class="mt-2 font-headline text-2xl font-extrabold">Mentor Call</p>
-                                        <p class="mt-2 text-sm leading-7 text-white/72">Discuss doubts, goals, interests, and the right learning plan.</p>
+                                        <p class="mt-2 font-headline text-2xl font-extrabold">Mentor Discussion</p>
+                                        <p class="mt-2 text-sm leading-7 text-white/72">Talk about your doubts, present level, learning goal, and career concerns.</p>
                                     </div>
                                     <div class="journey-node ml-auto max-w-[17rem] rounded-[1.6rem] p-4 text-white" data-parallax data-speed="0.1">
                                         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">Step Three</p>
-                                        <p class="mt-2 font-headline text-2xl font-extrabold">Visit Class</p>
-                                        <p class="mt-2 text-sm leading-7 text-white/72">Get guided toward the right class and continue with more confidence.</p>
+                                        <p class="mt-2 font-headline text-2xl font-extrabold">Move With Clarity</p>
+                                        <p class="mt-2 text-sm leading-7 text-white/72">Leave with a clearer decision about the right class, roadmap, or next action.</p>
                                     </div>
                                 </div>
                                 <div class="mt-5 grid gap-3 sm:grid-cols-2">
                                     <div class="hero-mini-card rounded-[1.3rem] p-4 text-white" data-parallax data-speed="0.06">
-                                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">Mentor Support</p>
-                                        <p class="mt-2 text-sm leading-7 text-white/72">Career confusion, class selection, and next-step planning.</p>
+                                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">What We Help With</p>
+                                        <p class="mt-2 text-sm leading-7 text-white/72">Course selection, career confusion, projects, placements, and skill planning.</p>
                                     </div>
                                     <div class="hero-mini-card rounded-[1.3rem] p-4 text-white" data-parallax data-speed="0.12">
-                                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">Student Friendly</p>
-                                        <p class="mt-2 text-sm leading-7 text-white/72">Designed for beginners, freshers, and students who need real clarity.</p>
+                                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">Who It Is For</p>
+                                        <p class="mt-2 text-sm leading-7 text-white/72">Beginners, college students, freshers, and learners who need proper direction.</p>
                                     </div>
                                 </div>
 
                                 <div class="hero-anchor-card" data-parallax data-speed="0.18">
                                     <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/55">Outcome</p>
-                                    <p class="mt-3 font-headline text-[1.45rem] font-extrabold">From confusion to clear class direction.</p>
+                                    <p class="mt-3 font-headline text-[1.45rem] font-extrabold">From confusion to a clear action plan.</p>
                                     <p class="mt-3 text-sm leading-7 text-white/72">Students leave the mentorship session knowing what to do next instead of guessing.</p>
                                 </div>
                             </div>
@@ -511,29 +510,15 @@
             </div>
         </section>
 
-        <section class="px-4 py-18 md:px-6 md:py-24">
-            <div class="mx-auto max-w-6xl">
-                <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-                    @foreach ($mentorshipBenefits as $index => $benefit)
-                        <article class="surface-card reveal stagger-{{ ($index % 4) + 1 }} rounded-[1.8rem] p-6">
-                            <span class="feature-icon-shell"><span class="material-symbols-outlined text-[1.3rem]">{{ $benefit['icon'] }}</span></span>
-                            <h2 class="mt-5 font-headline text-[1.5rem] font-extrabold leading-tight text-on-surface">{{ $benefit['title'] }}</h2>
-                            <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $benefit['description'] }}</p>
-                        </article>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-
         <section id="mentorship-flow" class="px-4 pb-20 md:px-6 md:pb-24">
             <div class="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.92fr_1.08fr]">
                 <div class="surface-card reveal rounded-[2rem] p-6 md:p-8">
                     <p class="text-xs font-bold uppercase tracking-[0.28em] text-primary">How It Works</p>
                     <h2 class="mt-4 font-headline text-3xl font-extrabold leading-tight text-on-surface md:text-[2.5rem]">
-                        A simple mentorship flow that helps students move with confidence.
+                        A simple mentorship process that is easy to follow.
                     </h2>
                     <p class="mt-4 text-sm leading-8 text-on-surface-variant">
-                        The idea is simple: book a free mentorship appointment, talk honestly about your situation, and then get guided toward the right class, roadmap, or practical next step.
+                        First you book a slot, then you speak with a mentor, and finally you get guidance that matches your level, your goal, and your next learning decision.
                     </p>
 
                     <div class="mt-8 space-y-6">
@@ -550,27 +535,27 @@
                 </div>
 
                 <div class="surface-card reveal stagger-1 rounded-[2rem] p-6 md:p-8">
-                    <p class="text-xs font-bold uppercase tracking-[0.28em] text-primary">Guidance Topics</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.28em] text-primary">Common Topics</p>
                     <h2 class="mt-4 font-headline text-3xl font-extrabold leading-tight text-on-surface md:text-[2.4rem]">
-                        What students usually ask during a free mentorship session.
+                        What students usually discuss in mentorship.
                     </h2>
-                    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+
+                    <div class="mt-8 overflow-hidden rounded-[1.7rem] bg-[linear-gradient(180deg,rgba(124,58,237,0.08),rgba(255,255,255,0.96))] p-5">
+                        <img src="{{ asset('images/live projects.jpeg') }}" alt="Students in an online mentorship or guidance session" class="h-56 w-full rounded-[1.3rem] object-cover" />
+                    </div>
+
+                    <div class="mt-6 grid gap-3 sm:grid-cols-2">
                         @foreach ($guidanceAreas as $topic)
-                            <div class="rounded-[1.4rem] border border-outline/70 bg-white/88 px-5 py-4 text-sm font-semibold leading-7 text-on-surface shadow-[0_14px_28px_rgba(124,58,237,0.06)]">
-                                <div class="flex items-start gap-3">
-                                    <span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full bg-primary/12 text-primary">
-                                        <span class="material-symbols-outlined text-[15px]">done</span>
-                                    </span>
-                                    <span>{{ $topic }}</span>
-                                </div>
+                            <div class="rounded-[1.2rem] border border-outline/70 bg-white/88 px-4 py-3 text-sm font-semibold leading-6 text-on-surface shadow-[0_14px_28px_rgba(124,58,237,0.06)]">
+                                {{ $topic }}
                             </div>
                         @endforeach
                     </div>
 
                     <div class="soft-strip mt-8 rounded-[1.6rem] p-5 md:p-6">
-                        <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">Good To Know</p>
+                        <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">Best For</p>
                         <p class="mt-3 text-sm leading-7 text-on-surface-variant">
-                            This appointment is especially useful if you are confused about where to start, which class to join, or how to become more ready for internships, placements, or practical skill growth.
+                            Students who want clarity before choosing a course, planning a roadmap, or making their next learning move.
                         </p>
                     </div>
                 </div>
@@ -583,24 +568,24 @@
                     <div class="surface-card reveal rounded-[2rem] p-6 md:p-8">
                         <p class="text-xs font-bold uppercase tracking-[0.28em] text-primary">Book Appointment</p>
                         <h2 class="mt-4 font-headline text-3xl font-extrabold leading-tight text-on-surface md:text-[2.4rem]">
-                            Share your details and reserve your free mentorship time.
+                            Share your details and reserve your free mentorship session.
                         </h2>
                         <p class="mt-4 text-sm leading-8 text-on-surface-variant">
-                            Fill in this form so the team can arrange your mentorship appointment and guide you toward the right class after the discussion.
+                            Fill in this form so the team can schedule your mentorship discussion and understand what kind of guidance you need before the session.
                         </p>
 
-                        <div class="mt-8 space-y-4">
+                        <div class="mt-8 overflow-hidden rounded-[1.7rem] bg-[linear-gradient(180deg,rgba(124,58,237,0.08),rgba(255,255,255,0.96))] p-5">
+                            <img src="{{ asset('images/live projects.jpeg') }}" alt="Online mentorship support session" class="h-56 w-full rounded-[1.3rem] object-cover" />
+                        </div>
+
+                        <div class="mt-6 grid gap-4">
                             <div class="rounded-[1.4rem] border border-outline/70 bg-white/88 p-5">
                                 <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">After Booking</p>
-                                <p class="mt-3 text-sm leading-7 text-on-surface-variant">Our team reviews your request, confirms your suitable slot, and helps you prepare for the mentorship conversation.</p>
+                                <p class="mt-3 text-sm leading-7 text-on-surface-variant">We review your details, confirm the slot, and prepare the discussion around your goals.</p>
                             </div>
                             <div class="rounded-[1.4rem] border border-outline/70 bg-white/88 p-5">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">During Mentorship</p>
-                                <p class="mt-3 text-sm leading-7 text-on-surface-variant">You can ask about classes, roadmaps, technologies, confidence problems, internships, and skill gaps.</p>
-                            </div>
-                            <div class="rounded-[1.4rem] border border-outline/70 bg-white/88 p-5">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">Next Step</p>
-                                <p class="mt-3 text-sm leading-7 text-on-surface-variant">If needed, students are guided to visit or join the right class and continue their learning journey with more clarity.</p>
+                                <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-primary">During The Session</p>
+                                <p class="mt-3 text-sm leading-7 text-on-surface-variant">You discuss your doubts, ask questions, and get guidance on the best next step for you.</p>
                             </div>
                         </div>
                     </div>
@@ -628,7 +613,7 @@
                             Book your free mentorship appointment now.
                         </h2>
                         <p class="mt-3 text-sm leading-7 text-on-surface-variant">
-                            Choose your preferred date, mention your goals, and tell us if you also want class visit guidance.
+                            Choose your preferred date, share your learning goal, and tell us what kind of guidance you want from the mentor.
                         </p>
 
                         <form action="{{ route('home.contact.submit') }}" method="POST"  class="mt-8 space-y-5">

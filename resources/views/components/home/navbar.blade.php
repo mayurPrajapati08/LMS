@@ -8,6 +8,13 @@
     $aboutUrl = route('home.about');
     $workingProfessionalUrl = route('home.career-paths', ['audience' => 'working-professional']);
     $collegeStudentUrl = route('home.career-paths', ['audience' => 'college-student']);
+    $dataScienceUrl = route('home.career-paths.show', ['path' => 'data-science-with-ai']);
+    $dataAnalyticsUrl = route('home.career-paths.show', ['path' => 'data-analytics-with-ai']);
+    $fullStackWebUrl = route('home.career-paths.show', ['path' => 'web-development-full-stack']);
+    $fullStackMasterUrl = route('home.career-paths.show', ['path' => 'full-stack-developer']);
+    $generativeAiUrl = route('home.career-paths.show', ['path' => 'generative-ai']);
+    $powerBiUrl = route('home.career-paths.show', ['path' => 'power-bi-tableau-development']);
+    $mobileAppUrl = route('home.career-paths.show', ['path' => 'mobile-application-development']);
     $workshopUrl = route('home.free_workshop');
     $freeMentorshipUrl = route('home.mentorship');
     $careerWithUsUrl = route('home.career-with-us');
@@ -32,17 +39,47 @@
         ->implode('');
     $workingProfessionalMenu = [
         [
+            'key' => 'data-science',
+            'label' => 'Data Science',
+            'items' => [
+                [
+                    'provider' => 'CodeInYourself',
+                    'provider_subtitle' => 'Advanced certification for professionals',
+                    'title' => 'Data Science with AI',
+                    'description' => 'Python, machine learning, deep learning, NLP, and portfolio-ready AI projects for serious career growth.',
+                    'href' => $dataScienceUrl,
+                    'icon' => 'dataset',
+                    'badge' => 'Top demand',
+                ],
+            ],
+        ],
+        [
             'key' => 'data-analytics',
             'label' => 'Data Analytics',
             'items' => [
                 [
                     'provider' => 'CodeInYourself',
-                    'provider_subtitle' => 'Industry-aligned certification path',
-                    'title' => 'Data Analytics Career Track',
-                    'description' => 'Excel, SQL, Power BI, Tableau, and business case studies for professionals moving into analytics roles.',
-                    'href' => $workingProfessionalUrl,
+                    'provider_subtitle' => 'Business analytics certification',
+                    'title' => 'Data Analytics with AI',
+                    'description' => 'Excel, SQL, Python, Power BI, Tableau, dashboards, and AI-assisted reporting for analytics roles.',
+                    'href' => $dataAnalyticsUrl,
                     'icon' => 'query_stats',
-                    'badge' => 'Open for enrolment',
+                    'badge' => 'Job focused',
+                ],
+            ],
+        ],
+        [
+            'key' => 'full-stack-development',
+            'label' => 'Full Stack Development',
+            'items' => [
+                [
+                    'provider' => 'CodeInYourself',
+                    'provider_subtitle' => 'Role upgrade certification',
+                    'title' => 'Full Stack Developer Master Certification',
+                    'description' => 'Front-end, back-end, APIs, databases, and deployment skills for professionals growing into stronger engineering roles.',
+                    'href' => $fullStackMasterUrl,
+                    'icon' => 'deployed_code',
+                    'badge' => 'Career upgrade',
                 ],
             ],
         ],
@@ -52,104 +89,74 @@
             'items' => [
                 [
                     'provider' => 'CodeInYourself',
-                    'provider_subtitle' => 'Applied AI upskilling track',
-                    'title' => 'Generative AI for Working Professionals',
-                    'description' => 'Prompting, automation, and practical AI workflows designed for upskilling alongside your current job.',
-                    'href' => $workingProfessionalUrl,
+                    'provider_subtitle' => 'Future skills certification',
+                    'title' => 'Generative AI Certification',
+                    'description' => 'Prompt engineering, AI workflows, automation, and practical LLM use cases built for working professionals.',
+                    'href' => $generativeAiUrl,
                     'icon' => 'auto_awesome',
                     'badge' => 'Trending now',
-                ],
-            ],
-        ],
-        [
-            'key' => 'software-development',
-            'label' => 'Software Development',
-            'items' => [
-                [
-                    'provider' => 'CodeInYourself',
-                    'provider_subtitle' => 'Career growth certification',
-                    'title' => 'Full Stack Career Growth Program',
-                    'description' => 'Role-focused backend, frontend, deployment, and project delivery for professionals growing into stronger engineering roles.',
-                    'href' => $workingProfessionalUrl,
-                    'icon' => 'deployed_code',
-                    'badge' => 'Weekend friendly',
-                ],
-            ],
-        ],
-        [
-            'key' => 'career-support',
-            'label' => 'Career Support',
-            'items' => [
-                [
-                    'provider' => 'CodeInYourself',
-                    'provider_subtitle' => '1:1 roadmap support',
-                    'title' => 'Free Mentor Planning Session',
-                    'description' => 'Discuss your experience, your next target role, and the right learning plan with a mentor.',
-                    'href' => $freeMentorshipUrl,
-                    'icon' => 'support_agent',
-                    'badge' => 'Free session',
                 ],
             ],
         ],
     ];
     $collegeStudentMenu = [
         [
-            'key' => 'job-bootcamp',
-            'label' => 'Job Bootcamp',
+            'key' => 'full-stack-development',
+            'label' => 'Full Stack Development',
             'items' => [
                 [
                     'provider' => 'CodeInYourself',
-                    'provider_subtitle' => 'Placement-focused student path',
-                    'title' => 'College to Career Bootcamp',
-                    'description' => 'A guided learning path with projects, mentorship, and placement-focused preparation for students.',
-                    'href' => $collegeStudentUrl,
-                    'icon' => 'school',
+                    'provider_subtitle' => 'Placement-focused student certification',
+                    'title' => 'Web Development Full Stack Certification',
+                    'description' => 'Build real projects with React, Node.js, APIs, and databases while preparing for internships and placements.',
+                    'href' => $fullStackWebUrl,
+                    'icon' => 'code_blocks',
                     'badge' => 'Most popular',
                 ],
             ],
         ],
         [
-            'key' => 'portfolio-track',
-            'label' => 'Portfolio Track',
+            'key' => 'data-analytics',
+            'label' => 'Data Analytics',
             'items' => [
                 [
                     'provider' => 'CodeInYourself',
-                    'provider_subtitle' => 'Project-first learning path',
-                    'title' => 'Project Portfolio Builder',
-                    'description' => 'Build practical projects and visible proof of work before internships, placements, and interviews.',
-                    'href' => route('home.career-paths'),
-                    'icon' => 'inventory_2',
+                    'provider_subtitle' => 'Student-friendly analytics path',
+                    'title' => 'Data Analytics with AI',
+                    'description' => 'Learn Excel, SQL, Python, Power BI, and Tableau with project work that strengthens your placement profile.',
+                    'href' => $dataAnalyticsUrl,
+                    'icon' => 'analytics',
                     'badge' => 'Portfolio ready',
                 ],
             ],
         ],
         [
-            'key' => 'workshops',
-            'label' => 'Workshops',
+            'key' => 'mobile-app-development',
+            'label' => 'Mobile App Development',
             'items' => [
                 [
                     'provider' => 'CodeInYourself',
-                    'provider_subtitle' => 'Live sessions and short intensives',
-                    'title' => 'Student Workshops and Live Sessions',
-                    'description' => 'Short format learning sessions for trending tools, interview prep, and practical skills.',
-                    'href' => $workshopUrl,
-                    'icon' => 'event_available',
-                    'badge' => 'New batch',
+                    'provider_subtitle' => 'App development certification',
+                    'title' => 'Mobile Application Development',
+                    'description' => 'Start building Android and iOS projects with modern tools and practical app development workflows.',
+                    'href' => $mobileAppUrl,
+                    'icon' => 'smartphone',
+                    'badge' => 'Hands-on',
                 ],
             ],
         ],
         [
-            'key' => 'mentorship',
-            'label' => 'Mentorship',
+            'key' => 'business-intelligence',
+            'label' => 'Power BI & Tableau',
             'items' => [
                 [
                     'provider' => 'CodeInYourself',
-                    'provider_subtitle' => 'Personalised mentor guidance',
-                    'title' => 'Free Career Guidance for Students',
-                    'description' => 'Talk with a mentor about your background, interests, and the best path to start with.',
-                    'href' => $freeMentorshipUrl,
-                    'icon' => 'forum',
-                    'badge' => 'Free call',
+                    'provider_subtitle' => 'Visualization certification',
+                    'title' => 'Power BI / Tableau Development',
+                    'description' => 'Learn dashboard building, data storytelling, and reporting skills that support analytics and placement roles.',
+                    'href' => $powerBiUrl,
+                    'icon' => 'monitoring',
+                    'badge' => 'Industry tools',
                 ],
             ],
         ],
@@ -177,7 +184,7 @@
         <a href="/" class="group flex items-center">
             @if ($isHome)
              
-                <div class="rounded-2xl border border-white/60 bg-white/70 px-4 py-2 shadow-[0_12px_28px_rgba(124,58,237,0.08)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_18px_36px_rgba(124,58,237,0.14)]">
+                <div class="rounded-2xl border border-white/60 bg-white px-4 py-2 shadow-[0_12px_28px_rgba(124,58,237,0.08)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_18px_36px_rgba(124,58,237,0.14)]">
                     <img src="{{ asset('images/cyis logo 4.png') }}" alt="CodeInYourself logo" class="h-9 md:h-10 w-auto max-w-[7.2rem] md:max-w-[8.4rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                 </div>
                 @else
@@ -199,20 +206,21 @@
                     <span class="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:rotate-180">expand_more</span>
                 </button>
 
-                <div class="pointer-events-none invisible absolute left-0 top-full z-50 -mt-1 w-[42rem] pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
+                <div class="pointer-events-none invisible absolute left-0 top-full z-50 -mt-1 w-[44rem] pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
                     <div @class([
-                        'overflow-hidden rounded-[1.85rem] border shadow-[0_28px_60px_rgba(16,6,38,0.18)]',
-                        'border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,241,252,0.96))]' => $isHome,
-                        'border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.98))]' => !$isHome,
+                        'overflow-hidden rounded-[2rem] border shadow-[0_30px_70px_rgba(16,6,38,0.20)]',
+                        'border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(216,180,254,0.22),transparent_22%),linear-gradient(180deg,rgba(255,255,255,0.97),rgba(247,241,252,0.98))]' => $isHome,
+                        'border-[#eadcf8] bg-[radial-gradient(circle_at_top_right,rgba(216,180,254,0.16),transparent_22%),linear-gradient(180deg,rgba(255,255,255,0.99),rgba(250,245,255,0.98))]' => !$isHome,
                     ])>
-                        <div class="grid min-h-[19rem] grid-cols-[240px_minmax(0,1fr)]">
-                            <div class="border-r border-[#efe6f8] bg-[linear-gradient(180deg,#fbf8fd_0%,#f7f2fb_100%)] px-4 py-5">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">Domain</p>
+                        <div class="grid min-h-[20rem] grid-cols-[250px_minmax(0,1fr)]">
+                            <div class="border-r border-[#efe6f8] bg-[linear-gradient(180deg,#fffaf3_0%,#f7f1ff_100%)] px-4 py-5">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">Working Professional</p>
+                                <p class="mt-2 text-[13px] leading-5 text-[#6f6480]">Choose a high-value track built for role growth and practical outcomes.</p>
                                 <div class="mt-4 space-y-2">
                                     @foreach ($workingProfessionalMenu as $domain)
                                         <button
                                             type="button"
-                                            class="flex w-full items-center justify-between rounded-[1rem] px-4 py-3 text-left text-[14px] font-medium text-[#3c3250] transition-all duration-200 hover:bg-[#efe8f6]"
+                                            class="flex w-full items-center justify-between rounded-[1.1rem] border border-transparent px-4 py-3.5 text-left text-[14px] font-semibold text-[#3c3250] transition-all duration-200 hover:border-[#e7d7f6] hover:bg-white/75"
                                             data-desktop-domain-tab="working-professional"
                                             data-domain-key="{{ $domain['key'] }}"
                                         >
@@ -223,13 +231,13 @@
                                 </div>
                             </div>
                             <div class="bg-white/70 px-5 py-5">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">Career Tracks</p>
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">Featured Programs</p>
                                 @foreach ($workingProfessionalMenu as $domain)
                                     <div data-desktop-domain-panel="working-professional" data-domain-key="{{ $domain['key'] }}" @class(['mt-4 space-y-2.5', 'hidden' => $domain['key'] !== $defaultWorkingProfessionalKey])>
                                         @foreach ($domain['items'] as $item)
-                                            <a href="{{ $item['href'] }}" class="block rounded-[1.25rem] border border-[#efe4f8] bg-[linear-gradient(180deg,#ffffff_0%,#fcf8ff_100%)] px-4 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#dcc8ee] hover:shadow-[0_12px_28px_rgba(124,58,237,0.08)]">
-                                                <div class="flex items-start gap-3.5">
-                                                    <span class="mt-0.5 flex h-12 w-12 items-center justify-center rounded-[1rem] border border-[#efe4f8] bg-white text-[#8f67b8] shadow-[0_6px_16px_rgba(124,58,237,0.06)]">
+                                            <a href="{{ $item['href'] }}" class="block rounded-[1.45rem] border border-[#efe4f8] bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.14),transparent_18%),linear-gradient(180deg,#ffffff_0%,#fcf8ff_100%)] px-5 py-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#d9bfef] hover:shadow-[0_18px_36px_rgba(124,58,237,0.10)]">
+                                                <div class="flex items-start gap-4">
+                                                    <span class="mt-0.5 flex h-14 w-14 items-center justify-center rounded-[1.15rem] border border-[#efe4f8] bg-white text-[#8f67b8] shadow-[0_10px_24px_rgba(124,58,237,0.08)]">
                                                         <span class="material-symbols-outlined text-[20px]">{{ $item['icon'] }}</span>
                                                     </span>
                                                     <div class="min-w-0 flex-1">
@@ -238,10 +246,14 @@
                                                                 <p class="text-[0.98rem] font-bold leading-6 text-[#4f3ca0]">{{ $item['provider'] }}</p>
                                                                 <p class="text-[12px] leading-5 text-[#8a7a9b]">{{ $item['provider_subtitle'] }}</p>
                                                             </div>
-                                                            <span class="shrink-0 rounded-full bg-[#2f2a2f] px-3 py-1 text-[11px] font-semibold text-white">{{ $item['badge'] }}</span>
+                                                            <span class="shrink-0 rounded-full bg-[linear-gradient(135deg,#2b153f_0%,#7c3aed_100%)] px-3 py-1 text-[11px] font-semibold text-white shadow-[0_8px_18px_rgba(124,58,237,0.16)]">{{ $item['badge'] }}</span>
                                                         </div>
-                                                        <p class="mt-2 text-[1.05rem] font-semibold leading-7 text-[#221a2d]">{{ $item['title'] }}</p>
-                                                        <p class="mt-1 text-[13px] leading-5 text-[#6e6478]">{{ $item['description'] }}</p>
+                                                        <p class="mt-2 text-[1.08rem] font-semibold leading-7 text-[#221a2d]">{{ $item['title'] }}</p>
+                                                        <p class="mt-1 text-[13px] leading-6 text-[#6e6478]">{{ $item['description'] }}</p>
+                                                        <div class="mt-4 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em] text-[#6b3fc8]">
+                                                            View Program
+                                                            <span class="material-symbols-outlined text-[16px]">north_east</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </a>
@@ -266,20 +278,21 @@
                     <span class="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:rotate-180">expand_more</span>
                 </button>
 
-                <div class="pointer-events-none invisible absolute left-0 top-full z-50 -mt-1 w-[42rem] pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
+                <div class="pointer-events-none invisible absolute left-0 top-full z-50 -mt-1 w-[44rem] pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
                     <div @class([
-                        'overflow-hidden rounded-[1.85rem] border shadow-[0_28px_60px_rgba(16,6,38,0.18)]',
-                        'border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.96),rgba(247,241,252,0.96))]' => $isHome,
-                        'border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.98))]' => !$isHome,
+                        'overflow-hidden rounded-[2rem] border shadow-[0_30px_70px_rgba(16,6,38,0.20)]',
+                        'border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(216,180,254,0.22),transparent_22%),linear-gradient(180deg,rgba(255,255,255,0.97),rgba(247,241,252,0.98))]' => $isHome,
+                        'border-[#eadcf8] bg-[radial-gradient(circle_at_top_right,rgba(216,180,254,0.16),transparent_22%),linear-gradient(180deg,rgba(255,255,255,0.99),rgba(250,245,255,0.98))]' => !$isHome,
                     ])>
-                        <div class="grid min-h-[19rem] grid-cols-[240px_minmax(0,1fr)]">
-                            <div class="border-r border-[#efe6f8] bg-[linear-gradient(180deg,#fbf8fd_0%,#f7f2fb_100%)] px-4 py-5">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">Domain</p>
+                        <div class="grid min-h-[20rem] grid-cols-[250px_minmax(0,1fr)]">
+                            <div class="border-r border-[#efe6f8] bg-[linear-gradient(180deg,#fffaf3_0%,#f7f1ff_100%)] px-4 py-5">
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">College Student</p>
+                                <p class="mt-2 text-[13px] leading-5 text-[#6f6480]">Explore practical programs built for internships, projects, and placements.</p>
                                 <div class="mt-4 space-y-2">
                                     @foreach ($collegeStudentMenu as $domain)
                                         <button
                                             type="button"
-                                            class="flex w-full items-center justify-between rounded-[1rem] px-4 py-3 text-left text-[14px] font-medium text-[#3c3250] transition-all duration-200 hover:bg-[#efe8f6]"
+                                            class="flex w-full items-center justify-between rounded-[1.1rem] border border-transparent px-4 py-3.5 text-left text-[14px] font-semibold text-[#3c3250] transition-all duration-200 hover:border-[#e7d7f6] hover:bg-white/75"
                                             data-desktop-domain-tab="college-student"
                                             data-domain-key="{{ $domain['key'] }}"
                                         >
@@ -290,13 +303,13 @@
                                 </div>
                             </div>
                             <div class="bg-white/70 px-5 py-5">
-                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">Programs</p>
+                                <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">Featured Programs</p>
                                 @foreach ($collegeStudentMenu as $domain)
                                     <div data-desktop-domain-panel="college-student" data-domain-key="{{ $domain['key'] }}" @class(['mt-4 space-y-2.5', 'hidden' => $domain['key'] !== $defaultCollegeStudentKey])>
                                         @foreach ($domain['items'] as $item)
-                                            <a href="{{ $item['href'] }}" class="block rounded-[1.25rem] border border-[#efe4f8] bg-[linear-gradient(180deg,#ffffff_0%,#fcf8ff_100%)] px-4 py-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#dcc8ee] hover:shadow-[0_12px_28px_rgba(124,58,237,0.08)]">
-                                                <div class="flex items-start gap-3.5">
-                                                    <span class="mt-0.5 flex h-12 w-12 items-center justify-center rounded-[1rem] border border-[#efe4f8] bg-white text-[#8f67b8] shadow-[0_6px_16px_rgba(124,58,237,0.06)]">
+                                            <a href="{{ $item['href'] }}" class="block rounded-[1.45rem] border border-[#efe4f8] bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.14),transparent_18%),linear-gradient(180deg,#ffffff_0%,#fcf8ff_100%)] px-5 py-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#d9bfef] hover:shadow-[0_18px_36px_rgba(124,58,237,0.10)]">
+                                                <div class="flex items-start gap-4">
+                                                    <span class="mt-0.5 flex h-14 w-14 items-center justify-center rounded-[1.15rem] border border-[#efe4f8] bg-white text-[#8f67b8] shadow-[0_10px_24px_rgba(124,58,237,0.08)]">
                                                         <span class="material-symbols-outlined text-[20px]">{{ $item['icon'] }}</span>
                                                     </span>
                                                     <div class="min-w-0 flex-1">
@@ -305,10 +318,14 @@
                                                                 <p class="text-[0.98rem] font-bold leading-6 text-[#4f3ca0]">{{ $item['provider'] }}</p>
                                                                 <p class="text-[12px] leading-5 text-[#8a7a9b]">{{ $item['provider_subtitle'] }}</p>
                                                             </div>
-                                                            <span class="shrink-0 rounded-full bg-[#2f2a2f] px-3 py-1 text-[11px] font-semibold text-white">{{ $item['badge'] }}</span>
+                                                            <span class="shrink-0 rounded-full bg-[linear-gradient(135deg,#2b153f_0%,#7c3aed_100%)] px-3 py-1 text-[11px] font-semibold text-white shadow-[0_8px_18px_rgba(124,58,237,0.16)]">{{ $item['badge'] }}</span>
                                                         </div>
-                                                        <p class="mt-2 text-[1.05rem] font-semibold leading-7 text-[#221a2d]">{{ $item['title'] }}</p>
-                                                        <p class="mt-1 text-[13px] leading-5 text-[#6e6478]">{{ $item['description'] }}</p>
+                                                        <p class="mt-2 text-[1.08rem] font-semibold leading-7 text-[#221a2d]">{{ $item['title'] }}</p>
+                                                        <p class="mt-1 text-[13px] leading-6 text-[#6e6478]">{{ $item['description'] }}</p>
+                                                        <div class="mt-4 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em] text-[#6b3fc8]">
+                                                            View Program
+                                                            <span class="material-symbols-outlined text-[16px]">north_east</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </a>
@@ -685,9 +702,10 @@
         window.setDesktopAudienceDomain = function (menuKey, domainKey) {
             document.querySelectorAll('[data-desktop-domain-tab="' + menuKey + '"]').forEach(function (tab) {
                 var active = tab.getAttribute('data-domain-key') === domainKey;
-                tab.classList.toggle('bg-[#efe8f6]', active);
+                tab.classList.toggle('bg-white', active);
+                tab.classList.toggle('border-[#e7d7f6]', active);
                 tab.classList.toggle('text-[#2f263a]', active);
-                tab.classList.toggle('shadow-[0_8px_18px_rgba(124,58,237,0.08)]', active);
+                tab.classList.toggle('shadow-[0_12px_24px_rgba(124,58,237,0.10)]', active);
             });
 
             document.querySelectorAll('[data-desktop-domain-panel="' + menuKey + '"]').forEach(function (panel) {
@@ -701,10 +719,16 @@
             tab.addEventListener('mouseenter', function () {
                 window.setDesktopAudienceDomain('working-professional', tab.getAttribute('data-domain-key'));
             });
+            tab.addEventListener('click', function () {
+                window.setDesktopAudienceDomain('working-professional', tab.getAttribute('data-domain-key'));
+            });
         });
 
         document.querySelectorAll('[data-desktop-domain-tab="college-student"]').forEach(function (tab) {
             tab.addEventListener('mouseenter', function () {
+                window.setDesktopAudienceDomain('college-student', tab.getAttribute('data-domain-key'));
+            });
+            tab.addEventListener('click', function () {
                 window.setDesktopAudienceDomain('college-student', tab.getAttribute('data-domain-key'));
             });
         });

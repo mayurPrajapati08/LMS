@@ -14,9 +14,9 @@ class SendAccountCredentialsMail
     public function __construct(
         public string $recipientName,
         public string $email,
-        public string $password,
         public string $roleLabel,
-        public string $loginUrl
+        public string $loginUrl,
+        public string $passwordSetupUrl,
     ) {
     }
 
@@ -26,9 +26,9 @@ class SendAccountCredentialsMail
             new AccountCredentialsMail(
                 $this->recipientName,
                 $this->email,
-                $this->password,
                 $this->roleLabel,
-                $this->loginUrl
+                $this->loginUrl,
+                $this->passwordSetupUrl,
             )
         );
     }
