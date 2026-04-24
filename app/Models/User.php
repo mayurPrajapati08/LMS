@@ -19,6 +19,7 @@ use App\Models\CartItem;
 use App\Models\Certificate;
 use App\Models\Video;
 use App\Models\Inquiry;
+use App\Models\WorkshopRegistration;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -140,6 +141,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function assignedPublicContacts()
     {
         return $this->hasMany(PublicContact::class, 'assigned_to');
+    }
+
+    public function reviewedWorkshopRegistrations()
+    {
+        return $this->hasMany(WorkshopRegistration::class, 'reviewed_by');
     }
 
     public function emailVerificationOtps()

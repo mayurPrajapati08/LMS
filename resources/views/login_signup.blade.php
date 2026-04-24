@@ -196,30 +196,6 @@
             display: none;
         }
 
-        #cyi-chatbot-root {
-            left: auto;
-            right: 1.25rem;
-            bottom: 1.25rem;
-        }
-
-        #cyi-chatbot-root .cyi-chatbot__panel {
-            left: auto;
-            right: 0;
-            transform-origin: right bottom;
-        }
-
-        @media (max-width: 640px) {
-            #cyi-chatbot-root {
-                left: auto;
-                right: 0.75rem;
-                bottom: 0.75rem;
-            }
-
-            #cyi-chatbot-root .cyi-chatbot__panel {
-                left: auto;
-                right: 0;
-            }
-        }
     </style>
 </head>
 
@@ -676,6 +652,8 @@
     data-context-url="{{ url('/api/chatbot/context') }}"
     data-inquiry-url="{{ url('/api/chatbot/inquiries') }}"
     data-csrf-token="{{ csrf_token() }}"
+    data-owner-avatar="{{ asset('images/owner 1.0.jpeg') }}"
+    data-owner-name="CodeInYourself Guide"
 ></div>
 
     <script>

@@ -11,6 +11,7 @@
         ['route' => 'hr.jobs', 'label' => 'Jobs', 'icon' => 'work'],
         ['route' => 'hr.faculty', 'label' => 'Faculty', 'icon' => 'school'],
         ['route' => 'hr.workshops', 'label' => 'Workshops', 'icon' => 'edit_calendar'],
+        ['route' => 'hr.workshop-registrations', 'label' => 'Workshop Payments', 'icon' => 'payments'],
     ];
 @endphp
 

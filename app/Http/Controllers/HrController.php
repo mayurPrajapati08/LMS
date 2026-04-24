@@ -14,6 +14,7 @@ use App\Models\PublicContact;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Workshop;
+use App\Models\WorkshopRegistration;
 use App\Support\CloudflareR2Storage;
 use App\Support\PlatformSettings;
 use Illuminate\Filesystem\FilesystemAdapter;
@@ -425,6 +426,13 @@ class HrController extends Controller
             'editingWorkshop' => Schema::hasTable('workshops') && $request->filled('edit')
                 ? Workshop::query()->find($request->integer('edit'))
                 : null,
+            'registrationCounts' => Schema::hasTable('workshop_registrations')
+                ? [
+                    'pending' => WorkshopRegistration::query()->where('registration_status', 'pending')->count(),
+                    'confirmed' => WorkshopRegistration::query()->where('registration_status', 'confirmed')->count(),
+                    'rejected' => WorkshopRegistration::query()->where('registration_status', 'rejected')->count(),
+                ]
+                : ['pending' => 0, 'confirmed' => 0, 'rejected' => 0],
         ]);
     }
 
@@ -473,7 +481,7 @@ class HrController extends Controller
     public function updateWorkshop(Request $request, Workshop $workshop): RedirectResponse
     {
         abort_unless(Schema::hasTable('workshops'), 503, 'Run migrations to enable workshop management.');
-        $workshop->update($this->validateWorkshop($request));
+        $workshop->update($this->validateWorkshop($request, $workshop));
 
         return redirect()->route('hr.workshops')->with('status', 'Workshop updated successfully.');
     }
@@ -484,6 +492,62 @@ class HrController extends Controller
         $workshop->delete();
 
         return redirect()->route('hr.workshops')->with('status', 'Workshop removed successfully.');
+    }
+
+    public function workshopRegistrations(Request $request): View
+    {
+        $user = $request->user();
+        $status = (string) $request->query('status', '');
+
+        return view('hr.workshop-registrations', [
+            'user' => $user,
+            'profileAvatar' => $user->avatarUrl(96),
+            'statusFilter' => $status,
+            'registrations' => Schema::hasTable('workshop_registrations')
+                ? WorkshopRegistration::query()
+                    ->with(['workshop:id,title,date_label,time_label,price,currency', 'reviewer:id,name'])
+                    ->when(in_array($status, ['pending', 'confirmed', 'rejected'], true), fn ($query) => $query->where('registration_status', $status))
+                    ->latest()
+                    ->paginate(10)
+                    ->withQueryString()
+                : $this->emptyPaginator(),
+        ]);
+    }
+
+    public function updateWorkshopRegistration(Request $request, WorkshopRegistration $registration): RedirectResponse
+    {
+        abort_unless(Schema::hasTable('workshop_registrations'), 503, 'Run migrations to enable workshop registration management.');
+
+        $validated = $request->validate([
+            'payment_status' => ['required', 'in:not_required,pending,verified,rejected'],
+            'registration_status' => ['required', 'in:pending,confirmed,rejected'],
+            'hr_notes' => ['nullable', 'string', 'max:5000'],
+        ]);
+
+        $paymentStatus = $validated['payment_status'];
+        $registrationStatus = $validated['registration_status'];
+
+        if ($paymentStatus === 'verified') {
+            $registrationStatus = 'confirmed';
+        }
+
+        if ($paymentStatus === 'rejected') {
+            $registrationStatus = 'rejected';
+        }
+
+        if ($paymentStatus === 'not_required' && $registrationStatus === 'pending') {
+            $registrationStatus = 'confirmed';
+        }
+
+        $registration->update([
+            'payment_status' => $paymentStatus,
+            'registration_status' => $registrationStatus,
+            'reviewed_by' => $request->user()->id,
+            'reviewed_at' => now(),
+            'hr_notes' => $validated['hr_notes'] ?? null,
+        ]);
+
+        return redirect()->back()->with('status', 'Workshop registration updated successfully.');
     }
 
     public function storeOfflineCourse(Request $request): RedirectResponse
@@ -573,6 +637,9 @@ class HrController extends Controller
         $hasPublicContactsTable = Schema::hasTable('public_contacts');
         $hasAssignedToColumn = $hasPublicContactsTable && Schema::hasColumn('public_contacts', 'assigned_to');
         $hasTopicColumn = $hasPublicContactsTable && Schema::hasColumn('public_contacts', 'topic');
+        $displayTimezone = AppSetting::query()
+            ->where('key', 'institution_timezone')
+            ->value('value') ?: 'Asia/Calcutta';
 
         return view('hr.inquiries', [
             'user' => $user,
@@ -585,10 +652,11 @@ class HrController extends Controller
                     ]))
                     ->when($topic !== '' && $hasTopicColumn, fn ($query) => $query->where('topic', $topic))
                     ->latest()
-                    ->paginate(12)
+                    ->paginate(10)
                     ->withQueryString()
                 : $this->emptyPaginator(),
             'filterTopic' => $topic,
+            'displayTimezone' => $displayTimezone,
             'hrUsers' => User::query()
                 ->whereHas('role', fn ($query) => $query->whereIn('name', ['hr team', 'admin', 'super admin']))
                 ->orderBy('name')
@@ -711,7 +779,7 @@ class HrController extends Controller
         return $validated;
     }
 
-    private function validateWorkshop(Request $request): array
+    private function validateWorkshop(Request $request, ?Workshop $workshop = null): array
     {
         $validated = $request->validate([
             'badge' => ['nullable', 'string', 'max:255'],
@@ -724,15 +792,36 @@ class HrController extends Controller
             'audience' => ['nullable', 'string', 'max:255'],
             'mentor' => ['nullable', 'string', 'max:255'],
             'seats' => ['nullable', 'string', 'max:255'],
+            'price' => ['nullable', 'numeric', 'min:0'],
+            'currency' => ['nullable', 'string', 'max:10'],
+            'payment_enabled' => ['nullable', 'boolean'],
+            'payment_qr_code' => ['nullable', 'string', 'max:2000'],
+            'payment_qr_code_provider' => ['nullable', 'in:url,local,cloud,cloudflare,cloudinary'],
+            'payment_qr_code_file' => ['nullable', 'file', 'max:51200', 'mimetypes:image/jpeg,image/png,image/webp,image/gif'],
+            'payment_instructions' => ['nullable', 'string', 'max:3000'],
             'accent' => ['nullable', 'string', 'max:255'],
             'highlights' => ['nullable', 'string', 'max:3000'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
             'is_active' => ['nullable', 'boolean'],
         ]);
 
+        $validated['payment_enabled'] = $request->boolean('payment_enabled');
+        $validated['price'] = $validated['price'] ?? 0;
+        $validated['currency'] = Str::upper((string) ($validated['currency'] ?? 'INR'));
+        $validated['payment_qr_code_provider'] = $this->normalizeMediaProvider($request->hasFile('payment_qr_code_file') ? 'local' : ($validated['payment_qr_code_provider'] ?? 'url'));
+        $validated['payment_qr_code'] = $this->resolveUploadedMedia(
+            $request,
+            'payment_qr_code',
+            'payment_qr_code_file',
+            $validated['payment_qr_code_provider'],
+            'workshops/qr-codes',
+            ($validated['title'] ?? 'workshop').'-payment-qr',
+            $workshop?->payment_qr_code
+        );
         $validated['highlights'] = $this->normalizeListInput($validated['highlights'] ?? '');
         $validated['is_active'] = $request->boolean('is_active');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
+        unset($validated['payment_qr_code_provider'], $validated['payment_qr_code_file']);
 
         return $validated;
     }

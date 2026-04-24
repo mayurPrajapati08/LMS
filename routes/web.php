@@ -40,6 +40,9 @@ Route::controller(PublicSiteController::class)->group(function () {
     Route::post('/content/unlock', 'unlockContent')->middleware('throttle:lead-unlock')->name('content.unlock');
     Route::get('/placement', 'placement')->name('home.placement');
     Route::get('/workshop', 'workshop')->name('home.free_workshop');
+    Route::post('/workshop/payment-order', 'createWorkshopPaymentOrder')->middleware('throttle:public-contact')->name('home.workshop.payment-order');
+    Route::post('/workshop/verify-payment', 'verifyWorkshopPayment')->middleware('throttle:public-contact')->name('home.workshop.verify-payment');
+    Route::post('/workshop/register', 'submitWorkshopRegistration')->middleware('throttle:public-contact')->name('home.workshop.register');
     Route::get('/mentorship', 'mentorship')->name('home.mentorship');
     Route::get('/career-with-us', 'careerWithUs')->name('home.career-with-us');
 });
@@ -306,6 +309,11 @@ Route::middleware(['auth', 'verified', 'role:hr team,admin,super admin'])
             Route::post('/', 'storeWorkshop')->name('.store');
             Route::put('/{workshop}', 'updateWorkshop')->name('.update');
             Route::delete('/{workshop}', 'destroyWorkshop')->name('.destroy');
+        });
+
+        Route::prefix('workshop-registrations')->name('workshop-registrations')->group(function () {
+            Route::get('/', 'workshopRegistrations')->name('');
+            Route::put('/{registration}', 'updateWorkshopRegistration')->name('.update');
         });
 
         Route::prefix('offline-courses')->name('offline-courses')->group(function () {

@@ -17,6 +17,11 @@ class Workshop extends Model
         'audience',
         'mentor',
         'seats',
+        'price',
+        'currency',
+        'payment_enabled',
+        'payment_qr_code',
+        'payment_instructions',
         'accent',
         'highlights',
         'is_active',
@@ -27,7 +32,14 @@ class Workshop extends Model
     {
         return [
             'highlights' => 'array',
+            'price' => 'decimal:2',
+            'payment_enabled' => 'boolean',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function registrations()
+    {
+        return $this->hasMany(WorkshopRegistration::class);
     }
 }

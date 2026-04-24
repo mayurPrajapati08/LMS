@@ -163,13 +163,17 @@
     ];
     $defaultWorkingProfessionalKey = $workingProfessionalMenu[0]['key'];
     $defaultCollegeStudentKey = $collegeStudentMenu[0]['key'];
+    $desktopDropdownTriggerBase = 'relative inline-flex items-center gap-2 rounded-full border border-transparent px-5 py-2.5 leading-none transition-[color,background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b0f2b]';
+    $desktopNavLinkBase = 'inline-flex items-center rounded-full border border-transparent px-4 py-2.5 leading-none transition-[color,background-color,border-color,box-shadow,transform] duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#1b0f2b]';
+    $desktopNavHomeIdle = 'text-white/85 hover:border-white/12 hover:bg-white/10 hover:text-white hover:shadow-[0_14px_30px_rgba(8,2,20,0.18)]';
+    $desktopNavDefaultIdle = 'text-on-surface-variant hover:border-primary/15 hover:bg-primary/5 hover:text-primary hover:shadow-[0_12px_26px_rgba(124,58,237,0.08)]';
 @endphp
 
 <x-shared.page-loader />
 
 <!-- TopNavBar -->
 <nav @class([
-    'fixed top-0 w-full z-50 transition-all duration-300',
+    'fixed top-0 w-full isolate z-[120] transition-all duration-300',
     'border-b border-white/10 bg-[#090314]/55 backdrop-blur-2xl shadow-[0_18px_50px_rgba(6,2,18,0.28)]' => $isHome,
     'border-b border-[#e8dcf7]/80 bg-white/82 backdrop-blur-2xl shadow-[0_16px_40px_rgba(124,58,237,0.12)]' => !$isHome,
 ])>
@@ -180,7 +184,7 @@
         'bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.12),transparent_32%),radial-gradient(circle_at_top_right,rgba(124,58,237,0.08),transparent_30%)]' => !$isHome,
     ])></div>
 
-    <div class="relative flex justify-between items-center px-1 md:px-1 py-3.5 max-w-7xl mx-auto">
+    <div class="relative z-10 flex justify-between items-center px-1 md:px-1 py-3.5 max-w-7xl mx-auto">
         <a href="/" class="group flex items-center">
             @if ($isHome)
              
@@ -196,17 +200,18 @@
         <div class="hidden xl:flex items-center gap-2 rounded-full border px-3 py-2 text-[13px] font-medium tracking-tight shadow-[0_12px_34px_rgba(124,58,237,0.10)] backdrop-blur-xl @if($isHome) border-white/10 bg-white/5 text-white @else border-[#ebdef7] bg-white/75 text-on-surface @endif">
             <div class="group relative">
                 <button type="button" @class([
-                    'inline-flex items-center gap-2 rounded-full px-5 py-2.5 transition-all duration-300',
+                    $desktopDropdownTriggerBase,
                     'border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.10))] text-[#d8b4fe] shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_14px_30px_rgba(8,2,20,0.24)] backdrop-blur-xl' => $isHome && $isWorkingProfessional,
-                    'text-white/85 hover:bg-white/10 hover:text-white' => $isHome && !$isWorkingProfessional,
+                    $desktopNavHomeIdle => $isHome && !$isWorkingProfessional,
                     'text-primary border border-primary/15 bg-primary/10 shadow-[0_10px_22px_rgba(124,58,237,0.12)]' => !$isHome && $isWorkingProfessional,
-                    'text-on-surface-variant hover:bg-primary/5 hover:text-primary' => !$isHome && !$isWorkingProfessional,
+                    $desktopNavDefaultIdle => !$isHome && !$isWorkingProfessional,
                 ])>
                     <span>Working Professional</span>
-                    <span class="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                    <span class="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:rotate-180 group-focus-within:rotate-180">expand_more</span>
                 </button>
 
-                <div class="pointer-events-none invisible absolute left-0 top-full z-50 -mt-1 w-[44rem] pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
+                <div class="pointer-events-none invisible absolute left-0 top-full z-50 w-[44rem] translate-y-2 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    <div class="absolute inset-x-0 top-0 h-4"></div>
                     <div @class([
                         'overflow-hidden rounded-[2rem] border shadow-[0_30px_70px_rgba(16,6,38,0.20)]',
                         'border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(216,180,254,0.22),transparent_22%),linear-gradient(180deg,rgba(255,255,255,0.97),rgba(247,241,252,0.98))]' => $isHome,
@@ -268,17 +273,18 @@
 
             <div class="group relative">
                 <button type="button" @class([
-                    'inline-flex items-center gap-2 rounded-full px-5 py-2.5 transition-all duration-300',
+                    $desktopDropdownTriggerBase,
                     'border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.10))] text-[#d8b4fe] shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_14px_30px_rgba(8,2,20,0.24)] backdrop-blur-xl' => $isHome && $isCollegeStudent,
-                    'text-white/85 hover:bg-white/10 hover:text-white' => $isHome && !$isCollegeStudent,
+                    $desktopNavHomeIdle => $isHome && !$isCollegeStudent,
                     'text-primary border border-primary/15 bg-primary/10 shadow-[0_10px_22px_rgba(124,58,237,0.12)]' => !$isHome && $isCollegeStudent,
-                    'text-on-surface-variant hover:bg-primary/5 hover:text-primary' => !$isHome && !$isCollegeStudent,
+                    $desktopNavDefaultIdle => !$isHome && !$isCollegeStudent,
                 ])>
                     <span>College Student</span>
-                    <span class="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:rotate-180">expand_more</span>
+                    <span class="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:rotate-180 group-focus-within:rotate-180">expand_more</span>
                 </button>
 
-                <div class="pointer-events-none invisible absolute left-0 top-full z-50 -mt-1 w-[44rem] pt-3 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100">
+                <div class="pointer-events-none invisible absolute left-0 top-full z-50 w-[44rem] translate-y-2 pt-2 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    <div class="absolute inset-x-0 top-0 h-4"></div>
                     <div @class([
                         'overflow-hidden rounded-[2rem] border shadow-[0_30px_70px_rgba(16,6,38,0.20)]',
                         'border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(216,180,254,0.22),transparent_22%),linear-gradient(180deg,rgba(255,255,255,0.97),rgba(247,241,252,0.98))]' => $isHome,
@@ -339,35 +345,35 @@
             </div>
 
             <a href="{{ $workshopUrl }}" @class([
-                'rounded-full px-4 py-2.5 transition-all duration-300',
+                $desktopNavLinkBase,
                 'border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.10))] text-[#d8b4fe] shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_14px_30px_rgba(8,2,20,0.24)] backdrop-blur-xl' => $isHome && $isWorkshop,
-                'text-white/85 hover:bg-white/10 hover:text-white' => $isHome && !$isWorkshop,
+                $desktopNavHomeIdle => $isHome && !$isWorkshop,
                 'text-primary border border-primary/15 bg-primary/10 shadow-[0_10px_22px_rgba(124,58,237,0.12)]' => !$isHome && $isWorkshop,
-                'text-on-surface-variant hover:bg-primary/5 hover:text-primary' => !$isHome && !$isWorkshop,
+                $desktopNavDefaultIdle => !$isHome && !$isWorkshop,
             ])>Workshop</a>
 
             <a href="{{ $freeMentorshipUrl }}" @class([
-                'rounded-full px-4 py-2.5 transition-all duration-300',
+                $desktopNavLinkBase,
                 'border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.10))] text-[#d8b4fe] shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_14px_30px_rgba(8,2,20,0.24)] backdrop-blur-xl' => $isHome && $isFreeMentorship,
-                'text-white/85 hover:bg-white/10 hover:text-white' => $isHome && !$isFreeMentorship,
+                $desktopNavHomeIdle => $isHome && !$isFreeMentorship,
                 'text-primary border border-primary/15 bg-primary/10 shadow-[0_10px_22px_rgba(124,58,237,0.12)]' => !$isHome && $isFreeMentorship,
-                'text-on-surface-variant hover:bg-primary/5 hover:text-primary' => !$isHome && !$isFreeMentorship,
+                $desktopNavDefaultIdle => !$isHome && !$isFreeMentorship,
             ])>Free Mentorship</a>
 
             <a href="{{ $careerWithUsUrl }}" @class([
-                'rounded-full px-4 py-2.5 transition-all duration-300',
+                $desktopNavLinkBase,
                 'border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.10))] text-[#d8b4fe] shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_14px_30px_rgba(8,2,20,0.24)] backdrop-blur-xl' => $isHome && $isCareerWithUs,
-                'text-white/85 hover:bg-white/10 hover:text-white' => $isHome && !$isCareerWithUs,
+                $desktopNavHomeIdle => $isHome && !$isCareerWithUs,
                 'text-primary border border-primary/15 bg-primary/10 shadow-[0_10px_22px_rgba(124,58,237,0.12)]' => !$isHome && $isCareerWithUs,
-                'text-on-surface-variant hover:bg-primary/5 hover:text-primary' => !$isHome && !$isCareerWithUs,
+                $desktopNavDefaultIdle => !$isHome && !$isCareerWithUs,
             ])>Career With Us</a>
 
             <a href="{{ $aboutUrl }}" @class([
-                'rounded-full px-4 py-2.5 transition-all duration-300',
+                $desktopNavLinkBase,
                 'border border-white/25 bg-[linear-gradient(180deg,rgba(255,255,255,0.22),rgba(255,255,255,0.10))] text-[#d8b4fe] shadow-[inset_0_1px_0_rgba(255,255,255,0.32),0_14px_30px_rgba(8,2,20,0.24)] backdrop-blur-xl' => $isHome && $isAbout,
-                'text-white/85 hover:bg-white/10 hover:text-white' => $isHome && !$isAbout,
+                $desktopNavHomeIdle => $isHome && !$isAbout,
                 'text-primary border border-primary/15 bg-primary/10 shadow-[0_10px_22px_rgba(124,58,237,0.12)]' => !$isHome && $isAbout,
-                'text-on-surface-variant hover:bg-primary/5 hover:text-primary' => !$isHome && !$isAbout,
+                $desktopNavDefaultIdle => !$isHome && !$isAbout,
             ])>About Us</a>
         </div>
 

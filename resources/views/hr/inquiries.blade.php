@@ -13,6 +13,9 @@
     $newCount = $visibleContacts->where('status', 'new')->count();
     $followUpCount = $visibleContacts->where('status', 'follow_up')->count();
     $assignedCount = $visibleContacts->filter(fn ($contact) => filled($contact->assigned_to))->count();
+    $displayTimezone = $displayTimezone ?? 'Asia/Calcutta';
+    $rangeStart = $contacts->count() > 0 ? $contacts->firstItem() : 0;
+    $rangeEnd = $contacts->count() > 0 ? $contacts->lastItem() : 0;
 @endphp
 <!DOCTYPE html>
 <html class="light" lang="en">
@@ -130,7 +133,7 @@
             </div>
 
             @if ($contacts->count() > 0)
-                <div class="mt-6 overflow-x-auto">
+                <div class="mt-6 overflow-x-auto rounded-[1.5rem] border border-slate-200/80">
                     <table class="lead-table min-w-[44rem]">
                         <thead>
                             <tr>
@@ -149,7 +152,7 @@
                                             </div>
                                             <div class="min-w-0">
                                                 <p class="truncate text-[1rem] font-extrabold text-slate-900">{{ $contact->name ?: 'Unknown lead' }}</p>
-                                                <p class="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-slate-400">{{ optional($contact->created_at)->format('d M Y') ?: 'No date' }}</p>
+                                                <p class="mt-1 text-xs font-medium tracking-[0.08em] text-slate-400">{{ $contact->created_at?->copy()->setTimezone($displayTimezone)->format('d M Y, h:i a') ?: 'No date' }}</p>
                                             </div>
                                         </div>
                                     </td>
@@ -167,6 +170,17 @@
                         </tbody>
                     </table>
                 </div>
+
+                @if ($contacts->hasPages())
+                    <div class="mt-6 flex flex-col gap-4 rounded-[1.5rem] border border-slate-200 bg-slate-50/80 px-4 py-4 md:flex-row md:items-center md:justify-between md:px-5">
+                        <p class="text-sm font-medium text-slate-600">
+                            Showing {{ $rangeStart }} to {{ $rangeEnd }} of {{ $contacts->total() }} inquiries
+                        </p>
+                        <div class="hr-pagination">
+                            {{ $contacts->onEachSide(1)->links() }}
+                        </div>
+                    </div>
+                @endif
             @else
                 <div class="px-2 py-12 text-center">
                     <div class="mx-auto max-w-md rounded-[1.7rem] border border-dashed border-slate-300 bg-slate-50 px-6 py-10">
@@ -175,8 +189,6 @@
                 </div>
             @endif
         </section>
-
-        {{ $contacts->links() }}
     </div>
 </main>
 
@@ -216,7 +228,7 @@
                             </div>
                             <div class="detail-card">
                                 <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Created</p>
-                                <p class="mt-2 text-sm font-semibold text-slate-800">{{ optional($contact->created_at)->format('d M Y, h:i A') ?: 'No date' }}</p>
+                                <p class="mt-2 text-sm font-semibold text-slate-800">{{ $contact->created_at?->copy()->setTimezone($displayTimezone)->format('d M Y, h:i a') ?: 'No date' }}</p>
                             </div>
                             <div class="detail-card">
                                 <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Course</p>
@@ -246,11 +258,11 @@
                                 @endif
                                 <div class="detail-card">
                                     <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Contacted</p>
-                                    <p class="mt-2 text-sm text-slate-700">{{ optional($contact->contacted_at)->format('d M Y, h:i A') ?: 'Not marked yet' }}</p>
+                                    <p class="mt-2 text-sm text-slate-700">{{ $contact->contacted_at?->copy()->setTimezone($displayTimezone)->format('d M Y, h:i a') ?: 'Not marked yet' }}</p>
                                 </div>
                                 <div class="detail-card">
                                     <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Follow Up</p>
-                                    <p class="mt-2 text-sm text-slate-700">{{ optional($contact->follow_up_at)->format('d M Y, h:i A') ?: 'Not scheduled' }}</p>
+                                    <p class="mt-2 text-sm text-slate-700">{{ $contact->follow_up_at?->copy()->setTimezone($displayTimezone)->format('d M Y, h:i a') ?: 'Not scheduled' }}</p>
                                 </div>
                             </div>
                         @endif

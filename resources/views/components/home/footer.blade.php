@@ -198,5 +198,7 @@
     data-context-url="{{ url('/api/chatbot/context') }}"
     data-inquiry-url="{{ url('/api/chatbot/inquiries') }}"
     data-csrf-token="{{ csrf_token() }}"
+    data-owner-avatar="{{ asset('images/owner 1.0.jpeg') }}"
+    data-owner-name="CodeInYourself Guide"
 ></div>
 <script src="{{ asset('chatbot/chatbot.js') }}" defer></script>

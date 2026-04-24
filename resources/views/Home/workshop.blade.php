@@ -415,6 +415,9 @@
 
             .workshop-list-card {
                 position: relative;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
                 overflow: hidden;
                 border-radius: 2rem;
                 border: 1px solid rgba(225, 214, 245, 0.92);
@@ -422,6 +425,7 @@
                 box-shadow:
                     0 24px 56px rgba(88, 28, 135, 0.10),
                     inset 0 1px 0 rgba(255,255,255,0.94);
+                transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
             }
 
             .workshop-list-card::before {
@@ -434,9 +438,18 @@
                 pointer-events: none;
             }
 
+            .workshop-list-card:hover {
+                transform: translateY(-6px);
+                border-color: rgba(192,132,252,0.85);
+                box-shadow:
+                    0 30px 70px rgba(88, 28, 135, 0.15),
+                    inset 0 1px 0 rgba(255,255,255,0.96);
+            }
+
             .workshop-card-hero {
                 position: relative;
-                padding: 1.5rem;
+                padding: 1.55rem;
+                min-height: 15.5rem;
                 color: #fff;
             }
 
@@ -459,7 +472,46 @@
             .workshop-card-body {
                 position: relative;
                 z-index: 1;
+                display: flex;
+                flex: 1 1 auto;
+                flex-direction: column;
                 padding: 1.5rem;
+            }
+
+            .workshop-card-summary {
+                display: grid;
+                gap: 1rem;
+                grid-template-columns: minmax(0, 1fr) auto;
+                align-items: end;
+                padding-bottom: 1.2rem;
+                border-bottom: 1px solid rgba(233,225,247,0.92);
+            }
+
+            .workshop-price-badge {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: center;
+                gap: 0.2rem;
+                min-width: 7.5rem;
+                border-radius: 1.3rem;
+                border: 1px solid rgba(218,203,242,0.9);
+                background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(243,236,255,0.96));
+                padding: 0.9rem 1rem;
+                box-shadow: inset 0 1px 0 rgba(255,255,255,0.94);
+            }
+
+            .workshop-quick-strip {
+                display: grid;
+                gap: 0.8rem;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .workshop-quick-item {
+                border-radius: 1.2rem;
+                border: 1px solid rgba(231,222,247,0.92);
+                background: linear-gradient(180deg, rgba(252,249,255,0.98), rgba(247,242,255,0.94));
+                padding: 0.95rem 1rem;
             }
 
             .workshop-meta-grid {
@@ -523,11 +575,13 @@
             .detail-modal {
                 position: fixed;
                 inset: 0;
-                z-index: 70;
+                z-index: 200;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 1rem;
+                min-height: 100dvh;
+                overflow: hidden;
+                padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
                 background: rgba(9, 2, 24, 0.72);
                 backdrop-filter: blur(16px);
                 -webkit-backdrop-filter: blur(16px);
@@ -543,8 +597,11 @@
 
             .detail-modal-panel {
                 width: min(100%, 72rem);
-                max-height: min(90vh, 52rem);
-                overflow: auto;
+                max-height: calc(100dvh - 2rem);
+                margin: auto;
+                overflow-x: hidden;
+                overflow-y: auto;
+                overscroll-behavior: contain;
                 border-radius: 2rem;
                 border: 1px solid rgba(220, 205, 246, 0.78);
                 background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,243,255,0.94));
@@ -591,15 +648,30 @@
 
             .join-modal-panel {
                 width: min(100%, 78rem);
+                max-height: calc(100dvh - 2rem);
+                border-radius: 2.15rem;
+                overflow-x: hidden;
+                overflow-y: auto;
             }
 
             .join-hero-pane {
                 position: relative;
                 overflow: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
                 background:
                     radial-gradient(circle at 20% 16%, rgba(255,255,255,0.16), transparent 18%),
                     radial-gradient(circle at 82% 14%, rgba(216,180,254,0.18), transparent 20%),
                     linear-gradient(135deg, #0a0315 0%, #240846 32%, #5820aa 72%, #9f67ff 100%);
+            }
+
+            .join-modal-grid {
+                min-height: min(56rem, calc(100dvh - 2rem));
+            }
+
+            .join-form-pane {
+                overflow: visible;
             }
 
             .join-hero-pane::before {
@@ -619,6 +691,44 @@
                 border: 1px solid rgba(220, 205, 246, 0.76);
                 background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,243,255,0.94));
                 box-shadow: 0 20px 54px rgba(88, 28, 135, 0.10);
+            }
+
+            .join-meta-grid {
+                display: grid;
+                gap: 0.9rem;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .join-side-card {
+                position: relative;
+                z-index: 1;
+                border: 1px solid rgba(255,255,255,0.14);
+                background: rgba(255,255,255,0.08);
+                backdrop-filter: blur(16px);
+            }
+
+            .join-side-list {
+                display: grid;
+                gap: 0.8rem;
+            }
+
+            .join-side-list-item {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.75rem;
+                color: rgba(255,255,255,0.78);
+                font-size: 0.93rem;
+                line-height: 1.7;
+            }
+
+            .join-side-list-item span:first-child {
+                margin-top: 0.45rem;
+                height: 0.5rem;
+                width: 0.5rem;
+                flex-shrink: 0;
+                border-radius: 999px;
+                background: #e9d5ff;
+                box-shadow: 0 0 18px rgba(233, 213, 255, 0.72);
             }
 
             .field-shell {
@@ -645,12 +755,11 @@
             }
 
             .field-shell:focus-within {
-                border-color: rgba(124,58,237,0.46);
+                border-color: rgba(229, 218, 247, 0.82);
                 box-shadow:
-                    inset 0 1px 0 rgba(255,255,255,0.98),
-                    0 0 0 4px rgba(124,58,237,0.08),
-                    0 20px 38px rgba(124,58,237,0.10);
-                transform: translateY(-1px);
+                    inset 0 1px 0 rgba(255,255,255,0.96),
+                    0 16px 34px rgba(124,58,237,0.06);
+                transform: none;
             }
 
             .field-label {
@@ -679,11 +788,15 @@
                 box-shadow: none;
                 appearance: none;
                 -webkit-appearance: none;
+                outline: none;
             }
 
             .premium-input:focus,
+            .premium-input:focus-visible,
             .premium-select:focus,
-            .premium-textarea:focus {
+            .premium-select:focus-visible,
+            .premium-textarea:focus,
+            .premium-textarea:focus-visible {
                 outline: none;
                 border-color: transparent;
                 box-shadow: none;
@@ -761,9 +874,32 @@
                     margin-top: 0;
                     justify-self: stretch;
                 }
+
+                .join-modal-panel {
+                    max-height: none;
+                }
             }
 
             @media (max-width: 767px) {
+                .detail-modal {
+                    align-items: flex-start;
+                    padding: max(0.75rem, env(safe-area-inset-top)) 0.75rem 0.75rem;
+                }
+
+                .detail-modal-panel,
+                .join-modal-panel {
+                    max-height: calc(100dvh - 1.5rem);
+                    border-radius: 1.6rem;
+                }
+
+                .join-modal-grid {
+                    min-height: auto;
+                }
+
+                .join-form-pane {
+                    overflow: visible;
+                }
+
                 .workshop-meta-grid {
                     grid-template-columns: 1fr;
                 }
@@ -778,6 +914,15 @@
 
                 .detail-cover {
                     min-height: 14rem;
+                }
+
+                .workshop-card-summary,
+                .join-meta-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .workshop-quick-strip {
+                    grid-template-columns: 1fr;
                 }
             }
         </style>
@@ -961,7 +1106,7 @@
                 </div>
             @endif
 
-            <div class="mt-8 grid gap-6 xl:grid-cols-3">
+            <div class="mt-8 grid gap-6 lg:grid-cols-2 2xl:grid-cols-3">
                 @foreach ($featuredWorkshops as $workshop)
                     <article class="workshop-list-card reveal {{ $loop->iteration > 1 ? 'stagger-' . min($loop->iteration, 4) : '' }}">
                         <div class="workshop-card-hero bg-gradient-to-r {{ $workshop['accent'] }}">
@@ -977,6 +1122,33 @@
                         </div>
 
                         <div class="workshop-card-body">
+                            <div class="workshop-card-summary">
+                                <div>
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-primary/72">Workshop Snapshot</p>
+                                    <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $workshop['subtitle'] }}</p>
+                                </div>
+                                <div class="workshop-price-badge">
+                                    <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary/60">Entry</p>
+                                    <p class="font-headline text-2xl font-extrabold text-on-surface">{{ ($workshop['price'] ?? 0) > 0 ? ($workshop['price_label'] ?? (($workshop['currency'] ?? 'INR').' '.($workshop['price'] ?? 0))) : 'Free' }}</p>
+                                    <p class="text-xs font-semibold text-on-surface-variant">{{ ($workshop['price'] ?? 0) > 0 ? 'Per learner' : 'Limited seat access' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="workshop-quick-strip mt-5">
+                                <div class="workshop-quick-item">
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Audience</p>
+                                    <p class="mt-2 text-sm font-semibold leading-6 text-on-surface">{{ $workshop['audience'] }}</p>
+                                </div>
+                                <div class="workshop-quick-item">
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Mentor</p>
+                                    <p class="mt-2 text-sm font-semibold leading-6 text-on-surface">{{ $workshop['mentor'] }}</p>
+                                </div>
+                                <div class="workshop-quick-item">
+                                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Seat Window</p>
+                                    <p class="mt-2 text-sm font-semibold leading-6 text-on-surface">{{ $workshop['seats'] }}</p>
+                                </div>
+                            </div>
+
                             <div class="workshop-meta-grid">
                                 <div class="workshop-info-item">
                                     <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Date</p>
@@ -996,20 +1168,7 @@
                                 </div>
                             </div>
 
-                            <div class="mt-5 grid gap-5">
-                                <div class="workshop-side-panel">
-                                    <div class="grid gap-4 sm:grid-cols-2">
-                                        <div>
-                                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Audience</p>
-                                            <p class="mt-2 text-sm font-semibold leading-6 text-on-surface">{{ $workshop['audience'] }}</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Mentor</p>
-                                            <p class="mt-2 text-sm font-semibold leading-6 text-on-surface">{{ $workshop['mentor'] }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-
+                            <div class="mt-5 grid flex-1 gap-5">
                                 <div>
                                     <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Workshop Highlights</p>
                                     <div class="workshop-highlight-list mt-3">
@@ -1021,9 +1180,22 @@
                                         @endforeach
                                     </div>
                                 </div>
+
+                                <div class="workshop-side-panel">
+                                    <div class="flex flex-wrap items-center justify-between gap-4">
+                                        <div>
+                                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Best For</p>
+                                            <p class="mt-2 text-sm font-semibold leading-6 text-on-surface">{{ $workshop['audience'] }}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Session Lead</p>
+                                            <p class="mt-2 text-sm font-semibold leading-6 text-on-surface">{{ $workshop['mentor'] }}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="mt-6">
+                            <div class="mt-6 pt-2">
                                 <button
                                     type="button"
                                     class="cta-button inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#7c3aed_0%,#a855f7_100%)] px-5 py-4 text-sm font-bold text-white shadow-[0_18px_40px_rgba(124,58,237,0.24)]"
@@ -1172,46 +1344,63 @@
 
         <div id="workshop-join-modal" class="detail-modal" aria-hidden="true">
             <div class="detail-modal-panel join-modal-panel pretty-scroll">
-                <div class="grid lg:grid-cols-[0.92fr_1.08fr]">
+                <div class="join-modal-grid grid lg:grid-cols-[0.92fr_1.08fr]">
                     <div class="join-hero-pane relative p-6 text-white md:p-8">
-                        <button type="button" id="workshop-join-close" class="absolute right-5 top-5 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/14 bg-white/10 text-white backdrop-blur-md">
-                            <span class="material-symbols-outlined text-[20px]">close</span>
-                        </button>
+                        <div class="relative z-10">
+                            <button type="button" id="workshop-join-close" class="absolute right-0 top-0 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/14 bg-white/10 text-white backdrop-blur-md">
+                                <span class="material-symbols-outlined text-[20px]">close</span>
+                            </button>
 
-                        <span class="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-white/78">
-                            <span class="h-2 w-2 rounded-full bg-[#e9d5ff]"></span>
-                            Workshop Registration
-                        </span>
+                            <span class="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-white/78">
+                                <span class="h-2 w-2 rounded-full bg-[#e9d5ff]"></span>
+                                Workshop Registration
+                            </span>
 
-                        <h3 id="join-workshop-title" class="mt-8 font-headline text-3xl font-extrabold leading-tight md:text-4xl"></h3>
-                        <p id="join-workshop-subtitle" class="mt-4 max-w-xl text-sm leading-8 text-white/74"></p>
+                            <h3 id="join-workshop-title" class="mt-8 max-w-xl font-headline text-3xl font-extrabold leading-tight md:text-4xl"></h3>
+                            <p id="join-workshop-subtitle" class="mt-4 max-w-xl text-sm leading-8 text-white/74"></p>
 
-                        <div class="mt-8 grid gap-3">
-                            <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Date: <span id="join-workshop-date" class="font-bold text-white"></span></div>
-                            <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Time: <span id="join-workshop-time" class="font-bold text-white"></span></div>
-                            <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Format: <span id="join-workshop-format" class="font-bold text-white"></span></div>
-                            <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Venue: <span id="join-workshop-venue" class="font-bold text-white"></span></div>
+                            <div class="join-meta-grid mt-8">
+                                <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Date: <span id="join-workshop-date" class="font-bold text-white"></span></div>
+                                <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Time: <span id="join-workshop-time" class="font-bold text-white"></span></div>
+                                <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Format: <span id="join-workshop-format" class="font-bold text-white"></span></div>
+                                <div class="detail-stat-chip rounded-[1.25rem] px-4 py-3 text-sm font-semibold text-white/84">Venue: <span id="join-workshop-venue" class="font-bold text-white"></span></div>
+                            </div>
                         </div>
 
-                        <div class="mt-8 rounded-[1.6rem] border border-white/14 bg-white/8 p-5 backdrop-blur-md">
-                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/52">Why Fill This Form</p>
-                            <p class="mt-3 text-sm leading-7 text-white/74">This registration form helps the team prepare your seat, your preferred mode, and the right follow-up before the workshop starts.</p>
+                        <div class="join-side-card mt-8 rounded-[1.7rem] p-5 md:p-6">
+                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/52">How It Works</p>
+                            <div class="join-side-list mt-4">
+                                <div class="join-side-list-item">
+                                    <span></span>
+                                    <span>Fill in your details so the team can reserve your seat for the selected workshop.</span>
+                                </div>
+                                <div class="join-side-list-item">
+                                    <span></span>
+                                    <span>Share your learning goal, attendance preference, and any notes you want the team to know.</span>
+                                </div>
+                                <div class="join-side-list-item">
+                                    <span></span>
+                                    <span>Our team will review the request and reach out with the next update for your registration.</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,243,255,0.94))] p-6 md:p-8">
+                    <div class="join-form-pane bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,243,255,0.94))] p-6 md:p-8">
                         <div class="join-form-card rounded-[1.8rem] p-5 md:p-6">
                             <p class="text-xs font-bold uppercase tracking-[0.24em] text-primary">Student Details</p>
-                            <h3 class="mt-3 font-headline text-3xl font-extrabold text-on-surface">Complete your workshop registration.</h3>
-                            <p class="mt-3 text-sm leading-7 text-on-surface-variant">Share your contact details, preferred attendance mode, and a little context so the workshop team can confirm your participation smoothly.</p>
+                            <h3 class="mt-3 font-headline text-3xl font-extrabold text-on-surface">Request your workshop seat.</h3>
+                            <p class="mt-3 text-sm leading-7 text-on-surface-variant">Share the essential details below. Free workshops submit instantly, and paid workshops will open Razorpay checkout after this form is complete.</p>
 
-                            <form action="{{ route('home.contact.submit') }}" method="POST" class="mt-6 space-y-5">
+                            <form action="{{ route('home.workshop.register') }}" method="POST" class="mt-6 space-y-5" id="workshop-join-form">
                                 @csrf
-                                <input type="hidden" name="topic" value="workshop" />
+                                <input type="hidden" name="workshop_id" id="join-form-workshop-id" value="{{ old('workshop_id') }}" />
                                 <input type="hidden" name="workshop_title" id="join-form-workshop-title" value="{{ old('workshop_title') }}" />
                                 <input type="hidden" name="workshop_date" id="join-form-workshop-date" value="{{ old('workshop_date') }}" />
                                 <input type="hidden" name="workshop_time" id="join-form-workshop-time" value="{{ old('workshop_time') }}" />
-                                <input type="hidden" name="message" value="{{ old('message', 'Workshop registration inquiry from workshop page.') }}" />
+                                <input type="hidden" name="razorpay_payment_id" id="join-form-razorpay-payment-id" value="" />
+                                <input type="hidden" name="razorpay_order_id" id="join-form-razorpay-order-id" value="" />
+                                <input type="hidden" name="razorpay_signature" id="join-form-razorpay-signature" value="" />
 
                                 <div class="grid gap-5 md:grid-cols-2">
                                     <div>
@@ -1305,8 +1494,18 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="cta-button inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[linear-gradient(135deg,#6d28d9_0%,#8b5cf6_52%,#c084fc_100%)] px-6 py-4 text-sm font-bold text-white shadow-[0_18px_40px_rgb(98_24_233_/_48%)]">
-                                    Register for <span class="text-white/70 line-through">₹499</span> FREE
+                                <div id="join-payment-summary" class="hidden rounded-[1.4rem] border border-primary/12 bg-[linear-gradient(180deg,rgba(124,58,237,0.08),rgba(255,255,255,0.98))] px-4 py-4">
+                                    <div class="flex flex-wrap items-center justify-between gap-3">
+                                        <div>
+                                            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-primary/72">Workshop Payment</p>
+                                            <p id="join-payment-summary-copy" class="mt-2 text-sm font-semibold text-on-surface"></p>
+                                        </div>
+                                        <span id="join-payment-summary-amount" class="rounded-full bg-primary px-4 py-2 text-sm font-bold text-white"></span>
+                                    </div>
+                                </div>
+
+                                <button type="submit" id="join-submit-button" class="cta-button inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[linear-gradient(135deg,#6d28d9_0%,#8b5cf6_52%,#c084fc_100%)] px-6 py-4 text-sm font-bold text-white shadow-[0_18px_40px_rgb(98_24_233_/_48%)]">
+                                    <span id="join-submit-label">Submit Seat Request</span>
                                     <span class="material-symbols-outlined text-[20px]">trending_flat</span>
                                 </button>
                             </form>
@@ -1320,16 +1519,26 @@
             id="workshop-join-bootstrap"
             class="hidden"
             data-should-open="{{ ($errors->any() || session('status')) ? '1' : '0' }}"
+            data-id="{{ old('workshop_id', $featuredWorkshops[0]['id'] ?? '') }}"
             data-title="{{ old('workshop_title', $featuredWorkshops[0]['title'] ?? 'Workshop Registration') }}"
-            data-subtitle="Complete the registration so the team can confirm your workshop seat."
+            data-subtitle="Fill in your details to request your seat and our team will follow up with the next step."
             data-date="{{ old('workshop_date', $featuredWorkshops[0]['date'] ?? '') }}"
             data-time="{{ old('workshop_time', $featuredWorkshops[0]['time'] ?? '') }}"
             data-format="{{ $featuredWorkshops[0]['format'] ?? '' }}"
             data-venue="{{ $featuredWorkshops[0]['venue'] ?? '' }}"
+            data-price="{{ old('payment_amount', $featuredWorkshops[0]['price'] ?? 0) }}"
+            data-price-label="{{ $featuredWorkshops[0]['price_label'] ?? 'Free' }}"
+            data-register-url="{{ route('home.workshop.register') }}"
+            data-payment-order-url="{{ route('home.workshop.payment-order') }}"
+            data-payment-verify-url="{{ route('home.workshop.verify-payment') }}"
+            data-razorpay-enabled="{{ $workshopRazorpayConfigured ? '1' : '0' }}"
         ></div>
     </main>
 
     <x-slot:scripts>
+        @if ($workshopRazorpayConfigured)
+            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        @endif
         <script>
             (function () {
                 var modal = document.getElementById('workshop-detail-modal');
@@ -1353,10 +1562,22 @@
                 var joinTime = document.getElementById('join-workshop-time');
                 var joinFormat = document.getElementById('join-workshop-format');
                 var joinVenue = document.getElementById('join-workshop-venue');
+                var joinForm = document.getElementById('workshop-join-form');
                 var joinFormTitle = document.getElementById('join-form-workshop-title');
                 var joinFormDate = document.getElementById('join-form-workshop-date');
                 var joinFormTime = document.getElementById('join-form-workshop-time');
+                var joinFormId = document.getElementById('join-form-workshop-id');
+                var joinFormRazorpayPaymentId = document.getElementById('join-form-razorpay-payment-id');
+                var joinFormRazorpayOrderId = document.getElementById('join-form-razorpay-order-id');
+                var joinFormRazorpaySignature = document.getElementById('join-form-razorpay-signature');
+                var joinSubmitButton = document.getElementById('join-submit-button');
+                var joinSubmitLabel = document.getElementById('join-submit-label');
+                var joinPaymentSummary = document.getElementById('join-payment-summary');
+                var joinPaymentSummaryCopy = document.getElementById('join-payment-summary-copy');
+                var joinPaymentSummaryAmount = document.getElementById('join-payment-summary-amount');
                 var joinBootstrap = document.getElementById('workshop-join-bootstrap');
+                var joinModalPanel = joinModal ? joinModal.querySelector('.detail-modal-panel') : null;
+                var currentJoinPayload = null;
 
                 function toggleBodyLock(isLocked) {
                     document.body.style.overflow = isLocked ? 'hidden' : '';
@@ -1407,7 +1628,33 @@
                     toggleBodyLock(false);
                 }
 
+                function syncJoinPaymentState(payload) {
+                    var price = Number(payload && payload.price ? payload.price : 0);
+                    var isPaidWorkshop = price > 0;
+
+                    if (joinPaymentSummary) {
+                        joinPaymentSummary.classList.toggle('hidden', !isPaidWorkshop);
+                    }
+
+                    if (joinPaymentSummaryCopy) {
+                        joinPaymentSummaryCopy.textContent = isPaidWorkshop
+                            ? 'You will be redirected to Razorpay checkout after validating this form.'
+                            : 'No online payment is required. We will receive your seat request immediately.';
+                    }
+
+                    if (joinPaymentSummaryAmount) {
+                        joinPaymentSummaryAmount.textContent = isPaidWorkshop
+                            ? (payload.price_label || payload.currency + ' ' + price)
+                            : 'Free';
+                    }
+
+                    if (joinSubmitLabel) {
+                        joinSubmitLabel.textContent = isPaidWorkshop ? 'Pay & Reserve Seat' : 'Submit Seat Request';
+                    }
+                }
+
                 function openJoinModal(payload) {
+                    currentJoinPayload = payload || {};
                     joinTitle.textContent = payload.title || '';
                     joinSubtitle.textContent = payload.subtitle || '';
                     joinDate.textContent = payload.date || '';
@@ -1417,9 +1664,30 @@
                     joinFormTitle.value = payload.title || '';
                     joinFormDate.value = payload.date || '';
                     joinFormTime.value = payload.time || '';
+                    joinFormId.value = payload.id || '';
+                    if (joinForm) {
+                        joinForm.action = joinBootstrap.dataset.registerUrl;
+                    }
+                    if (joinFormRazorpayPaymentId) {
+                        joinFormRazorpayPaymentId.value = '';
+                    }
+                    if (joinFormRazorpayOrderId) {
+                        joinFormRazorpayOrderId.value = '';
+                    }
+                    if (joinFormRazorpaySignature) {
+                        joinFormRazorpaySignature.value = '';
+                    }
+                    if (joinSubmitButton) {
+                        joinSubmitButton.disabled = false;
+                        joinSubmitButton.classList.remove('opacity-70');
+                    }
+                    syncJoinPaymentState(payload || {});
                     joinModal.classList.add('is-open');
                     joinModal.setAttribute('aria-hidden', 'false');
                     toggleBodyLock(true);
+                    if (joinModalPanel) {
+                        joinModalPanel.scrollTop = 0;
+                    }
                 }
 
                 function closeJoinModal() {
@@ -1484,14 +1752,105 @@
                     }
                 });
 
+                if (joinForm) {
+                    joinForm.addEventListener('submit', function (event) {
+                        var price = Number(currentJoinPayload && currentJoinPayload.price ? currentJoinPayload.price : 0);
+                        var razorpayEnabled = joinBootstrap && joinBootstrap.dataset.razorpayEnabled === '1';
+
+                        if (price <= 0) {
+                            joinForm.action = joinBootstrap.dataset.registerUrl;
+                            return;
+                        }
+
+                        if (!razorpayEnabled || typeof Razorpay === 'undefined') {
+                            event.preventDefault();
+                            window.alert('Razorpay is not configured right now. Please try again later.');
+                            return;
+                        }
+
+                        event.preventDefault();
+
+                        if (joinSubmitButton) {
+                            joinSubmitButton.disabled = true;
+                            joinSubmitButton.classList.add('opacity-70');
+                        }
+
+                        var formData = new FormData(joinForm);
+
+                        fetch(joinBootstrap.dataset.paymentOrderUrl, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': formData.get('_token'),
+                                'Accept': 'application/json'
+                            },
+                            body: formData
+                        })
+                            .then(function (response) {
+                                return response.json().then(function (data) {
+                                    if (!response.ok) {
+                                        throw new Error(data.message || 'Unable to start workshop payment right now.');
+                                    }
+
+                                    return data;
+                                });
+                            })
+                            .then(function (payload) {
+                                var razorpay = new Razorpay({
+                                    key: payload.key,
+                                    amount: Number(payload.amount || 0),
+                                    currency: payload.currency || 'INR',
+                                    name: 'CodeInYourself',
+                                    description: payload.workshop && payload.workshop.title ? payload.workshop.title : 'Workshop registration',
+                                    order_id: payload.order.id,
+                                    handler: function (response) {
+                                        joinFormRazorpayPaymentId.value = response.razorpay_payment_id || '';
+                                        joinFormRazorpayOrderId.value = response.razorpay_order_id || '';
+                                        joinFormRazorpaySignature.value = response.razorpay_signature || '';
+                                        joinForm.action = joinBootstrap.dataset.paymentVerifyUrl;
+                                        joinForm.submit();
+                                    },
+                                    prefill: {
+                                        name: payload.customer && payload.customer.name ? payload.customer.name : '',
+                                        email: payload.customer && payload.customer.email ? payload.customer.email : '',
+                                        contact: payload.customer && payload.customer.contact ? payload.customer.contact : ''
+                                    },
+                                    theme: {
+                                        color: '#7c3aed'
+                                    },
+                                    modal: {
+                                        ondismiss: function () {
+                                            if (joinSubmitButton) {
+                                                joinSubmitButton.disabled = false;
+                                                joinSubmitButton.classList.remove('opacity-70');
+                                            }
+                                        }
+                                    }
+                                });
+
+                                razorpay.open();
+                            })
+                            .catch(function (error) {
+                                window.alert(error.message || 'Unable to start workshop payment right now.');
+                                if (joinSubmitButton) {
+                                    joinSubmitButton.disabled = false;
+                                    joinSubmitButton.classList.remove('opacity-70');
+                                }
+                            });
+                    });
+                }
+
                 if (joinBootstrap && joinBootstrap.dataset.shouldOpen === '1') {
                     openJoinModal({
+                        id: joinBootstrap.dataset.id || '',
                         title: joinBootstrap.dataset.title || 'Workshop Registration',
                         subtitle: joinBootstrap.dataset.subtitle || '',
                         date: joinBootstrap.dataset.date || '',
                         time: joinBootstrap.dataset.time || '',
                         format: joinBootstrap.dataset.format || '',
-                        venue: joinBootstrap.dataset.venue || ''
+                        venue: joinBootstrap.dataset.venue || '',
+                        price: joinBootstrap.dataset.price || '0',
+                        price_label: joinBootstrap.dataset.priceLabel || 'Free'
                     });
                 }
             })();

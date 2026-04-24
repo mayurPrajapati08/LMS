@@ -14,14 +14,20 @@ use App\Models\PublicContact;
 use App\Models\Review;
 use App\Models\User;
 use App\Models\Workshop;
+use App\Models\WorkshopRegistration;
 use App\Support\PlatformSettings;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use RuntimeException;
 
 class PublicSiteController extends Controller
 {
@@ -57,8 +63,8 @@ class PublicSiteController extends Controller
         $promoSlides = $this->homeSlides();
 
         $popularRoadmaps = collect($this->careerPathLibrary())
-            ->whereIn('slug', ['data-science-with-ai', 'data-analytics-with-ai', 'generative-ai'])
-            ->sortBy(fn (array $path) => array_search($path['slug'], ['data-science-with-ai', 'data-analytics-with-ai', 'generative-ai'], true))
+            ->whereIn('slug', ['data-science-with-ai', 'data-analytics', 'generative-ai'])
+            ->sortBy(fn (array $path) => array_search($path['slug'], ['data-science-with-ai', 'data-analytics', 'generative-ai'], true))
             ->values()
             ->map(fn (array $path) => [
                 'slug' => $path['slug'],
@@ -68,6 +74,7 @@ class PublicSiteController extends Controller
                 'price' => $path['price'],
                 'thumbnail' => $path['thumbnail'],
                 'skills' => collect($path['skills'] ?? [])->take(3)->values()->all(),
+                'has_more_skills' => collect($path['skills'] ?? [])->count() > 3,
                 'label' => match ($path['slug']) {
                     'data-science-with-ai' => 'Most Popular Data Science Roadmap',
                     'data-analytics-with-ai' => 'Most Popular Analytics Roadmap',
@@ -77,12 +84,20 @@ class PublicSiteController extends Controller
             ]);
 
         $allPlacementStories = collect($this->homeStories('placement'))->values();
-        $homePlacementStudents = $allPlacementStories
+        $preferredPlacementStories = $allPlacementStories
+            ->reject(fn (array $story) => $this->isGeneratedPlacementPlaceholder($story))
+            ->values();
+
+        if ($preferredPlacementStories->isEmpty()) {
+            $preferredPlacementStories = $allPlacementStories;
+        }
+
+        $homePlacementStudents = $preferredPlacementStories
             ->filter(fn (array $story) => (bool) ($story['show_in_placement_hero'] ?? false))
             ->values();
 
         if ($homePlacementStudents->isEmpty()) {
-            $homePlacementStudents = $allPlacementStories->take(6)->values();
+            $homePlacementStudents = $preferredPlacementStories->take(9)->values();
         }
         $homeSuccessStories = collect($this->homeStories('success_story', 3));
 
@@ -315,7 +330,166 @@ class PublicSiteController extends Controller
         return view('Home.workshop', [
             'featuredWorkshops' => $this->workshopListings(),
             'workshopLeadGateEnabled' => PlatformSettings::bool('workshop_lead_gate_enabled', true),
+            'workshopRazorpayConfigured' => (string) config('services.razorpay.key_id') !== '' && (string) config('services.razorpay.key_secret') !== '',
         ]);
+    }
+
+    public function submitWorkshopRegistration(Request $request): RedirectResponse
+    {
+        abort_unless(Schema::hasTable('workshops') && Schema::hasTable('workshop_registrations'), 503, 'Run migrations to enable workshop registration.');
+
+        $validated = $this->validateWorkshopRegistrationPayload($request);
+
+        /** @var Workshop $workshop */
+        $workshop = Workshop::query()
+            ->where('is_active', true)
+            ->findOrFail($validated['workshop_id']);
+
+        if ((float) $workshop->price > 0) {
+            return back()
+                ->withInput()
+                ->withErrors(['workshop' => 'Please complete the Razorpay payment to reserve this paid workshop seat.']);
+        }
+
+        $registration = WorkshopRegistration::query()->create([
+            'workshop_id' => $workshop->id,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
+            'city' => $validated['city'] ?? null,
+            'organization' => $validated['organization'] ?? null,
+            'learner_type' => $validated['learner_type'] ?? null,
+            'experience_level' => $validated['experience_level'] ?? null,
+            'attendance_mode' => $validated['attendance_mode'] ?? null,
+            'goals' => $validated['goals'] ?? null,
+            'questions' => $validated['questions'] ?? null,
+            'payment_amount' => (float) $workshop->price,
+            'currency' => $workshop->currency ?: 'INR',
+            'payment_reference' => null,
+            'payment_screenshot_path' => null,
+            'payment_status' => 'not_required',
+            'registration_status' => 'pending',
+            'source' => 'public-workshop-page',
+        ]);
+
+        $statusMessage = $registration->registration_status === 'confirmed'
+            ? 'Workshop registration completed successfully.'
+            : 'Your seat request has been submitted successfully. Our team will review it and contact you shortly.';
+
+        return redirect()
+            ->route('home.free_workshop')
+            ->with('status', $statusMessage);
+    }
+
+    public function createWorkshopPaymentOrder(Request $request): JsonResponse
+    {
+        abort_unless(Schema::hasTable('workshops'), 503, 'Run migrations to enable workshop registration.');
+
+        $validated = $this->validateWorkshopRegistrationPayload($request);
+
+        /** @var Workshop $workshop */
+        $workshop = Workshop::query()
+            ->where('is_active', true)
+            ->findOrFail($validated['workshop_id']);
+
+        if ((float) $workshop->price <= 0) {
+            return response()->json([
+                'message' => 'This workshop does not require payment.',
+            ], 422);
+        }
+
+        try {
+            $orderPayload = $this->createWorkshopRazorpayOrder($workshop, $validated);
+        } catch (RuntimeException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 422);
+        }
+
+        return response()->json([
+            'key' => (string) config('services.razorpay.key_id'),
+            'amount' => (int) round(((float) $workshop->price) * 100),
+            'currency' => $workshop->currency ?: 'INR',
+            'workshop' => [
+                'id' => $workshop->id,
+                'title' => $workshop->title,
+            ],
+            'customer' => [
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'contact' => $validated['phone'] ?? '',
+            ],
+            'order' => $orderPayload,
+        ]);
+    }
+
+    public function verifyWorkshopPayment(Request $request): RedirectResponse
+    {
+        abort_unless(Schema::hasTable('workshops') && Schema::hasTable('workshop_registrations'), 503, 'Run migrations to enable workshop registration.');
+
+        $validated = $this->validateWorkshopRegistrationPayload($request, true);
+
+        /** @var Workshop $workshop */
+        $workshop = Workshop::query()
+            ->where('is_active', true)
+            ->findOrFail($validated['workshop_id']);
+
+        if ((float) $workshop->price <= 0) {
+            return back()
+                ->withInput()
+                ->withErrors(['workshop' => 'This workshop does not require payment.']);
+        }
+
+        $secret = (string) config('services.razorpay.key_secret');
+
+        if ($secret === '') {
+            return back()
+                ->withInput()
+                ->withErrors(['workshop' => 'Razorpay is not configured right now.']);
+        }
+
+        $generatedSignature = hash_hmac(
+            'sha256',
+            $validated['razorpay_order_id'].'|'.$validated['razorpay_payment_id'],
+            $secret
+        );
+
+        if (! hash_equals($generatedSignature, $validated['razorpay_signature'])) {
+            return back()
+                ->withInput()
+                ->withErrors(['workshop' => 'Payment verification failed. Please try again.']);
+        }
+
+        DB::transaction(function () use ($validated, $workshop): void {
+            WorkshopRegistration::query()->firstOrCreate(
+                [
+                    'workshop_id' => $workshop->id,
+                    'payment_reference' => $validated['razorpay_payment_id'],
+                ],
+                [
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'phone' => $validated['phone'] ?? null,
+                    'city' => $validated['city'] ?? null,
+                    'organization' => $validated['organization'] ?? null,
+                    'learner_type' => $validated['learner_type'] ?? null,
+                    'experience_level' => $validated['experience_level'] ?? null,
+                    'attendance_mode' => $validated['attendance_mode'] ?? null,
+                    'goals' => $validated['goals'] ?? null,
+                    'questions' => $validated['questions'] ?? null,
+                    'payment_amount' => (float) $workshop->price,
+                    'currency' => $workshop->currency ?: 'INR',
+                    'payment_screenshot_path' => null,
+                    'payment_status' => 'verified',
+                    'registration_status' => 'confirmed',
+                    'source' => 'public-workshop-razorpay',
+                ]
+            );
+        });
+
+        return redirect()
+            ->route('home.free_workshop')
+            ->with('status', 'Payment successful. Your workshop seat has been reserved.');
     }
 
     public function mentorship(): View
@@ -1265,9 +1439,9 @@ class PublicSiteController extends Controller
                 ],
             ]),
             $this->buildCareerPath([
-                'slug' => 'data-analytics-with-ai',
-                'title' => 'Data Analytics with AI - Professional Certification',
-                'subtitle' => 'Learn analytics and AI essentials with Python, SQL, Power BI, Tableau, dashboards, and predictive models.',
+                'slug' => 'data-analytics',
+                'title' => 'Data Analytics - Professional Certification',
+                'subtitle' => 'Learn analytics and Python, SQL, Power BI, Tableau, dashboards, and predictive models.',
                 'role_label' => 'Data Analyst, BI Analyst, Predictive Analytics Specialist, Reporting Analyst, Junior Data Scientist',
                 'duration' => '4 Months',
                 'price' => 60000,
@@ -2224,6 +2398,13 @@ class PublicSiteController extends Controller
         return 'https://ui-avatars.com/api/?name='.urlencode($name).'&background=F3E8FF&color=6B21A8&size='.$size;
     }
 
+    private function isGeneratedPlacementPlaceholder(array $story): bool
+    {
+        $avatar = (string) ($story['avatar'] ?? '');
+
+        return $avatar !== '' && Str::contains($avatar, 'ui-avatars.com/api/');
+    }
+
     private function achievementGallery(): array
     {
         if (Schema::hasTable('home_achievements')) {
@@ -2472,6 +2653,7 @@ class PublicSiteController extends Controller
         if (! Schema::hasTable('workshops')) {
             return [
                 [
+                    'id' => 0,
                     'badge' => 'Ongoing',
                     'title' => 'Generative AI Build Lab',
                     'subtitle' => 'Prompt systems, AI tools, automation demos, and guided project framing',
@@ -2482,10 +2664,17 @@ class PublicSiteController extends Controller
                     'audience' => 'Students, freshers, and working professionals',
                     'mentor' => 'Lead AI mentor panel',
                     'seats' => '38 seats left',
+                    'price' => 499,
+                    'currency' => 'INR',
+                    'price_label' => 'INR 499',
+                    'payment_enabled' => false,
+                    'payment_qr_code' => null,
+                    'payment_instructions' => 'Registration details will be shared by the workshop team.',
                     'accent' => 'from-[#13041f] via-[#4d1f87] to-[#9d5cff]',
                     'highlights' => ['Prompt design frameworks', 'Hands-on AI workflow build', 'Post-workshop practice kit'],
                 ],
                 [
+                    'id' => 0,
                     'badge' => 'Upcoming',
                     'title' => 'Full Stack API Sprint',
                     'subtitle' => 'Build a modern backend flow with API design, auth, testing, and deployment thinking',
@@ -2496,6 +2685,12 @@ class PublicSiteController extends Controller
                     'audience' => 'Developers and career-switch learners',
                     'mentor' => 'Engineering mentors',
                     'seats' => '52 seats left',
+                    'price' => 699,
+                    'currency' => 'INR',
+                    'price_label' => 'INR 699',
+                    'payment_enabled' => false,
+                    'payment_qr_code' => null,
+                    'payment_instructions' => 'Registration details will be shared by the workshop team.',
                     'accent' => 'from-[#1a062d] via-[#5b21b6] to-[#c084fc]',
                     'highlights' => ['REST architecture walkthrough', 'Auth and middleware patterns', 'Deployment checklist'],
                 ],
@@ -2507,6 +2702,7 @@ class PublicSiteController extends Controller
             ->orderBy('sort_order')
             ->get()
             ->map(fn (Workshop $workshop) => [
+                'id' => $workshop->id,
                 'badge' => $workshop->badge ?: 'Upcoming',
                 'title' => $workshop->title,
                 'subtitle' => $workshop->subtitle ?: 'Join a practical session built around current tools, guided exercises, and clear next steps.',
@@ -2517,6 +2713,12 @@ class PublicSiteController extends Controller
                 'audience' => $workshop->audience ?: 'Students and professionals',
                 'mentor' => $workshop->mentor ?: 'Mentor team',
                 'seats' => $workshop->seats ?: 'Limited seats',
+                'price' => (float) $workshop->price,
+                'currency' => $workshop->currency ?: 'INR',
+                'price_label' => ($workshop->currency ?: 'INR').' '.number_format((float) $workshop->price, ((float) $workshop->price === floor((float) $workshop->price)) ? 0 : 2),
+                'payment_enabled' => (bool) $workshop->payment_enabled,
+                'payment_qr_code' => $workshop->payment_qr_code,
+                'payment_instructions' => $workshop->payment_instructions ?: 'Registration details will be shared by the workshop team.',
                 'accent' => $workshop->accent ?: 'from-[#13041f] via-[#4d1f87] to-[#9d5cff]',
                 'highlights' => $workshop->highlights ?: [],
             ])
@@ -2528,6 +2730,7 @@ class PublicSiteController extends Controller
 
         return [
             [
+                'id' => 0,
                 'badge' => 'Ongoing',
                 'title' => 'Generative AI Build Lab',
                 'subtitle' => 'Prompt systems, AI tools, automation demos, and guided project framing',
@@ -2538,10 +2741,17 @@ class PublicSiteController extends Controller
                 'audience' => 'Students, freshers, and working professionals',
                 'mentor' => 'Lead AI mentor panel',
                 'seats' => '38 seats left',
+                'price' => 499,
+                'currency' => 'INR',
+                'price_label' => 'INR 499',
+                'payment_enabled' => false,
+                'payment_qr_code' => null,
+                'payment_instructions' => 'Registration details will be shared by the workshop team.',
                 'accent' => 'from-[#13041f] via-[#4d1f87] to-[#9d5cff]',
                 'highlights' => ['Prompt design frameworks', 'Hands-on AI workflow build', 'Post-workshop practice kit'],
             ],
             [
+                'id' => 0,
                 'badge' => 'Upcoming',
                 'title' => 'Full Stack API Sprint',
                 'subtitle' => 'Build a modern backend flow with API design, auth, testing, and deployment thinking',
@@ -2552,10 +2762,77 @@ class PublicSiteController extends Controller
                 'audience' => 'Developers and career-switch learners',
                 'mentor' => 'Engineering mentors',
                 'seats' => '52 seats left',
+                'price' => 699,
+                'currency' => 'INR',
+                'price_label' => 'INR 699',
+                'payment_enabled' => false,
+                'payment_qr_code' => null,
+                'payment_instructions' => 'Registration details will be shared by the workshop team.',
                 'accent' => 'from-[#1a062d] via-[#5b21b6] to-[#c084fc]',
                 'highlights' => ['REST architecture walkthrough', 'Auth and middleware patterns', 'Deployment checklist'],
             ],
         ];
+    }
+
+    private function validateWorkshopRegistrationPayload(Request $request, bool $withPaymentProof = false): array
+    {
+        $rules = [
+            'workshop_id' => ['required', 'integer', 'exists:workshops,id'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:50'],
+            'city' => ['nullable', 'string', 'max:100'],
+            'organization' => ['nullable', 'string', 'max:255'],
+            'learner_type' => ['nullable', 'string', 'max:100'],
+            'experience_level' => ['nullable', 'string', 'max:100'],
+            'attendance_mode' => ['nullable', 'string', 'max:50'],
+            'goals' => ['nullable', 'string', 'max:2000'],
+            'questions' => ['nullable', 'string', 'max:2000'],
+        ];
+
+        if ($withPaymentProof) {
+            $rules['razorpay_payment_id'] = ['required', 'string', 'max:255'];
+            $rules['razorpay_order_id'] = ['required', 'string', 'max:255'];
+            $rules['razorpay_signature'] = ['required', 'string', 'max:255'];
+        }
+
+        return $request->validate($rules);
+    }
+
+    private function createWorkshopRazorpayOrder(Workshop $workshop, array $registrationPayload): array
+    {
+        $keyId = (string) config('services.razorpay.key_id');
+        $keySecret = (string) config('services.razorpay.key_secret');
+
+        if ($keyId === '' || $keySecret === '') {
+            throw new RuntimeException('Razorpay keys are missing. Add them in your .env file first.');
+        }
+
+        $response = Http::withBasicAuth($keyId, $keySecret)
+            ->timeout(30)
+            ->post('https://api.razorpay.com/v1/orders', [
+                'amount' => (int) round(((float) $workshop->price) * 100),
+                'currency' => $workshop->currency ?: 'INR',
+                'receipt' => 'workshop-'.$workshop->id.'-'.Str::lower(Str::random(6)),
+                'notes' => [
+                    'workshop_id' => (string) $workshop->id,
+                    'workshop_title' => $workshop->title,
+                    'name' => $registrationPayload['name'],
+                    'email' => $registrationPayload['email'],
+                ],
+            ]);
+
+        if (! $response->successful()) {
+            throw new RuntimeException('Unable to start Razorpay checkout right now. Please verify your Razorpay keys and try again.');
+        }
+
+        $payload = $response->json();
+
+        if (! is_array($payload) || empty($payload['id'])) {
+            throw new RuntimeException('Razorpay did not return a valid workshop payment order.');
+        }
+
+        return $payload;
     }
 
     private function buildCareerPath(array $path): array

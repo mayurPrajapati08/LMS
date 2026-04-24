@@ -1755,7 +1755,7 @@
 
                 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                     @foreach ($popularRoadmaps as $index => $roadmap)
-                        <article class="reveal stagger-{{ ($index % 4) + 1 }} overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
+                        <article class="reveal stagger-{{ ($index % 4) + 1 }} flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
                             <div class="relative aspect-[16/10] overflow-hidden">
                                 <img src="{{ $roadmap['thumbnail'] }}" alt="{{ $roadmap['title'] }}" class="h-full w-full object-cover" loading="lazy" />
                                 <div class="absolute inset-0 bg-gradient-to-t from-[rgba(35,20,54,0.16)] via-transparent to-transparent"></div>
@@ -1764,7 +1764,7 @@
                                 </div>
                             </div>
 
-                            <div class="p-6">
+                            <div class="flex flex-1 flex-col p-6">
                                 <div class="flex items-start justify-between gap-4">
                                     <div>
                                         <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">{{ $roadmap['duration'] }}</p>
@@ -1778,9 +1778,13 @@
                                     @foreach ($roadmap['skills'] as $skill)
                                         <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $skill }}</span>
                                     @endforeach
+                                    @if (!empty($roadmap['has_more_skills']))
+                                        <span class="rounded-full border border-dashed border-[#d7c0ee] bg-white px-3 py-2 text-xs font-semibold text-[#8f67b8]">Many more...</span>
+                                    @endif
                                 </div>
 
-                                <div class="mt-6 flex flex-col gap-3 border-t border-[#f0e6f8] pt-5 sm:flex-row sm:items-center sm:justify-between">
+                                <div class="mt-auto pt-6">
+                                    <div class="flex flex-col gap-3 border-t border-[#f0e6f8] pt-5 sm:flex-row sm:items-center sm:justify-between">
                                         <div>
                                             <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8f67b8]">Destination</p>
                                             <p class="mt-1 text-sm font-semibold text-on-surface">Detailed roadmap and curriculum</p>
@@ -1796,6 +1800,7 @@
                                             View Roadmap
                                             <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                                         </a>
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -1825,7 +1830,7 @@
 
                 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                     @foreach ($workingProfessionalCourses as $index => $course)
-                        <article class="reveal stagger-{{ ($index % 4) + 1 }} overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
+                        <article class="reveal stagger-{{ ($index % 4) + 1 }} flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
                             <div class="relative aspect-[16/10] overflow-hidden">
                                 <img src="{{ $course['thumbnail'] }}" alt="{{ $course['title'] }}" class="h-full w-full object-cover" loading="lazy" />
                                 <div class="absolute inset-0 bg-gradient-to-t from-[rgba(35,20,54,0.16)] via-transparent to-transparent"></div>
@@ -1834,7 +1839,7 @@
                                     <span class="rounded-full bg-[#f8e8ff] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7a4ca2]">{{ $course['mode'] === 'offline' ? 'Offline' : 'Online' }}</span>
                                 </div>
                             </div>
-                            <div class="p-6">
+                            <div class="flex flex-1 flex-col p-6">
                                 <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">{{ $course['duration'] }}</p>
                                 <h3 class="mt-3 font-headline text-2xl font-extrabold text-on-surface">{{ $course['title'] }}</h3>
                                 <p class="mt-4 text-sm leading-7 text-on-surface-variant">{{ \Illuminate\Support\Str::limit($course['details'], 130) }}</p>
@@ -1842,7 +1847,8 @@
                                     <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['audience_label'] ?? 'Working Professional' }}</span>
                                     <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['language'] }}</span>
                                 </div>
-                                <div class="mt-6 flex items-center justify-between gap-4 border-t border-[#f0e6f8] pt-5">
+                                <div class="mt-auto pt-6">
+                                    <div class="flex items-center justify-between gap-4 border-t border-[#f0e6f8] pt-5">
                                     <div>
                                         <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8f67b8]">Catalog Access</p>
                                         <p class="mt-1 text-sm font-semibold text-on-surface">View details in the training program catalog</p>
@@ -1851,6 +1857,7 @@
                                         View Details
                                         <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                                     </a>
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -1877,7 +1884,7 @@
 
                 <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                     @foreach ($collegeStudentCourses as $index => $course)
-                        <article class="reveal stagger-{{ ($index % 4) + 1 }} overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
+                        <article class="reveal stagger-{{ ($index % 4) + 1 }} flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#eadcf8] bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(250,245,255,0.94))] shadow-[0_22px_52px_rgba(157,120,186,0.10)]">
                             <div class="relative aspect-[16/10] overflow-hidden">
                                 <img src="{{ $course['thumbnail'] }}" alt="{{ $course['title'] }}" class="h-full w-full object-cover" loading="lazy" />
                                 <div class="absolute inset-0 bg-gradient-to-t from-[rgba(54,28,78,0.36)] via-transparent to-transparent"></div>
@@ -1886,7 +1893,7 @@
                                     <span class="rounded-full bg-[#f8e8ff] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] text-[#7a4ca2]">{{ $course['mode'] === 'offline' ? 'Offline' : 'Online' }}</span>
                                 </div>
                             </div>
-                            <div class="p-6">
+                            <div class="flex flex-1 flex-col p-6">
                                 <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-[#8f67b8]">{{ $course['duration'] }}</p>
                                 <h3 class="mt-3 font-headline text-2xl font-extrabold text-on-surface">{{ $course['title'] }}</h3>
                                 <p class="mt-4 text-sm leading-7 text-on-surface-variant">{{ \Illuminate\Support\Str::limit($course['details'], 130) }}</p>
@@ -1894,7 +1901,8 @@
                                     <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['audience_label'] ?? 'College Student' }}</span>
                                     <span class="rounded-full border border-[#e6d8f5] bg-[#f8f2fe] px-3 py-2 text-xs font-semibold text-[#6b4b88]">{{ $course['language'] }}</span>
                                 </div>
-                                <div class="mt-6 flex items-center justify-between gap-4 border-t border-[#f0e6f8] pt-5">
+                                <div class="mt-auto pt-6">
+                                    <div class="flex items-center justify-between gap-4 border-t border-[#f0e6f8] pt-5">
                                     <div>
                                         <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8f67b8]">Catalog Access</p>
                                         <p class="mt-1 text-sm font-semibold text-on-surface">View details in the training program catalog</p>
@@ -1903,6 +1911,7 @@
                                         View Details
                                         <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                                     </a>
+                                    </div>
                                 </div>
                             </div>
                         </article>

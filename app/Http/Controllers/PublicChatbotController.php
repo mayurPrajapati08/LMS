@@ -155,29 +155,57 @@ class PublicChatbotController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['nullable', 'string', 'max:50'],
-            'message' => ['required', 'string', 'max:5000'],
+            'region' => ['nullable', 'string', 'max:255'],
+            'message' => ['nullable', 'string', 'max:5000'],
             'topic' => ['nullable', 'string', 'max:100'],
             'subject' => ['nullable', 'string', 'max:255'],
             'course_id' => $courseRule,
             'page_url' => ['nullable', 'string', 'max:2000'],
             'intent' => ['nullable', 'string', 'max:100'],
             'course_interest' => ['nullable', 'string', 'max:255'],
+            'source_page' => ['nullable', 'string', 'max:255'],
+            'inquiry_kind' => ['nullable', 'string', 'max:50'],
         ]);
+
+        $phone = isset($validated['phone']) ? preg_replace('/\s+/', '', (string) $validated['phone']) : null;
+        if (filled($phone) && ! preg_match('/^\+[1-9]\d{6,14}$/', $phone)) {
+            return response()->json([
+                'message' => 'Please insert the proper number with country code.',
+            ], 422);
+        }
+
+        $inquiryKind = (string) ($validated['inquiry_kind'] ?? 'inquiry');
+        if (! in_array($inquiryKind, ['profile', 'inquiry'], true)) {
+            $inquiryKind = 'inquiry';
+        }
+
+        if ($inquiryKind === 'profile' && blank($phone)) {
+            return response()->json([
+                'message' => 'Phone number with country code is required.',
+            ], 422);
+        }
 
         $topic = (string) ($validated['topic'] ?? 'general');
         if (! in_array($topic, ['general', 'course', 'workshop', 'mentorship', 'career', 'placement', 'support'], true)) {
             $topic = 'general';
         }
 
+        $message = $validated['message']
+            ?? ($inquiryKind === 'profile'
+                ? 'Visitor completed the chatbot profile form before starting a conversation.'
+                : 'Chatbot inquiry');
+
         $contact = PublicContact::query()->create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
+            'phone' => $phone,
             'course_id' => $validated['course_id'] ?? null,
-            'message' => $validated['message'],
+            'message' => $message,
             'topic' => $topic,
             'subject' => $validated['subject']
-                ?? match ($topic) {
+                ?? ($inquiryKind === 'profile'
+                    ? 'Chatbot visitor profile'
+                    : match ($topic) {
                     'course' => 'Chatbot training program inquiry',
                     'workshop' => 'Chatbot workshop inquiry',
                     'mentorship' => 'Chatbot mentorship request',
@@ -185,20 +213,24 @@ class PublicChatbotController extends Controller
                     'placement' => 'Chatbot placement inquiry',
                     'support' => 'Chatbot support request',
                     default => 'Chatbot inquiry',
-                },
+                }),
             'status' => 'new',
-            'source_page' => 'chatbot-widget',
+            'source_page' => $validated['source_page'] ?? 'chatbot-widget',
             'details' => array_filter([
                 'intent' => $validated['intent'] ?? null,
                 'page_url' => $validated['page_url'] ?? null,
                 'course_interest' => $validated['course_interest'] ?? null,
+                'region' => $validated['region'] ?? null,
+                'inquiry_kind' => $inquiryKind,
                 'submitted_at' => now()->toISOString(),
             ], fn ($value) => filled($value)),
         ]);
 
         return response()->json([
             'ok' => true,
-            'message' => 'Your request has been sent to the CodeInYourself team.',
+            'message' => $inquiryKind === 'profile'
+                ? 'Your details are saved. You can start chatting now.'
+                : 'Your request has been sent to the CodeInYourself team.',
             'contact_id' => $contact->id,
         ]);
     }
