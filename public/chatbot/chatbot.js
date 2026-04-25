@@ -8,7 +8,7 @@
   const HISTORY_KEY = 'cyi-chatbot-history-v1';
   const LANGUAGE_KEY = 'cyi-chatbot-language-v1';
   const HISTORY_LIMIT = 24;
-  const ownerAvatar = String('/images/chatbot2.gif').replace(/"/g, '&quot;');
+  const ownerAvatar = String('https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777094905/chatbot2_t3owzh.gif').replace(/"/g, '&quot;');
   const ownerName = String(root.dataset.ownerName || 'CodeInYourself Guide').replace(/"/g, '&quot;');
 
   const config = {

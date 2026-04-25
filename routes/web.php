@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::controller(PublicSiteController::class)->group(function () {
+    Route::get('/sitemap.xml', 'sitemap')->name('sitemap');
     Route::get('/', 'home')->name('home');
     Route::get('/course', 'courses')->name('home.courses');
     Route::get('/course/offline/{offlineCourse:slug}', 'offlineCourseDetail')->name('offline-course.details');

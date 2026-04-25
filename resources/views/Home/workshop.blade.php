@@ -345,12 +345,69 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                width: 3.5rem;
-                height: 3.5rem;
-                border-radius: 1.1rem;
+                width: 2.9rem;
+                height: 2.9rem;
+                border-radius: 0.95rem;
                 background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(168,85,247,0.18));
                 color: #6d28d9;
                 box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+            }
+
+            .experience-card {
+                display: flex;
+                flex-direction: column;
+                border: 1px solid rgba(225, 214, 245, 0.88);
+                background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,247,255,0.95));
+                box-shadow: 0 18px 40px rgba(88, 28, 135, 0.09);
+            }
+
+            .experience-card-media {
+                position: relative;
+                z-index: 1;
+                height: clamp(8.5rem, 18vw, 10.5rem);
+                overflow: hidden;
+                background: #12081f;
+            }
+
+            .experience-card-media img {
+                width: 100%;
+                height: 100%;
+                display: block;
+                object-fit: cover;
+                object-position: center;
+            }
+
+            .experience-card-body {
+                position: relative;
+                z-index: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 0.9rem;
+                padding: 1.1rem;
+            }
+
+            .experience-card-heading {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.85rem;
+            }
+
+            .experience-card-copy {
+                min-width: 0;
+                flex: 1 1 auto;
+            }
+
+            .experience-point {
+                display: inline-flex;
+                align-items: center;
+                min-height: 1.9rem;
+                border-radius: 9999px;
+                background: rgba(124, 58, 237, 0.08);
+                padding: 0.42rem 0.72rem;
+                color: #6d28d9;
+                font-size: 0.68rem;
+                font-weight: 700;
+                line-height: 1.2;
             }
 
             .timeline-row {
@@ -1027,29 +1084,28 @@
 
                         <div class="mt-8 grid gap-4">
                             @foreach ($experienceMoments as $moment)
-                                <article class="glass-card premium-card overflow-hidden rounded-[1.6rem] {{ $loop->iteration > 1 ? 'reveal stagger-' . min($loop->iteration, 4) : 'reveal' }}">
-                                    <div class="grid gap-0 md:grid-cols-[0.82fr_1.18fr] md:items-center">
-                                        <div class="flex h-48 items-center justify-center bg-[#12081f] p-3 md:h-full">
-                                            <img src="{{ $moment['image'] }}" alt="{{ $moment['title'] }}" class="h-full w-full object-contain" />
-                                        </div>
-                                        <div class="p-5">
-                                            <div class="flex gap-4">
-                                                <span class="feature-icon-shell shrink-0">
-                                                    <span class="material-symbols-outlined text-[24px]">{{ $moment['icon'] }}</span>
-                                                </span>
-                                                <div>
-                                                    <h3 class="font-headline text-xl font-bold text-on-surface">{{ $moment['title'] }}</h3>
-                                                    <p class="mt-3 text-sm leading-7 text-on-surface-variant">{{ $moment['description'] }}</p>
-                                                    @if (! empty($moment['points']))
-                                                        <div class="mt-4 flex flex-wrap gap-2">
-                                                            @foreach ($moment['points'] as $point)
-                                                                <span class="rounded-full bg-primary/8 px-3 py-2 text-[11px] font-semibold text-primary">{{ $point }}</span>
-                                                            @endforeach
-                                                        </div>
-                                                    @endif
-                                                </div>
+                                <article class="experience-card premium-card overflow-hidden rounded-[1.35rem] {{ $loop->iteration > 1 ? 'reveal stagger-' . min($loop->iteration, 4) : 'reveal' }}">
+                                    <div class="experience-card-media">
+                                        <img src="{{ $moment['image'] }}" alt="{{ $moment['title'] }}" loading="lazy" />
+                                    </div>
+                                    <div class="experience-card-body">
+                                        <div class="experience-card-heading">
+                                            <span class="feature-icon-shell shrink-0">
+                                                <span class="material-symbols-outlined text-[22px]">{{ $moment['icon'] }}</span>
+                                            </span>
+                                            <div class="experience-card-copy">
+                                                <h3 class="font-headline text-lg font-bold leading-7 text-on-surface">{{ $moment['title'] }}</h3>
+                                                <p class="mt-2 text-sm leading-7 text-on-surface-variant">{{ $moment['description'] }}</p>
                                             </div>
                                         </div>
+
+                                        @if (! empty($moment['points']))
+                                            <div class="flex flex-wrap gap-2">
+                                                @foreach ($moment['points'] as $point)
+                                                    <span class="experience-point">{{ $point }}</span>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </div>
                                 </article>
                             @endforeach

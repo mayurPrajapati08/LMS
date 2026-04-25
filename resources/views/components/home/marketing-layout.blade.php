@@ -1,7 +1,34 @@
 @props([
     'title' => 'CodeInYourself',
+    'description' => 'CodeInYourself provides job-focused training programs in AI, data, development, and placement-ready career tracks with mentor support.',
+    'keywords' => 'CodeInYourself, AI training, data science course, career roadmap, placement support, tech mentorship',
+    'canonical' => null,
+    'robots' => 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+    'ogImage' => null,
+    'ogType' => 'website',
     'bodyClass' => '',
 ])
+
+@php
+    $metaDescription = \Illuminate\Support\Str::limit(trim(strip_tags((string) $description)), 160, '');
+    $canonicalUrl = $canonical ?: url()->current();
+    $metaKeywords = trim((string) $keywords);
+    $ogImageUrl = $ogImage ?: asset('images/cyis%20logo%204.png');
+    $locale = str_replace('_', '-', app()->getLocale());
+    $organizationSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'Organization',
+        'name' => 'CodeInYourself',
+        'url' => url('/'),
+        'logo' => asset('images/cyis%20logo%204.png'),
+    ];
+    $websiteSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'WebSite',
+        'name' => 'CodeInYourself',
+        'url' => url('/'),
+    ];
+@endphp
 
 <!DOCTYPE html>
 <html class="scroll-smooth" lang="en">
@@ -9,6 +36,30 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>{{ $title }}</title>
+    <meta name="description" content="{{ $metaDescription }}" />
+    @if ($metaKeywords !== '')
+        <meta name="keywords" content="{{ $metaKeywords }}" />
+    @endif
+    <meta name="robots" content="{{ $robots }}" />
+    <meta name="author" content="CodeInYourself" />
+    <meta name="theme-color" content="#7c3aed" />
+    <link rel="canonical" href="{{ $canonicalUrl }}" />
+
+    <meta property="og:locale" content="{{ $locale }}" />
+    <meta property="og:site_name" content="CodeInYourself" />
+    <meta property="og:type" content="{{ $ogType }}" />
+    <meta property="og:title" content="{{ $title }}" />
+    <meta property="og:description" content="{{ $metaDescription }}" />
+    <meta property="og:url" content="{{ $canonicalUrl }}" />
+    <meta property="og:image" content="{{ $ogImageUrl }}" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ $title }}" />
+    <meta name="twitter:description" content="{{ $metaDescription }}" />
+    <meta name="twitter:image" content="{{ $ogImageUrl }}" />
+
+    <script type="application/ld+json">{!! json_encode($organizationSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode($websiteSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 

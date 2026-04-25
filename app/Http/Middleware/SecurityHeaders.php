@@ -29,7 +29,12 @@ class SecurityHeaders
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }
 
-        if ($request->user() || str_starts_with($routeName, 'admin.') || str_starts_with($routeName, 'hr.') || str_starts_with($routeName, 'student.') || str_starts_with($routeName, 'instructor.')) {
+        $isPrivateRoute = str_starts_with($routeName, 'admin.')
+            || str_starts_with($routeName, 'hr.')
+            || str_starts_with($routeName, 'student.')
+            || str_starts_with($routeName, 'instructor.');
+
+        if ($isPrivateRoute) {
             $response->headers->set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
             $response->headers->set('Pragma', 'no-cache');
             $response->headers->set('Expires', 'Mon, 01 Jan 1990 00:00:00 GMT');

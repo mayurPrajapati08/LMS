@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /hr/
+Disallow: /student/
+Disallow: /instructor/
+Sitemap: /sitemap.xml

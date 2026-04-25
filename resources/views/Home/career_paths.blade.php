@@ -24,24 +24,54 @@
         ['label' => 'Mentor-guided', 'value' => 'Clear next-step direction'],
         ['label' => 'Portfolio-backed', 'value' => 'Projects that show readiness'],
     ];
-    $skillCollections = [
+    $careerResources = [
         [
-            'label' => 'Analytics',
-            'title' => 'Reporting and decision-making tools',
-            'description' => 'Tracks in analytics and BI focus on data preparation, dashboards, KPI thinking, and business-facing reporting.',
-            'skills' => $allSkills->filter(fn ($skill) => in_array($skill, ['SQL', 'Database Design', 'ETL Basics', 'Power BI', 'Tableau', 'Data Modeling', 'DAX', 'Dashboards', 'Excel'], true))->values(),
+            'number' => '01',
+            'icon' => 'support_agent',
+            'title' => 'Free mentorship',
+            'description' => 'Get guidance before choosing a path, clarify your goal, and understand what to learn first.',
+            'href' => route('home.mentorship') . '#talktomentor',
+            'action' => 'Book mentor call',
         ],
         [
-            'label' => 'Development',
-            'title' => 'Product and application building skills',
-            'description' => 'Development tracks combine interface work, backend logic, databases, deployment, and delivery discipline.',
-            'skills' => $allSkills->filter(fn ($skill) => in_array($skill, ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Databases', 'Android', 'iOS', 'Kotlin', 'Swift'], true))->values(),
+            'number' => '02',
+            'icon' => 'description',
+            'title' => 'Free resume builder',
+            'description' => 'Create a clean, role-focused resume with stronger project points and interview-ready wording.',
+            'href' => route('home.contact', ['topic' => 'career', 'subject' => 'Need free resume builder support']),
+            'action' => 'Get resume help',
         ],
         [
-            'label' => 'AI + Cloud',
-            'title' => 'Automation, cloud, and future-focused capability',
-            'description' => 'AI and cloud paths help learners move from tools into useful workflows, scalable systems, and modern operations.',
-            'skills' => $allSkills->filter(fn ($skill) => in_array($skill, ['AWS', 'Azure', 'Linux', 'Networking', 'Security', 'Monitoring', 'Machine Learning', 'Deep Learning', 'NLP', 'LLMs', 'Prompt Engineering', 'AI Automation', 'Workflow Design', 'AI Tools', 'Python'], true))->values(),
+            'number' => '03',
+            'icon' => 'route',
+            'title' => 'Personal roadmap',
+            'description' => 'Understand the right sequence of skills, projects, tools, and practice based on your background.',
+            'href' => route('home.contact', ['topic' => 'career', 'subject' => 'Need personal career roadmap']),
+            'action' => 'Plan roadmap',
+        ],
+        [
+            'number' => '04',
+            'icon' => 'work',
+            'title' => 'Project portfolio support',
+            'description' => 'Get help shaping practical assignments into visible portfolio work you can explain confidently.',
+            'href' => route('home.contact', ['topic' => 'career', 'subject' => 'Need portfolio project guidance']),
+            'action' => 'Improve portfolio',
+        ],
+        [
+            'number' => '05',
+            'icon' => 'record_voice_over',
+            'title' => 'Interview preparation',
+            'description' => 'Practice common questions, project explanations, and role-specific interview conversations.',
+            'href' => route('home.contact', ['topic' => 'placement', 'subject' => 'Need interview preparation support']),
+            'action' => 'Start prep',
+        ],
+        [
+            'number' => '06',
+            'icon' => 'groups',
+            'title' => 'Placement guidance',
+            'description' => 'Get support with job direction, profile improvement, and next steps after completing your learning path.',
+            'href' => route('home.contact', ['topic' => 'placement', 'subject' => 'Need placement guidance']),
+            'action' => 'Ask for guidance',
         ],
     ];
 @endphp
@@ -330,6 +360,7 @@
                                 @foreach ($track['skills'] as $skill)
                                     <span class="premium-pill rounded-full px-3 py-2 text-xs font-semibold">{{ $skill }}</span>
                                 @endforeach
+                                <span class="premium-pill rounded-full px-3 py-2 text-xs font-semibold">Many more...</span>
                             </div>
 
                             <div class="mt-6 grid gap-3 sm:grid-cols-2">
@@ -346,7 +377,7 @@
                             <div class="track-footer premium-line mt-6 flex items-center justify-between gap-4 border-t pt-5">
                                 <div>
                                     <p class="premium-tag text-[11px] font-bold uppercase">Fee details</p>
-                                    <p class="mt-1 text-sm font-bold text-on-surface">Contact team / mentor</p>
+                                    <p class="mt-1 text-sm font-bold text-on-surface">Contact Team/Mentor</p>
                                 </div>
                                 <a class="cta-button inline-flex items-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#2a112f_0%,#7040aa_52%,#c6a34d_100%)] px-5 py-3 text-[12px] font-bold text-white"
                                    href="{{ $track['details_url'] }}"
@@ -367,62 +398,41 @@
         </section>
 
         <section class="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-            <div class="grid gap-6 lg:grid-cols-[1fr_1.05fr]">
-                <div class="premium-surface reveal rounded-[2rem] p-6 md:p-8">
-                    <p class="premium-tag text-[11px] font-bold uppercase">How The Journey Works</p>
-                    <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">A cleaner path from basics to portfolio to interviews.</h2>
-                    <div class="mt-8 space-y-4">
-                        <div class="premium-card-quiet rounded-[1.5rem] p-5">
-                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 1. Learn the foundation with clarity</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Each track starts with the concepts, tools, and guided practice needed to remove early confusion and build confidence properly.</p>
-                        </div>
-                        <div class="premium-card-quiet rounded-[1.5rem] p-5">
-                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 2. Build practical work that proves skill</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Assignments, labs, and capstone work are structured to give learners visible output they can discuss in reviews and interviews.</p>
-                        </div>
-                        <div class="premium-card-quiet rounded-[1.5rem] p-5">
-                            <p class="font-headline text-xl font-extrabold text-on-surface">Step 3. Prepare for job movement</p>
-                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Mentor support, portfolio guidance, and placement preparation help learners move from training program completion toward role readiness.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="premium-dark reveal rounded-[2rem] p-6 text-white md:p-8">
-                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-white/58">Skill Areas</p>
-                    <h2 class="mt-3 max-w-lg font-headline text-3xl font-extrabold md:text-4xl">Built around real stacks learners can actually grow into.</h2>
-                    <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">
-                        The paths cover the major stacks students usually compare: analytics, software development, and AI or cloud-enabled workflows.
-                    </p>
-
-                    <div class="mt-8 space-y-4">
-                        @foreach ($skillCollections as $collection)
-                            <div class="rounded-[1.5rem] border border-white/10 bg-white/8 p-5 backdrop-blur-sm">
-                                <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                                    <div>
-                                        <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/54">{{ $collection['label'] }}</p>
-                                        <p class="mt-2 font-headline text-2xl font-extrabold text-white">{{ $collection['title'] }}</p>
-                                        <p class="mt-2 max-w-xl text-sm leading-6 text-white/68">{{ $collection['description'] }}</p>
-                                    </div>
-                                    <span class="rounded-full border border-white/12 bg-black/15 px-3 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#f8e7b3]">
-                                        {{ $collection['skills']->count() }} skills
-                                    </span>
-                                </div>
-                                <div class="mt-4 flex flex-wrap gap-2">
-                                    @foreach ($collection['skills'] as $skill)
-                                        <span class="rounded-full border border-white/12 bg-white/8 px-4 py-2.5 text-sm font-semibold text-[#f8e7b3] backdrop-blur-sm">{{ $skill }}</span>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endforeach
-
-                        <div class="rounded-[1.5rem] border border-white/10 bg-black/15 p-5">
-                            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/54">Need fee details?</p>
-                            <p class="mt-2 text-sm leading-6 text-white/76">Talk to our mentor or team to understand the best track, current batch details, and fee structure based on your goal.</p>
-                            <a class="mt-4 inline-flex items-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-primary" href="/mentorship#talktomentor">
-                                Contact Team / Mentor
+            <div class="premium-surface reveal rounded-[2rem] p-6 md:p-8 lg:p-10">
+                <div class="grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+                    <div>
+                        <p class="premium-tag text-[11px] font-bold uppercase">Free Resources & Essential Benefits</p>
+                        <h2 class="mt-3 max-w-xl font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Support that helps you choose, prepare, and move forward.</h2>
+                        <p class="mt-4 max-w-xl text-sm leading-7 text-on-surface-variant">
+                            These career support options sit beside the learning paths so students get practical help with direction, resume, portfolio, interviews, and placement readiness.
+                        </p>
+                        <div class="mt-7 rounded-[1.5rem] border border-[rgba(207,180,112,0.2)] bg-white/70 p-5">
+                            <p class="font-headline text-xl font-extrabold text-on-surface">Start with free mentorship</p>
+                            <p class="mt-2 text-sm leading-7 text-on-surface-variant">Not sure which path fits you? Talk to a mentor first, then choose your roadmap with more confidence.</p>
+                            <a class="cta-button mt-4 inline-flex items-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#2a112f_0%,#7040aa_52%,#c6a34d_100%)] px-5 py-3 text-sm font-bold text-white" href="{{ route('home.mentorship') }}#talktomentor">
+                                Talk to Mentor
                                 <span class="material-symbols-outlined text-[18px]">north_east</span>
                             </a>
                         </div>
+                    </div>
+
+                    <div class="grid gap-4 sm:grid-cols-2">
+                        @foreach ($careerResources as $resource)
+                            <article class="premium-card-quiet rounded-[1.5rem] p-5">
+                                <div class="flex items-start justify-between gap-4">
+                                    <span class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#2b1236] text-white">
+                                        <span class="material-symbols-outlined text-[24px]">{{ $resource['icon'] }}</span>
+                                    </span>
+                                    <span class="premium-tag text-[11px] font-bold uppercase">{{ $resource['number'] }}</span>
+                                </div>
+                                <h3 class="mt-5 font-headline text-xl font-extrabold text-on-surface">{{ $resource['title'] }}</h3>
+                                <p class="mt-2 text-sm leading-7 text-on-surface-variant">{{ $resource['description'] }}</p>
+                                <a class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary" href="{{ $resource['href'] }}">
+                                    {{ $resource['action'] }}
+                                    <span class="material-symbols-outlined text-[17px]">arrow_forward</span>
+                                </a>
+                            </article>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -433,7 +443,7 @@
                 <div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
                     <div>
                         <p class="premium-tag text-[11px] font-bold uppercase">Decision support</p>
-                        <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Choose the path that fits your background and goal.</h2>
+                        <h2 class="mt-3 font-headline text-3xl font-extrabold text-on-surface md:text-4xl">Choose The Path That Fits Your Background and Goal.</h2>
                         <p class="mt-4 max-w-xl text-sm leading-7 text-on-surface-variant">
                             If you are deciding between data, full stack, or AI, our team can help you compare direction, timeline, and fit before you commit.
                         </p>

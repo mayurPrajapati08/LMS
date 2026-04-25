@@ -28,7 +28,7 @@
             <!-- Brand -->
             <div class="space-y-6">
                 <a href="/" class="inline-flex items-center rounded-2xl border border-white/60 bg-white px-4 py-2.5 shadow-[0_12px_28px_rgba(124,58,237,0.08)] backdrop-blur-sm">
-                    <img src="{{ asset('images/cyis logo 4.png') }}" alt="CodeInYourself logo" class="h-14 w-auto max-w-[10rem] object-contain sm:h-16 sm:max-w-[11rem]" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                    <img src="https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777111055/cyis_logo_4_ikcbhi.png" alt="CodeInYourself logo" class="h-14 w-auto max-w-[10rem] object-contain sm:h-16 sm:max-w-[11rem]" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                 </a>
                 <p class="max-w-xs text-sm leading-relaxed text-white">
                     Engineering professional careers through high-impact technical training and dedicated placement support ecosystem.

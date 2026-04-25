@@ -189,7 +189,7 @@
             @if ($isHome)
              
                 <div class="rounded-2xl border border-white/60 bg-white px-4 py-2 shadow-[0_12px_28px_rgba(124,58,237,0.08)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-[0_18px_36px_rgba(124,58,237,0.14)]">
-                    <img src="{{ asset('images/cyis logo 4.png') }}" alt="CodeInYourself logo" class="h-9 md:h-10 w-auto max-w-[7.2rem] md:max-w-[8.4rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+                    <img src="https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777111055/cyis_logo_4_ikcbhi.png" alt="CodeInYourself logo" class="h-9 md:h-10 w-auto max-w-[7.2rem] md:max-w-[8.4rem] object-contain" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
                 </div>
                 @else
                 <span class="font-headline text-base font-extrabold tracking-tight text-white md:text-lg transition-transform duration-300 group-hover:scale-[1.02] mr-1">codeinyourself<span class="bg-gradient-to-r from-[#c084fc] via-[#a855f7] to-[#f0abfc] bg-clip-text text-transparent">.</span></span>

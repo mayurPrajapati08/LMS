@@ -5,6 +5,28 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>CodeInYourself — Build Real Skills for the AI Industry</title>
+    <meta name="description" content="CodeInYourself offers job-focused AI, data, and development training with mentor support, practical projects, and placement-oriented career guidance." />
+    <meta name="keywords" content="CodeInYourself, AI course, data science training, mentorship, placement support, tech career" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="author" content="CodeInYourself" />
+    <meta name="theme-color" content="#7c3aed" />
+    <link rel="canonical" href="{{ url()->current() }}" />
+
+    <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}" />
+    <meta property="og:site_name" content="CodeInYourself" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CodeInYourself — Build Real Skills for the AI Industry" />
+    <meta property="og:description" content="CodeInYourself offers job-focused AI, data, and development training with mentor support, practical projects, and placement-oriented career guidance." />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:image" content="{{ asset('images/cyis%20logo%204.png') }}" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CodeInYourself — Build Real Skills for the AI Industry" />
+    <meta name="twitter:description" content="CodeInYourself offers job-focused AI, data, and development training with mentor support, practical projects, and placement-oriented career guidance." />
+    <meta name="twitter:image" content="{{ asset('images/cyis%20logo%204.png') }}" />
+
+    <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'Organization', 'name' => 'CodeInYourself', 'url' => url('/'), 'logo' => asset('images/cyis%20logo%204.png')], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode(['@context' => 'https://schema.org', '@type' => 'WebSite', 'name' => 'CodeInYourself', 'url' => url('/')], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -1202,6 +1224,7 @@
             max-height: calc(100vh - 3rem);
             overflow: hidden;
             border-radius: 2rem;
+            margin-top: 5rem;
             border: 1px solid rgba(255,255,255,0.14);
             background: linear-gradient(180deg, rgba(18, 8, 35, 0.95), rgba(10, 6, 24, 0.98));
             box-shadow: 0 32px 90px rgba(0,0,0,0.38);
@@ -1787,7 +1810,7 @@
                                     <div class="flex flex-col gap-3 border-t border-[#f0e6f8] pt-5 sm:flex-row sm:items-center sm:justify-between">
                                         <div>
                                             <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-[#8f67b8]">Destination</p>
-                                            <p class="mt-1 text-sm font-semibold text-on-surface">Detailed roadmap and curriculum</p>
+                                            <p class="mt-1 text-sm font-semibold text-on-surface">Detailed Roadmap and Curriculum</p>
                                         </div>
                                         <a href="{{ $roadmap['cta_url'] }}"
                                            @guest
