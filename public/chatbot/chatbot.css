@@ -1,14 +1,20 @@
 #cyi-chatbot-root {
     position: fixed;
     left: 1rem;
+    right: auto;
     bottom: max(1rem, env(safe-area-inset-bottom));
     width: min(23rem, calc(100vw - 2rem));
     max-width: calc(100vw - 2rem);
-    z-index: 10020;
+    z-index: 2147483000;
     isolation: isolate;
     pointer-events: none;
     font-family: Inter, ui-sans-serif, system-ui, sans-serif;
     line-height: 1.4;
+}
+
+#cyi-chatbot-root[data-align="right"] {
+    left: auto;
+    right: 1rem;
 }
 
 .cyi-chatbot,
@@ -669,9 +675,16 @@
 @media (max-width: 640px) {
     #cyi-chatbot-root {
         left: 0.75rem;
+        right: auto;
         bottom: max(0.75rem, env(safe-area-inset-bottom));
         width: min(23rem, calc(100vw - 1.5rem));
         max-width: calc(100vw - 1.5rem);
+    }
+
+    #cyi-chatbot-root[data-align="right"] {
+        left: auto;
+        right: 0.75rem;
+        bottom: max(1rem, calc(env(safe-area-inset-bottom) + 0.25rem));
     }
 
     .cyi-chatbot,

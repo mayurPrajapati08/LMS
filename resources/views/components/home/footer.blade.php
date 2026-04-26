@@ -191,14 +191,14 @@
         </div>
     </div>
 </footer>
-<link rel="stylesheet" href="{{ asset('chatbot/chatbot.css') }}">
+<link rel="stylesheet" href="{{ '/chatbot/chatbot.css?v=' . filemtime(public_path('chatbot/chatbot.css')) }}">
 <div
     id="cyi-chatbot-root"
-    data-health-url="{{ url('/api/chatbot/health') }}"
-    data-context-url="{{ url('/api/chatbot/context') }}"
-    data-inquiry-url="{{ url('/api/chatbot/inquiries') }}"
+    data-health-url="/api/chatbot/health"
+    data-context-url="/api/chatbot/context"
+    data-inquiry-url="/api/chatbot/inquiries"
     data-csrf-token="{{ csrf_token() }}"
-    data-owner-avatar="{{ asset('images/owner 1.0.jpeg') }}"
+    data-owner-avatar="/images/owner 1.0.jpeg"
     data-owner-name="CodeInYourself Guide"
 ></div>
-<script src="{{ asset('chatbot/chatbot.js') }}" defer></script>
+<script src="{{ '/chatbot/chatbot.js?v=' . filemtime(public_path('chatbot/chatbot.js')) }}" defer></script>

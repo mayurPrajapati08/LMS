@@ -165,6 +165,14 @@ class PublicChatbotController extends Controller
             'course_interest' => ['nullable', 'string', 'max:255'],
             'source_page' => ['nullable', 'string', 'max:255'],
             'inquiry_kind' => ['nullable', 'string', 'max:50'],
+            'booking_id' => ['nullable', 'string', 'max:100'],
+            'mentorship_date' => ['nullable', 'string', 'max:100'],
+            'mentorship_start_time' => ['nullable', 'string', 'max:100'],
+            'mentorship_end_time' => ['nullable', 'string', 'max:100'],
+            'mentorship_slot_label' => ['nullable', 'string', 'max:255'],
+            'mentorship_duration_minutes' => ['nullable', 'integer', 'min:1', 'max:600'],
+            'requested_schedule_window' => ['nullable', 'string', 'max:100'],
+            'workshop_lookup' => ['nullable', 'string', 'max:100'],
         ]);
 
         $phone = isset($validated['phone']) ? preg_replace('/\s+/', '', (string) $validated['phone']) : null;
@@ -222,6 +230,14 @@ class PublicChatbotController extends Controller
                 'course_interest' => $validated['course_interest'] ?? null,
                 'region' => $validated['region'] ?? null,
                 'inquiry_kind' => $inquiryKind,
+                'booking_id' => $validated['booking_id'] ?? null,
+                'mentorship_date' => $validated['mentorship_date'] ?? null,
+                'mentorship_start_time' => $validated['mentorship_start_time'] ?? null,
+                'mentorship_end_time' => $validated['mentorship_end_time'] ?? null,
+                'mentorship_slot_label' => $validated['mentorship_slot_label'] ?? null,
+                'mentorship_duration_minutes' => $validated['mentorship_duration_minutes'] ?? null,
+                'requested_schedule_window' => $validated['requested_schedule_window'] ?? null,
+                'workshop_lookup' => $validated['workshop_lookup'] ?? null,
                 'submitted_at' => now()->toISOString(),
             ], fn ($value) => filled($value)),
         ]);
