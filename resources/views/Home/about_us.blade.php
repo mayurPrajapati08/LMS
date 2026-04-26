@@ -235,6 +235,16 @@
                 .about-founder-image {
                     height: 24rem;
                 }
+
+                /*
+                 * Mobile fallback: ensure achievements do not appear blank
+                 * if reveal observer misses on some devices/browsers.
+                 */
+                .about-achievements-section .reveal {
+                    opacity: 1 !important;
+                    transform: none !important;
+                    transition: none !important;
+                }
             }
         </style>
     </x-slot:head>
@@ -331,7 +341,7 @@
             </div>
         </section>
 
-        <section class="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
+        <section class="about-achievements-section mx-auto mt-16 max-w-7xl px-4 sm:px-6">
             <div class="about-section-card reveal rounded-[2rem] p-6 md:p-8">
                 <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                     <div>

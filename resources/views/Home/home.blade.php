@@ -1451,6 +1451,48 @@
             width: 0%;
             transition: width 0.1s linear;
         }
+
+        /* Mobile hero performance guardrails: keep layout, reduce GPU-heavy effects */
+        @media (max-width: 767px), (prefers-reduced-motion: reduce) {
+            #career-paths.aurora-hero {
+                animation: none !important;
+                background:
+                    radial-gradient(ellipse 85% 65% at 16% 8%, rgba(124,58,237,0.34) 0%, transparent 52%),
+                    linear-gradient(135deg, #12072a 0%, #2d0f55 45%, #4c1d95 100%);
+                background-size: 100% 100%;
+            }
+
+            #career-paths .stars-bg,
+            #career-paths .soft-wave {
+                display: none !important;
+            }
+
+            #career-paths .animate-float,
+            #career-paths .animate-float-slow,
+            #career-paths .animate-float-delay,
+            #career-paths .animate-pulse-glow,
+            #career-paths .btn-shimmer::after {
+                animation: none !important;
+            }
+
+            #career-paths .owner-showcase-card,
+            #career-paths .owner-badge,
+            #career-paths .owner-info-card,
+            #career-paths .custom-player,
+            #career-paths .custom-player-overlay-btn,
+            #career-paths .backdrop-blur-sm {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            #career-paths .reveal,
+            #career-paths .reveal-left,
+            #career-paths .reveal-right {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
     </style>
 </head>
 
@@ -2727,6 +2769,9 @@
         var galleryLightboxMedia = document.getElementById('galleryLightboxMedia');
         var galleryLightboxTitle = document.getElementById('galleryLightboxTitle');
         var galleryLightboxClose = document.getElementById('galleryLightboxClose');
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var isPhoneViewport = window.matchMedia('(max-width: 768px)').matches;
+        var lowPowerMode = reduceMotion || isPhoneViewport;
 
         if (promoTrack) {
             var promoIndex = 0;
@@ -2748,7 +2793,7 @@
 
             function startPromoAutoplay() {
                 clearInterval(promoTimer);
-                if (promoCount <= 1) return;
+                if (promoCount <= 1 || lowPowerMode) return;
                 promoTimer = setInterval(function () {
                     renderPromo(promoIndex + 1);
                 }, promoInterval);
@@ -2935,6 +2980,44 @@
                 });
             }
         });
+
+        var decorativeVideos = Array.prototype.slice.call(document.querySelectorAll('video:not([controls])'))
+            .filter(function (video) {
+                return !galleryLightbox || !galleryLightbox.contains(video);
+            });
+
+        if (decorativeVideos.length) {
+            if (lowPowerMode || !('IntersectionObserver' in window)) {
+                decorativeVideos.forEach(function (video) {
+                    video.pause();
+                    video.removeAttribute('autoplay');
+                    video.removeAttribute('loop');
+                    video.preload = 'none';
+                });
+            } else {
+                var videoObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        var video = entry.target;
+                        if (entry.isIntersecting) {
+                            var playPromise = video.play();
+                            if (playPromise && typeof playPromise.catch === 'function') {
+                                playPromise.catch(function () {});
+                            }
+                        } else {
+                            video.pause();
+                        }
+                    });
+                }, { threshold: 0.35, rootMargin: '120px 0px' });
+
+                decorativeVideos.forEach(function (video) {
+                    video.muted = true;
+                    video.playsInline = true;
+                    video.loop = true;
+                    video.preload = 'metadata';
+                    videoObserver.observe(video);
+                });
+            }
+        }
 
         var navbar = document.querySelector('nav');
         window.addEventListener('scroll', function () {
