@@ -2609,32 +2609,7 @@ class PublicSiteController extends Controller
     private function careerOpenings(): array
     {
         if (! Schema::hasTable('job_openings')) {
-            return [
-                [
-                    'badge' => 'Urgent Opening',
-                    'title' => 'Senior Laravel Developer',
-                    'type' => 'Full Time',
-                    'mode' => 'On-site / Hybrid',
-                    'location' => 'Surat, Gujarat',
-                    'experience' => '3+ years',
-                    'salary' => 'Best in industry',
-                    'summary' => 'Lead backend delivery for our LMS, improve performance, and shape product architecture with a practical engineering mindset.',
-                    'skills' => ['Laravel', 'MySQL', 'REST APIs', 'Performance tuning'],
-                    'color' => 'from-[#13041f] via-[#4c1d95] to-[#9d5cff]',
-                ],
-                [
-                    'badge' => 'People Team',
-                    'title' => 'HR Executive',
-                    'type' => 'Full Time',
-                    'mode' => 'On-site',
-                    'location' => 'Surat, Gujarat',
-                    'experience' => '1-3 years',
-                    'salary' => 'Growth + incentives',
-                    'summary' => 'Support recruitment, onboarding, employee experience, and daily people operations with warmth, clarity, and ownership.',
-                    'skills' => ['Hiring coordination', 'Communication', 'Onboarding', 'Culture building'],
-                    'color' => 'from-[#1f0c05] via-[#c2410c] to-[#fb923c]',
-                ],
-            ];
+            return [];
         }
 
         $jobs = JobOpening::query()
@@ -2659,81 +2634,13 @@ class PublicSiteController extends Controller
             return $jobs;
         }
 
-        return [
-            [
-                'badge' => 'Urgent Opening',
-                'title' => 'Senior Laravel Developer',
-                'type' => 'Full Time',
-                'mode' => 'On-site / Hybrid',
-                'location' => 'Surat, Gujarat',
-                'experience' => '3+ years',
-                'salary' => 'Best in industry',
-                'summary' => 'Lead backend delivery for our LMS, improve performance, and shape product architecture with a practical engineering mindset.',
-                'skills' => ['Laravel', 'MySQL', 'REST APIs', 'Performance tuning'],
-                'color' => 'from-[#13041f] via-[#4c1d95] to-[#9d5cff]',
-            ],
-            [
-                'badge' => 'People Team',
-                'title' => 'HR Executive',
-                'type' => 'Full Time',
-                'mode' => 'On-site',
-                'location' => 'Surat, Gujarat',
-                'experience' => '1-3 years',
-                'salary' => 'Growth + incentives',
-                'summary' => 'Support recruitment, onboarding, employee experience, and daily people operations with warmth, clarity, and ownership.',
-                'skills' => ['Hiring coordination', 'Communication', 'Onboarding', 'Culture building'],
-                'color' => 'from-[#1f0c05] via-[#c2410c] to-[#fb923c]',
-            ],
-        ];
+        return [];
     }
 
     private function workshopListings(): array
     {
         if (! Schema::hasTable('workshops')) {
-            return [
-                [
-                    'id' => 0,
-                    'badge' => 'Ongoing',
-                    'title' => 'Generative AI Build Lab',
-                    'subtitle' => 'Prompt systems, AI tools, automation demos, and guided project framing',
-                    'date' => 'April 20, 2026',
-                    'time' => '7:00 PM to 9:30 PM IST',
-                    'format' => 'Live online intensive',
-                    'venue' => 'Online live studio',
-                    'audience' => 'Students, freshers, and working professionals',
-                    'mentor' => 'Lead AI mentor panel',
-                    'seats' => '38 seats left',
-                    'price' => 499,
-                    'currency' => 'INR',
-                    'price_label' => 'INR 499',
-                    'payment_enabled' => false,
-                    'payment_qr_code' => null,
-                    'payment_instructions' => 'Registration details will be shared by the workshop team.',
-                    'accent' => 'from-[#13041f] via-[#4d1f87] to-[#9d5cff]',
-                    'highlights' => ['Prompt design frameworks', 'Hands-on AI workflow build', 'Post-workshop practice kit'],
-                ],
-                [
-                    'id' => 0,
-                    'badge' => 'Upcoming',
-                    'title' => 'Full Stack API Sprint',
-                    'subtitle' => 'Build a modern backend flow with API design, auth, testing, and deployment thinking',
-                    'date' => 'April 27, 2026',
-                    'time' => '11:00 AM to 2:00 PM IST',
-                    'format' => 'Weekend live workshop',
-                    'venue' => 'Surat campus and online hybrid',
-                    'audience' => 'Developers and career-switch learners',
-                    'mentor' => 'Engineering mentors',
-                    'seats' => '52 seats left',
-                    'price' => 699,
-                    'currency' => 'INR',
-                    'price_label' => 'INR 699',
-                    'payment_enabled' => false,
-                    'payment_qr_code' => null,
-                    'payment_instructions' => 'Registration details will be shared by the workshop team.',
-                    'accent' => 'from-[#1a062d] via-[#5b21b6] to-[#c084fc]',
-                    'highlights' => ['REST architecture walkthrough', 'Auth and middleware patterns', 'Deployment checklist'],
-                ],
-            ];
+            return [];
         }
 
         $workshops = Workshop::query()
@@ -2767,50 +2674,7 @@ class PublicSiteController extends Controller
             return $workshops;
         }
 
-        return [
-            [
-                'id' => 0,
-                'badge' => 'Ongoing',
-                'title' => 'Generative AI Build Lab',
-                'subtitle' => 'Prompt systems, AI tools, automation demos, and guided project framing',
-                'date' => 'April 20, 2026',
-                'time' => '7:00 PM to 9:30 PM IST',
-                'format' => 'Live online intensive',
-                'venue' => 'Online live studio',
-                'audience' => 'Students, freshers, and working professionals',
-                'mentor' => 'Lead AI mentor panel',
-                'seats' => '38 seats left',
-                'price' => 499,
-                'currency' => 'INR',
-                'price_label' => 'INR 499',
-                'payment_enabled' => false,
-                'payment_qr_code' => null,
-                'payment_instructions' => 'Registration details will be shared by the workshop team.',
-                'accent' => 'from-[#13041f] via-[#4d1f87] to-[#9d5cff]',
-                'highlights' => ['Prompt design frameworks', 'Hands-on AI workflow build', 'Post-workshop practice kit'],
-            ],
-            [
-                'id' => 0,
-                'badge' => 'Upcoming',
-                'title' => 'Full Stack API Sprint',
-                'subtitle' => 'Build a modern backend flow with API design, auth, testing, and deployment thinking',
-                'date' => 'April 27, 2026',
-                'time' => '11:00 AM to 2:00 PM IST',
-                'format' => 'Weekend live workshop',
-                'venue' => 'Surat campus and online hybrid',
-                'audience' => 'Developers and career-switch learners',
-                'mentor' => 'Engineering mentors',
-                'seats' => '52 seats left',
-                'price' => 699,
-                'currency' => 'INR',
-                'price_label' => 'INR 699',
-                'payment_enabled' => false,
-                'payment_qr_code' => null,
-                'payment_instructions' => 'Registration details will be shared by the workshop team.',
-                'accent' => 'from-[#1a062d] via-[#5b21b6] to-[#c084fc]',
-                'highlights' => ['REST architecture walkthrough', 'Auth and middleware patterns', 'Deployment checklist'],
-            ],
-        ];
+        return [];
     }
 
     private function validateWorkshopRegistrationPayload(Request $request, bool $withPaymentProof = false): array

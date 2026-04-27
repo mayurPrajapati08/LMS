@@ -24,9 +24,9 @@
     ];
 
     $aboutStats = [
-        ['label' => 'Certificates', 'value' => number_format($siteStats['certificates']).'+'],
-        ['label' => 'Student Reviews', 'value' => number_format($siteStats['reviews_count']).'+'],
-        ['label' => 'Average Rating', 'value' => number_format($siteStats['avg_rating'], 1).'/5'],
+        ['label' => 'Certificates', 'value' => '300'.'+'],
+        ['label' => 'Student Reviews', 'value' => '380'.'+'],
+        ['label' => 'Average Rating', 'value' => '4.8/5'],
     ];
 
     $achievementGalleryItems = collect($achievementGallery ?? [])

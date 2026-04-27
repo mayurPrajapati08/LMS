@@ -1,4 +1,8 @@
 @php
+    $studentAvatarStorageAction = \Illuminate\Support\Facades\Route::has('hr.dashboard.student-avatar-storage')
+        ? route('hr.dashboard.student-avatar-storage')
+        : url('/hr/dashboard/student-avatar-storage');
+
     $statCards = [
         ['label' => 'Active Slides', 'value' => $stats['slides'] ?? 0, 'icon' => 'slideshow', 'tone' => 'sky'],
         ['label' => 'Founder Media', 'value' => $stats['founder_media'] ?? 0, 'icon' => 'play_circle', 'tone' => 'sky'],
@@ -87,6 +91,13 @@
 
     <main class="px-4 py-8 md:ml-64 md:px-8">
         <div class="mx-auto max-w-7xl space-y-8">
+            @if (session('status'))
+                <div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">{{ session('status') }}</div>
+            @endif
+            @if ($errors->any())
+                <div class="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">{{ $errors->first() }}</div>
+            @endif
+
             <section class="mesh-card relative overflow-hidden rounded-[2.2rem] bg-[linear-gradient(135deg,#081f3a_0%,#0f4c81_45%,#22c1c3_100%)] px-6 py-7 text-white shadow-[0_32px_90px_rgba(8,31,58,0.28)] md:px-8 md:py-8">
                 <div class="relative z-10 grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-end">
                     <div>
@@ -125,6 +136,30 @@
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <section class="dashboard-panel p-6 md:p-7">
+                <div class="flex flex-wrap items-end justify-between gap-4">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-[0.24em] text-sky-700">Student Profile Photos</p>
+                        <h2 class="mt-2 font-headline text-2xl font-extrabold text-slate-900">Avatar upload storage provider</h2>
+                        <p class="mt-2 text-sm text-slate-500">Choose where student-uploaded profile photos are stored from now on.</p>
+                    </div>
+                </div>
+                <form action="{{ $studentAvatarStorageAction }}" class="mt-6 grid gap-4 md:grid-cols-[1fr_auto]" method="POST">
+                    @csrf
+                    <div>
+                        <label class="mb-2 block text-xs font-bold uppercase tracking-[0.16em] text-slate-500" for="student_avatar_upload_provider">Storage Provider</label>
+                        <select class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100" id="student_avatar_upload_provider" name="student_avatar_upload_provider">
+                            <option value="cloudinary" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'cloudinary')>Cloudinary (Recommended)</option>
+                            <option value="cloudflare" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'cloudflare')>Cloudflare R2</option>
+                            <option value="local" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'local')>Local Server</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(2,132,199,0.18)]" type="submit">Save Setting</button>
+                    </div>
+                </form>
             </section>
 
             <section class="dashboard-panel p-6 md:p-7">

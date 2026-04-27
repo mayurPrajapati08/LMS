@@ -1,6 +1,6 @@
 @php
-    $activeVideoProvider = old('video_provider', $founderMedia->video_provider ?? 'url');
-    $activePosterProvider = old('poster_provider', $founderMedia->poster_provider ?? 'url');
+    $activeVideoProvider = old('video_provider', $founderMedia->video_provider ?? 'cloudinary');
+    $activePosterProvider = old('poster_provider', $founderMedia->poster_provider ?? 'cloudinary');
     $activeVideoProvider = $activeVideoProvider === 'cloud' ? 'cloudflare' : $activeVideoProvider;
     $activePosterProvider = $activePosterProvider === 'cloud' ? 'cloudflare' : $activePosterProvider;
 @endphp

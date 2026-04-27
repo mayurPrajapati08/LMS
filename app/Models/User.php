@@ -20,6 +20,7 @@ use App\Models\Certificate;
 use App\Models\Video;
 use App\Models\Inquiry;
 use App\Models\WorkshopRegistration;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -156,11 +157,39 @@ class User extends Authenticatable implements MustVerifyEmail
     public function avatarUrl(int $size = 128): string
     {
         if ($this->avatar_path) {
-            if (str_starts_with($this->avatar_path, 'http://') || str_starts_with($this->avatar_path, 'https://')) {
-                return $this->avatar_path;
+            $avatarPath = trim((string) $this->avatar_path);
+
+            if (str_starts_with($avatarPath, '//')) {
+                $avatarPath = 'https:'.$avatarPath;
             }
 
-            return asset($this->avatar_path);
+            if (str_starts_with($avatarPath, 'http://') || str_starts_with($avatarPath, 'https://')) {
+                $host = parse_url($avatarPath, PHP_URL_HOST);
+                $isGoogleAvatar = is_string($host) && Str::contains(strtolower($host), 'googleusercontent.com');
+
+                if ($isGoogleAvatar) {
+                    $query = [];
+                    parse_str((string) parse_url($avatarPath, PHP_URL_QUERY), $query);
+                    $query['sz'] = max(64, min(1024, $size * 2));
+
+                    $scheme = (string) parse_url($avatarPath, PHP_URL_SCHEME);
+                    $authority = (string) parse_url($avatarPath, PHP_URL_HOST);
+                    $port = parse_url($avatarPath, PHP_URL_PORT);
+                    $path = (string) parse_url($avatarPath, PHP_URL_PATH);
+                    $fragment = (string) parse_url($avatarPath, PHP_URL_FRAGMENT);
+
+                    $avatarPath = $scheme.'://'.$authority.($port ? ':'.$port : '').$path;
+                    $avatarPath .= '?'.http_build_query($query);
+
+                    if ($fragment !== '') {
+                        $avatarPath .= '#'.$fragment;
+                    }
+                }
+
+                return $avatarPath;
+            }
+
+            return asset($avatarPath);
         }
 
         return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&background=EEF2FF&color=312E81&size='.$size;

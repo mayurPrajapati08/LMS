@@ -22,7 +22,7 @@
         return $student;
     });
 
-    $studentProfiles = $placementStories->take(9)->values()->map(function ($student, $index) use ($placementImagePool) {
+    $studentProfiles = $placementStories->take(12)->values()->map(function ($student, $index) use ($placementImagePool) {
         $student['avatar'] = $student['avatar'] ?? $placementImagePool[$index % count($placementImagePool)];
         $student['company'] = $student['company'] ?? 'Hiring Partner';
         $student['role'] = $student['role'] ?? 'Placed learner';
@@ -332,15 +332,15 @@
                         <div class="mt-10 grid gap-4 sm:grid-cols-3">
                             <div class="placement-glass rounded-[1.6rem] p-5">
                                 <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/56">Learners</p>
-                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['students']) }}+</p>
+                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">300+</p>
                             </div>
                             <div class="placement-glass rounded-[1.6rem] p-5">
                                 <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/56">Certificates</p>
-                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['certificates']) }}+</p>
+                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">350+</p>
                             </div>
                             <div class="placement-glass rounded-[1.6rem] p-5">
                                 <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-white/56">Average Rating</p>
-                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">{{ number_format($siteStats['avg_rating'], 1) }}/5</p>
+                                <p class="mt-3 font-headline text-3xl font-extrabold text-white">4.8/5</p>
                             </div>
                         </div>
                     </div>

@@ -10,10 +10,158 @@ class PublicMarketingContentSeeder extends Seeder
 {
     public function run(): void
     {
+        $this->seedSlides();
+        $this->seedFounderMedia();
         $this->seedAchievements();
         $this->seedStories();
         $this->seedOfflineCourses();
         $this->seedWorkshops();
+        $this->seedJobOpenings();
+    }
+
+    private function seedSlides(): void
+    {
+        if (! Schema::hasTable('home_slides')) {
+            return;
+        }
+
+        $rows = array (
+  0 => 
+  array (
+    'id' => 1,
+    'eyebrow' => NULL,
+    'title' => 'Data Science',
+    'highlight' => '30+ Projects, Python + ML, Portfolio Ready',
+    'description' => 'Learn Python, statistics, machine learning, and model deployment with industry projects.',
+    'badge' => 'Carrer Track',
+    'accent' => NULL,
+    'stat_label' => NULL,
+    'stat_value' => NULL,
+    'media_type' => NULL,
+    'media_url' => NULL,
+    'poster_url' => NULL,
+    'image' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777266635/lms/course-thumbnails/home/slides/data-science-image-hqrvzyp2.jpg',
+    'primary_url' => '/course',
+    'primary_label' => 'Explore Data Science',
+    'secondary_url' => NULL,
+    'secondary_label' => NULL,
+    'is_active' => 1,
+    'sort_order' => 0,
+    'created_at' => '2026-04-27 05:10:27',
+    'updated_at' => '2026-04-27 05:19:47',
+  ),
+  1 => 
+  array (
+    'id' => 2,
+    'eyebrow' => NULL,
+    'title' => 'Data Anyaltics',
+    'highlight' => 'Dashboard Projects, SQL + BI Tools, Business Insights',
+    'description' => 'Master Excel, SQL, Power BI, and storytelling dashboards used by top companies.',
+    'badge' => 'Job Focused',
+    'accent' => NULL,
+    'stat_label' => NULL,
+    'stat_value' => NULL,
+    'media_type' => NULL,
+    'media_url' => NULL,
+    'poster_url' => NULL,
+    'image' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777266801/lms/course-thumbnails/home/slides/data-anyaltics-image-a6xnwevg.jpg',
+    'primary_url' => '/course',
+    'primary_label' => 'Explore Data Analytics',
+    'secondary_url' => NULL,
+    'secondary_label' => NULL,
+    'is_active' => 1,
+    'sort_order' => 0,
+    'created_at' => '2026-04-27 05:13:13',
+    'updated_at' => '2026-04-27 05:19:37',
+  ),
+  2 => 
+  array (
+    'id' => 3,
+    'eyebrow' => NULL,
+    'title' => 'Agentic AI',
+    'highlight' => 'AI Agents, Tool Calling, Automation Systems',
+    'description' => 'Design AI workflows with tools, memory, and multi-step automation for real use cases.',
+    'badge' => 'Next Gen',
+    'accent' => NULL,
+    'stat_label' => NULL,
+    'stat_value' => NULL,
+    'media_type' => NULL,
+    'media_url' => NULL,
+    'poster_url' => NULL,
+    'image' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777266929/lms/course-thumbnails/home/slides/agentic-ai-image-dd4topab.jpg',
+    'primary_url' => '/course',
+    'primary_label' => 'Explore Agentic AI',
+    'secondary_url' => NULL,
+    'secondary_label' => NULL,
+    'is_active' => 1,
+    'sort_order' => 2,
+    'created_at' => '2026-04-27 05:15:22',
+    'updated_at' => '2026-04-27 05:19:59',
+  ),
+  3 => 
+  array (
+    'id' => 4,
+    'eyebrow' => NULL,
+    'title' => 'Generative AI',
+    'highlight' => 'LLM Apps, Prompt Design, RAG + Chatbots',
+    'description' => 'Learn prompt engineering, RAG, chatbots, and AI app development for production.',
+    'badge' => 'Trending',
+    'accent' => NULL,
+    'stat_label' => NULL,
+    'stat_value' => NULL,
+    'media_type' => NULL,
+    'media_url' => NULL,
+    'poster_url' => NULL,
+    'image' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777267089/lms/course-thumbnails/home/slides/generative-ai-image-ticygdnl.jpg',
+    'primary_url' => '/course',
+    'primary_label' => 'Explore Generative AI',
+    'secondary_url' => NULL,
+    'secondary_label' => NULL,
+    'is_active' => 1,
+    'sort_order' => 0,
+    'created_at' => '2026-04-27 05:18:01',
+    'updated_at' => '2026-04-27 05:19:11',
+  ),
+);
+
+        foreach ($rows as $row) {
+            DB::table('home_slides')->updateOrInsert(
+                ['id' => $row['id']],
+                $row
+            );
+        }
+    }
+
+    private function seedFounderMedia(): void
+    {
+        if (! Schema::hasTable('home_founder_media')) {
+            return;
+        }
+
+        $rows = array (
+  0 => 
+  array (
+    'id' => 1,
+    'eyebrow' => NULL,
+    'title' => NULL,
+    'description' => NULL,
+    'badge' => NULL,
+    'video_provider' => 'url',
+    'video_url' => 'https://res.cloudinary.com/dqxg5hhfi/video/upload/v1777095655/CODE_IN_YOUR_SELF_DEMO_2758448_tnolym.mp4',
+    'poster_provider' => 'url',
+    'poster_url' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777111009/owner_1.0_ctntmj.jpg',
+    'is_active' => 1,
+    'created_at' => '2026-04-16 10:13:29',
+    'updated_at' => '2026-04-25 09:59:13',
+  ),
+);
+
+        foreach ($rows as $row) {
+            DB::table('home_founder_media')->updateOrInsert(
+                ['id' => $row['id']],
+                $row
+            );
+        }
     }
 
     private function seedAchievements(): void
@@ -883,6 +1031,66 @@ class PublicMarketingContentSeeder extends Seeder
     'created_at' => '2026-04-16 09:38:38',
     'updated_at' => '2026-04-23 11:27:29',
   ),
+  43 => 
+  array (
+    'id' => 44,
+    'kind' => 'showcase',
+    'gallery_category' => NULL,
+    'gallery_category_order' => 0,
+    'eyebrow' => 'Career Outcomes',
+    'title' => 'Learners move from guided classroom practice to stronger interview confidence.',
+    'copy' => 'Our achievement stories reflect project work, mentor reviews, mock interviews, and portfolio support that help students present themselves more clearly.',
+    'stat' => 'Placement and portfolio support',
+    'icon' => 'workspace_premium',
+    'points' => '["Project-driven learning with mentor feedback","Interview readiness and communication support","Portfolio and resume guidance throughout the journey"]',
+    'media_url' => 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80',
+    'media_type' => 'image',
+    'media_provider' => 'url',
+    'is_active' => 1,
+    'sort_order' => 10,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+  ),
+  44 => 
+  array (
+    'id' => 45,
+    'kind' => 'showcase',
+    'gallery_category' => NULL,
+    'gallery_category_order' => 0,
+    'eyebrow' => 'Classroom Experience',
+    'title' => 'Offline learning stays practical, structured, and focused on real execution.',
+    'copy' => 'From lab sessions to review rounds, these highlights help future learners understand how the classroom experience feels before they enroll.',
+    'stat' => 'Offline learning in action',
+    'icon' => 'school',
+    'points' => '["Mentor-led classroom batches with limited seats","Weekly practical work and revision support","Consistent learner progress through guided sessions"]',
+    'media_url' => 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80',
+    'media_type' => 'image',
+    'media_provider' => 'url',
+    'is_active' => 1,
+    'sort_order' => 20,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+  ),
+  45 => 
+  array (
+    'id' => 46,
+    'kind' => 'showcase',
+    'gallery_category' => NULL,
+    'gallery_category_order' => 0,
+    'eyebrow' => 'Community Proof',
+    'title' => 'Reviews, event captures, and learner milestones make the brand feel credible.',
+    'copy' => 'This gallery-ready content supports the homepage, about page, and placements section with reusable assets you can expand anytime.',
+    'stat' => 'Reusable media for public pages',
+    'icon' => 'photo_library',
+    'points' => '["Achievement media grouped by category","Student-review videos can live beside image galleries","Easy to replace with final production assets later"]',
+    'media_url' => 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
+    'media_type' => 'image',
+    'media_provider' => 'url',
+    'is_active' => 1,
+    'sort_order' => 30,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+  ),
 );
 
         foreach ($rows as $row) {
@@ -979,10 +1187,10 @@ class PublicMarketingContentSeeder extends Seeder
     'package' => '3.5 LPA',
     'shared_at' => '2006-03-20',
     'is_active' => 1,
-    'show_in_placement_hero' => 0,
+    'show_in_placement_hero' => 1,
     'sort_order' => 0,
     'created_at' => '2026-04-14 10:47:05',
-    'updated_at' => '2026-04-23 11:30:53',
+    'updated_at' => '2026-04-27 05:34:51',
   ),
   4 => 
   array (
@@ -1021,10 +1229,10 @@ class PublicMarketingContentSeeder extends Seeder
     'package' => '4 LPA',
     'shared_at' => NULL,
     'is_active' => 1,
-    'show_in_placement_hero' => 0,
+    'show_in_placement_hero' => 1,
     'sort_order' => 0,
     'created_at' => '2026-04-14 11:49:32',
-    'updated_at' => '2026-04-23 11:30:23',
+    'updated_at' => '2026-04-27 05:23:44',
   ),
   6 => 
   array (
@@ -1147,10 +1355,10 @@ class PublicMarketingContentSeeder extends Seeder
     'package' => '12 LPA',
     'shared_at' => NULL,
     'is_active' => 1,
-    'show_in_placement_hero' => 0,
+    'show_in_placement_hero' => 1,
     'sort_order' => 0,
     'created_at' => '2026-04-16 05:27:37',
-    'updated_at' => '2026-04-23 11:29:53',
+    'updated_at' => '2026-04-27 05:23:27',
   ),
   12 => 
   array (
@@ -1214,6 +1422,111 @@ class PublicMarketingContentSeeder extends Seeder
     'sort_order' => 4,
     'created_at' => '2026-04-16 06:00:43',
     'updated_at' => '2026-04-23 11:34:40',
+  ),
+  15 => 
+  array (
+    'id' => 23,
+    'type' => 'success_story',
+    'name' => 'Neha Kapoor',
+    'course' => 'Data Analytics with AI',
+    'comment' => 'The batches felt personal and practical. I always knew what to work on next, and the mentor review sessions kept me consistent through the course.',
+    'avatar' => 'https://ui-avatars.com/api/?name=Neha+Kapoor&background=F3E8FF&color=6B21A8&size=320',
+    'media_type' => 'image',
+    'media_provider' => 'url',
+    'rating' => 5,
+    'company' => NULL,
+    'role' => NULL,
+    'package' => NULL,
+    'shared_at' => '2026-03-08',
+    'is_active' => 1,
+    'show_in_placement_hero' => 0,
+    'sort_order' => 50,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+  ),
+  16 => 
+  array (
+    'id' => 24,
+    'type' => 'success_story',
+    'name' => 'Arjun Mehta',
+    'course' => 'Generative AI',
+    'comment' => 'It felt more like a real learning community than a standard course. The project practice and mentor support made portfolio building easier.',
+    'avatar' => 'https://ui-avatars.com/api/?name=Arjun+Mehta&background=F3E8FF&color=6B21A8&size=320',
+    'media_type' => 'image',
+    'media_provider' => 'url',
+    'rating' => 5,
+    'company' => NULL,
+    'role' => NULL,
+    'package' => NULL,
+    'shared_at' => '2026-02-17',
+    'is_active' => 1,
+    'show_in_placement_hero' => 0,
+    'sort_order' => 60,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+  ),
+  17 => 
+  array (
+    'id' => 25,
+    'type' => 'success_story',
+    'name' => 'Sana Ali',
+    'course' => 'Data Science with AI',
+    'comment' => 'I liked how easy it was to ask questions, get direction, and keep improving without feeling lost during the roadmap and assignment work.',
+    'avatar' => 'https://ui-avatars.com/api/?name=Sana+Ali&background=F3E8FF&color=6B21A8&size=320',
+    'media_type' => 'image',
+    'media_provider' => 'url',
+    'rating' => 5,
+    'company' => NULL,
+    'role' => NULL,
+    'package' => NULL,
+    'shared_at' => '2026-01-12',
+    'is_active' => 1,
+    'show_in_placement_hero' => 0,
+    'sort_order' => 70,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+  ),
+  18 => 
+  array (
+    'id' => 26,
+    'type' => 'placement',
+    'name' => 'Surekha',
+    'course' => 'Data Analytics',
+    'comment' => 'The classes felt personal and practical. I always knew what to work on next, and the mentor feedback kept me consistent.',
+    'avatar' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777267706/lms/course-thumbnails/home/stories/surekha-nxhifhlt.jpg',
+    'media_type' => 'image',
+    'media_provider' => 'cloudinary',
+    'rating' => 5,
+    'company' => 'Giant Eagle',
+    'role' => 'Analyst Associate',
+    'package' => '8 LPA',
+    'shared_at' => NULL,
+    'is_active' => 1,
+    'show_in_placement_hero' => 1,
+    'sort_order' => 0,
+    'created_at' => '2026-04-27 05:28:18',
+    'updated_at' => '2026-04-27 05:28:18',
+  ),
+  19 => 
+  array (
+    'id' => 27,
+    'type' => 'placement',
+    'name' => 'Binni',
+    'course' => 'AI/ML Enginner',
+    'comment' => 'The classes felt personal and practical. I always knew what to work on next, and the mentor feedback kept me consistent.',
+    'avatar' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777268016/lms/course-thumbnails/home/stories/binni-knsonrig.jpg',
+    'media_type' => 'image',
+    'media_provider' => 'cloudinary',
+    'rating' => 5,
+    'company' => 'Microsoft',
+    'role' => 'AI Engineer',
+    'package' => '10 LPA',
+    'shared_at' => NULL,
+    'is_active' => 1,
+    'show_in_placement_hero' => 1,
+    'sort_order' => 0,
+    'created_at' => '2026-04-27 05:33:28',
+    'updated_at' => '2026-04-27 05:33:28',
   ),
 );
 
@@ -1370,7 +1683,92 @@ challenges, and stay ahead in the ever-evolving cybersecurity field.',
     'updated_at' => '2026-04-23 11:37:49',
     'category_name' => 'Cyber Security',
   ),
+  4 => 
+  array (
+    'id' => 6,
+    'title' => 'Data Science with AI Classroom Program',
+    'slug' => 'data-science-with-ai-classroom-program',
+    'summary' => 'A classroom-first program for learners who want practical analytics, machine learning fundamentals, portfolio projects, and placement-oriented support.',
+    'details' => 'This offline program combines concept sessions, practical labs, mentor reviews, and project execution so learners can build a stronger foundation for analytics and AI-focused roles.',
+    'thumbnail' => 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+    'campus' => 'Surat Campus',
+    'schedule_label' => 'Mon, Wed, Fri | 11:00 AM to 1:00 PM',
+    'duration_label' => '6 Months',
+    'validity_label' => '12 months mentorship support',
+    'delivery_mode' => 'Offline classroom',
+    'placement_label' => 'Placement guidance with mock interviews',
+    'audience' => 'College students, freshers, and career-focused beginners',
+    'batch_size' => '25 learners per batch',
+    'language' => 'English + Hindi',
+    'level' => 'Beginner to intermediate',
+    'highlights' => '["Hands-on Python, SQL, Excel, and Power BI practice","Project reviews with mentor checkpoints","Resume, portfolio, and interview support"]',
+    'curriculum_modules' => '[{"title":"Foundation And Data Workflow","duration":"4 Weeks","topics":[{"title":"Python and logic building","details":"Variables, functions, loops, data structures, and problem-solving basics."},{"title":"SQL for analysis","details":"Queries, joins, aggregations, and reporting patterns used in practical analytics tasks."}],"project":"Mini data cleaning and reporting assignment"},{"title":"Analytics And Visualization","duration":"6 Weeks","topics":[{"title":"Excel and dashboards","details":"Cleaning, formulas, pivot tables, and business reporting workflow."},{"title":"Power BI storytelling","details":"Dashboard design, KPI framing, filters, and recruiter-friendly project presentation."}],"project":"Interactive dashboard portfolio project"},{"title":"AI Track And Placement Prep","duration":"6 Weeks","topics":[{"title":"ML basics and workflows","details":"Introductory models, evaluation thinking, and practical use cases."},{"title":"Interview preparation","details":"Mock interviews, resume framing, project explanation, and confidence-building rounds."}],"project":"End-to-end capstone with mentor review"}]',
+    'additional_benefits' => '["Weekly doubt-solving and revision hours","Career guidance sessions for placement readiness","Access to classroom notes and practice sheets"]',
+    'learner_note' => 'Best suited for learners who want consistent structure, mentor accountability, and a classroom environment.',
+    'is_active' => 1,
+    'sort_order' => 10,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+    'category_name' => 'AI/ML Engineering',
+  ),
+  5 => 
+  array (
+    'id' => 7,
+    'title' => 'Full Stack Development Offline Bootcamp',
+    'slug' => 'full-stack-development-offline-bootcamp',
+    'summary' => 'An offline full stack track covering frontend, backend, APIs, databases, project structure, and job-oriented practical builds.',
+    'details' => 'Designed for students and freshers who want to build complete web applications in a guided classroom environment with regular project reviews.',
+    'thumbnail' => 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1200&q=80',
+    'campus' => 'Surat Campus',
+    'schedule_label' => 'Tue, Thu, Sat | 3:00 PM to 5:30 PM',
+    'duration_label' => '5 Months',
+    'validity_label' => '9 months lab and mentor support',
+    'delivery_mode' => 'Offline classroom',
+    'placement_label' => 'Portfolio, Git, and interview preparation',
+    'audience' => 'College students, freshers, and aspiring full stack developers',
+    'batch_size' => '22 learners per batch',
+    'language' => 'English + Hindi',
+    'level' => 'Beginner to intermediate',
+    'highlights' => '["Frontend to backend project execution","Database design and API practice","Placement-focused portfolio building"]',
+    'curriculum_modules' => '[{"title":"Frontend Foundation","duration":"5 Weeks","topics":[{"title":"HTML, CSS, JavaScript","details":"Layouts, responsive sections, DOM logic, and UI behavior."},{"title":"Modern frontend workflow","details":"Components, reusable patterns, and practical project structure."}],"project":"Responsive marketing and dashboard UI"},{"title":"Backend And Data Layer","duration":"6 Weeks","topics":[{"title":"Server-side development","details":"Routing, controllers, validation, authentication, and application structure."},{"title":"Database and APIs","details":"Schema design, CRUD flows, API patterns, and debugging."}],"project":"Role-based LMS or admin panel build"},{"title":"Deployment And Interview Prep","duration":"4 Weeks","topics":[{"title":"Git and deployment basics","details":"Version control, production thinking, and release hygiene."},{"title":"Interview communication","details":"Resume tuning, project explanation, and technical mock sessions."}],"project":"Final capstone with mentor evaluation"}]',
+    'additional_benefits' => '["Dedicated project review days","GitHub and resume support","Placement-oriented mock interviews"]',
+    'learner_note' => 'Recommended for learners who want to build a complete developer profile through guided offline practice.',
+    'is_active' => 1,
+    'sort_order' => 20,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+    'category_name' => 'Full Stack Development',
+  ),
+  6 => 
+  array (
+    'id' => 8,
+    'title' => 'Power BI And Business Analytics Classroom Track',
+    'slug' => 'power-bi-and-business-analytics-classroom-track',
+    'summary' => 'A practical classroom program for dashboard building, business analysis thinking, data handling, and recruiter-facing portfolio output.',
+    'details' => 'This track is useful for final-year students, freshers, and professionals who want a faster transition into analytics-focused work.',
+    'thumbnail' => 'https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777268766/lms/course-thumbnails/courses/offline/power-bi-and-business-analytics-classroom-track-thumbnail-eeipamm5.jpg',
+    'campus' => 'Surat Campus',
+    'schedule_label' => 'Weekend Batch | 10:30 AM to 1:30 PM',
+    'duration_label' => '4 Months',
+    'validity_label' => '6 months mentor support',
+    'delivery_mode' => 'Offline classroom',
+    'placement_label' => 'Analytics portfolio and interview prep',
+    'audience' => 'Working professionals, career switch learners, and final-year students',
+    'batch_size' => '20 learners per batch',
+    'language' => 'English',
+    'level' => 'Beginner',
+    'highlights' => '["Business-focused dashboard design","SQL and reporting fundamentals","Practical portfolio project support"]',
+    'curriculum_modules' => '[{"title":"Analytics Core","duration":"4 Weeks","topics":[{"title":"Excel and reporting logic","details":"Formulas, pivots, dashboard planning, and KPI understanding."},{"title":"SQL basics","details":"Filtering, joins, aggregations, and business query practice."}],"project":"Operations reporting workbook"},{"title":"Power BI Delivery","duration":"5 Weeks","topics":[{"title":"Dashboard design","details":"Visual hierarchy, stakeholder readability, and insight-first storytelling."},{"title":"Presentation practice","details":"Explaining dashboards, decisions, and business impact during reviews."}],"project":"Executive dashboard presentation"}]',
+    'additional_benefits' => '["Weekend-friendly schedule for working learners","Mentor feedback on portfolio presentation","Career support for analytics interviews"]',
+    'learner_note' => 'A strong choice for learners who need a practical analytics portfolio without joining a long technical roadmap.',
+    'is_active' => 1,
+    'sort_order' => 30,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-27 05:45:59',
+    'category_name' => 'Data Science',
+  ),
 );
+
         $categoryMap = Schema::hasTable('categories')
             ? DB::table('categories')->pluck('id', 'name')->all()
             : [];
@@ -1416,10 +1814,102 @@ challenges, and stay ahead in the ever-evolving cybersecurity field.',
         }
 
         $rows = array (
+  0 => 
+  array (
+    'id' => 1,
+    'badge' => 'Ongoing',
+    'title' => 'Generative AI Build Lab',
+    'subtitle' => 'Prompt systems, AI tools, automation demos, and guided project framing for practical portfolio use.',
+    'date_label' => 'May 3, 2026',
+    'time_label' => '7:00 PM to 9:30 PM IST',
+    'format' => 'Live online intensive',
+    'venue' => 'Online live studio',
+    'audience' => 'Students, freshers, and working professionals',
+    'mentor' => 'Lead AI mentor panel',
+    'seats' => '38 seats left',
+    'price' => '90.00',
+    'currency' => 'INR',
+    'payment_enabled' => 1,
+    'payment_qr_code' => NULL,
+    'payment_instructions' => NULL,
+    'accent' => 'from-[#13041f] via-[#4d1f87] to-[#9d5cff]',
+    'highlights' => '["Prompt design frameworks","Hands-on AI workflow build","Post-workshop practice kit"]',
+    'is_active' => 1,
+    'sort_order' => 10,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-24 10:55:24',
+  ),
+  1 => 
+  array (
+    'id' => 2,
+    'badge' => 'Upcoming',
+    'title' => 'Full Stack API Sprint',
+    'subtitle' => 'Build a modern backend flow with API design, auth, testing, and deployment thinking.',
+    'date_label' => 'May 10, 2026',
+    'time_label' => '11:00 AM to 2:00 PM IST',
+    'format' => 'Weekend live workshop',
+    'venue' => 'Surat campus and online hybrid',
+    'audience' => 'Developers and career-switch learners',
+    'mentor' => 'Engineering mentors',
+    'seats' => '52 seats left',
+    'price' => '0.00',
+    'currency' => 'INR 9',
+    'payment_enabled' => 1,
+    'payment_qr_code' => NULL,
+    'payment_instructions' => NULL,
+    'accent' => 'from-[#1a062d] via-[#5b21b6] to-[#c084fc]',
+    'highlights' => '["REST architecture walkthrough","Auth and middleware patterns","Deployment checklist"]',
+    'is_active' => 1,
+    'sort_order' => 20,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-24 09:56:31',
+  ),
+  2 => 
+  array (
+    'id' => 3,
+    'badge' => 'Upcoming',
+    'title' => 'Data Analyst Dashboard Studio',
+    'subtitle' => 'Excel, SQL, dashboard storytelling, and recruiter-facing portfolio presentation.',
+    'date_label' => 'May 17, 2026',
+    'time_label' => '6:30 PM to 9:00 PM IST',
+    'format' => 'Project-first cohort workshop',
+    'venue' => 'Live analytics lab',
+    'audience' => 'Aspiring analysts and final-year students',
+    'mentor' => 'Analytics practice team',
+    'seats' => '41 seats left',
+    'price' => '0.00',
+    'currency' => 'INR',
+    'payment_enabled' => 0,
+    'payment_qr_code' => NULL,
+    'payment_instructions' => NULL,
+    'accent' => 'from-[#14051f] via-[#3f1781] to-[#8b5cf6]',
+    'highlights' => '["Dashboard planning template","SQL insight mapping","Portfolio refinement support"]',
+    'is_active' => 1,
+    'sort_order' => 30,
+    'created_at' => '2026-04-23 11:51:43',
+    'updated_at' => '2026-04-23 11:51:43',
+  ),
 );
 
         foreach ($rows as $row) {
             DB::table('workshops')->updateOrInsert(
+                ['id' => $row['id']],
+                $row
+            );
+        }
+    }
+
+    private function seedJobOpenings(): void
+    {
+        if (! Schema::hasTable('job_openings')) {
+            return;
+        }
+
+        $rows = array (
+);
+
+        foreach ($rows as $row) {
+            DB::table('job_openings')->updateOrInsert(
                 ['id' => $row['id']],
                 $row
             );

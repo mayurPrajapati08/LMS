@@ -2137,7 +2137,7 @@
                                                 <div class="absolute left-1/2 top-0 z-20 -translate-x-1/2">
                                                     <div class="rounded-full bg-[linear-gradient(135deg,#efe2ff_0%,#ffffff_100%)] p-1.5 shadow-[0_18px_40px_rgba(132,93,168,0.18)]">
                                                         @if ($studentAvatar !== '' && (($student['media_type'] ?? 'image') === 'video'))
-                                                            <video class="h-24 w-24 rounded-full object-cover object-top transition duration-700 group-hover:-translate-y-1" autoplay loop muted playsinline preload="metadata">
+                                                            <video class="h-24 w-24 rounded-full object-cover object-top transition duration-700 group-hover:-translate-y-1" muted playsinline preload="metadata">
                                                                 <source src="{{ $studentAvatar }}" />
                                                             </video>
                                                         @elseif ($studentAvatar !== '')
@@ -2293,7 +2293,7 @@
                             <div class="p-6">
                                 <div class="flex items-start gap-4">
                                     @if (($story['media_type'] ?? 'image') === 'video')
-                                        <video class="h-16 w-16 rounded-[1.4rem] object-cover shadow-[0_12px_28px_rgba(132,93,168,0.14)]" autoplay loop muted playsinline preload="metadata">
+                                        <video class="h-16 w-16 rounded-[1.4rem] object-cover shadow-[0_12px_28px_rgba(132,93,168,0.14)]" muted playsinline preload="metadata">
                                             <source src="{{ $story['avatar'] }}" />
                                         </video>
                                     @else
@@ -2640,7 +2640,7 @@
                                                                     <span class="gallery-video-slide-play">
                                                                         <span class="material-symbols-outlined text-[28px]">play_arrow</span>
                                                                     </span>
-                                                                    <video muted loop playsinline preload="metadata">
+                                                                    <video muted playsinline preload="metadata">
                                                                         <source src="{{ $videoItem['media_url'] }}" />
                                                                     </video>
                                                                 </div>
@@ -2922,7 +2922,7 @@
 
                 if (mediaType === 'video') {
                     galleryLightboxMedia.innerHTML =
-                        '<video controls autoplay playsinline poster="' + posterUrl.replace(/"/g, '&quot;') + '">' +
+                        '<video controls playsinline poster="' + posterUrl.replace(/"/g, '&quot;') + '">' +
                             '<source src="' + mediaUrl.replace(/"/g, '&quot;') + '">' +
                         '</video>';
                 } else {
@@ -2987,36 +2987,12 @@
             });
 
         if (decorativeVideos.length) {
-            if (lowPowerMode || !('IntersectionObserver' in window)) {
-                decorativeVideos.forEach(function (video) {
-                    video.pause();
-                    video.removeAttribute('autoplay');
-                    video.removeAttribute('loop');
-                    video.preload = 'none';
-                });
-            } else {
-                var videoObserver = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        var video = entry.target;
-                        if (entry.isIntersecting) {
-                            var playPromise = video.play();
-                            if (playPromise && typeof playPromise.catch === 'function') {
-                                playPromise.catch(function () {});
-                            }
-                        } else {
-                            video.pause();
-                        }
-                    });
-                }, { threshold: 0.35, rootMargin: '120px 0px' });
-
-                decorativeVideos.forEach(function (video) {
-                    video.muted = true;
-                    video.playsInline = true;
-                    video.loop = true;
-                    video.preload = 'metadata';
-                    videoObserver.observe(video);
-                });
-            }
+            decorativeVideos.forEach(function (video) {
+                video.pause();
+                video.removeAttribute('autoplay');
+                video.removeAttribute('loop');
+                video.preload = 'metadata';
+            });
         }
 
         var navbar = document.querySelector('nav');

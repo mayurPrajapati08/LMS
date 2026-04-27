@@ -35,50 +35,7 @@
         ['step' => '03', 'title' => 'Continue after class', 'copy' => 'Students leave with revision points, tasks, and resources they can use to keep practicing with confidence.'],
     ];
 
-    $featuredWorkshops = $featuredWorkshops ?? [
-        [
-            'badge' => 'Ongoing',
-            'title' => 'Generative AI Build Lab',
-            'subtitle' => 'Prompt systems, AI tools, automation demos, and guided project framing',
-            'date' => 'April 20, 2026',
-            'time' => '7:00 PM to 9:30 PM IST',
-            'format' => 'Live online intensive',
-            'venue' => 'Online live studio',
-            'audience' => 'Students, freshers, and working professionals',
-            'mentor' => 'Lead AI mentor panel',
-            'seats' => '38 seats left',
-            'accent' => 'from-[#13041f] via-[#4d1f87] to-[#9d5cff]',
-            'highlights' => ['Prompt design frameworks', 'Hands-on AI workflow build', 'Post-workshop practice kit'],
-        ],
-        [
-            'badge' => 'Upcoming',
-            'title' => 'Full Stack API Sprint',
-            'subtitle' => 'Build a modern backend flow with API design, auth, testing, and deployment thinking',
-            'date' => 'April 27, 2026',
-            'time' => '11:00 AM to 2:00 PM IST',
-            'format' => 'Weekend live workshop',
-            'venue' => 'Surat campus and online hybrid',
-            'audience' => 'Developers and career-switch learners',
-            'mentor' => 'Engineering mentors',
-            'seats' => '52 seats left',
-            'accent' => 'from-[#1a062d] via-[#5b21b6] to-[#c084fc]',
-            'highlights' => ['REST architecture walkthrough', 'Auth and middleware patterns', 'Deployment checklist'],
-        ],
-        [
-            'badge' => 'Upcoming',
-            'title' => 'Data Analyst Dashboard Studio',
-            'subtitle' => 'Excel, SQL, dashboard storytelling, and recruiter-facing portfolio presentation',
-            'date' => 'May 4, 2026',
-            'time' => '6:30 PM to 9:00 PM IST',
-            'format' => 'Project-first cohort workshop',
-            'venue' => 'Live analytics lab',
-            'audience' => 'Aspiring analysts and final-year students',
-            'mentor' => 'Analytics practice team',
-            'seats' => '41 seats left',
-            'accent' => 'from-[#14051f] via-[#3f1781] to-[#8b5cf6]',
-            'highlights' => ['Dashboard planning template', 'SQL insight mapping', 'Portfolio refinement support'],
-        ],
-    ];
+    $featuredWorkshops = $featuredWorkshops ?? [];
 
     $pastWorkshops = [
         [
@@ -1163,7 +1120,7 @@
             @endif
 
             <div class="mt-8 grid gap-6 lg:grid-cols-2 2xl:grid-cols-3">
-                @foreach ($featuredWorkshops as $workshop)
+                @forelse ($featuredWorkshops as $workshop)
                     <article class="workshop-list-card reveal {{ $loop->iteration > 1 ? 'stagger-' . min($loop->iteration, 4) : '' }}">
                         <div class="workshop-card-hero bg-gradient-to-r {{ $workshop['accent'] }}">
                             <div class="relative z-10">
@@ -1264,7 +1221,20 @@
                             </div>
                         </div>
                     </article>
-                @endforeach
+                @empty
+                    <article class="workshop-panel col-span-full rounded-[2rem] p-8 text-center">
+                        <div class="relative z-10">
+                            <h3 class="font-headline text-3xl font-extrabold text-on-surface">There are no current workshops going on right now.</h3>
+                            <p class="mx-auto mt-4 max-w-2xl text-sm leading-8 text-on-surface-variant">
+                                New workshop schedules will be announced soon. Please check back later or contact us to get notified.
+                            </p>
+                            <a href="{{ route('home.contact', ['topic' => 'workshop']) }}" class="cta-button mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white">
+                                <span class="material-symbols-outlined text-[18px]">notifications_active</span>
+                                Notify Me
+                            </a>
+                        </div>
+                    </article>
+                @endforelse
             </div>
         </section>
 
@@ -1322,10 +1292,17 @@
                     </div>
 
                     <div class="grid gap-4 sm:grid-cols-2">
-                        <button type="button" class="cta-button inline-flex items-center justify-center gap-2 rounded-[1.5rem] bg-primary px-6 py-5 text-sm font-bold text-white" data-workshop-join-open data-workshop='@json($featuredWorkshops[0])'>
-                            Join Next Workshop
-                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                        </button>
+                        @if (!empty($featuredWorkshops))
+                            <button type="button" class="cta-button inline-flex items-center justify-center gap-2 rounded-[1.5rem] bg-primary px-6 py-5 text-sm font-bold text-white" data-workshop-join-open data-workshop='@json($featuredWorkshops[0])'>
+                                Join Next Workshop
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                            </button>
+                        @else
+                            <a href="{{ route('home.contact', ['topic' => 'workshop']) }}" class="cta-button inline-flex items-center justify-center gap-2 rounded-[1.5rem] bg-primary px-6 py-5 text-sm font-bold text-white">
+                                Request Workshop Update
+                                <span class="material-symbols-outlined text-[18px]">notifications_active</span>
+                            </a>
+                        @endif
                         <a href="{{ route('home.contact') }}" class="cta-button inline-flex items-center justify-center gap-2 rounded-[1.5rem] border border-primary/12 bg-white px-6 py-5 text-sm font-bold text-primary">
                             Talk To Our Team
                             <span class="material-symbols-outlined text-[18px]">support_agent</span>

@@ -7,7 +7,7 @@
     $isCertificates = request()->is('student/certificate*');
     $isPayments = request()->is('student/payment*') || request()->is('student/payments*');
     $isSupport = request()->is('student/messages-support*') || request()->is('student/support*');
-    $isSettings = request()->is('student/seeting*') || request()->is('student/setting*');
+    $isSettings = request()->is('student/setting*') || request()->is('student/setting*');
     $user = auth()->user();
     $cartCount = $user?->cartItems()->count() ?? 0;
     $initials = collect(explode(' ', trim($user->name ?? 'User')))
@@ -26,7 +26,7 @@
         ['href' => '/student/certificate', 'label' => 'Certificates', 'icon' => 'workspace_premium', 'active' => $isCertificates],
         ['href' => '/student/payment', 'label' => 'Payments', 'icon' => 'receipt_long', 'active' => $isPayments],
         ['href' => '/student/messages-support', 'label' => 'Support', 'icon' => 'chat', 'active' => $isSupport],
-        ['href' => '/student/seeting', 'label' => 'Settings', 'icon' => 'tune', 'active' => $isSettings],
+        ['href' => '/student/setting', 'label' => 'Settings', 'icon' => 'tune', 'active' => $isSettings],
     ];
 @endphp
 
@@ -71,7 +71,7 @@
     <div class="mb-4 rounded-[1rem] border border-[#e7e0f8] bg-white/74 p-3">
         <div class="flex items-center gap-3">
             @if ($user?->avatar_path)
-                <img alt="{{ $user->name }} avatar" class="h-12 w-12 rounded-[1rem] object-cover" src="{{ $user->avatarUrl(96) }}" />
+                <img alt="{{ $user->name }} avatar" class="h-12 w-12 rounded-[1rem] object-cover" src="{{ $user->avatarUrl(96) }}" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=EEF2FF&color=312E81&size=96';" />
             @else
                 <div class="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-[#ede8ff] text-sm font-bold text-[#4f3dd4]">{{ $initials ?: 'U' }}</div>
             @endif

@@ -6,56 +6,7 @@
         ['value' => '100%', 'label' => 'collaborative culture built around guided growth and ownership'],
     ];
 
-    $openings = $openings ?? [
-        [
-            'badge' => 'Urgent Opening',
-            'title' => 'Senior Laravel Developer',
-            'type' => 'Full Time',
-            'mode' => 'On-site / Hybrid',
-            'location' => 'Surat, Gujarat',
-            'experience' => '3+ years',
-            'salary' => 'Best in industry',
-            'summary' => 'Lead backend delivery for our LMS, improve performance, and shape product architecture with a practical engineering mindset.',
-            'skills' => ['Laravel', 'MySQL', 'REST APIs', 'Performance tuning'],
-            'color' => 'from-[#13041f] via-[#4c1d95] to-[#9d5cff]',
-        ],
-        [
-            'badge' => 'New Role',
-            'title' => 'Frontend UI Designer',
-            'type' => 'Full Time',
-            'mode' => 'On-site',
-            'location' => 'Surat, Gujarat',
-            'experience' => '2+ years',
-            'salary' => 'Competitive package',
-            'summary' => 'Design high-conversion landing pages, polished learning interfaces, and campaign creatives that feel intentional and well crafted.',
-            'skills' => ['Figma', 'Tailwind CSS', 'UI systems', 'Creative direction'],
-            'color' => 'from-[#190728] via-[#5b21b6] to-[#f472b6]',
-        ],
-        [
-            'badge' => 'Faculty Role',
-            'title' => 'Data Analytics Faculty',
-            'type' => 'Full Time',
-            'mode' => 'Classroom + Online',
-            'location' => 'Surat, Gujarat',
-            'experience' => '2+ years',
-            'salary' => 'Mentor-led growth track',
-            'summary' => 'Deliver practical training in Excel, SQL, Power BI, and dashboard thinking with strong student support and project reviews.',
-            'skills' => ['Power BI', 'SQL', 'Excel', 'Teaching skills'],
-            'color' => 'from-[#071a2d] via-[#0f766e] to-[#2dd4bf]',
-        ],
-        [
-            'badge' => 'People Team',
-            'title' => 'HR Executive',
-            'type' => 'Full Time',
-            'mode' => 'On-site',
-            'location' => 'Surat, Gujarat',
-            'experience' => '1-3 years',
-            'salary' => 'Growth + incentives',
-            'summary' => 'Support recruitment, onboarding, employee experience, and daily people operations with warmth, clarity, and ownership.',
-            'skills' => ['Hiring coordination', 'Communication', 'Onboarding', 'Culture building'],
-            'color' => 'from-[#1f0c05] via-[#c2410c] to-[#fb923c]',
-        ],
-    ];
+    $openings = $openings ?? [];
 
     $teamMembers = [
         [
@@ -67,8 +18,16 @@
             'icon' => 'rocket_launch',
         ],
         [
+            'eyebrow' => 'Founder & Vision',
+            'name' => 'Harendra Singh Tomar',
+            'role' => 'Director',
+            'bio' => 'Leads the company vision with a strong focus on career-first education, strong learning experiences, and team growth that scales with quality.',
+            'highlights' => ['Product direction', 'Brand growth', 'Mentor culture'],
+            'icon' => 'rocket_launch',
+        ],
+        [
             'eyebrow' => 'People & Culture',
-            'name' => 'Riya Shah',
+            'name' => 'Joyti',
             'role' => 'HR Team Lead',
             'bio' => 'Shapes the hiring experience, onboarding flow, and employee support systems so every team member feels guided, valued, and clear about their path.',
             'highlights' => ['Talent acquisition', 'Onboarding systems', 'Team care'],
@@ -389,7 +348,7 @@
                 </div>
 
                 <div class="grid gap-6 lg:grid-cols-2">
-                    @foreach ($openings as $index => $opening)
+                    @forelse ($openings as $index => $opening)
                         <article class="career-role-card reveal stagger-{{ ($index % 4) + 1 }} bg-gradient-to-br {{ $opening['color'] }} p-[1px]">
                             <div class="h-full rounded-[calc(2rem-1px)] bg-[linear-gradient(180deg,rgba(255,255,255,0.97),rgba(247,240,255,0.94))] p-6 md:p-7">
                                 <div class="flex flex-wrap items-center justify-between gap-3">
@@ -436,7 +395,18 @@
                                 </div>
                             </div>
                         </article>
-                    @endforeach
+                    @empty
+                        <article class="reveal rounded-[2rem] border border-dashed border-outline bg-primary-soft/40 p-8 text-center lg:col-span-2">
+                            <h3 class="font-headline text-3xl font-extrabold text-on-surface">Right now there are no current job openings.</h3>
+                            <p class="mx-auto mt-4 max-w-2xl text-sm leading-8 text-on-surface-variant">
+                                We are not hiring at this moment. Please check back soon or contact our HR team for future opportunities.
+                            </p>
+                            <a href="{{ route('home.contact', ['topic' => 'career']) }}" class="cta-button mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white">
+                                <span class="material-symbols-outlined text-[18px]">forum</span>
+                                Talk to HR Team
+                            </a>
+                        </article>
+                    @endforelse
                 </div>
             </div>
         </section>

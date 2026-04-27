@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Support\CloudflareR2Storage;
+use App\Support\PlatformSettings;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
@@ -50,7 +55,7 @@ class StudentSettingsController extends Controller
 
         if ($request->hasFile('avatar')) {
             try {
-                $payload['avatar_path'] = $this->uploadAvatarToR2(
+                $payload['avatar_path'] = $this->uploadAvatarByConfiguredProvider(
                     $request->file('avatar'),
                     $student->id,
                     $validated['name']
@@ -111,10 +116,23 @@ class StudentSettingsController extends Controller
             ->symbols();
     }
 
-    private function uploadAvatarToR2($file, int $userId, string $name): string
+    private function uploadAvatarByConfiguredProvider(UploadedFile $file, int $userId, string $name): string
+    {
+        $provider = $this->normalizeAvatarProvider(
+            PlatformSettings::string('student_avatar_upload_provider', 'cloudinary')
+        );
+
+        return match ($provider) {
+            'local' => $this->uploadAvatarToLocal($file, $userId, $name),
+            'cloudinary' => $this->uploadAvatarToCloudinary($file, $userId, $name),
+            default => $this->uploadAvatarToR2($file, $userId, $name),
+        };
+    }
+
+    private function uploadAvatarToR2(UploadedFile $file, int $userId, string $name): string
     {
         $folder = trim((string) config('services.cloudflare_r2.avatar_folder', 'lms/avatars'), '/');
-        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: 'jpg'));
+        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: $file->extension() ?: 'jpg'));
         $path = $folder.'/student-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar.'.$extension;
 
         return CloudflareR2Storage::uploadPublicFile($file, $path, [
@@ -122,5 +140,75 @@ class StudentSettingsController extends Controller
             'allowed_mime_types' => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
             'max_bytes' => 5 * 1024 * 1024,
         ]);
+    }
+
+    private function uploadAvatarToLocal(UploadedFile $file, int $userId, string $name): string
+    {
+        $folder = trim((string) config('services.cloudflare_r2.avatar_folder', 'lms/avatars'), '/');
+        $extension = strtolower((string) ($file->getClientOriginalExtension() ?: $file->extension() ?: 'jpg'));
+        $filename = 'student-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar.'.$extension;
+
+        /** @var FilesystemAdapter $publicDisk */
+        $publicDisk = Storage::disk('public');
+        $stored = $publicDisk->putFileAs($folder, $file, $filename, ['visibility' => 'public']);
+
+        if (! $stored) {
+            throw new RuntimeException('Local upload failed. Please try again.');
+        }
+
+        return $publicDisk->url($stored);
+    }
+
+    private function uploadAvatarToCloudinary(UploadedFile $file, int $userId, string $name): string
+    {
+        $cloudName = (string) config('services.cloudinary.cloud_name');
+        $apiKey = (string) config('services.cloudinary.api_key');
+        $apiSecret = (string) config('services.cloudinary.api_secret');
+
+        if ($cloudName === '' || $apiKey === '' || $apiSecret === '') {
+            throw new RuntimeException('Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET first.');
+        }
+
+        $baseFolder = trim((string) config('services.cloudinary.folder', 'lms/media'), '/');
+        $targetFolder = trim($baseFolder.'/avatars', '/');
+        $publicId = 'student-'.Str::slug($name !== '' ? $name : 'user').'-'.$userId.'-avatar-'.Str::lower(Str::random(8));
+        $timestamp = time();
+
+        $signaturePayload = [
+            'folder' => $targetFolder,
+            'public_id' => $publicId,
+            'timestamp' => $timestamp,
+        ];
+        ksort($signaturePayload);
+
+        $signature = sha1(collect($signaturePayload)
+            ->map(fn ($value, $key) => $key.'='.$value)
+            ->implode('&').$apiSecret);
+
+        $response = Http::asMultipart()
+            ->attach('file', fopen($file->getRealPath(), 'r'), $file->getClientOriginalName())
+            ->post('https://api.cloudinary.com/v1_1/'.$cloudName.'/image/upload', [
+                'api_key' => $apiKey,
+                'timestamp' => $timestamp,
+                'folder' => $targetFolder,
+                'public_id' => $publicId,
+                'signature' => $signature,
+            ]);
+
+        if ($response->failed()) {
+            throw new RuntimeException($response->json('error.message') ?: 'Cloudinary upload failed. Please try again.');
+        }
+
+        return (string) ($response->json('secure_url') ?: $response->json('url') ?: '');
+    }
+
+    private function normalizeAvatarProvider(string $provider): string
+    {
+        return match (strtolower(trim($provider))) {
+            'cloudinary' => 'cloudinary',
+            'local' => 'local',
+            'cloudflare', 'cloud' => 'cloudflare',
+            default => 'cloudinary',
+        };
     }
 }

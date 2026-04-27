@@ -272,7 +272,7 @@
 
         if ($isSignup) {
             $heroBadge = 'Student Signup';
-            $heroTitle = 'Simple signup. Clear start.';
+            $heroTitle = 'Simply Signup And Start Exploring.';
             $heroDescription = 'Create your account with a cleaner layout and begin your learning journey without distractions.';
             $heroPoints = [
                 'Use your email or Google account to get started quickly.',

@@ -1,6 +1,6 @@
 @php
     $slideCount = method_exists($slides, 'total') ? $slides->total() : $slides->count();
-    $activeImageProvider = old('image_provider', 'url');
+    $activeImageProvider = old('image_provider', 'cloudinary');
     $activeImageProvider = $activeImageProvider === 'cloud' ? 'cloudflare' : $activeImageProvider;
 @endphp
 <!DOCTYPE html>

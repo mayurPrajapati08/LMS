@@ -105,9 +105,6 @@
                         <li><a class="flex items-center gap-2 text-white transition-colors hover:text-[#c084fc]" href="{{ $careerPathsUrl }}">
                             <span class="h-1 w-1 rounded-full bg-white"></span> Career Paths
                         </a></li>
-                        <li><a class="flex items-center gap-2 text-white transition-colors hover:text-[#c084fc]" href="{{ $corporateTrainingUrl }}">
-                            <span class="h-1 w-1 rounded-full bg-white"></span> Corporate Training
-                        </a></li>
                     </ul>
                 </div>
                 <div class="space-y-5">

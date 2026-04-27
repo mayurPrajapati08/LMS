@@ -37,6 +37,8 @@
         ->take(2)
         ->map(fn ($part) => strtoupper(substr($part, 0, 1)))
         ->implode('');
+    $navbarAvatar = $user?->avatarUrl(96);
+    $navbarAvatarFallback = 'https://ui-avatars.com/api/?name='.urlencode($user?->name ?? 'User').'&background=EEF2FF&color=312E81&size=96';
     $workingProfessionalMenu = [
         [
             'key' => 'data-science',
@@ -384,7 +386,7 @@
                     'border border-white/15 bg-white/10 text-white shadow-[0_14px_34px_rgba(6,2,18,0.2)] backdrop-blur-xl hover:-translate-y-0.5 hover:bg-white/14 hover:shadow-[0_20px_44px_rgba(6,2,18,0.28)]' => $isHome,
                     'border border-[#eadcf8] bg-white/85 shadow-[0_14px_32px_rgba(124,58,237,0.10)] hover:-translate-y-0.5 hover:border-[#c084fc]/40 hover:shadow-[0_20px_40px_rgba(124,58,237,0.16)]' => !$isHome,
                 ])>
-                    <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#6d28d9] via-[#8b5cf6] to-[#d946ef] text-sm font-bold text-white shadow-[0_12px_24px_rgba(124,58,237,0.35)]">{{ $initials ?: 'U' }}</span>
+                    <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover shadow-[0_12px_24px_rgba(124,58,237,0.35)]" src="{{ $navbarAvatar }}" onerror="this.onerror=null;this.src='{{ $navbarAvatarFallback }}';" />
                     <!-- <span class="flex min-w-0 flex-col pr-1 leading-tight">
                         <span @class([
                             'max-w-[120px] truncate text-sm font-semibold',
@@ -596,7 +598,7 @@
                         'border-white/10 bg-white/8 text-white' => $isHome,
                         'border-[#ece0f8] bg-white shadow-[0_12px_28px_rgba(124,58,237,0.06)]' => !$isHome,
                     ])>
-                        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#6d28d9] via-[#8b5cf6] to-[#d946ef] text-sm font-bold text-white shadow-[0_10px_22px_rgba(124,58,237,0.28)]">{{ $initials ?: 'U' }}</span>
+                        <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover shadow-[0_10px_22px_rgba(124,58,237,0.28)]" src="{{ $navbarAvatar }}" onerror="this.onerror=null;this.src='{{ $navbarAvatarFallback }}';" />
                         <span class="min-w-0 flex-1">
                             <span @class([
                                 'block truncate text-sm font-semibold',

@@ -219,7 +219,7 @@
         <div class="rounded-2xl border border-[#eadff1] bg-white px-4 py-4 shadow-[0_10px_24px_rgba(106,51,120,0.08)]">
             <div class="flex items-center gap-3">
                 @if ($user?->avatar_path)
-                    <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#eadff1]" src="{{ $user->avatarUrl(96) }}" />
+                    <img alt="{{ $user->name }} avatar" class="h-10 w-10 rounded-full object-cover ring-2 ring-[#eadff1]" src="{{ $user->avatarUrl(96) }}" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=EEF2FF&color=312E81&size=96';" />
                 @else
                     <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">{{ $initials ?: 'U' }}</div>
                 @endif

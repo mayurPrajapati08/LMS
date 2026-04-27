@@ -198,7 +198,7 @@ Route::middleware(['auth', 'verified', 'role:user'])
         Route::get('/certificate', StudentCertificatesController::class)->name('certificates');
         Route::get('/payment', StudentPaymentsController::class)->middleware('feature:student_payments_enabled')->name('payments');
 
-        Route::prefix('seeting')->controller(StudentSettingsController::class)->group(function () {
+        Route::prefix('setting')->controller(StudentSettingsController::class)->group(function () {
             Route::get('/', 'settings')->name('settings');
             Route::post('/profile', 'updateProfile')->name('settings.profile');
             Route::post('/password', 'updatePassword')->name('settings.password');
@@ -266,6 +266,7 @@ Route::middleware(['auth', 'verified', 'role:hr team,admin,super admin'])
     ->controller(HrController::class)
     ->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
+        Route::post('/dashboard/student-avatar-storage', 'updateStudentAvatarUploadSettings')->name('dashboard.student-avatar-storage');
 
         Route::prefix('slides')->name('slides')->group(function () {
             Route::get('/', 'slides')->name('');

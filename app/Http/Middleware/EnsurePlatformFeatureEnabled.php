@@ -30,11 +30,17 @@ class EnsurePlatformFeatureEnabled
                 default => 'This feature is temporarily unavailable right now. Our team is still preparing it for a smoother launch.',
             };
 
-            return response()->view('errors.coming-soon', [
+            $payload = [
                 'title' => $title,
                 'message' => $message,
                 'feature' => Str::headline(str_replace('_', ' ', $feature)),
-            ]);
+            ];
+
+            if ($request->is('student/*')) {
+                return response()->view('student.feature-locked', $payload, 503);
+            }
+
+            return response()->view('errors.503', $payload, 503);
         }
 
         return $next($request);

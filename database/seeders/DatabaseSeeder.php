@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            InstructorDashboardDemoSeeder::class,
             PublicMarketingContentSeeder::class,
         ]);
 

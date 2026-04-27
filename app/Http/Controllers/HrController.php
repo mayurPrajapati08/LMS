@@ -52,6 +52,7 @@ class HrController extends Controller
         return view('hr.dashboard', [
             'user' => $user,
             'profileAvatar' => $user->avatarUrl(96),
+            'studentAvatarUploadProvider' => PlatformSettings::string('student_avatar_upload_provider', 'cloudinary'),
             'stats' => [
                 'slides' => $hasHomeSlidesTable ? HomeSlide::query()->where('is_active', true)->count() : 0,
                 'founder_media' => $hasHomeFounderMediaTable ? HomeFounderMedia::query()->where('is_active', true)->count() : 0,
@@ -78,6 +79,26 @@ class HrController extends Controller
                 ? PublicContact::query()->latest()->take(6)->get()
                 : collect(),
         ]);
+    }
+
+    public function updateStudentAvatarUploadSettings(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'student_avatar_upload_provider' => ['required', 'in:cloudinary,cloudflare,local'],
+        ]);
+
+        AppSetting::query()->updateOrCreate(
+            ['key' => 'student_avatar_upload_provider'],
+            ['value' => $validated['student_avatar_upload_provider']]
+        );
+
+        Log::info('HR updated student avatar upload provider', [
+            'user_id' => $request->user()->id,
+            'email' => $request->user()->email,
+            'provider' => $validated['student_avatar_upload_provider'],
+        ]);
+
+        return redirect()->route('hr.dashboard')->with('status', 'Student profile photo upload setting updated successfully.');
     }
 
     public function slides(Request $request): View
@@ -131,8 +152,8 @@ class HrController extends Controller
             ]);
 
             $validated['is_active'] = $request->boolean('is_active');
-            $validated['video_provider'] = $this->normalizeMediaProvider($validated['video_provider'] ?? ($record->video_provider ?? 'url'));
-            $validated['poster_provider'] = $this->normalizeMediaProvider($validated['poster_provider'] ?? ($record->poster_provider ?? 'url'));
+            $validated['video_provider'] = $this->normalizeMediaProvider($validated['video_provider'] ?? ($record->video_provider ?? 'cloudinary'));
+            $validated['poster_provider'] = $this->normalizeMediaProvider($validated['poster_provider'] ?? ($record->poster_provider ?? 'cloudinary'));
             $validated['video_url'] = $this->resolveUploadedMedia(
                 $request,
                 'video_url',
@@ -739,7 +760,7 @@ class HrController extends Controller
 
         $validated['is_active'] = $request->boolean('is_active');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
-        $validated['image_provider'] = $this->normalizeMediaProvider($validated['image_provider'] ?? 'url');
+        $validated['image_provider'] = $this->normalizeMediaProvider($validated['image_provider'] ?? 'cloudinary');
         $validated['image'] = $this->resolveUploadedMedia(
             $request,
             'image',
@@ -808,7 +829,7 @@ class HrController extends Controller
         $validated['payment_enabled'] = $request->boolean('payment_enabled');
         $validated['price'] = $validated['price'] ?? 0;
         $validated['currency'] = Str::upper((string) ($validated['currency'] ?? 'INR'));
-        $validated['payment_qr_code_provider'] = $this->normalizeMediaProvider($request->hasFile('payment_qr_code_file') ? 'local' : ($validated['payment_qr_code_provider'] ?? 'url'));
+        $validated['payment_qr_code_provider'] = $this->normalizeMediaProvider($request->hasFile('payment_qr_code_file') ? ($validated['payment_qr_code_provider'] ?? 'cloudinary') : ($validated['payment_qr_code_provider'] ?? 'cloudinary'));
         $validated['payment_qr_code'] = $this->resolveUploadedMedia(
             $request,
             'payment_qr_code',
@@ -851,7 +872,7 @@ class HrController extends Controller
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['is_active'] = $request->boolean('is_active');
         $validated['show_in_placement_hero'] = $validated['type'] === 'placement' ? $request->boolean('show_in_placement_hero') : false;
-        $validated['media_provider'] = $this->normalizeMediaProvider($validated['media_provider'] ?? ($story->media_provider ?? 'url'));
+        $validated['media_provider'] = $this->normalizeMediaProvider($validated['media_provider'] ?? ($story->media_provider ?? 'cloudinary'));
         $validated['media_type'] = $validated['media_type'] ?? ($story->media_type ?? 'image');
         $validated['avatar'] = $this->resolveUploadedMedia(
             $request,
@@ -908,7 +929,7 @@ class HrController extends Controller
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
-        $validated['thumbnail_provider'] = $this->normalizeMediaProvider($validated['thumbnail_provider'] ?? ($course?->thumbnail_provider ?? 'url'));
+        $validated['thumbnail_provider'] = $this->normalizeMediaProvider($validated['thumbnail_provider'] ?? ($course?->thumbnail_provider ?? 'cloudinary'));
         $validated['thumbnail'] = $this->resolveUploadedMedia(
             $request,
             'thumbnail',
@@ -1005,7 +1026,7 @@ class HrController extends Controller
         $validated['points'] = $this->normalizeListInput($validated['points'] ?? '');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
         $validated['is_active'] = $request->boolean('is_active');
-        $validated['media_provider'] = $this->normalizeMediaProvider($validated['media_provider'] ?? ($achievement->media_provider ?? 'url'));
+        $validated['media_provider'] = $this->normalizeMediaProvider($validated['media_provider'] ?? ($achievement->media_provider ?? 'cloudinary'));
         $validated['media_type'] = $validated['media_type'] ?? ($achievement->media_type ?? 'image');
         $validated['media_url'] = $this->resolveUploadedMedia(
             $request,

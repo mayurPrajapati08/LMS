@@ -360,7 +360,7 @@
         <div class="mt-auto rounded-2xl border border-[#e6d6f5] bg-white/80 px-3.5 py-3.5 shadow-[0_10px_24px_rgba(75,35,86,0.08)]">
         <div class="flex items-center gap-3">
             @if ($user?->avatar_path)
-                <img src="{{ $user->avatarUrl(80) }}" alt="{{ $user->name }}" class="w-10 h-10 rounded-full object-cover ring-2 ring-white/80" />
+                <img src="{{ $user->avatarUrl(80) }}" alt="{{ $user->name }}" class="w-10 h-10 rounded-full object-cover ring-2 ring-white/80" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=EEF2FF&color=312E81&size=80';" />
             @else
                 <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">{{ $initials ?: 'U' }}</div>
             @endif

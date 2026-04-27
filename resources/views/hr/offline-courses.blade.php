@@ -1,6 +1,6 @@
 @php
     $courseCount = method_exists($offlineCourses, 'total') ? $offlineCourses->total() : $offlineCourses->count();
-    $activeThumbnailProvider = old('thumbnail_provider', $editingCourse->thumbnail_provider ?? 'local');
+    $activeThumbnailProvider = old('thumbnail_provider', $editingCourse->thumbnail_provider ?? 'cloudinary');
     $activeThumbnailProvider = $activeThumbnailProvider === 'cloud' ? 'cloudflare' : $activeThumbnailProvider;
     $editingCurriculum = collect(old('curriculum_modules', $editingCourse->curriculum_modules ?? []))
         ->map(function ($module) {

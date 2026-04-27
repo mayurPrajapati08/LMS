@@ -114,13 +114,14 @@ class AuthController extends Controller
             ->where('google_id', $googleUser->getId())
             ->orWhere('email', $email)
             ->first();
+        $googleAvatar = $this->resolveGoogleAvatarUrl($googleUser);
 
         if (! $user) {
             $user = User::create([
                 'name' => trim((string) ($googleUser->getName() ?: $googleUser->getNickname() ?: 'Google User')),
                 'email' => $email,
                 'google_id' => (string) $googleUser->getId(),
-                'avatar_path' => $googleUser->getAvatar(),
+                'avatar_path' => $googleAvatar,
                 'password' => Str::password(32),
                 'role_id' => $userRole->id,
                 'email_verified_at' => now(),
@@ -128,8 +129,8 @@ class AuthController extends Controller
         } else {
             $user->google_id = $user->google_id ?: (string) $googleUser->getId();
 
-            if (! $user->avatar_path && $googleUser->getAvatar()) {
-                $user->avatar_path = $googleUser->getAvatar();
+            if ($googleAvatar !== null && (! $user->avatar_path || $this->isGoogleHostedAvatar((string) $user->avatar_path))) {
+                $user->avatar_path = $googleAvatar;
             }
 
             if (! $user->email_verified_at) {
@@ -765,6 +766,54 @@ class AuthController extends Controller
         }
 
         return $redirectTo;
+    }
+
+    private function resolveGoogleAvatarUrl(object $googleUser): ?string
+    {
+        $rawAvatar = trim((string) ($googleUser->getAvatar() ?? ''));
+
+        if ($rawAvatar === '' && property_exists($googleUser, 'user') && is_array($googleUser->user)) {
+            $rawAvatar = trim((string) ($googleUser->user['picture'] ?? ''));
+        }
+
+        if ($rawAvatar === '') {
+            return null;
+        }
+
+        if (str_starts_with($rawAvatar, '//')) {
+            $rawAvatar = 'https:'.$rawAvatar;
+        }
+
+        if (! filter_var($rawAvatar, FILTER_VALIDATE_URL)) {
+            return null;
+        }
+
+        if ($this->isGoogleHostedAvatar($rawAvatar)) {
+            $query = [];
+            parse_str((string) parse_url($rawAvatar, PHP_URL_QUERY), $query);
+            $query['sz'] = 256;
+
+            $scheme = (string) parse_url($rawAvatar, PHP_URL_SCHEME);
+            $host = (string) parse_url($rawAvatar, PHP_URL_HOST);
+            $port = parse_url($rawAvatar, PHP_URL_PORT);
+            $path = (string) parse_url($rawAvatar, PHP_URL_PATH);
+            $fragment = (string) parse_url($rawAvatar, PHP_URL_FRAGMENT);
+
+            $rawAvatar = $scheme.'://'.$host.($port ? ':'.$port : '').$path.'?'.http_build_query($query);
+
+            if ($fragment !== '') {
+                $rawAvatar .= '#'.$fragment;
+            }
+        }
+
+        return $rawAvatar;
+    }
+
+    private function isGoogleHostedAvatar(string $url): bool
+    {
+        $host = parse_url($url, PHP_URL_HOST);
+
+        return is_string($host) && Str::contains(strtolower($host), 'googleusercontent.com');
     }
 
 }
