@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Mayur Prajapati',
                 'email' => 'mayurprjapati07@gmail.com',
-                'password' => 'Mayur@2006@03',
+                'password' => 'Mayur@12345',
                 'role_id' => $roles['super admin'],
             ],
         ];
