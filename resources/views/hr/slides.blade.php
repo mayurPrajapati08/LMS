@@ -1,4 +1,4 @@
-@php
+﻿@php
     $slideCount = method_exists($slides, 'total') ? $slides->total() : $slides->count();
     $activeImageProvider = old('image_provider', 'cloudinary');
     $activeImageProvider = $activeImageProvider === 'cloud' ? 'cloudflare' : $activeImageProvider;
@@ -30,6 +30,9 @@
         .field-file { width: 100%; border-radius: 1rem; border: 1px dashed rgba(14,116,144,0.26); background: linear-gradient(180deg, #f8fdff 0%, #eff8fd 100%); padding: 0.8rem; color: rgb(51 65 85); }
         .field-file::file-selector-button { margin-right: 0.75rem; border: 0; border-radius: 0.85rem; background: linear-gradient(135deg, rgb(14 116 144), rgb(59 130 246)); color: white; font-weight: 700; padding: 0.7rem 1rem; cursor: pointer; }
         .slide-card { border: 1px solid rgba(226,232,240,0.9); border-radius: 1.45rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96)); box-shadow: 0 16px 36px rgba(15,23,42,0.05); }
+        .form-card { border: 1px solid rgb(214 228 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,247,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+        .form-card-head { display: flex; align-items: center; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(14,116,144,0.18); margin-bottom: 0.25rem; }
+        .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(14,116,144,0.12), rgba(2,132,199,0.12)); color: rgb(14 116 144); font-size: 1.25rem; }
         [hidden] { display: none !important; }
     </style>
 </head>
@@ -71,37 +74,77 @@
                     <h2 class="mt-2 font-headline text-3xl font-extrabold text-slate-900">{{ $editingSlide ? 'Update homepage slide' : 'Create homepage slide' }}</h2>
                 </div>
 
-                <form action="{{ $editingSlide ? route('hr.slides.update', $editingSlide) : route('hr.slides.store') }}" class="mt-7 space-y-5" method="POST" enctype="multipart/form-data">
+                <form action="{{ $editingSlide ? route('hr.slides.update', $editingSlide) : route('hr.slides.store') }}" class="mt-7 space-y-6" method="POST" enctype="multipart/form-data">
                     @csrf
                     @if ($editingSlide) @method('PUT') @endif
 
-                    <div class="grid gap-4 lg:grid-cols-2">
-                        <div class="field-shell"><label class="field-label">Eyebrow</label><input class="field-input" name="eyebrow" type="text" value="{{ old('eyebrow', $editingSlide->eyebrow ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Title</label><input class="field-input" name="title" type="text" value="{{ old('title', $editingSlide->title ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Highlight</label><input class="field-input" name="highlight" type="text" value="{{ old('highlight', $editingSlide->highlight ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Badge</label><input class="field-input" name="badge" type="text" value="{{ old('badge', $editingSlide->badge ?? '') }}" /></div>
-                        <div class="field-shell lg:col-span-2"><label class="field-label">Description</label><textarea class="field-textarea" name="description" rows="4">{{ old('description', $editingSlide->description ?? '') }}</textarea></div>
-                        <div class="field-shell"><label class="field-label">Accent Gradient / Classes</label><input class="field-input" name="accent" type="text" value="{{ old('accent', $editingSlide->accent ?? '') }}" /><p class="field-help">Use the same accent string already supported by the homepage slider.</p></div>
-                        <div class="field-shell"><label class="field-label">Sort Order</label><input class="field-input" name="sort_order" type="number" min="0" value="{{ old('sort_order', $editingSlide->sort_order ?? 0) }}" /></div>
-                    </div>
-
-                    <div class="rounded-[1.6rem] border border-sky-100 bg-[linear-gradient(180deg,#fcfeff_0%,#eff8ff_100%)] p-5">
-                        <div class="flex items-start gap-3">
-                            <span class="material-symbols-outlined rounded-full bg-sky-100 p-2 text-sky-700">image</span>
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">campaign</span>
                             <div>
-                                <h3 class="font-headline text-xl font-extrabold text-slate-900">Slide Image</h3>
-                                <p class="mt-1 text-sm leading-6 text-slate-600">Choose how this slide image should be provided. URL mode keeps the old flow, while uploads can go to local storage, Cloudflare R2, or Cloudinary.</p>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Slide Content</h3>
+                                <p class="text-xs text-slate-500">Headline, supporting copy, and the look that ties it to the homepage hero.</p>
                             </div>
                         </div>
-                        <div class="mt-5 grid gap-4 lg:grid-cols-2">
+
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_eyebrow">Eyebrow</label>
+                                <input class="field-input" id="slide_eyebrow" name="eyebrow" type="text" maxlength="60" placeholder="e.g. New cohort opening" value="{{ old('eyebrow', $editingSlide->eyebrow ?? '') }}" />
+                                <p class="field-help">A short tag shown above the main title.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_title">Title</label>
+                                <input class="field-input" id="slide_title" name="title" type="text" maxlength="120" placeholder="e.g. Learn coding with confidence" value="{{ old('title', $editingSlide->title ?? '') }}" />
+                                <p class="field-help">The main headline visitors see on the slider.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_highlight">Highlight</label>
+                                <input class="field-input" id="slide_highlight" name="highlight" type="text" maxlength="60" placeholder="e.g. Hands-on, mentor-led" value="{{ old('highlight', $editingSlide->highlight ?? '') }}" />
+                                <p class="field-help">A short phrase styled inside the title.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_badge">Badge</label>
+                                <input class="field-input" id="slide_badge" name="badge" type="text" maxlength="40" placeholder="e.g. Live cohorts" value="{{ old('badge', $editingSlide->badge ?? '') }}" />
+                                <p class="field-help">Optional badge shown on the slide (Live, New, Limited Seats, etc.).</p>
+                            </div>
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="slide_description">Description</label>
+                                <textarea class="field-textarea" id="slide_description" name="description" rows="4" maxlength="500" placeholder="Write 2-3 short sentences about this slide...">{{ old('description', $editingSlide->description ?? '') }}</textarea>
+                                <p class="field-help">Visitors will read this under the title.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_accent">Accent Gradient / Classes</label>
+                                <input class="field-input" id="slide_accent" name="accent" type="text" maxlength="120" placeholder="e.g. from-sky-500 to-indigo-500" value="{{ old('accent', $editingSlide->accent ?? '') }}" />
+                                <p class="field-help">Use the same accent string already supported by the homepage slider.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_sort_order">Sort Order</label>
+                                <input class="field-input" id="slide_sort_order" name="sort_order" type="number" min="0" placeholder="e.g. 0" value="{{ old('sort_order', $editingSlide->sort_order ?? 0) }}" />
+                                <p class="field-help">Lower numbers appear first (0 = top).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">image</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Slide Image</h3>
+                                <p class="text-xs text-slate-500">Choose how this slide image should be provided. URL mode keeps the old flow, while uploads can go to local storage, Cloudflare R2, or Cloudinary.</p>
+                            </div>
+                        </div>
+                        <div class="grid gap-4 lg:grid-cols-2">
                             <div class="field-shell">
                                 <label class="field-label" for="slide_image_provider">Storage Option</label>
                                 <select class="field-select" id="slide_image_provider" name="image_provider" data-provider-select="slide-image">
+                                    <option value="" disabled @selected(is_null(old('image_provider', $activeImageProvider ?? null)))>— Choose storage —</option>
                                     <option value="url" @selected($activeImageProvider === 'url')>Use image URL</option>
                                     <option value="local" @selected($activeImageProvider === 'local')>Upload to local storage</option>
                                     <option value="cloudflare" @selected($activeImageProvider === 'cloudflare')>Upload to Cloudflare R2</option>
                                     <option value="cloudinary" @selected($activeImageProvider === 'cloudinary')>Upload to Cloudinary</option>
                                 </select>
+                                <p class="field-help">Pick <strong>URL</strong> to paste a link, or one of the upload options to store the file directly.</p>
                             </div>
                             <div class="field-shell" data-provider-mode="slide-image" data-provider-view="file" @if ($activeImageProvider === 'url') hidden @endif>
                                 <label class="field-label" for="slide_image_file">Upload From Device</label>
@@ -110,25 +153,59 @@
                             </div>
                             <div class="field-shell lg:col-span-2" data-provider-mode="slide-image" data-provider-view="url" @if ($activeImageProvider !== 'url') hidden @endif>
                                 <label class="field-label" for="slide_image_url">Image URL</label>
-                                <input class="field-input" id="slide_image_url" name="image" type="text" value="{{ old('image', $editingSlide->image ?? '') }}" />
+                                <input class="field-input" id="slide_image_url" name="image" type="url" placeholder="https://res.cloudinary.com/.../hero.jpg" value="{{ old('image', $editingSlide->image ?? '') }}" />
                                 <p class="field-help">Paste a full image URL when you do not want to upload a file.</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid gap-4 lg:grid-cols-2">
-                        <div class="field-shell"><label class="field-label">Stat Label</label><input class="field-input" name="stat_label" type="text" value="{{ old('stat_label', $editingSlide->stat_label ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Stat Value</label><input class="field-input" name="stat_value" type="text" value="{{ old('stat_value', $editingSlide->stat_value ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Primary Button Label</label><input class="field-input" name="primary_label" type="text" value="{{ old('primary_label', $editingSlide->primary_label ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Primary URL</label><input class="field-input" name="primary_url" type="text" value="{{ old('primary_url', $editingSlide->primary_url ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Secondary Button Label</label><input class="field-input" name="secondary_label" type="text" value="{{ old('secondary_label', $editingSlide->secondary_label ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label">Secondary URL</label><input class="field-input" name="secondary_url" type="text" value="{{ old('secondary_url', $editingSlide->secondary_url ?? '') }}" /></div>
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">stat_1</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Stats & Call To Action</h3>
+                                <p class="text-xs text-slate-500">Optional stat strip and the two buttons visitors can click.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_stat_label">Stat Label</label>
+                                <input class="field-input" id="slide_stat_label" name="stat_label" type="text" maxlength="40" placeholder="e.g. Students Trained" value="{{ old('stat_label', $editingSlide->stat_label ?? '') }}" />
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_stat_value">Stat Value</label>
+                                <input class="field-input" id="slide_stat_value" name="stat_value" type="text" maxlength="20" placeholder="e.g. 12,500+" value="{{ old('stat_value', $editingSlide->stat_value ?? '') }}" />
+                                <p class="field-help">A short statistic shown alongside the label (for example <code>12,500+</code>).</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_primary_label">Primary Button Label</label>
+                                <input class="field-input" id="slide_primary_label" name="primary_label" type="text" maxlength="40" placeholder="e.g. Enroll Now" value="{{ old('primary_label', $editingSlide->primary_label ?? '') }}" />
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_primary_url">Primary URL</label>
+                                <input class="field-input" id="slide_primary_url" name="primary_url" type="url" placeholder="https://courses.example.com/enroll" value="{{ old('primary_url', $editingSlide->primary_url ?? '') }}" />
+                                <p class="field-help">Where visitors go when they click the primary button.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_secondary_label">Secondary Button Label</label>
+                                <input class="field-input" id="slide_secondary_label" name="secondary_label" type="text" maxlength="40" placeholder="e.g. Talk to a counsellor" value="{{ old('secondary_label', $editingSlide->secondary_label ?? '') }}" />
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="slide_secondary_url">Secondary URL</label>
+                                <input class="field-input" id="slide_secondary_url" name="secondary_url" type="url" placeholder="https://example.com/contact" value="{{ old('secondary_url', $editingSlide->secondary_url ?? '') }}" />
+                                <p class="field-help">Destination for the secondary (outlined) button.</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"><input name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingSlide->is_active ?? true)) />Show this slide on the public site</label>
+                    <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+                        <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingSlide->is_active ?? true)) />
+                        <span>Show this slide on the public site</span>
+                    </label>
 
                     <div class="flex flex-wrap gap-3">
-                        <button class="rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(2,132,199,0.22)]" type="submit">{{ $editingSlide ? 'Update Slide' : 'Create Slide' }}</button>
+                        <button class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(2,132,199,0.22)]" type="submit">{{ $editingSlide ? 'Update Slide' : 'Create Slide' }}</button>
                         @if ($editingSlide)
                             <a class="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700" href="{{ route('hr.slides') }}">Cancel</a>
                         @endif
@@ -245,3 +322,5 @@
 </script>
 </body>
 </html>
+
+

@@ -1,4 +1,4 @@
-@php
+﻿@php
     $courseCount = method_exists($offlineCourses, 'total') ? $offlineCourses->total() : $offlineCourses->count();
     $activeThumbnailProvider = old('thumbnail_provider', $editingCourse->thumbnail_provider ?? 'cloudinary');
     $activeThumbnailProvider = $activeThumbnailProvider === 'cloud' ? 'cloudflare' : $activeThumbnailProvider;
@@ -70,6 +70,9 @@
             background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,251,255,0.96));
             box-shadow: 0 24px 60px rgba(15,23,42,0.07);
         }
+        .form-card { border: 1px solid rgb(186 230 253); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(240,249,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+        .form-card-head { display: flex; align-items: flex-start; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(2,132,199,0.22); margin-bottom: 0.25rem; }
+        .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(2,132,199,0.14), rgba(14,165,233,0.14)); color: rgb(2 132 199); font-size: 1.25rem; }
         .section-card {
             border: 1px solid rgba(221, 233, 245, 0.95);
             border-radius: 1.6rem;
@@ -206,8 +209,15 @@
                 </div>
             </div>
 
-            <form action="{{ route('hr.offline-courses.platform') }}" method="POST" class="mt-7 space-y-5">
+            <form action="{{ route('hr.offline-courses.platform') }}" method="POST" class="form-card mt-7 space-y-5">
                 @csrf
+                <div class="form-card-head">
+                    <span class="material-symbols-outlined">tune</span>
+                    <div>
+                        <h3 class="font-headline text-lg font-extrabold text-slate-900">Catalog & Student Access</h3>
+                        <p class="text-xs text-slate-500">Switch the default catalog mode and toggle which student features are available right now.</p>
+                    </div>
+                </div>
                 <div class="grid gap-4 lg:grid-cols-2">
                     <div>
                         <label class="label" for="catalog_default_mode">Default Public Catalog</label>
@@ -215,6 +225,7 @@
                             <option value="offline" @selected($platformSettings['catalog_default_mode'] === 'offline')>Offline first</option>
                             <option value="online" @selected($platformSettings['catalog_default_mode'] === 'online')>Online first</option>
                         </select>
+                        <p class="mt-1 text-xs text-slate-500">Choose which catalog visitors see first when they land on the public site.</p>
                     </div>
                     <div>
                         <label class="label" for="online_student_access_mode">Online Student Access Mode</label>
@@ -222,6 +233,7 @@
                             <option value="disabled" @selected($platformSettings['online_student_access_mode'] === 'disabled')>Disabled</option>
                             <option value="limited" @selected($platformSettings['online_student_access_mode'] === 'limited')>Limited</option>
                         </select>
+                        <p class="mt-1 text-xs text-slate-500">Pick <strong>Limited</strong> to allow select features, or <strong>Disabled</strong> to turn them off.</p>
                     </div>
                 </div>
 
@@ -242,7 +254,10 @@
                     @endforeach
                 </div>
 
-                <button type="submit" class="rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(15,23,42,0.18)]">Save Course Controls</button>
+                <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(15,23,42,0.18)]">
+                    <span class="material-symbols-outlined text-[18px]">save</span>
+                    Save Course Controls
+                </button>
             </form>
         </section>
 
@@ -272,7 +287,8 @@
                             <div class="grid gap-4 lg:grid-cols-2">
                                 <div class="lg:col-span-2">
                                     <label class="label" for="title">Course Title</label>
-                                    <input id="title" name="title" type="text" class="field" value="{{ old('title', $editingCourse->title ?? '') }}" required />
+                                    <input id="title" name="title" type="text" maxlength="160" class="field" placeholder="e.g. Data Analytics with Power BI" value="{{ old('title', $editingCourse->title ?? '') }}" required />
+                                    <p class="helper">The main headline used in the public brochure card.</p>
                                 </div>
                                 <div>
                                     <label class="label" for="category_id">Category</label>
@@ -285,16 +301,17 @@
                                 </div>
                                 <div>
                                     <label class="label" for="audience">Audience</label>
-                                    <input id="audience" name="audience" type="text" class="field" value="{{ old('audience', $editingCourse->audience ?? '') }}" placeholder="Freshers, working professionals, freelancers" />
+                                    <input id="audience" name="audience" type="text" maxlength="200" class="field" placeholder="e.g. Freshers, working professionals, freelancers" value="{{ old('audience', $editingCourse->audience ?? '') }}" />
+                                    <p class="helper">Comma-separated list of who the course is for.</p>
                                 </div>
                                 <div class="lg:col-span-2">
                                     <label class="label" for="summary">Course Overview</label>
-                                    <textarea id="summary" name="summary" rows="5" class="field">{{ old('summary', $editingCourse->summary ?? '') }}</textarea>
+                                    <textarea id="summary" name="summary" rows="5" maxlength="1200" class="field" placeholder="Write a 2-3 sentence overview describing what learners will achieve in this course.">{{ old('summary', $editingCourse->summary ?? '') }}</textarea>
                                     <p class="helper">Use this for the brochure overview paragraph.</p>
                                 </div>
                                 <div class="lg:col-span-2">
                                     <label class="label" for="details">Extended Description</label>
-                                    <textarea id="details" name="details" rows="5" class="field">{{ old('details', $editingCourse->details ?? '') }}</textarea>
+                                    <textarea id="details" name="details" rows="5" maxlength="2000" class="field" placeholder="Optional longer description for internal reference or future course detail pages.">{{ old('details', $editingCourse->details ?? '') }}</textarea>
                                     <p class="helper">Optional longer description for internal use or future public course detail pages.</p>
                                 </div>
                             </div>
@@ -308,23 +325,23 @@
                             <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                                 <div>
                                     <label class="label" for="duration_label">Duration</label>
-                                    <input id="duration_label" name="duration_label" type="text" class="field" value="{{ old('duration_label', $editingCourse->duration_label ?? '') }}" placeholder="6 Months" />
+                                    <input id="duration_label" name="duration_label" type="text" maxlength="60" class="field" placeholder="e.g. 6 Months" value="{{ old('duration_label', $editingCourse->duration_label ?? '') }}" />
                                 </div>
                                 <div>
                                     <label class="label" for="validity_label">Validity</label>
-                                    <input id="validity_label" name="validity_label" type="text" class="field" value="{{ old('validity_label', $editingCourse->validity_label ?? '') }}" placeholder="1 Year" />
+                                    <input id="validity_label" name="validity_label" type="text" maxlength="60" class="field" placeholder="e.g. 1 Year" value="{{ old('validity_label', $editingCourse->validity_label ?? '') }}" />
                                 </div>
                                 <div>
                                     <label class="label" for="delivery_mode">Mode</label>
-                                    <input id="delivery_mode" name="delivery_mode" type="text" class="field" value="{{ old('delivery_mode', $editingCourse->delivery_mode ?? '') }}" placeholder="Online & Offline" />
+                                    <input id="delivery_mode" name="delivery_mode" type="text" maxlength="60" class="field" placeholder="e.g. Online & Offline" value="{{ old('delivery_mode', $editingCourse->delivery_mode ?? '') }}" />
                                 </div>
                                 <div>
                                     <label class="label" for="placement_label">Placement Assurance</label>
-                                    <input id="placement_label" name="placement_label" type="text" class="field" value="{{ old('placement_label', $editingCourse->placement_label ?? '') }}" placeholder="100% Job Placement Guarantee Assurance" />
+                                    <input id="placement_label" name="placement_label" type="text" maxlength="160" class="field" placeholder="e.g. 100% Job Placement Guarantee" value="{{ old('placement_label', $editingCourse->placement_label ?? '') }}" />
                                 </div>
                                 <div>
                                     <label class="label" for="campus">Campus</label>
-                                    <input id="campus" name="campus" type="text" class="field" value="{{ old('campus', $editingCourse->campus ?? '') }}" />
+                                    <input id="campus" name="campus" type="text" maxlength="120" class="field" placeholder="e.g. Surat Main Campus" value="{{ old('campus', $editingCourse->campus ?? '') }}" />
                                 </div>
                                 <div>
                                     <label class="label" for="schedule_label">Schedule</label>
@@ -425,16 +442,17 @@
                             <div class="grid gap-4">
                                 <div>
                                     <label class="label" for="highlights">Primary Highlights</label>
-                                    <textarea id="highlights" name="highlights" rows="4" class="field" placeholder="One per line">{{ old('highlights', collect($editingCourse->highlights ?? [])->implode(PHP_EOL)) }}</textarea>
+                                    <textarea id="highlights" name="highlights" rows="4" maxlength="800" class="field" placeholder="e.g.&#10;Real-time capstone projects&#10;Power BI & SQL&#10;Interview prep workshops&#10;Lifetime placement support">{{ old('highlights', collect($editingCourse->highlights ?? [])->implode(PHP_EOL)) }}</textarea>
                                     <p class="helper">Use this for quick-scan values like real projects, BI tools, interview prep, and placement support.</p>
                                 </div>
                                 <div>
                                     <label class="label" for="additional_benefits">Additional Benefits</label>
-                                    <textarea id="additional_benefits" name="additional_benefits" rows="6" class="field" placeholder="One benefit per line">{{ old('additional_benefits', collect($editingCourse->additional_benefits ?? [])->implode(PHP_EOL)) }}</textarea>
+                                    <textarea id="additional_benefits" name="additional_benefits" rows="6" maxlength="1200" class="field" placeholder="e.g.&#10;Resume review by industry mentors&#10;Mock interviews every weekend&#10;Lifetime alumni access">{{ old('additional_benefits', collect($editingCourse->additional_benefits ?? [])->implode(PHP_EOL)) }}</textarea>
+                                    <p class="helper">One benefit per line, shown as bullets on the public page.</p>
                                 </div>
                                 <div>
                                     <label class="label" for="learner_note">Note For Learners</label>
-                                    <textarea id="learner_note" name="learner_note" rows="5" class="field">{{ old('learner_note', $editingCourse->learner_note ?? '') }}</textarea>
+                                    <textarea id="learner_note" name="learner_note" rows="5" maxlength="600" class="field" placeholder="A short note that appears on the brochure card, for example any prerequisites or motivation.">{{ old('learner_note', $editingCourse->learner_note ?? '') }}</textarea>
                                 </div>
                             </div>
                         </section>
@@ -450,6 +468,7 @@
                                 <div>
                                     <label class="label" for="thumbnail_provider">Thumbnail Source</label>
                                     <select id="thumbnail_provider" name="thumbnail_provider" class="field">
+                                        <option value="" disabled @selected(is_null($activeThumbnailProvider))>— Pick a thumbnail source —</option>
                                         <option value="url" @selected($activeThumbnailProvider === 'url')>Use image URL</option>
                                         <option value="local" @selected($activeThumbnailProvider === 'local')>Upload to local server</option>
                                         <option value="cloudflare" @selected($activeThumbnailProvider === 'cloudflare')>Upload to Cloudflare R2</option>
@@ -462,7 +481,7 @@
                                 </div>
                                 <div>
                                     <label class="label" for="thumbnail">Thumbnail URL</label>
-                                    <input id="thumbnail" name="thumbnail" type="text" class="field" value="{{ old('thumbnail', $editingCourse->thumbnail ?? '') }}" />
+                                    <input id="thumbnail" name="thumbnail" type="url" class="field" placeholder="https://res.cloudinary.com/.../course-card.jpg" value="{{ old('thumbnail', $editingCourse->thumbnail ?? '') }}" />
                                 </div>
                                 @if (old('thumbnail', $editingCourse->thumbnail ?? ''))
                                     <div class="overflow-hidden rounded-[1.25rem] border border-slate-200 bg-slate-50">
@@ -480,7 +499,8 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="label" for="sort_order">Sort Order</label>
-                                    <input id="sort_order" name="sort_order" type="number" class="field" value="{{ old('sort_order', $editingCourse->sort_order ?? 0) }}" />
+                                    <input id="sort_order" name="sort_order" type="number" min="0" class="field" placeholder="e.g. 0" value="{{ old('sort_order', $editingCourse->sort_order ?? 0) }}" />
+                                    <p class="helper">Lower numbers appear first (0 = top).</p>
                                 </div>
                                 <label class="flex items-start gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-4 text-sm font-semibold text-slate-700">
                                     <input class="mt-1" name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingCourse->is_active ?? true)) />
@@ -777,3 +797,16 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

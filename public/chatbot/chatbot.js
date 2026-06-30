@@ -7,7 +7,7 @@
   const PROFILE_KEY = 'cyi-chatbot-profile-v2';
   const HISTORY_KEY = 'cyi-chatbot-history-v1';
   const LANGUAGE_KEY = 'cyi-chatbot-language-v1';
-  const AUTOSPEAK_KEY = 'cyi-chatbot-autospeak-v1';
+  const AUTOSPEAK_KEY = 'cyi-chatbot-autospeak-v2';
   const HISTORY_LIMIT = 24;
   const VOICE_AUTO_SEND_SILENCE_MS = 2500;
   const ownerAvatar = String('https://res.cloudinary.com/dqxg5hhfi/image/upload/v1777094905/chatbot2_t3owzh.gif').replace(/"/g, '&quot;');
@@ -15,6 +15,7 @@
 
   const config = {
     contextUrl: root.dataset.contextUrl || '',
+    messageUrl: root.dataset.messageUrl || '',
     inquiryUrl: root.dataset.inquiryUrl || '',
     csrfToken: root.dataset.csrfToken || '',
   };
@@ -412,6 +413,9 @@
     voiceSilenceTimer: null,
     preferredVoices: { en: null, hi: null },
     preferredVoice: null,
+    speechPrimed: false,
+    speechJobId: 0,
+    speechRetryTimer: null,
     awaitingMentorshipSchedule: false,
   };
 
@@ -578,9 +582,9 @@
 
   function loadAutoSpeak() {
     try {
-      return window.localStorage.getItem(AUTOSPEAK_KEY) === '1';
+      return window.localStorage.getItem(AUTOSPEAK_KEY) !== '0';
     } catch (error) {
-      return false;
+      return true;
     }
   }
 
@@ -714,11 +718,10 @@
     }
 
     stopActiveListening();
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-    }
+    stopSpeechPlayback();
 
     state.language = nextLanguage;
+    state.speechPrimed = false;
     saveLanguage(nextLanguage);
     selectPreferredVoice();
 
@@ -1394,7 +1397,33 @@
   function plainTextFromHtml(html) {
     const temp = document.createElement('div');
     temp.innerHTML = html;
+    Array.prototype.forEach.call(temp.querySelectorAll('br'), function (node) {
+      node.replaceWith(document.createTextNode(' '));
+    });
+    Array.prototype.forEach.call(temp.querySelectorAll('p, li, div'), function (node) {
+      node.appendChild(document.createTextNode(' '));
+    });
     return (temp.textContent || temp.innerText || '').trim();
+  }
+
+  function humanizeSpeechText(html) {
+    return plainTextFromHtml(html)
+      .replace(/\s*\|\s*/g, '. ')
+      .replace(/\bPrice:/gi, 'Price is')
+      .replace(/\bLevel:/gi, 'Level is')
+      .replace(/\bDuration:/gi, 'Duration is')
+      .replace(/\bLanguage:/gi, 'Language is')
+      .replace(/\bCampus:/gi, 'Campus is')
+      .replace(/\bSchedule:/gi, 'Schedule is')
+      .replace(/\bFor:/gi, 'For')
+      .replace(/\bफीस:/g, 'फीस है')
+      .replace(/\bलेवल:/g, 'लेवल है')
+      .replace(/\bअवधि:/g, 'अवधि है')
+      .replace(/\bभाषा:/g, 'भाषा है')
+      .replace(/\bकैंपस:/g, 'कैंपस है')
+      .replace(/\bशेड्यूल:/g, 'शेड्यूल है')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 
   function detectSpeechLanguage(text) {
@@ -1432,7 +1461,13 @@
     ];
 
     const qualityHints = ['google', 'microsoft', 'neural', 'natural', 'online', 'enhanced', 'premium', 'studio'];
-    const chromeVoicePriority = ['zira', 'microsoft zira', 'microsoft zira desktop', 'zira desktop', 'google us english', 'google uk english female', 'samantha', 'priya', 'neerja'];
+    const englishPersonaPriority = [
+      'microsoft heera', 'heera', 'microsoft ravi', 'ravi',
+      'microsoft neerja', 'neerja', 'microsoft priya', 'priya',
+      'google indian english', 'google english india', 'english india',
+      'en-in', 'india'
+    ];
+    const generalEnglishPriority = ['samantha', 'aria', 'jenny', 'sonia', 'ava', 'google uk english female', 'google us english'];
     const hindiPriority = ['google हिन्दी', 'google hindi', 'swara', 'heera', 'priya', 'neerja', 'kalpana', 'hindi'];
 
     function scoreVoice(voice, targetLanguage) {
@@ -1443,12 +1478,6 @@
       ].join(' ').toLowerCase();
 
       let score = 0;
-
-      chromeVoicePriority.forEach(function (hint, index) {
-        if (haystack.indexOf(hint) !== -1) {
-          score += 34 - (index * 4);
-        }
-      });
 
       if (targetLanguage === 'hi') {
         if (/^hi(-|_)?in/i.test(voice.lang || '')) {
@@ -1468,14 +1497,26 @@
         });
       } else {
         if (/^en(-|_)?in/i.test(voice.lang || '')) {
-          score += 28;
+          score += 78;
         } else if (/^en(-|_)?(us|gb|au)/i.test(voice.lang || '')) {
-          score += 22;
+          score += 24;
         } else if (/^en/i.test(voice.lang || '')) {
           score += 16;
         } else if (/^hi(-|_)?in/i.test(voice.lang || '')) {
-          score += 5;
+          score += 10;
         }
+
+        englishPersonaPriority.forEach(function (hint, index) {
+          if (haystack.indexOf(hint) !== -1) {
+            score += 54 - (index * 3);
+          }
+        });
+
+        generalEnglishPriority.forEach(function (hint, index) {
+          if (haystack.indexOf(hint) !== -1) {
+            score += 18 - (index * 2);
+          }
+        });
       }
 
       if (femaleHints.some(function (hint) { return haystack.indexOf(hint) !== -1; })) {
@@ -1501,9 +1542,11 @@
           return /^hi/i.test(voice.lang || '') || haystack.indexOf('hindi') !== -1 || haystack.indexOf('हिन्दी') !== -1;
         });
 
-        if (hindiCandidates.length) {
-          candidates = hindiCandidates;
+        if (!hindiCandidates.length) {
+          return null;
         }
+
+        candidates = hindiCandidates;
       }
 
       const scoredVoices = candidates.map(function (voice) {
@@ -1522,21 +1565,26 @@
     const englishVoice = pickVoice('en');
 
     state.preferredVoices = {
-      // Keep one consistent assistant persona across Hindi and English replies.
-      // When Hindi voice exists, reuse it for English as well.
       en: hindiVoice || englishVoice,
       hi: hindiVoice,
+      fallbackEn: englishVoice,
     };
     state.preferredVoice = state.preferredVoices[state.language] || state.preferredVoices.en || state.preferredVoices.hi || null;
   }
 
   function resolveVoiceForText(text) {
     const preferredLanguage = state.language === 'hi' ? 'hi' : detectSpeechLanguage(text);
-    const selectedVoice =
-      state.preferredVoices[preferredLanguage] ||
-      state.preferredVoices[state.language] ||
-      state.preferredVoice ||
-      null;
+    let selectedVoice = null;
+
+    if (preferredLanguage === 'hi') {
+      selectedVoice = state.preferredVoices.hi || null;
+    } else {
+      selectedVoice =
+        state.preferredVoices.en ||
+        state.preferredVoice ||
+        null;
+    }
+
     const resolvedLang = selectedVoice && selectedVoice.lang
       ? selectedVoice.lang
       : (preferredLanguage === 'hi' ? 'hi-IN' : 'en-IN');
@@ -1548,30 +1596,182 @@
     };
   }
 
+  function stopSpeechPlayback() {
+    state.speechJobId += 1;
+    if (state.speechRetryTimer) {
+      window.clearTimeout(state.speechRetryTimer);
+      state.speechRetryTimer = null;
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  }
+
   function speak(html) {
+    state.speechEnabled = 'speechSynthesis' in window;
     if (!state.autoSpeak || !state.speechEnabled) {
       return;
     }
 
-    const text = plainTextFromHtml(html);
+    const text = humanizeSpeechText(html);
     if (!text) {
       return;
     }
 
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const resolvedVoice = resolveVoiceForText(text);
-    const selectedVoice = resolvedVoice.voice;
-    utterance.lang = resolvedVoice.langCode;
-    utterance.rate = resolvedVoice.language === 'hi' ? 0.9 : 0.94;
-    utterance.pitch = resolvedVoice.language === 'hi' ? 1.0 : 1.05;
-    utterance.volume = 1;
+    stopSpeechPlayback();
+    const speechJobId = state.speechJobId;
+    speakTextWithRetry(text, 0, speechJobId);
+  }
 
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
+  function speakTextWithRetry(text, attempt, speechJobId) {
+    if (state.speechRetryTimer) {
+      window.clearTimeout(state.speechRetryTimer);
+      state.speechRetryTimer = null;
     }
 
-    window.speechSynthesis.speak(utterance);
+    state.speechRetryTimer = window.setTimeout(function () {
+      state.speechRetryTimer = null;
+      if (speechJobId !== state.speechJobId || !state.autoSpeak || !state.speechEnabled) {
+        return;
+      }
+
+      if (typeof window.speechSynthesis.getVoices === 'function') {
+        selectPreferredVoice();
+      }
+
+      const attempts = buildSpeechAttempts(text);
+      const speechAttempt = attempts[attempt] || null;
+      if (!speechAttempt) {
+        setHint(state.language === 'hi'
+          ? 'आवाज शुरू नहीं हो पाई। कृपया ब्राउज़र में Hindi/English voice enabled रखें और फिर volume पर टैप करें।'
+          : 'Voice could not start. Please enable browser voices and tap volume again.',
+          'error');
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      let didStart = false;
+      utterance.lang = speechAttempt.langCode;
+      utterance.rate = 0.88;
+      utterance.pitch = 1.0;
+      utterance.volume = 1;
+
+      if (speechAttempt.voice) {
+        utterance.voice = speechAttempt.voice;
+      }
+
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+
+      utterance.onstart = function () {
+        didStart = true;
+      };
+
+      utterance.onend = function () {
+        if (speechJobId === state.speechJobId) {
+          state.speechRetryTimer = null;
+        }
+      };
+
+      utterance.onerror = function (event) {
+        const errorName = event && event.error ? String(event.error) : '';
+        if (speechJobId !== state.speechJobId || didStart || errorName === 'canceled' || errorName === 'interrupted') {
+          return;
+        }
+
+        if (state.autoSpeak) {
+          speakTextWithRetry(text, attempt + 1, speechJobId);
+        }
+      };
+
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch (error) {
+        if (speechJobId === state.speechJobId) {
+          speakTextWithRetry(text, attempt + 1, speechJobId);
+        }
+      }
+    }, attempt === 0 ? 80 : 240);
+  }
+
+  function buildSpeechAttempts(text) {
+    const preferredLanguage = state.language === 'hi' ? 'hi' : detectSpeechLanguage(text);
+    const hindiVoice = state.preferredVoices.hi || null;
+    const englishVoice = state.preferredVoices.fallbackEn ||
+      (state.preferredVoices.en && state.preferredVoices.en !== hindiVoice ? state.preferredVoices.en : null) ||
+      null;
+    const attempts = [];
+
+    function addAttempt(voice, langCode, language) {
+      const key = [
+        voice ? (voice.voiceURI || voice.name || voice.lang || 'voice') : 'browser-default',
+        langCode,
+        language
+      ].join('|');
+
+      if (attempts.some(function (item) { return item.key === key; })) {
+        return;
+      }
+
+      attempts.push({
+        key: key,
+        voice: voice,
+        langCode: langCode,
+        language: language,
+      });
+    }
+
+    if (preferredLanguage === 'hi') {
+      addAttempt(hindiVoice, hindiVoice && hindiVoice.lang ? hindiVoice.lang : 'hi-IN', 'hi');
+      addAttempt(null, 'hi-IN', 'hi');
+      if (englishVoice) {
+        addAttempt(englishVoice, 'hi-IN', 'hi');
+      }
+
+      return attempts;
+    }
+
+    if (hindiVoice) {
+      addAttempt(hindiVoice, hindiVoice.lang || 'hi-IN', 'en');
+      addAttempt(hindiVoice, 'en-IN', 'en');
+    }
+
+    if (englishVoice) {
+      addAttempt(englishVoice, englishVoice.lang || 'en-IN', 'en');
+    }
+
+    addAttempt(null, 'en-IN', 'en');
+
+    return attempts;
+  }
+
+  function primeSpeechSynthesis() {
+    state.speechEnabled = 'speechSynthesis' in window;
+    if (!state.autoSpeak || !state.speechEnabled || state.speechPrimed) {
+      return;
+    }
+
+    try {
+      const unlockUtterance = new SpeechSynthesisUtterance('.');
+      unlockUtterance.volume = 0;
+      unlockUtterance.lang = state.language === 'hi' ? 'hi-IN' : 'en-IN';
+      window.speechSynthesis.resume();
+      window.speechSynthesis.speak(unlockUtterance);
+      state.speechPrimed = true;
+    } catch (error) {
+      state.speechPrimed = false;
+    }
+  }
+
+  function getLastBotMessageHtml() {
+    const botMessages = elements.messages.querySelectorAll('.cyi-chatbot__message--bot .cyi-chatbot__bubble');
+    if (!botMessages.length) {
+      return '';
+    }
+
+    return botMessages[botMessages.length - 1].innerHTML || '';
   }
 
   function updateSpeakButton() {
@@ -2367,6 +2567,48 @@
     });
   }
 
+  function shouldUseLocalResponse(message) {
+    const input = String(message || '').toLowerCase();
+    return state.awaitingMentorshipSchedule || isMentorshipBookingIntent(input);
+  }
+
+  function postChatMessage(message) {
+    if (!config.messageUrl || shouldUseLocalResponse(message)) {
+      return Promise.resolve(buildResponse(message));
+    }
+
+    return fetch(config.messageUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'X-CSRF-TOKEN': config.csrfToken,
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({
+        message: message,
+        language: state.language,
+        history: (state.history || []).slice(-8).map(function (entry) {
+          return {
+            role: entry.role,
+            html: entry.html
+          };
+        })
+      })
+    }).then(function (response) {
+      return response.json().catch(function () {
+        return {};
+      }).then(function (data) {
+        if (!response.ok || !data || !data.html) {
+          throw new Error(data.message || data.error || 'Model reply unavailable');
+        }
+        return data;
+      });
+    }).catch(function () {
+      return buildResponse(message);
+    });
+  }
+
   function submitProfileForm(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -2492,20 +2734,22 @@
     }
 
     state.lastUserMessage = message;
+    primeSpeechSynthesis();
     const typingNode = addTyping();
 
     window.setTimeout(function () {
-      removeTyping(typingNode);
-      const response = buildResponse(message);
-      addMessage('bot', response.html, response.actions || []);
-      if (response.autoLeadAction && state.profile) {
-        submitInquiryAction(response.autoLeadAction);
-      }
-      if (response.navigateTo) {
-        window.setTimeout(function () {
-          window.location.href = response.navigateTo;
-        }, 700);
-      }
+      postChatMessage(message).then(function (response) {
+        removeTyping(typingNode);
+        addMessage('bot', response.html, response.actions || []);
+        if (response.autoLeadAction && state.profile) {
+          submitInquiryAction(response.autoLeadAction);
+        }
+        if (response.navigateTo) {
+          window.setTimeout(function () {
+            window.location.href = response.navigateTo;
+          }, 700);
+        }
+      });
     }, 280);
   }
 
@@ -2587,7 +2831,14 @@
     saveAutoSpeak(state.autoSpeak);
     updateSpeakButton();
     if (!state.autoSpeak) {
-      window.speechSynthesis.cancel();
+      stopSpeechPlayback();
+      return;
+    }
+
+    const lastBotHtml = getLastBotMessageHtml();
+    if (lastBotHtml) {
+      primeSpeechSynthesis();
+      speak(lastBotHtml);
     }
   });
 

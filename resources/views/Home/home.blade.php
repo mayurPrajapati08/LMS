@@ -1603,9 +1603,11 @@
                     </div>
 
                     <h1 class="reveal stagger-1 max-w-2xl font-headline text-4xl font-extrabold leading-[1.08] tracking-tight md:text-[3.5rem] lg:text-[4rem]">
-                        Build Real Skills
-                        <span class="block text-gradient">for the AI Industry</span>
-                        <span class="block text-white/90">and Launch with Confidence</span>
+                        We Don’t
+                        <span class="block text-gradient">Train Freshers,</span>
+                        <span class="block text-white/90"> We Remove the Fresher Tag.</span>
+                        <!-- We Don’t Train Freshers.
+                        We Remove the Fresher Tag. -->
                     </h1>
 
                     <p class="reveal stagger-2 mt-6 max-w-xl text-[15px] leading-relaxed text-white/70">
@@ -1754,8 +1756,9 @@
             </div>
         </section>
 
+        
         <!-- ════════════════════════════════════════
-             STATS BAR
+        STATS BAR
         ════════════════════════════════════════ -->
         <section class="relative z-20 -mt-8 px-4 md:px-6">
             <div class="mx-auto max-w-5xl">
@@ -1793,6 +1796,72 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Details freshers slogan section  -->
+        <section class="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f8f2ff_100%)] px-4 py-24 md:px-6 md:py-28">
+            <div class="absolute inset-x-0 top-0 h-40 bg-[radial-gradient(circle_at_top,rgba(124,58,237,0.16),transparent_72%)]"></div>
+            <div class="absolute -left-20 top-24 h-56 w-56 rounded-full bg-[#eeddff]/70 blur-3xl"></div>
+            <div class="absolute -right-20 bottom-12 h-64 w-64 rounded-full bg-[#efe4ff]/80 blur-3xl"></div>
+
+            <div class="relative z-10 mx-auto max-w-6xl">
+                <article class="reveal overflow-hidden rounded-[2.2rem] border border-[#eadcfb] bg-white/90 p-7 shadow-[0_26px_56px_rgba(132,93,168,0.12)] backdrop-blur-sm md:p-10 lg:p-12">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.24em] text-[#8f67b8]">Industry Reality</p>
+                    <h2 class="mt-4 font-headline text-[2rem] font-extrabold leading-[1.05] text-on-surface md:text-[2.8rem]">
+                        "Fresher."
+                    </h2>
+                    <p class="mt-4 text-lg font-semibold text-[#5b3a82] md:text-xl">
+                        This one word is rejecting thousands of skilled students every day.
+                    </p>
+
+                    <div class="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
+                        <div>
+                            <p class="text-base leading-8 text-on-surface-variant md:text-[1.04rem]">
+                                Today's biggest challenge is not learning skills. It's proving real experience.
+                            </p>
+                            <p class="mt-5 text-base leading-8 text-on-surface-variant md:text-[1.04rem]">
+                                Most students complete courses. But companies look for professionals who can:
+                            </p>
+
+                            <ul class="mt-6 space-y-3">
+                                <li class="flex items-start gap-3 text-sm font-semibold leading-7 text-on-surface md:text-[0.98rem]"><span class="mt-1 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-primary"></span>Communicate with clients</li>
+                                <li class="flex items-start gap-3 text-sm font-semibold leading-7 text-on-surface md:text-[0.98rem]"><span class="mt-1 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-primary"></span>Understand business requirements</li>
+                                <li class="flex items-start gap-3 text-sm font-semibold leading-7 text-on-surface md:text-[0.98rem]"><span class="mt-1 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-primary"></span>Work in teams</li>
+                                <li class="flex items-start gap-3 text-sm font-semibold leading-7 text-on-surface md:text-[0.98rem]"><span class="mt-1 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-primary"></span>Handle deadlines</li>
+                                <li class="flex items-start gap-3 text-sm font-semibold leading-7 text-on-surface md:text-[0.98rem]"><span class="mt-1 inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-primary"></span>Execute real projects</li>
+                            </ul>
+                        </div>
+
+                        <div class="rounded-[1.8rem] border border-[#ebdefb] bg-[linear-gradient(180deg,#fcf8ff_0%,#f4eaff_100%)] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] md:p-7">
+                            <p class="text-sm font-semibold leading-8 text-on-surface-variant md:text-[0.98rem]">
+                                At <span class="font-extrabold text-on-surface">CodeInYourSelf</span>, students don't wait for opportunities, they build them.
+                            </p>
+                            <p class="mt-5 text-sm font-semibold leading-8 text-on-surface-variant md:text-[0.98rem]">
+                                From client finding to project delivery, students work on real market problems using:
+                            </p>
+
+                            <ul class="mt-5 grid gap-2 sm:grid-cols-2">
+                                <li class="rounded-xl bg-white/85 px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#70489e]">Data Analytics</li>
+                                <li class="rounded-xl bg-white/85 px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#70489e]">AI &amp; ML</li>
+                                <li class="rounded-xl bg-white/85 px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#70489e]">Cloud Computing</li>
+                                <li class="rounded-xl bg-white/85 px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#70489e]">Full Stack Development</li>
+                                <li class="rounded-xl bg-white/85 px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-[#70489e] sm:col-span-2">Data Engineering</li>
+                            </ul>
+
+                            <p class="mt-6 text-sm font-semibold leading-8 text-on-surface-variant md:text-[0.98rem]">
+                                Before placement, our students already work like professionals.
+                            </p>
+                        </div>
+                    </div>
+
+                    <blockquote class="mt-9 rounded-[1.4rem] bg-[linear-gradient(90deg,#3b1278_0%,#7c3aed_100%)] px-6 py-6 text-center md:px-8">
+                        <p class="font-headline text-[1.2rem] font-extrabold leading-relaxed text-white md:text-[1.6rem]">
+                            "We Don't Train Freshers. We Remove the Fresher Tag."
+                        </p>
+                    </blockquote>
+
+                </article>
             </div>
         </section>
 

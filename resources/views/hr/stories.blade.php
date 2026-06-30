@@ -1,4 +1,4 @@
-@php
+﻿@php
     $activeStoryType = old('type', $editingStory->type ?? ($storyFilter ?? 'placement'));
     $storyCount = method_exists($stories, 'total') ? $stories->total() : $stories->count();
 @endphp
@@ -40,6 +40,9 @@
         .row-chip.type-success_story { background: rgb(240 253 250); color: rgb(13 148 136); }
         .row-chip.status-active { background: rgb(220 252 231); color: rgb(21 128 61); }
         .row-chip.status-hidden { background: rgb(241 245 249); color: rgb(100 116 139); }
+        .form-card { border: 1px solid rgb(214 228 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,247,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+        .form-card-head { display: flex; align-items: center; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(2,132,199,0.18); margin-bottom: 0.25rem; }
+        .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(2,132,199,0.12), rgba(14,165,233,0.12)); color: rgb(2 132 199); font-size: 1.25rem; }
         [hidden] { display: none !important; }
     </style>
 </head>
@@ -83,74 +86,158 @@
                     </div>
                 </div>
 
-                <form action="{{ $editingStory ? route('hr.stories.update', $editingStory) : route('hr.stories.store') }}" class="mt-7 space-y-5" method="POST" enctype="multipart/form-data" data-story-form>
+                <form action="{{ $editingStory ? route('hr.stories.update', $editingStory) : route('hr.stories.store') }}" class="mt-7 space-y-6" method="POST" enctype="multipart/form-data" data-story-form>
                     @csrf
                     @if ($editingStory) @method('PUT') @endif
 
-                    <div class="grid gap-4 lg:grid-cols-2">
-                        <div class="field-shell lg:col-span-2">
-                            <label class="field-label" for="story_type">Story Type</label>
-                            <select class="field-select" id="story_type" name="type" data-story-type-select>
-                                <option value="placement" @selected($activeStoryType === 'placement')>Placement</option>
-                                <option value="success_story" @selected($activeStoryType === 'success_story')>Success Story</option>
-                            </select>
-                            <p class="field-help">Choose where this item should appear on the public site.</p>
-                        </div>
-
-                        <div class="field-shell"><label class="field-label" for="story_name">Student Name</label><input class="field-input" id="story_name" name="name" type="text" value="{{ old('name', $editingStory->name ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label" for="story_course">Course Or Track</label><input class="field-input" id="story_course" name="course" type="text" value="{{ old('course', $editingStory->course ?? '') }}" /></div>
-                        <div class="field-shell"><label class="field-label" for="story_rating">Rating</label><input class="field-input" id="story_rating" max="5" min="1" name="rating" type="number" value="{{ old('rating', $editingStory->rating ?? 5) }}" /><p class="field-help">Use a value from 1 to 5.</p></div>
-                        <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
-                            <label class="field-label" for="story_shared_at">Placement Date</label>
-                            <input class="field-input" id="story_shared_at" name="shared_at" type="date" value="{{ old('shared_at', optional($editingStory->shared_at ?? null)->format('Y-m-d')) }}" @if ($activeStoryType !== 'placement') disabled @endif />
-                            <p class="field-help">Only visible for placement entries.</p>
-                        </div>
-                        <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
-                            <label class="field-label" for="story_company">Placed Company</label>
-                            <input class="field-input" id="story_company" name="company" type="text" value="{{ old('company', $editingStory->company ?? '') }}" @if ($activeStoryType !== 'placement') disabled @endif />
-                        </div>
-                        <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
-                            <label class="field-label" for="story_role">Job Role</label>
-                            <input class="field-input" id="story_role" name="role" type="text" value="{{ old('role', $editingStory->role ?? '') }}" @if ($activeStoryType !== 'placement') disabled @endif />
-                        </div>
-                        <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
-                            <label class="field-label" for="story_package">Package</label>
-                            <input class="field-input" id="story_package" name="package" type="text" value="{{ old('package', $editingStory->package ?? '') }}" @if ($activeStoryType !== 'placement') disabled @endif />
-                        </div>
-                        <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
-                            <label class="field-label" for="show_in_placement_hero">Placement Hero Card</label>
-                            <label class="flex items-center gap-3 rounded-[1rem] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700">
-                                <input id="show_in_placement_hero" name="show_in_placement_hero" type="checkbox" value="1" @checked(old('show_in_placement_hero', $editingStory->show_in_placement_hero ?? false)) @if ($activeStoryType !== 'placement') disabled @endif />
-                                Show this student inside the animated placement hero stack
-                            </label>
-                            <p class="field-help">Only checked students appear in the public placement hero animation.</p>
-                        </div>
-                        <div class="field-shell"><label class="field-label" for="story_sort_order">Sort Order</label><input class="field-input" id="story_sort_order" name="sort_order" type="number" value="{{ old('sort_order', $editingStory->sort_order ?? 0) }}" /><p class="field-help">`0` shows first, `1` shows second, and so on.</p></div>
-                    </div>
-
-                    <div class="rounded-[1.6rem] border border-sky-100 bg-[linear-gradient(180deg,#f8fdff_0%,#eff8ff_100%)] p-5">
-                        <div class="flex items-start gap-3">
-                            <span class="material-symbols-outlined rounded-full bg-sky-100 p-2 text-sky-700">perm_media</span>
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">auto_stories</span>
                             <div>
-                                <h3 class="font-headline text-xl font-extrabold text-slate-900">Media Source</h3>
-                                <p class="mt-1 text-sm leading-6 text-slate-600">Paste a direct media URL or upload a file from the device.</p>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Story Basics</h3>
+                                <p class="text-xs text-slate-500">Pick the story type, then add the student details that appear on the public site.</p>
                             </div>
                         </div>
 
-                        <div class="mt-5 grid gap-4 lg:grid-cols-[1fr_1fr]">
-                            <div class="field-shell"><label class="field-label" for="story_media_provider">Storage Option</label><select class="field-select" id="story_media_provider" name="media_provider"><option value="url" @selected(old('media_provider', $editingStory->media_provider ?? 'cloudinary') === 'url')>Use media URL</option><option value="local" @selected(old('media_provider', $editingStory->media_provider ?? '') === 'local')>Upload to local storage</option><option value="cloudflare" @selected(in_array(old('media_provider', $editingStory->media_provider ?? ''), ['cloud', 'cloudflare'], true))>Upload to Cloudflare R2</option><option value="cloudinary" @selected(old('media_provider', $editingStory->media_provider ?? 'cloudinary') === 'cloudinary')>Upload to Cloudinary</option></select></div>
-                            <div class="field-shell"><label class="field-label" for="story_media_type">Media Type</label><select class="field-select" id="story_media_type" name="media_type"><option value="image" @selected(old('media_type', $editingStory->media_type ?? 'image') === 'image')>Image</option><option value="video" @selected(old('media_type', $editingStory->media_type ?? '') === 'video')>Video</option></select></div>
-                            <div class="field-shell lg:col-span-2"><label class="field-label" for="story_media_file">Upload From Device</label><input class="field-file" id="story_media_file" name="media_file" type="file" /><p class="field-help">Choose a file only when using local storage, Cloudflare R2, or Cloudinary.</p></div>
-                            <div class="field-shell lg:col-span-2"><label class="field-label" for="story_avatar">Media URL</label><input class="field-input" id="story_avatar" name="avatar" type="text" value="{{ old('avatar', $editingStory->avatar ?? '') }}" /><p class="field-help">Paste a public image or video URL when `Use media URL` is selected.</p></div>
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="story_type">Story Type</label>
+                                <select class="field-select" id="story_type" name="type" data-story-type-select>
+                                    <option value="" disabled @selected(is_null($activeStoryType))>— Choose a story type —</option>
+                                    <option value="placement" @selected($activeStoryType === 'placement')>Placement</option>
+                                    <option value="success_story" @selected($activeStoryType === 'success_story')>Success Story</option>
+                                </select>
+                                <p class="field-help">Choose where this item should appear on the public site.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="story_name">Student Name</label>
+                                <input class="field-input" id="story_name" name="name" type="text" maxlength="80" placeholder="e.g. Riya Sharma" value="{{ old('name', $editingStory->name ?? '') }}" />
+                                <p class="field-help">Shown prominently above the story.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="story_course">Course or Track</label>
+                                <input class="field-input" id="story_course" name="course" type="text" maxlength="120" placeholder="e.g. Full-Stack Web Development" value="{{ old('course', $editingStory->course ?? '') }}" />
+                                <p class="field-help">The course this student completed with us.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="story_rating">Rating</label>
+                                <input class="field-input" id="story_rating" max="5" min="1" name="rating" type="number" placeholder="e.g. 5" value="{{ old('rating', $editingStory->rating ?? 5) }}" />
+                                <p class="field-help">Use a value from 1 to 5 (whole numbers).</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="story_sort_order">Sort Order</label>
+                                <input class="field-input" id="story_sort_order" name="sort_order" type="number" min="0" placeholder="e.g. 0" value="{{ old('sort_order', $editingStory->sort_order ?? 0) }}" />
+                                <p class="field-help">Lower numbers appear first (0 = top).</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="field-shell"><label class="field-label" for="story_comment">{{ $activeStoryType === 'placement' ? 'Placement Story' : 'Success Story' }}</label><textarea class="field-textarea" id="story_comment" name="comment" rows="6">{{ old('comment', $editingStory->comment ?? '') }}</textarea><p class="field-help">Write a clean learner quote or story in a natural tone.</p></div>
+                    <div class="form-card space-y-5" data-story-scope-section="placement">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">work</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Placement Details</h3>
+                                <p class="text-xs text-slate-500">Visible only when story type is set to <strong>Placement</strong>.</p>
+                            </div>
+                        </div>
 
-                    <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"><input name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingStory->is_active ?? true)) />Show this story on the public site</label>
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
+                                <label class="field-label" for="story_shared_at">Placement Date</label>
+                                <input class="field-input" id="story_shared_at" name="shared_at" type="date" value="{{ old('shared_at', optional($editingStory->shared_at ?? null)->format('Y-m-d')) }}" @if ($activeStoryType !== 'placement') disabled @endif />
+                                <p class="field-help">Date the placement was announced.</p>
+                            </div>
+                            <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
+                                <label class="field-label" for="story_company">Placed Company</label>
+                                <input class="field-input" id="story_company" name="company" type="text" maxlength="120" placeholder="e.g. TCS Digital" value="{{ old('company', $editingStory->company ?? '') }}" @if ($activeStoryType !== 'placement') disabled @endif />
+                                <p class="field-help">The company that hired the student.</p>
+                            </div>
+                            <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
+                                <label class="field-label" for="story_role">Job Role</label>
+                                <input class="field-input" id="story_role" name="role" type="text" maxlength="120" placeholder="e.g. Junior Frontend Developer" value="{{ old('role', $editingStory->role ?? '') }}" @if ($activeStoryType !== 'placement') disabled @endif />
+                                <p class="field-help">The role or position offered.</p>
+                            </div>
+                            <div class="field-shell" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
+                                <label class="field-label" for="story_package">Package</label>
+                                <input class="field-input" id="story_package" name="package" type="text" maxlength="40" placeholder="e.g. 6.5 LPA" value="{{ old('package', $editingStory->package ?? '') }}" @if ($activeStoryType !== 'placement') disabled @endif />
+                                <p class="field-help">Compensation package shown on the placement card.</p>
+                            </div>
+                            <div class="field-shell lg:col-span-2" data-story-scope="placement" @if ($activeStoryType !== 'placement') hidden @endif>
+                                <label class="field-label">Placement Hero Card</label>
+                                <label class="flex items-center gap-3 rounded-[1rem] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700">
+                                    <input id="show_in_placement_hero" name="show_in_placement_hero" type="checkbox" value="1" @checked(old('show_in_placement_hero', $editingStory->show_in_placement_hero ?? false)) @if ($activeStoryType !== 'placement') disabled @endif />
+                                    <span>Show this student inside the animated placement hero stack</span>
+                                </label>
+                                <p class="field-help">Only checked students appear in the public placement hero animation.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">perm_media</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Media Source</h3>
+                                <p class="text-xs text-slate-500">Paste a direct media URL or upload a file from the device.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="story_media_provider">Storage Option</label>
+                                <select class="field-select" id="story_media_provider" name="media_provider">
+                                    <option value="" disabled @selected(is_null(old('media_provider', $editingStory->media_provider ?? null)))>— Choose storage —</option>
+                                    <option value="url" @selected(old('media_provider', $editingStory->media_provider ?? 'cloudinary') === 'url')>Use media URL</option>
+                                    <option value="local" @selected(old('media_provider', $editingStory->media_provider ?? '') === 'local')>Upload to local storage</option>
+                                    <option value="cloudflare" @selected(in_array(old('media_provider', $editingStory->media_provider ?? ''), ['cloud', 'cloudflare'], true))>Upload to Cloudflare R2</option>
+                                    <option value="cloudinary" @selected(old('media_provider', $editingStory->media_provider ?? 'cloudinary') === 'cloudinary')>Upload to Cloudinary</option>
+                                </select>
+                                <p class="field-help">Pick <strong>URL</strong> to paste a hosted file link, or an upload option.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="story_media_type">Media Type</label>
+                                <select class="field-select" id="story_media_type" name="media_type">
+                                    <option value="" disabled @selected(is_null(old('media_type', $editingStory->media_type ?? null)))>— Choose media type —</option>
+                                    <option value="image" @selected(old('media_type', $editingStory->media_type ?? 'image') === 'image')>Image</option>
+                                    <option value="video" @selected(old('media_type', $editingStory->media_type ?? '') === 'video')>Video</option>
+                                </select>
+                            </div>
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="story_media_file">Upload From Device</label>
+                                <input class="field-file" id="story_media_file" name="media_file" type="file" accept="image/*,video/*" />
+                                <p class="field-help">Choose a file only when using local storage, Cloudflare R2, or Cloudinary.</p>
+                            </div>
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="story_avatar">Media URL</label>
+                                <input class="field-input" id="story_avatar" name="avatar" type="url" placeholder="https://res.cloudinary.com/.../riya.jpg" value="{{ old('avatar', $editingStory->avatar ?? '') }}" />
+                                <p class="field-help">Paste a public image or video URL when <strong>Use media URL</strong> is selected.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">chat_quote</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Learner Story</h3>
+                                <p class="text-xs text-slate-500">The learner quote or success story shown on the public card.</p>
+                            </div>
+                        </div>
+
+                        <div class="field-shell">
+                            <label class="field-label" for="story_comment">{{ $activeStoryType === 'placement' ? 'Placement Story' : 'Success Story' }}</label>
+                            <textarea class="field-textarea" id="story_comment" name="comment" rows="6" maxlength="800" placeholder="Write a short, natural quote from the student about their experience">{{ old('comment', $editingStory->comment ?? '') }}</textarea>
+                            <p class="field-help">Write a clean learner quote or story in a natural tone.</p>
+                        </div>
+                    </div>
+
+                    <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+                        <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingStory->is_active ?? true)) />
+                        <span>Show this story on the public site</span>
+                    </label>
 
                     <div class="flex flex-wrap gap-3">
-                        <button class="rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(2,132,199,0.22)]" type="submit">{{ $editingStory ? 'Update Story' : 'Create Story' }}</button>
+                        <button class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(2,132,199,0.22)]" type="submit">{{ $editingStory ? 'Update Story' : 'Create Story' }}</button>
                         @if ($editingStory)
                             <a class="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700" href="{{ route('hr.stories') }}">Cancel</a>
                         @endif
@@ -271,3 +358,5 @@
 </script>
 </body>
 </html>
+
+

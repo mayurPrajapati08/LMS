@@ -384,13 +384,13 @@
                                 </div>
 
                                 <div class="mt-7 flex flex-wrap gap-3">
-                                    <a href="{{ route('home.contact', ['topic' => 'career', 'subject' => $opening['title']]) }}" class="cta-button inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white">
+                                    <a href="{{ $opening['apply_url'] }}" class="cta-button inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white">
                                         <span class="material-symbols-outlined text-[18px]">send</span>
                                         Apply Now
                                     </a>
-                                    <a href="{{ route('home.contact', ['topic' => 'career', 'subject' => $opening['title']]) }}" class="inline-flex items-center gap-2 rounded-full border border-outline bg-white px-6 py-3 text-sm font-bold text-on-surface transition hover:border-primary hover:text-primary">
-                                        <span class="material-symbols-outlined text-[18px]">forum</span>
-                                        Ask About Role
+                                    <a href="{{ $opening['apply_url'] }}#job-details" class="inline-flex items-center gap-2 rounded-full border border-outline bg-white px-6 py-3 text-sm font-bold text-on-surface transition hover:border-primary hover:text-primary">
+                                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                        View Details
                                     </a>
                                 </div>
                             </div>

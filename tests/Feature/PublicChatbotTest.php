@@ -30,6 +30,52 @@ class PublicChatbotTest extends TestCase
     }
 
     #[Test]
+    public function chatbot_message_endpoint_returns_model_based_reply(): void
+    {
+        $response = $this->postJson(route('chatbot.messages'), [
+            'message' => 'I need course guidance for placement.',
+            'language' => 'en',
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('ok', true)
+            ->assertJsonPath('model.name', 'cyi-intent-ranker-v1')
+            ->assertJsonStructure([
+                'html',
+                'actions',
+                'model' => ['name', 'source', 'intent', 'confidence'],
+            ]);
+    }
+
+    #[Test]
+    public function chatbot_message_endpoint_requires_a_message(): void
+    {
+        $response = $this->postJson(route('chatbot.messages'), [
+            'language' => 'en',
+        ]);
+
+        $response->assertStatus(422);
+    }
+
+    #[Test]
+    public function chatbot_message_endpoint_respects_selected_hindi_language(): void
+    {
+        $response = $this->postJson(route('chatbot.messages'), [
+            'message' => 'I need placement support.',
+            'language' => 'hi',
+        ]);
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('ok', true)
+            ->assertJsonPath('model.name', 'cyi-intent-ranker-v1')
+            ->assertJsonFragment([
+                'html' => '<p>इस LMS में प्लेसमेंट-केंद्रित मार्गदर्शन और करियर सपोर्ट शामिल है।</p><p>इस LMS में प्लेसमेंट सपोर्ट एक मुख्य फोकस है। मौजूदा जानकारी के लिए प्लेसमेंट पेज, सक्सेस स्टोरीज और करियर गाइडेंस सेक्शन देखें।</p>',
+            ]);
+    }
+
+    #[Test]
     public function chatbot_inquiry_endpoint_persists_public_contact(): void
     {
         $response = $this->post(route('chatbot.inquiries'), [

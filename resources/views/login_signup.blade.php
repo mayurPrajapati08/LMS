@@ -252,7 +252,7 @@
         } else {
             $pageTitle = 'Welcome Back';
             $pageDescription = 'Continue your learning journey today.';
-            $submitText = 'Sign In to Account';
+            $submitText = 'Login To Account';
             $submitLoadingText = 'Signing in...';
             $errorTitle = 'Login could not be completed';
         }

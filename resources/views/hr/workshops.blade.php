@@ -1,4 +1,4 @@
-@php($workshopCount = method_exists($workshops, 'total') ? $workshops->total() : $workshops->count())
+﻿@php($workshopCount = method_exists($workshops, 'total') ? $workshops->total() : $workshops->count())
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
@@ -102,38 +102,47 @@
                         @method('PUT')
                     @endif
 
-                    <div class="grid gap-4 lg:grid-cols-2">
-                        <div class="field-shell">
-                            <label class="field-label">Badge</label>
-                            <input class="field-input" name="badge" type="text" value="{{ old('badge', $editingWorkshop->badge ?? '') }}" placeholder="Upcoming, Bestseller, Weekend Batch" />
+
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">edit_calendar</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Workshop Headline</h3>
+                                <p class="text-xs text-slate-500">The badge, title, and subtitle shown on the public card.</p>
+                            </div>
+                        </div>
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="workshop_badge">Badge</label>
+                            <input class="field-input" id="workshop_badge" name="badge" type="text" maxlength="40" placeholder="e.g. Upcoming, Bestseller, Weekend Batch" value="{{ old('badge', $editingWorkshop->badge ?? '') }}" />
                             <p class="field-hint">Short label shown on the card top.</p>
                         </div>
                         <div class="field-shell">
-                            <label class="field-label">Workshop Title</label>
-                            <input class="field-input" name="title" type="text" value="{{ old('title', $editingWorkshop->title ?? '') }}" placeholder="Generative AI Build Lab" />
+                            <label class="field-label" for="workshop_title">Workshop Title</label>
+                            <input class="field-input" id="workshop_title" name="title" type="text" maxlength="160" placeholder="e.g. Generative AI Build Lab" value="{{ old('title', $editingWorkshop->title ?? '') }}" />
                             <p class="field-hint">Use a strong outcome-focused workshop name.</p>
                         </div>
 
                         <div class="field-shell lg:col-span-2">
-                            <label class="field-label">Subtitle</label>
-                            <textarea class="field-textarea" name="subtitle" rows="3" placeholder="Briefly describe what students will learn and why this session matters.">{{ old('subtitle', $editingWorkshop->subtitle ?? '') }}</textarea>
+                            <label class="field-label" for="workshop_subtitle">Subtitle</label>
+                            <textarea class="field-textarea" id="workshop_subtitle" name="subtitle" rows="3" maxlength="400" placeholder="Briefly describe what students will learn and why this session matters.">{{ old('subtitle', $editingWorkshop->subtitle ?? '') }}</textarea>
                         </div>
 
                         <div class="field-shell">
-                            <label class="field-label">Date</label>
-                            <input class="field-input" name="date_label" type="text" value="{{ old('date_label', $editingWorkshop->date_label ?? '') }}" placeholder="May 3, 2026" />
+                            <label class="field-label" for="workshop_date">Date</label>
+                            <input class="field-input" id="workshop_date" name="date_label" type="text" maxlength="60" placeholder="e.g. May 3, 2026" value="{{ old('date_label', $editingWorkshop->date_label ?? '') }}" />
                         </div>
                         <div class="field-shell">
-                            <label class="field-label">Time</label>
-                            <input class="field-input" name="time_label" type="text" value="{{ old('time_label', $editingWorkshop->time_label ?? '') }}" placeholder="7:00 PM to 9:30 PM IST" />
+                            <label class="field-label" for="workshop_time">Time</label>
+                            <input class="field-input" id="workshop_time" name="time_label" type="text" maxlength="60" placeholder="e.g. 7:00 PM to 9:30 PM IST" value="{{ old('time_label', $editingWorkshop->time_label ?? '') }}" />
                         </div>
                         <div class="field-shell">
-                            <label class="field-label">Format</label>
-                            <input class="field-input" name="format" type="text" value="{{ old('format', $editingWorkshop->format ?? '') }}" placeholder="Live online intensive" />
+                            <label class="field-label" for="workshop_format">Format</label>
+                            <input class="field-input" id="workshop_format" name="format" type="text" maxlength="80" placeholder="e.g. Live online intensive" value="{{ old('format', $editingWorkshop->format ?? '') }}" />
                         </div>
                         <div class="field-shell">
-                            <label class="field-label">Venue</label>
-                            <input class="field-input" name="venue" type="text" value="{{ old('venue', $editingWorkshop->venue ?? '') }}" placeholder="Online live studio" />
+                            <label class="field-label" for="workshop_venue">Venue</label>
+                            <input class="field-input" id="workshop_venue" name="venue" type="text" maxlength="120" placeholder="e.g. Online live studio" value="{{ old('venue', $editingWorkshop->venue ?? '') }}" />
                         </div>
                     </div>
 
@@ -148,20 +157,20 @@
 
                         <div class="mt-5 grid gap-4 lg:grid-cols-2">
                             <div class="field-shell">
-                                <label class="field-label">Audience</label>
-                                <input class="field-input" name="audience" type="text" value="{{ old('audience', $editingWorkshop->audience ?? '') }}" placeholder="Students, freshers, and working professionals" />
+                            <label class="field-label" for="workshop_audience">Audience</label>
+                            <input class="field-input" id="workshop_audience" name="audience" type="text" maxlength="200" placeholder="e.g. Students, freshers, working professionals" value="{{ old('audience', $editingWorkshop->audience ?? '') }}" />
                             </div>
                             <div class="field-shell">
-                                <label class="field-label">Mentor</label>
-                                <input class="field-input" name="mentor" type="text" value="{{ old('mentor', $editingWorkshop->mentor ?? '') }}" placeholder="Lead AI mentor panel" />
+                            <label class="field-label" for="workshop_mentor">Mentor</label>
+                            <input class="field-input" id="workshop_mentor" name="mentor" type="text" maxlength="120" placeholder="e.g. Lead AI mentor panel" value="{{ old('mentor', $editingWorkshop->mentor ?? '') }}" />
                             </div>
                             <div class="field-shell">
-                                <label class="field-label">Seats Text</label>
-                                <input class="field-input" name="seats" type="text" value="{{ old('seats', $editingWorkshop->seats ?? '') }}" placeholder="38 seats left" />
+                            <label class="field-label" for="workshop_seats">Seats Text</label>
+                            <input class="field-input" id="workshop_seats" name="seats" type="text" maxlength="60" placeholder="e.g. 38 seats left" value="{{ old('seats', $editingWorkshop->seats ?? '') }}" />
                             </div>
                             <div class="field-shell">
-                                <label class="field-label">Highlights</label>
-                                <textarea class="field-textarea" name="highlights" rows="5" placeholder="One highlight per line">{{ old('highlights', isset($editingWorkshop) ? implode(PHP_EOL, $editingWorkshop->highlights ?? []) : '') }}</textarea>
+                            <label class="field-label" for="workshop_highlights">Highlights</label>
+                            <textarea class="field-textarea" id="workshop_highlights" name="highlights" rows="5" maxlength="800" placeholder="e.g.&#10;Hands-on capstone project&#10;Lifetime recordings access&#10;Certificate of completion">{{ old('highlights', isset($editingWorkshop) ? implode(PHP_EOL, $editingWorkshop->highlights ?? []) : '') }}</textarea>
                                 <p class="field-hint">Each line becomes a separate highlight chip on the public page.</p>
                             </div>
                         </div>
@@ -169,16 +178,16 @@
 
                     <div class="grid gap-4 lg:grid-cols-2">
                         <div class="field-shell">
-                            <label class="field-label">Price</label>
-                            <input class="field-input" name="price" type="number" min="0" step="0.01" value="{{ old('price', $editingWorkshop->price ?? 0) }}" />
+                            <label class="field-label" for="workshop_price">Price</label>
+                            <input class="field-input" id="workshop_price" name="price" type="number" min="0" step="0.01" placeholder="e.g. 499" value="{{ old('price', $editingWorkshop->price ?? 0) }}" />
                         </div>
                         <div class="field-shell">
-                            <label class="field-label">Currency</label>
-                            <input class="field-input" name="currency" type="text" value="{{ old('currency', $editingWorkshop->currency ?? 'INR') }}" />
+                            <label class="field-label" for="workshop_currency">Currency</label>
+                            <input class="field-input" id="workshop_currency" name="currency" type="text" maxlength="8" placeholder="e.g. INR or USD" value="{{ old('currency', $editingWorkshop->currency ?? 'INR') }}" />
                         </div>
                         <div class="field-shell">
-                            <label class="field-label">Sort Order</label>
-                            <input class="field-input" name="sort_order" type="number" value="{{ old('sort_order', $editingWorkshop->sort_order ?? 0) }}" />
+                            <label class="field-label" for="workshop_sort_order">Sort Order</label>
+                            <input class="field-input" id="workshop_sort_order" name="sort_order" type="number" min="0" placeholder="e.g. 0" value="{{ old('sort_order', $editingWorkshop->sort_order ?? 0) }}" />
                         </div>
                     </div>
 
@@ -329,3 +338,5 @@
 </main>
 </body>
 </html>
+
+

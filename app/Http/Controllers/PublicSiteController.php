@@ -8,6 +8,7 @@ use App\Models\HomeAchievement;
 use App\Models\HomeFounderMedia;
 use App\Models\HomeSlide;
 use App\Models\HomeStory;
+use App\Models\JobApplication;
 use App\Models\JobOpening;
 use App\Models\OfflineCourse;
 use App\Models\PublicContact;
@@ -25,6 +26,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -324,6 +326,91 @@ class PublicSiteController extends Controller
         return view('Home.carrer_with_us', [
             'openings' => $this->careerOpenings(),
         ]);
+    }
+
+    public function jobApplication(JobOpening $job): View
+    {
+        abort_unless($job->is_active, 404);
+
+        return view('Home.job_application', [
+            'job' => $job,
+            'relatedOpenings' => JobOpening::query()
+                ->where('is_active', true)
+                ->whereKeyNot($job->id)
+                ->orderBy('sort_order')
+                ->limit(3)
+                ->get(),
+        ]);
+    }
+
+    public function submitJobApplication(Request $request, JobOpening $job): RedirectResponse
+    {
+        abort_unless($job->is_active, 404);
+
+        if (! Schema::hasTable('job_applications')) {
+            return back()
+                ->withInput()
+                ->withErrors(['application' => 'Job applications are not ready yet. Please run migrations and try again.']);
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:50'],
+            'experience' => ['required', 'string', 'max:100'],
+            'current_ctc' => ['nullable', 'string', 'max:100'],
+            'expected_salary' => ['required', 'string', 'max:100'],
+            'notice_period' => ['nullable', 'string', 'max:100'],
+            'current_location' => ['nullable', 'string', 'max:255'],
+            'portfolio_url' => ['nullable', 'url', 'max:255'],
+            'cover_note' => ['nullable', 'string', 'max:3000'],
+            'resume' => ['required', 'file', 'max:5120', 'mimes:pdf,doc,docx'],
+        ]);
+
+        try {
+            $resume = $request->file('resume');
+            $resumePath = $resume->storeAs(
+                'job-applications/'.$job->id,
+                Str::slug($validated['name']).'-'.Str::lower(Str::random(8)).'.'.$resume->getClientOriginalExtension(),
+                'public'
+            );
+
+            if (! $resumePath) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['resume' => 'Resume upload failed. Please try again with a PDF, DOC, or DOCX file under 5 MB.']);
+            }
+
+            JobApplication::query()->create([
+                'job_opening_id' => $job->id,
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'experience' => $validated['experience'],
+                'current_ctc' => $validated['current_ctc'] ?? null,
+                'expected_salary' => $validated['expected_salary'],
+                'notice_period' => $validated['notice_period'] ?? null,
+                'current_location' => $validated['current_location'] ?? null,
+                'portfolio_url' => $validated['portfolio_url'] ?? null,
+                'cover_note' => $validated['cover_note'] ?? null,
+                'resume_path' => $resumePath,
+                'resume_original_name' => $resume->getClientOriginalName(),
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error('Job application submission failed.', [
+                'job_id' => $job->id,
+                'email' => $validated['email'] ?? null,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return back()
+                ->withInput()
+                ->withErrors(['application' => 'We could not submit the application right now. Please check the resume file and try again.']);
+        }
+
+        return redirect()
+            ->route('home.career-with-us.apply', $job)
+            ->with('status', 'Your application has been submitted successfully. Our HR team will review it and contact you soon.');
     }
 
     public function sitemap(): Response
@@ -2617,6 +2704,7 @@ class PublicSiteController extends Controller
             ->orderBy('sort_order')
             ->get()
             ->map(fn (JobOpening $job) => [
+                'id' => $job->id,
                 'badge' => $job->badge ?: 'Open Role',
                 'title' => $job->title,
                 'type' => $job->employment_type ?: 'Full Time',
@@ -2627,6 +2715,7 @@ class PublicSiteController extends Controller
                 'summary' => $job->summary ?: 'Role details will be shared by the HR team.',
                 'skills' => $job->skills ?: [],
                 'color' => $job->color ?: 'from-[#13041f] via-[#4c1d95] to-[#9d5cff]',
+                'apply_url' => route('home.career-with-us.apply', $job),
             ])
             ->all();
 

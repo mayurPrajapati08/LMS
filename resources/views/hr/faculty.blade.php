@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en">
 <head>
     <link rel='apple-touch-icon' href='https://res.cloudinary.com/dqxg5hhfi/image/upload/e_background_removal/f_png/v1777354122/cyis_favicon_kkrbmh.jpg'>
@@ -19,6 +19,12 @@
         .field-input, .field-textarea { width: 100%; border-radius: 1rem; border: 1px solid transparent; background: rgba(255,255,255,0.92); color: rgb(15 23 42); box-shadow: inset 0 0 0 1px rgba(167,139,250,0.16); min-height: 3.2rem; padding: 0.95rem 1rem; }
         .field-textarea { min-height: 7rem; resize: vertical; }
         .field-input:focus, .field-textarea:focus { outline: none; background: #fff; border-color: rgba(109,40,217,0.24); box-shadow: 0 0 0 4px rgba(109,40,217,0.08), inset 0 0 0 1px rgba(109,40,217,0.12); }
+        .field-input::placeholder, .field-textarea::placeholder { color: rgb(148 163 184); }
+        .field-select { width: 100%; border-radius: 1rem; border: 1px solid transparent; background: rgba(255,255,255,0.92); color: rgb(15 23 42); box-shadow: inset 0 0 0 1px rgba(167,139,250,0.16); min-height: 3.2rem; padding: 0.95rem 1rem; }
+        .field-select:focus { outline: none; background: #fff; border-color: rgba(109,40,217,0.24); box-shadow: 0 0 0 4px rgba(109,40,217,0.08), inset 0 0 0 1px rgba(109,40,217,0.12); }
+        .field-help { margin-top: 0.45rem; font-size: 0.78rem; line-height: 1.45; color: rgb(100 116 139); }
+        .form-card { border: 1px solid rgb(226 232 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)); padding: 1.4rem; box-shadow: 0 18px 40px rgba(15,23,42,0.06); }
+        .form-card-head { display: flex; align-items: center; gap: 0.9rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(124,58,237,0.18); margin-bottom: 0.25rem; }
         .panel { border: 1px solid rgb(226 232 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)); box-shadow: 0 18px 40px rgba(15,23,42,0.06); }
     </style>
 </head>
@@ -39,27 +45,46 @@
             <div class="flex flex-wrap items-center justify-between gap-4"><div><p class="text-xs font-bold uppercase tracking-[0.24em] text-violet-700">Faculty Cards</p><h2 class="mt-2 font-headline text-2xl font-extrabold text-slate-900">Faculty homepage management</h2></div><div class="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">{{ $facultyMembers->count() }} members</div></div>
             <div class="mt-6 space-y-5">
                 @foreach ($facultyMembers as $member)
-                    <form action="{{ route('hr.faculty.update', $member) }}" class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-[0_12px_30px_rgba(15,23,42,0.05)]" method="POST">
+                    <form action="{{ route('hr.faculty.update', $member) }}" class="form-card space-y-5" method="POST">
                         @csrf
                         @method('PUT')
-                        <div class="grid gap-5 xl:grid-cols-[0.8fr_1.2fr]">
+                        <div class="form-card-head">
+                            <img alt="{{ $member->name }}" class="h-12 w-12 rounded-2xl object-cover" src="{{ $member->avatarUrl(160) }}" />
                             <div>
-                                <div class="flex items-center gap-4">
-                                    <img alt="{{ $member->name }}" class="h-16 w-16 rounded-2xl object-cover" src="{{ $member->avatarUrl(160) }}" />
-                                    <div>
-                                        <h3 class="font-headline text-xl font-extrabold text-slate-900">{{ $member->name }}</h3>
-                                        <p class="text-sm text-slate-500">{{ $member->courses_count }} published courses</p>
-                                    </div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">{{ $member->name }}</h3>
+                                <p class="text-xs text-slate-500">{{ $member->courses_count }} published courses</p>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-5 xl:grid-cols-[1fr_1.2fr]">
+                            <div class="grid gap-4">
+                                <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+                                    <input name="show_on_homepage" type="checkbox" value="1" @checked(old('show_on_homepage', $member->show_on_homepage)) />
+                                    <span>Show this faculty card on public pages</span>
+                                </label>
+                                <div class="field-shell">
+                                    <label class="field-label" for="faculty_sort_order_{{ $member->id }}">Sort Order</label>
+                                    <input class="field-input" id="faculty_sort_order_{{ $member->id }}" name="faculty_sort_order" type="number" min="0" placeholder="e.g. 0" value="{{ old('faculty_sort_order', $member->faculty_sort_order) }}" />
+                                    <p class="field-help">Lower numbers appear first on the homepage (0 = top).</p>
                                 </div>
-                                <div class="mt-5 grid gap-4">
-                                    <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"><input name="show_on_homepage" type="checkbox" value="1" @checked(old('show_on_homepage', $member->show_on_homepage)) />Show this faculty card on public pages</label>
-                                    <div class="field-shell"><label class="field-label">Sort Order</label><input class="field-input" name="faculty_sort_order" type="number" value="{{ old('faculty_sort_order', $member->faculty_sort_order) }}" /></div>
-                                    <div class="field-shell"><label class="field-label">Card Headline</label><input class="field-input" name="faculty_headline" type="text" value="{{ old('faculty_headline', $member->faculty_headline) }}" /></div>
+                                <div class="field-shell">
+                                    <label class="field-label" for="faculty_headline_{{ $member->id }}">Card Headline</label>
+                                    <input class="field-input" id="faculty_headline_{{ $member->id }}" name="faculty_headline" type="text" maxlength="120" placeholder="e.g. Robotics Mentor with 10+ Years of Experience" value="{{ old('faculty_headline', $member->faculty_headline) }}" />
+                                    <p class="field-help">Shown under the faculty name on the public homepage.</p>
                                 </div>
                             </div>
                             <div class="grid gap-4">
-                                <div class="field-shell"><label class="field-label">Faculty Bio</label><textarea class="field-textarea" name="bio" rows="5">{{ old('bio', $member->bio) }}</textarea></div>
-                                <div class="flex justify-end"><button class="rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(124,58,237,0.24)]" type="submit">Save Faculty Card</button></div>
+                                <div class="field-shell">
+                                    <label class="field-label" for="bio_{{ $member->id }}">Faculty Bio</label>
+                                    <textarea class="field-textarea" id="bio_{{ $member->id }}" name="bio" rows="5" maxlength="600" placeholder="A short biography shown on the public homepage. Keep it to 2-3 lines.">{{ old('bio', $member->bio) }}</textarea>
+                                    <p class="field-help">Visitors see this on the homepage card. Mention specialty and years of experience.</p>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button class="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(124,58,237,0.24)]" type="submit">
+                                        <span class="material-symbols-outlined text-[18px]">save</span>
+                                        Save Faculty Card
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -70,3 +95,5 @@
 </main>
 </body>
 </html>
+
+

@@ -7,6 +7,7 @@ use App\Models\JobOpening;
 use App\Models\OfflineCourse;
 use App\Models\PublicContact;
 use App\Models\Workshop;
+use App\Support\ChatbotModel;
 use App\Support\PlatformSettings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,10 @@ use Illuminate\Validation\Rule;
 
 class PublicChatbotController extends Controller
 {
+    public function __construct(private readonly ChatbotModel $chatbotModel)
+    {
+    }
+
     public function health(): JsonResponse
     {
         return response()->json([
@@ -26,6 +31,29 @@ class PublicChatbotController extends Controller
     }
 
     public function context(): JsonResponse
+    {
+        return response()->json($this->buildContext());
+    }
+
+    public function message(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'max:2000'],
+            'language' => ['nullable', 'string', Rule::in(['en', 'hi'])],
+            'history' => ['nullable', 'array', 'max:12'],
+        ]);
+
+        return response()->json($this->chatbotModel->reply(
+            $validated['message'],
+            $this->buildContext(),
+            [
+                'language' => $validated['language'] ?? 'en',
+                'history' => $validated['history'] ?? [],
+            ],
+        ));
+    }
+
+    private function buildContext(): array
     {
         $onlineCourses = Schema::hasTable('courses')
             ? Course::query()
@@ -101,7 +129,7 @@ class PublicChatbotController extends Controller
                 ->all()
             : [];
 
-        return response()->json([
+        return [
             'brand' => [
                 'name' => 'CodeInYourself',
                 'tagline' => 'Career-focused LMS for practical learning, mentorship, workshops, and placement support.',
@@ -140,7 +168,7 @@ class PublicChatbotController extends Controller
             'offline_courses' => $offlineCourses,
             'workshops' => $workshops,
             'jobs' => $jobs,
-        ]);
+        ];
     }
 
     public function storeInquiry(Request $request): JsonResponse

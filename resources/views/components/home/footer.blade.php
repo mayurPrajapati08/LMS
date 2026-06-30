@@ -193,6 +193,7 @@
     id="cyi-chatbot-root"
     data-health-url="/api/chatbot/health"
     data-context-url="/api/chatbot/context"
+    data-message-url="/api/chatbot/messages"
     data-inquiry-url="/api/chatbot/inquiries"
     data-csrf-token="{{ csrf_token() }}"
     data-owner-avatar="/images/owner 1.0.jpeg"

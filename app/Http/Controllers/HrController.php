@@ -8,6 +8,7 @@ use App\Models\HomeSlide;
 use App\Models\HomeFounderMedia;
 use App\Models\HomeAchievement;
 use App\Models\HomeStory;
+use App\Models\JobApplication;
 use App\Models\JobOpening;
 use App\Models\OfflineCourse;
 use App\Models\PublicContact;
@@ -43,6 +44,7 @@ class HrController extends Controller
         $hasHomeAchievementsTable = Schema::hasTable('home_achievements');
         $hasJobOpeningsTable = Schema::hasTable('job_openings');
         $hasWorkshopsTable = Schema::hasTable('workshops');
+        $hasJobApplicationsTable = Schema::hasTable('job_applications');
         $hasFacultyColumns = Schema::hasColumn('users', 'show_on_homepage');
         $hasContactStatusColumn = $hasPublicContactsTable && Schema::hasColumn('public_contacts', 'status');
         $hasContactTopicColumn = $hasPublicContactsTable && Schema::hasColumn('public_contacts', 'topic');
@@ -59,6 +61,8 @@ class HrController extends Controller
                 'stories' => $hasHomeStoriesTable ? HomeStory::query()->where('is_active', true)->count() : 0,
                 'achievements' => $hasHomeAchievementsTable ? HomeAchievement::query()->where('is_active', true)->count() : 0,
                 'jobs' => $hasJobOpeningsTable ? JobOpening::query()->where('is_active', true)->count() : 0,
+                'job_applications' => $hasJobApplicationsTable ? JobApplication::query()->count() : 0,
+                'new_job_applications' => $hasJobApplicationsTable ? JobApplication::query()->where('status', 'new')->count() : 0,
                 'workshops' => $hasWorkshopsTable ? Workshop::query()->where('is_active', true)->count() : 0,
                 'offline_courses' => Schema::hasTable('offline_courses') ? OfflineCourse::query()->where('is_active', true)->count() : 0,
                 'featured_faculty' => $hasFacultyColumns ? User::query()->where('show_on_homepage', true)->count() : 0,
@@ -224,14 +228,42 @@ class HrController extends Controller
     public function jobs(Request $request): View
     {
         $user = $request->user();
+        $jobOpeningsTableExists = Schema::hasTable('job_openings');
+
+        $jobsQuery = $jobOpeningsTableExists
+            ? JobOpening::query()->orderBy('sort_order')->latest('id')
+            : null;
+
+        $jobs = $jobsQuery
+            ? $jobsQuery->paginate(5)->withQueryString()->fragment('jobs-table')
+            : collect();
+
+        $totalJobs = $jobOpeningsTableExists
+            ? (clone $jobsQuery)->count()
+            : 0;
+
+        $jobCount = method_exists($jobs, 'total') ? $jobs->total() : $totalJobs;
+        $activeJobs = $jobOpeningsTableExists
+            ? (clone $jobsQuery)->where('is_active', true)->count()
+            : 0;
+        $hiddenJobs = $jobOpeningsTableExists
+            ? (clone $jobsQuery)->where('is_active', false)->count()
+            : 0;
+
+        $jobItems = method_exists($jobs, 'items')
+            ? collect($jobs->items())
+            : collect($jobs);
 
         return view('hr.jobs', [
             'user' => $user,
             'profileAvatar' => $user->avatarUrl(96),
-            'jobs' => Schema::hasTable('job_openings')
-                ? JobOpening::query()->orderBy('sort_order')->latest('id')->paginate(5)->withQueryString()->fragment('jobs-table')
-                : collect(),
-            'editingJob' => Schema::hasTable('job_openings') && $request->filled('edit')
+            'jobs' => $jobs,
+            'jobItems' => $jobItems,
+            'jobCount' => $jobCount,
+            'totalJobs' => $totalJobs,
+            'activeJobs' => $activeJobs,
+            'hiddenJobs' => $hiddenJobs,
+            'editingJob' => $jobOpeningsTableExists && $request->filled('edit')
                 ? JobOpening::query()->find($request->integer('edit'))
                 : null,
         ]);
@@ -259,6 +291,72 @@ class HrController extends Controller
         $job->delete();
 
         return redirect()->route('hr.jobs')->with('status', 'Job posting removed successfully.');
+    }
+
+    public function jobApplications(Request $request): View
+    {
+        $user = $request->user();
+        $status = (string) $request->query('status', '');
+        $jobId = $request->integer('job');
+        $search = trim((string) $request->query('search', ''));
+        $validStatuses = ['new', 'shortlisted', 'interview', 'hired', 'rejected'];
+
+        return view('hr.job-applications', [
+            'user' => $user,
+            'profileAvatar' => $user->avatarUrl(96),
+            'statusFilter' => in_array($status, $validStatuses, true) ? $status : '',
+            'jobFilter' => $jobId,
+            'search' => $search,
+            'jobs' => Schema::hasTable('job_openings')
+                ? JobOpening::query()->orderBy('title')->get(['id', 'title', 'employment_type', 'location'])
+                : collect(),
+            'applications' => Schema::hasTable('job_applications')
+                ? JobApplication::query()
+                    ->with(['jobOpening:id,title,employment_type,location', 'reviewer:id,name'])
+                    ->when($jobId > 0, fn ($query) => $query->where('job_opening_id', $jobId))
+                    ->when(in_array($status, $validStatuses, true), fn ($query) => $query->where('status', $status))
+                    ->when($search !== '', function ($query) use ($search) {
+                        $query->where(function ($nestedQuery) use ($search) {
+                            $nestedQuery
+                                ->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%")
+                                ->orWhere('phone', 'like', "%{$search}%");
+                        });
+                    })
+                    ->latest()
+                    ->paginate(10)
+                    ->withQueryString()
+                : $this->emptyPaginator(),
+        ]);
+    }
+
+    public function updateJobApplication(Request $request, JobApplication $application): RedirectResponse
+    {
+        abort_unless(Schema::hasTable('job_applications'), 503, 'Run migrations to enable job application management.');
+
+        $validated = $request->validate([
+            'status' => ['required', 'in:new,shortlisted,interview,hired,rejected'],
+            'hr_notes' => ['nullable', 'string', 'max:5000'],
+        ]);
+
+        $application->update([
+            'status' => $validated['status'],
+            'hr_notes' => $validated['hr_notes'] ?? null,
+            'reviewed_by' => $request->user()->id,
+            'reviewed_at' => now(),
+        ]);
+
+        return redirect()->back()->with('status', 'Job application updated successfully.');
+    }
+
+    public function downloadJobApplicationResume(JobApplication $application)
+    {
+        abort_unless($application->resume_path && Storage::disk('public')->exists($application->resume_path), 404);
+
+        return Storage::disk('public')->download(
+            $application->resume_path,
+            $application->resume_original_name ?: basename($application->resume_path)
+        );
     }
 
     public function stories(Request $request): View

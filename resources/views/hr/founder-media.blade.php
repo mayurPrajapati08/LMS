@@ -1,4 +1,4 @@
-@php
+﻿@php
     $activeVideoProvider = old('video_provider', $founderMedia->video_provider ?? 'cloudinary');
     $activePosterProvider = old('poster_provider', $founderMedia->poster_provider ?? 'cloudinary');
     $activeVideoProvider = $activeVideoProvider === 'cloud' ? 'cloudflare' : $activeVideoProvider;
@@ -30,6 +30,9 @@
         .field-file { width: 100%; border-radius: 1rem; border: 1px dashed rgba(14,116,144,0.26); background: linear-gradient(180deg, #f8fdff 0%, #eff8fd 100%); padding: 0.8rem; color: rgb(51 65 85); }
         .field-file::file-selector-button { margin-right: 0.75rem; border: 0; border-radius: 0.85rem; background: linear-gradient(135deg, rgb(14 116 144), rgb(59 130 246)); color: white; font-weight: 700; padding: 0.7rem 1rem; cursor: pointer; }
         .panel { border: 1px solid rgb(226 232 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)); box-shadow: 0 18px 40px rgba(15,23,42,0.06); }
+        .form-card { border: 1px solid rgb(214 228 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(238,247,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+        .form-card-head { display: flex; align-items: center; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(124,58,237,0.18); margin-bottom: 0.25rem; }
+        .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(168,85,247,0.12)); color: rgb(124 58 237); font-size: 1.25rem; }
         [hidden] { display: none !important; }
     </style>
 </head>
@@ -60,33 +63,60 @@
                 <h2 class="mt-2 font-headline text-3xl font-extrabold text-slate-900">Update founder homepage media</h2>
             </div>
 
-            <form action="{{ route('hr.founder-media.update') }}" class="mt-7 space-y-5" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('hr.founder-media.update') }}" class="mt-7 space-y-6" method="POST" enctype="multipart/form-data">
                 @csrf
 
-                <div class="grid gap-4 lg:grid-cols-2">
-                    <div class="field-shell"><label class="field-label">Eyebrow</label><input class="field-input" name="eyebrow" type="text" value="{{ old('eyebrow', $founderMedia->eyebrow ?? '') }}" /></div>
-                    <div class="field-shell"><label class="field-label">Badge</label><input class="field-input" name="badge" type="text" value="{{ old('badge', $founderMedia->badge ?? '') }}" /></div>
-                    <div class="field-shell lg:col-span-2"><label class="field-label">Title</label><input class="field-input" name="title" type="text" value="{{ old('title', $founderMedia->title ?? '') }}" /></div>
-                    <div class="field-shell lg:col-span-2"><label class="field-label">Description</label><textarea class="field-textarea" name="description" rows="4">{{ old('description', $founderMedia->description ?? '') }}</textarea></div>
-                </div>
-
-                <div class="rounded-[1.6rem] border border-sky-100 bg-[linear-gradient(180deg,#fcfeff_0%,#eff8ff_100%)] p-5">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined rounded-full bg-sky-100 p-2 text-sky-700">smart_display</span>
+                <div class="form-card space-y-5">
+                    <div class="form-card-head">
+                        <span class="material-symbols-outlined">badge</span>
                         <div>
-                            <h3 class="font-headline text-xl font-extrabold text-slate-900">Video Setup</h3>
-                            <p class="mt-1 text-sm leading-6 text-slate-600">Choose the same media flow used elsewhere in HR: URL, local upload, Cloudflare R2, or Cloudinary.</p>
+                            <h3 class="font-headline text-lg font-extrabold text-slate-900">Founder Card Copy</h3>
+                            <p class="text-xs text-slate-500">The eyebrow, title, and supporting text shown next to the video.</p>
                         </div>
                     </div>
-                    <div class="mt-5 grid gap-4 lg:grid-cols-2">
+
+                    <div class="grid gap-4 lg:grid-cols-2">
+                        <div class="field-shell">
+                            <label class="field-label" for="founder_eyebrow">Eyebrow</label>
+                            <input class="field-input" id="founder_eyebrow" name="eyebrow" type="text" maxlength="60" placeholder="e.g. Meet The Founder" value="{{ old('eyebrow', $founderMedia->eyebrow ?? '') }}" />
+                            <p class="field-help">A short tag shown above the title.</p>
+                        </div>
+                        <div class="field-shell">
+                            <label class="field-label" for="founder_badge">Badge</label>
+                            <input class="field-input" id="founder_badge" name="badge" type="text" maxlength="40" placeholder="e.g. Founder Story" value="{{ old('badge', $founderMedia->badge ?? '') }}" />
+                            <p class="field-help">Optional badge text shown on the video card.</p>
+                        </div>
+                        <div class="field-shell lg:col-span-2">
+                            <label class="field-label" for="founder_title">Title</label>
+                            <input class="field-input" id="founder_title" name="title" type="text" maxlength="120" placeholder="e.g. Building CYIS with a Student-First Mindset" value="{{ old('title', $founderMedia->title ?? '') }}" />
+                        </div>
+                        <div class="field-shell lg:col-span-2">
+                            <label class="field-label" for="founder_description">Description</label>
+                            <textarea class="field-textarea" id="founder_description" name="description" rows="4" maxlength="500" placeholder="A short paragraph introducing the founder and their story.">{{ old('description', $founderMedia->description ?? '') }}</textarea>
+                            <p class="field-help">Visitors will read this next to the founder video.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card space-y-5">
+                    <div class="form-card-head">
+                        <span class="material-symbols-outlined">smart_display</span>
+                        <div>
+                            <h3 class="font-headline text-lg font-extrabold text-slate-900">Video Setup</h3>
+                            <p class="text-xs text-slate-500">Choose the same media flow used elsewhere in HR: URL, local upload, Cloudflare R2, or Cloudinary.</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4 lg:grid-cols-2">
                         <div class="field-shell">
                             <label class="field-label" for="founder_video_provider">Storage Option</label>
                             <select class="field-select" id="founder_video_provider" name="video_provider" data-provider-select="video">
+                                <option value="" disabled @selected(is_null($activeVideoProvider))>— Choose storage —</option>
                                 <option value="url" @selected($activeVideoProvider === 'url')>Use video URL</option>
                                 <option value="local" @selected($activeVideoProvider === 'local')>Upload to local storage</option>
                                 <option value="cloudflare" @selected($activeVideoProvider === 'cloudflare')>Upload to Cloudflare R2</option>
                                 <option value="cloudinary" @selected($activeVideoProvider === 'cloudinary')>Upload to Cloudinary</option>
                             </select>
+                            <p class="field-help">Pick <strong>URL</strong> to paste a hosted video link, or choose an upload option.</p>
                         </div>
                         <div class="field-shell" data-provider-mode="video" data-provider-view="file" @if ($activeVideoProvider === 'url') hidden @endif>
                             <label class="field-label" for="founder_video_file">Upload From Device</label>
@@ -95,29 +125,33 @@
                         </div>
                         <div class="field-shell lg:col-span-2" data-provider-mode="video" data-provider-view="url" @if ($activeVideoProvider !== 'url') hidden @endif>
                             <label class="field-label" for="founder_video_url">Video URL</label>
-                            <input class="field-input" id="founder_video_url" name="video_url" type="text" value="{{ old('video_url', $founderMedia->video_url ?? '') }}" />
+                            <input class="field-input" id="founder_video_url" name="video_url" type="url" placeholder="https://res.cloudinary.com/.../founder.mp4" value="{{ old('video_url', $founderMedia->video_url ?? '') }}" />
                             <p class="field-help">Leave blank if you want the founder card to show only the poster image.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="rounded-[1.6rem] border border-violet-100 bg-[linear-gradient(180deg,#fcfbff_0%,#f5f3ff_100%)] p-5">
+                <div class="form-card space-y-5">
                     <div class="flex items-start gap-3">
                         <span class="material-symbols-outlined rounded-full bg-violet-100 p-2 text-violet-700">image</span>
+                    <div class="form-card-head">
+                        <span class="material-symbols-outlined">image</span>
                         <div>
-                            <h3 class="font-headline text-xl font-extrabold text-slate-900">Poster Setup</h3>
-                            <p class="mt-1 text-sm leading-6 text-slate-600">Set the poster that appears before play and when no video is present.</p>
+                            <h3 class="font-headline text-lg font-extrabold text-slate-900">Poster Setup</h3>
+                            <p class="text-xs text-slate-500">Set the poster that appears before play and when no video is present.</p>
                         </div>
                     </div>
-                    <div class="mt-5 grid gap-4 lg:grid-cols-2">
+                    <div class="grid gap-4 lg:grid-cols-2">
                         <div class="field-shell">
                             <label class="field-label" for="founder_poster_provider">Storage Option</label>
                             <select class="field-select" id="founder_poster_provider" name="poster_provider" data-provider-select="poster">
+                                <option value="" disabled @selected(is_null($activePosterProvider))>— Choose storage —</option>
                                 <option value="url" @selected($activePosterProvider === 'url')>Use image URL</option>
                                 <option value="local" @selected($activePosterProvider === 'local')>Upload to local storage</option>
                                 <option value="cloudflare" @selected($activePosterProvider === 'cloudflare')>Upload to Cloudflare R2</option>
                                 <option value="cloudinary" @selected($activePosterProvider === 'cloudinary')>Upload to Cloudinary</option>
                             </select>
+                            <p class="field-help">Pick <strong>URL</strong> to paste a hosted image, or choose an upload option.</p>
                         </div>
                         <div class="field-shell" data-provider-mode="poster" data-provider-view="file" @if ($activePosterProvider === 'url') hidden @endif>
                             <label class="field-label" for="founder_poster_file">Upload From Device</label>
@@ -126,15 +160,22 @@
                         </div>
                         <div class="field-shell lg:col-span-2" data-provider-mode="poster" data-provider-view="url" @if ($activePosterProvider !== 'url') hidden @endif>
                             <label class="field-label" for="founder_poster_url">Poster Image URL</label>
-                            <input class="field-input" id="founder_poster_url" name="poster_url" type="text" value="{{ old('poster_url', $founderMedia->poster_url ?? '') }}" />
+                            <input class="field-input" id="founder_poster_url" name="poster_url" type="url" placeholder="https://res.cloudinary.com/.../founder-poster.jpg" value="{{ old('poster_url', $founderMedia->poster_url ?? '') }}" />
+                            <p class="field-help">Paste a public poster image URL when <strong>URL</strong> storage is selected.</p>
                         </div>
                     </div>
                 </div>
 
-                <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"><input name="is_active" type="checkbox" value="1" @checked(old('is_active', $founderMedia->is_active ?? true)) />Show this founder media on the homepage</label>
+                <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+                    <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $founderMedia->is_active ?? true)) />
+                    <span>Show this founder media on the homepage</span>
+                </label>
 
                 <div class="flex flex-wrap gap-3">
-                    <button class="rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(124,58,237,0.22)]" type="submit">Save Founder Media</button>
+                    <button class="inline-flex items-center justify-center gap-2 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(124,58,237,0.22)]" type="submit">
+                        <span class="material-symbols-outlined text-[18px]">save</span>
+                        Save Founder Media
+                    </button>
                 </div>
             </form>
         </section>
@@ -161,3 +202,6 @@
 </script>
 </body>
 </html>
+
+
+

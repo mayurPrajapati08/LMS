@@ -1,4 +1,4 @@
-@php
+﻿@php
     $studentAvatarStorageAction = \Illuminate\Support\Facades\Route::has('hr.dashboard.student-avatar-storage')
         ? route('hr.dashboard.student-avatar-storage')
         : url('/hr/dashboard/student-avatar-storage');
@@ -9,6 +9,7 @@
         ['label' => 'Active Stories', 'value' => $stats['stories'] ?? 0, 'icon' => 'auto_stories', 'tone' => 'cyan'],
         ['label' => 'Achievements', 'value' => $stats['achievements'] ?? 0, 'icon' => 'gallery_thumbnail', 'tone' => 'violet'],
         ['label' => 'Open Jobs', 'value' => $stats['jobs'] ?? 0, 'icon' => 'work', 'tone' => 'amber'],
+        ['label' => 'Job Applications', 'value' => $stats['job_applications'] ?? 0, 'icon' => 'assignment_ind', 'tone' => 'emerald'],
         ['label' => 'Workshops', 'value' => $stats['workshops'] ?? 0, 'icon' => 'edit_calendar', 'tone' => 'rose'],
         ['label' => 'Offline Courses', 'value' => $stats['offline_courses'] ?? 0, 'icon' => 'menu_book', 'tone' => 'sky'],
         ['label' => 'Featured Faculty', 'value' => $stats['featured_faculty'] ?? 0, 'icon' => 'school', 'tone' => 'emerald'],
@@ -16,6 +17,7 @@
 
     $leadCards = [
         ['label' => 'New Inquiries', 'value' => $stats['new_inquiries'] ?? 0, 'icon' => 'mark_email_unread', 'tone' => 'sky'],
+        ['label' => 'New Applications', 'value' => $stats['new_job_applications'] ?? 0, 'icon' => 'person_search', 'tone' => 'emerald'],
         ['label' => 'Workshop Leads', 'value' => $stats['workshop_leads'] ?? 0, 'icon' => 'event_available', 'tone' => 'violet'],
         ['label' => 'Career Leads', 'value' => $stats['career_leads'] ?? 0, 'icon' => 'badge', 'tone' => 'amber'],
         ['label' => 'Mentorship Leads', 'value' => $stats['mentorship_leads'] ?? 0, 'icon' => 'groups', 'tone' => 'emerald'],
@@ -27,6 +29,7 @@
         ['title' => 'Manage Stories', 'copy' => 'Update placement and success story sections with less clutter.', 'route' => route('hr.stories'), 'icon' => 'auto_stories', 'tone' => 'from-cyan-500 to-teal-400'],
         ['title' => 'Manage Achievements', 'copy' => 'Control gallery items and showcase cards clearly.', 'route' => route('hr.achievements'), 'icon' => 'gallery_thumbnail', 'tone' => 'from-violet-500 to-fuchsia-400'],
         ['title' => 'Manage Jobs', 'copy' => 'Keep openings, roles, and hiring pages current.', 'route' => route('hr.jobs'), 'icon' => 'work', 'tone' => 'from-amber-500 to-orange-400'],
+        ['title' => 'Job Applications', 'copy' => 'Review candidates, resumes, salary details, and hiring status.', 'route' => route('hr.job-applications'), 'icon' => 'assignment_ind', 'tone' => 'from-teal-600 to-emerald-400'],
         ['title' => 'Manage Faculty', 'copy' => 'Highlight the right instructors on the public site.', 'route' => route('hr.faculty'), 'icon' => 'school', 'tone' => 'from-emerald-500 to-teal-400'],
         ['title' => 'Manage Workshops', 'copy' => 'Organize workshop content and visibility faster.', 'route' => route('hr.workshops'), 'icon' => 'edit_calendar', 'tone' => 'from-rose-500 to-pink-400'],
         ['title' => 'Manage Offline Courses', 'copy' => 'Create and control classroom-first course cards for the public catalog.', 'route' => route('hr.offline-courses'), 'icon' => 'menu_book', 'tone' => 'from-sky-500 to-indigo-500'],
@@ -36,6 +39,7 @@
         ['title' => 'All Public Inquiries', 'copy' => 'See every incoming message in one place.', 'route' => route('hr.inquiries'), 'icon' => 'support_agent'],
         ['title' => 'Workshop Registrations', 'copy' => 'Follow up with event-driven leads quickly.', 'route' => route('hr.inquiries.workshops'), 'icon' => 'event_available'],
         ['title' => 'Career Inquiries', 'copy' => 'Track candidates and hiring-related messages.', 'route' => route('hr.inquiries.careers'), 'icon' => 'badge'],
+        ['title' => 'Job Applications', 'copy' => 'Manage submitted application forms and resumes.', 'route' => route('hr.job-applications'), 'icon' => 'assignment_ind'],
         ['title' => 'Free Mentorship Leads', 'copy' => 'Review students asking for guidance and support.', 'route' => route('hr.mentorship'), 'icon' => 'groups'],
     ];
 
@@ -82,7 +86,22 @@
         h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
         .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
         .dashboard-panel { border: 1px solid rgba(226, 232, 240, 0.92); border-radius: 1.7rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96)); box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06); }
-        .mesh-card::before { content: ""; position: absolute; inset: 0; background:
+        
+
+          .field-shell { border: 1px solid rgb(226 232 240); border-radius: 1.35rem; background:
+ linear-gradient(180deg, rgba(255,255,255,0.98), rgba(249,250,255,0.94)); padding: 1rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 10px 24px rgba(15,23,42,0.035); }
+          .field-label { display: block; margin-bottom: 0.45rem; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(2 132 199); }
+          .field-help { margin-top: 0.45rem; font-size: 0.78rem; line-height: 1.45; color: rgb(100 116 139); }
+          .field-input, .field-select, .field-textarea { width: 100%; border-radius: 1rem; border: 1px solid transparent; background: rgba(255,255,255,0.92); color: rgb(15 23 42); box-shadow: inset 0 0 0 1px rgba(125,211,252,0.16); transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease; }
+          .field-input::placeholder, .field-textarea::placeholder { color: rgb(148 163 184); }
+          .field-input, .field-select { min-height: 3.2rem; padding: 0.95rem 1rem; }
+          .field-textarea { min-height: 7.5rem; padding: 1rem; resize: vertical; }
+          .field-input:focus, .field-select:focus, .field-textarea:focus { outline: none; background: #ffffff; border-color: rgba(2,132,199,0.24); box-shadow: 0 0 0 4px rgba(2,132,199,0.08), inset 0 0 0 1px rgba(2,132,199,0.12); }
+          .form-card { border: 1px solid rgb(226 232 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(249,250,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+          .form-card-head { display: flex; align-items: center; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(2,132,199,0.18); margin-bottom: 0.25rem; }
+          .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(2,132,199,0.12), rgba(14,165,233,0.12)); color: rgb(2 132 199); font-size: 1.25rem; }
+.mesh-card::before { content: ""; position: absolute; inset: 0; background:
+
             radial-gradient(circle at top left, rgba(125,211,252,0.28), transparent 34%),
             radial-gradient(circle at bottom right, rgba(192,132,252,0.24), transparent 30%),
             radial-gradient(circle at 60% 20%, rgba(255,255,255,0.2), transparent 24%);
@@ -149,18 +168,31 @@
                         <p class="mt-2 text-sm text-slate-500">Choose where student-uploaded profile photos are stored from now on.</p>
                     </div>
                 </div>
-                <form action="{{ $studentAvatarStorageAction }}" class="mt-6 grid gap-4 md:grid-cols-[1fr_auto]" method="POST">
+                <form action="{{ $studentAvatarStorageAction }}" class="mt-6 form-card space-y-4" method="POST">
                     @csrf
-                    <div>
-                        <label class="mb-2 block text-xs font-bold uppercase tracking-[0.16em] text-slate-500" for="student_avatar_upload_provider">Storage Provider</label>
-                        <select class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 focus:border-sky-400 focus:outline-none focus:ring-4 focus:ring-sky-100" id="student_avatar_upload_provider" name="student_avatar_upload_provider">
-                            <option value="cloudinary" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'cloudinary')>Cloudinary (Recommended)</option>
-                            <option value="cloudflare" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'cloudflare')>Cloudflare R2</option>
-                            <option value="local" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'local')>Local Server</option>
-                        </select>
+                    <div class="form-card-head">
+                        <span class="material-symbols-outlined">cloud_upload</span>
+                        <div>
+                            <h3 class="font-headline text-lg font-extrabold text-slate-900">Student Avatar Storage</h3>
+                            <p class="text-xs text-slate-500">Choose where new student profile photos are uploaded.</p>
+                        </div>
                     </div>
-                    <div class="flex items-end">
-                        <button class="rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(2,132,199,0.18)]" type="submit">Save Setting</button>
+
+                    <div class="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+                        <div class="field-shell">
+                            <label class="field-label" for="student_avatar_upload_provider">Storage Provider</label>
+                            <select class="field-select" id="student_avatar_upload_provider" name="student_avatar_upload_provider">
+                                <option value="" disabled @selected(is_null(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? null)))>— Pick a storage provider —</option>
+                                <option value="cloudinary" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'cloudinary')>Cloudinary (recommended)</option>
+                                <option value="cloudflare" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'cloudflare')>Cloudflare R2</option>
+                                <option value="local" @selected(old('student_avatar_upload_provider', $studentAvatarUploadProvider ?? 'cloudinary') === 'local')>Local Server</option>
+                            </select>
+                            <p class="field-help">Cloudinary is the fastest to set up. Use Cloudflare R2 for larger media buckets and Local for development.</p>
+                        </div>
+                        <button class="inline-flex items-center justify-center gap-2 rounded-xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(2,132,199,0.18)]" type="submit">
+                            <span class="material-symbols-outlined text-[18px]">save</span>
+                            Save Setting
+                        </button>
                     </div>
                 </form>
             </section>
@@ -297,3 +329,6 @@
     </main>
 </body>
 </html>
+
+
+

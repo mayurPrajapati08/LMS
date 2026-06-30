@@ -9,6 +9,7 @@
         ['route' => 'hr.stories', 'label' => 'Stories', 'icon' => 'auto_stories'],
         ['route' => 'hr.achievements', 'label' => 'Achievements', 'icon' => 'gallery_thumbnail'],
         ['route' => 'hr.jobs', 'label' => 'Jobs', 'icon' => 'work'],
+        ['route' => 'hr.job-applications', 'label' => 'Job Applications', 'icon' => 'assignment_ind'],
         ['route' => 'hr.faculty', 'label' => 'Faculty', 'icon' => 'school'],
         ['route' => 'hr.workshops', 'label' => 'Workshops', 'icon' => 'edit_calendar'],
         ['route' => 'hr.workshop-registrations', 'label' => 'Workshop Payments', 'icon' => 'payments'],

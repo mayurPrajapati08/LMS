@@ -1,4 +1,4 @@
-@php
+﻿@php
     $pendingCount = $registrations->getCollection()->where('registration_status', 'pending')->count();
     $confirmedCount = $registrations->getCollection()->where('registration_status', 'confirmed')->count();
     $rejectedCount = $registrations->getCollection()->where('registration_status', 'rejected')->count();
@@ -24,6 +24,12 @@
         .field-input, .field-select { padding: 0.78rem 0.95rem; }
         .field-textarea { min-height: 7rem; padding: 0.9rem 0.95rem; resize: vertical; }
         .field-label { display: block; margin-bottom: 0.45rem; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(14 116 144); }
+        .field-hint { margin-top: 0.45rem; font-size: 0.78rem; line-height: 1.45; color: rgb(100 116 139); }
+        .field-help { margin-top: 0.45rem; font-size: 0.78rem; line-height: 1.45; color: rgb(100 116 139); }
+        .field-shell { border: 1px solid rgb(214 228 240); border-radius: 1.35rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,250,253,0.94)); padding: 1rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 10px 24px rgba(15,23,42,0.035); }
+        .form-card { border: 1px solid rgb(186 230 253); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(240,249,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+        .form-card-head { display: flex; align-items: flex-start; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(2,132,199,0.22); margin-bottom: 0.5rem; }
+        .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(2,132,199,0.14), rgba(14,165,233,0.14)); color: rgb(2 132 199); font-size: 1.25rem; }
     </style>
 </head>
 <body class="min-h-screen bg-[linear-gradient(180deg,#f8fbff_0%,#eef6ff_100%)] text-slate-900">
@@ -111,33 +117,45 @@
                                 @endif
                             </div>
 
-                            <form action="{{ route('hr.workshop-registrations.update', $registration) }}" method="POST" class="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]">
+                            <form action="{{ route('hr.workshop-registrations.update', $registration) }}" method="POST" class="form-card space-y-4">
                                 @csrf
                                 @method('PUT')
-                                <p class="text-xs font-bold uppercase tracking-[0.22em] text-sky-700">Review Registration</p>
-                                <div class="mt-4 space-y-4">
+                                <div class="form-card-head">
+                                    <span class="material-symbols-outlined">rate_review</span>
                                     <div>
-                                        <label class="field-label">Payment Status</label>
-                                        <select class="field-select" name="payment_status">
-                                            @foreach (['pending' => 'Pending', 'verified' => 'Verified', 'rejected' => 'Rejected', 'not_required' => 'Not Required'] as $value => $label)
-                                                <option value="{{ $value }}" @selected($registration->payment_status === $value)>{{ $label }}</option>
-                                            @endforeach
-                                        </select>
+                                        <p class="text-xs font-bold uppercase tracking-[0.22em] text-sky-700">Review Registration</p>
+                                        <h3 class="mt-1 font-headline text-lg font-extrabold text-slate-900">Confirm or reject this entry</h3>
+                                        <p class="text-xs text-slate-500">Pick the right status for payment and registration, then leave any HR notes for the team.</p>
                                     </div>
-                                    <div>
-                                        <label class="field-label">Registration Status</label>
-                                        <select class="field-select" name="registration_status">
-                                            @foreach (['pending' => 'Pending', 'confirmed' => 'Confirmed', 'rejected' => 'Rejected'] as $value => $label)
-                                                <option value="{{ $value }}" @selected($registration->registration_status === $value)>{{ $label }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="field-label">HR Notes</label>
-                                        <textarea class="field-textarea" name="hr_notes" rows="5" placeholder="Add payment review notes, callback details, or rejection reason">{{ old('hr_notes', $registration->hr_notes) }}</textarea>
-                                    </div>
-                                    <button class="inline-flex w-full items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#0f4c81_0%,#2563eb_100%)] px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(37,99,235,0.18)]" type="submit">Save Decision</button>
                                 </div>
+
+                                <div>
+                                    <label class="field-label" for="payment_status_{{ $registration->id }}">Payment Status</label>
+                                    <select class="field-select" id="payment_status_{{ $registration->id }}" name="payment_status">
+                                        @foreach (['pending' => 'Pending', 'verified' => 'Verified', 'rejected' => 'Rejected', 'not_required' => 'Not Required'] as $value => $label)
+                                            <option value="{{ $value }}" @selected($registration->payment_status === $value)>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="field-help">Pick <strong>Verified</strong> after checking the screenshot, or <strong>Rejected</strong> if the payment proof fails.</p>
+                                </div>
+                                <div>
+                                    <label class="field-label" for="registration_status_{{ $registration->id }}">Registration Status</label>
+                                    <select class="field-select" id="registration_status_{{ $registration->id }}" name="registration_status">
+                                        @foreach (['pending' => 'Pending', 'confirmed' => 'Confirmed', 'rejected' => 'Rejected'] as $value => $label)
+                                            <option value="{{ $value }}" @selected($registration->registration_status === $value)>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="field-help">Use <strong>Confirmed</strong> to lock the seat or <strong>Rejected</strong> to send a follow-up.</p>
+                                </div>
+                                <div>
+                                    <label class="field-label" for="hr_notes_{{ $registration->id }}">HR Notes</label>
+                                    <textarea class="field-textarea" id="hr_notes_{{ $registration->id }}" name="hr_notes" rows="5" maxlength="1000" placeholder="Add payment review notes, callback details, or rejection reason">{{ old('hr_notes', $registration->hr_notes) }}</textarea>
+                                    <p class="field-help">Only seen by the HR team. Mention callback times or follow-up actions.</p>
+                                </div>
+                                <button class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#0f4c81_0%,#2563eb_100%)] px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(37,99,235,0.18)]" type="submit">
+                                    <span class="material-symbols-outlined text-[18px]">save</span>
+                                    Save Decision
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -156,3 +174,5 @@
 </main>
 </body>
 </html>
+
+

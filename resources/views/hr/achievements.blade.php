@@ -1,4 +1,4 @@
-@php
+﻿@php
     $activeAchievementKind = old('kind', $editingAchievement->kind ?? ($achievementFilter ?? 'gallery'));
     $activeCategoryMode = old('category_mode', filled($editingAchievement->gallery_category ?? null) ? 'existing' : 'new');
     $activeCategoryOrder = old('gallery_category_order', $editingAchievement->gallery_category_order ?? 0);
@@ -30,6 +30,9 @@
         .field-input:focus, .field-select:focus, .field-textarea:focus { outline: none; background: #ffffff; border-color: rgba(109,40,217,0.24); box-shadow: 0 0 0 4px rgba(109,40,217,0.08), inset 0 0 0 1px rgba(109,40,217,0.12); }
         .field-file { width: 100%; border-radius: 1rem; border: 1px dashed rgba(109,40,217,0.24); background: linear-gradient(180deg, #fbf9ff 0%, #f4f1ff 100%); padding: 0.8rem; color: rgb(51 65 85); }
         .field-file::file-selector-button { margin-right: 0.75rem; border: 0; border-radius: 0.85rem; background: linear-gradient(135deg, rgb(109 40 217), rgb(168 85 247)); color: white; font-weight: 700; padding: 0.7rem 1rem; cursor: pointer; }
+        .form-card { border: 1px solid rgb(228 228 243); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(249,247,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+        .form-card-head { display: flex; align-items: center; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(109,40,217,0.18); margin-bottom: 0.25rem; }
+        .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(109,40,217,0.12), rgba(168,85,247,0.12)); color: rgb(109 40 217); font-size: 1.25rem; }
         .achievement-card { border: 1px solid rgb(226 232 240); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.98)); box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06); }
         .manager-tab { border: 1px solid rgb(226 232 240); border-radius: 999px; padding: 0.7rem 1rem; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(100 116 139); background: white; transition: all .18s ease; }
         .manager-tab.is-active { border-color: rgb(109 40 217); background: rgb(109 40 217); color: white; box-shadow: 0 12px 24px rgba(109,40,217,0.16); }
@@ -89,88 +92,163 @@
                     @csrf
                     @if ($editingAchievement) @method('PUT') @endif
 
-                    <div class="grid gap-4 lg:grid-cols-2">
-                        <div class="field-shell">
-                            <label class="field-label" for="achievement_kind">Content Type</label>
-                            <select class="field-select" id="achievement_kind" name="kind" data-achievement-kind-select>
-                                <option value="gallery" @selected($activeAchievementKind === 'gallery')>Gallery</option>
-                                <option value="showcase" @selected($activeAchievementKind === 'showcase')>Showcase Card</option>
-                            </select>
-                            <p class="field-help">Gallery fills the image grid. Showcase powers the larger content cards below.</p>
-                        </div>
-                        <div class="field-shell"><label class="field-label" for="achievement_sort_order">Sort Order</label><input class="field-input" id="achievement_sort_order" name="sort_order" type="number" value="{{ old('sort_order', $editingAchievement->sort_order ?? 0) }}" /><p class="field-help">`0` shows first, `1` shows next, and so on.</p></div>
-                        <div class="field-shell"><label class="field-label" for="achievement_title">Title</label><input class="field-input" id="achievement_title" name="title" type="text" value="{{ old('title', $editingAchievement->title ?? '') }}" /><p class="field-help">Useful for both gallery and showcase items.</p></div>
-
-                        <div class="field-shell" data-achievement-scope="gallery" @if ($activeAchievementKind !== 'gallery') hidden @endif>
-                            <label class="field-label" for="achievement_category_mode">Gallery Category Source</label>
-                            <select class="field-select" id="achievement_category_mode" name="category_mode" data-achievement-category-mode @if ($activeAchievementKind !== 'gallery') disabled @endif>
-                                <option value="existing" @selected($activeCategoryMode === 'existing')>Use existing category</option>
-                                <option value="new" @selected($activeCategoryMode === 'new')>Create new category</option>
-                            </select>
-                            <p class="field-help">Example categories: Seminar, Event, Class Activity, Workshop, Award Ceremony, Student Reviews.</p>
-                        </div>
-                        <div class="field-shell" data-achievement-scope="gallery" @if ($activeAchievementKind !== 'gallery') hidden @endif>
-                            <label class="field-label" for="achievement_gallery_category_order">Category Display Order</label>
-                            <input class="field-input" id="achievement_gallery_category_order" name="gallery_category_order" type="number" min="0" value="{{ $activeCategoryOrder }}" @if ($activeAchievementKind !== 'gallery') disabled @endif />
-                            <p class="field-help">Use the same number for all items in one category. `0` shows first, bigger numbers push that category lower.</p>
-                        </div>
-                        <div class="field-shell" data-achievement-scope="gallery" data-category-input="existing" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'existing') hidden @endif>
-                            <label class="field-label" for="achievement_existing_category">Existing Category</label>
-                            <select class="field-select" id="achievement_existing_category" name="existing_category" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'existing') disabled @endif>
-                                <option value="">Select category</option>
-                                @foreach ($achievementCategories as $category)
-                                    <option value="{{ $category }}" @selected(old('existing_category', $editingAchievement->gallery_category ?? '') === $category)>{{ $category }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="field-shell" data-achievement-scope="gallery" data-category-input="new" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'new') hidden @endif>
-                            <label class="field-label" for="achievement_new_category">New Category</label>
-                            <input class="field-input" id="achievement_new_category" name="new_category" type="text" value="{{ old('new_category') }}" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'new') disabled @endif />
-                        </div>
-
-                        <div class="field-shell" data-achievement-scope="showcase" @if ($activeAchievementKind !== 'showcase') hidden @endif>
-                            <label class="field-label" for="achievement_eyebrow">Eyebrow</label>
-                            <input class="field-input" id="achievement_eyebrow" name="eyebrow" type="text" value="{{ old('eyebrow', $editingAchievement->eyebrow ?? '') }}" @if ($activeAchievementKind !== 'showcase') disabled @endif />
-                        </div>
-                        <div class="field-shell" data-achievement-scope="showcase" @if ($activeAchievementKind !== 'showcase') hidden @endif>
-                            <label class="field-label" for="achievement_stat">Stat Label</label>
-                            <input class="field-input" id="achievement_stat" name="stat" type="text" value="{{ old('stat', $editingAchievement->stat ?? '') }}" @if ($activeAchievementKind !== 'showcase') disabled @endif />
-                        </div>
-                        <div class="field-shell" data-achievement-scope="showcase" @if ($activeAchievementKind !== 'showcase') hidden @endif>
-                            <label class="field-label" for="achievement_icon">Material Icon Name</label>
-                            <input class="field-input" id="achievement_icon" name="icon" type="text" value="{{ old('icon', $editingAchievement->icon ?? 'workspace_premium') }}" @if ($activeAchievementKind !== 'showcase') disabled @endif />
-                            <p class="field-help">Examples: `workspace_premium`, `emoji_events`, `campaign`, `school`.</p>
-                        </div>
-                    </div>
-
-                    <div class="rounded-[1.6rem] border border-violet-100 bg-[linear-gradient(180deg,#fcfbff_0%,#f5f3ff_100%)] p-5">
-                        <div class="flex items-start gap-3">
-                            <span class="material-symbols-outlined rounded-full bg-violet-100 p-2 text-violet-700">gallery_thumbnail</span>
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">inventory_2</span>
                             <div>
-                                <h3 class="font-headline text-xl font-extrabold text-slate-900">Media Setup</h3>
-                                <p class="mt-1 text-sm leading-6 text-slate-600">Keep this item as image or video, using a URL or file upload. For student review clips, set the category to `Student Reviews` and media type to `Video`.</p>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Basic Details</h3>
+                                <p class="text-xs text-slate-500">Start by telling us what this item is and how it should be ordered.</p>
                             </div>
                         </div>
-                        <div class="mt-5 grid gap-4 lg:grid-cols-2">
-                            <div class="field-shell"><label class="field-label" for="achievement_media_provider">Storage Option</label><select class="field-select" id="achievement_media_provider" name="media_provider"><option value="url" @selected(old('media_provider', $editingAchievement->media_provider ?? 'cloudinary') === 'url')>Use media URL</option><option value="local" @selected(old('media_provider', $editingAchievement->media_provider ?? '') === 'local')>Upload to local storage</option><option value="cloudflare" @selected(in_array(old('media_provider', $editingAchievement->media_provider ?? ''), ['cloud', 'cloudflare'], true))>Upload to Cloudflare R2</option><option value="cloudinary" @selected(old('media_provider', $editingAchievement->media_provider ?? 'cloudinary') === 'cloudinary')>Upload to Cloudinary</option></select></div>
-                            <div class="field-shell"><label class="field-label" for="achievement_media_type">Media Type</label><select class="field-select" id="achievement_media_type" name="media_type"><option value="image" @selected(old('media_type', $editingAchievement->media_type ?? 'image') === 'image')>Image</option><option value="video" @selected(old('media_type', $editingAchievement->media_type ?? '') === 'video')>Video</option></select></div>
-                            <div class="field-shell lg:col-span-2"><label class="field-label" for="achievement_media_file">Upload From Device</label><input class="field-file" id="achievement_media_file" name="media_file" type="file" /><p class="field-help">Use this when storing locally, in Cloudflare R2, or in Cloudinary.</p></div>
-                            <div class="field-shell lg:col-span-2"><label class="field-label" for="achievement_media_url">Media URL</label><input class="field-input" id="achievement_media_url" name="media_url" type="text" value="{{ old('media_url', $editingAchievement->media_url ?? '') }}" /><p class="field-help">Paste a public image or video URL when URL mode is selected.</p></div>
+
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_kind">Content Type</label>
+                                <select class="field-select" id="achievement_kind" name="kind" data-achievement-kind-select>
+                                    <option value="" disabled @selected(is_null($activeAchievementKind))>Choose what this item is for</option>
+                                    <option value="gallery" @selected($activeAchievementKind === 'gallery')>Gallery (image grid)</option>
+                                    <option value="showcase" @selected($activeAchievementKind === 'showcase')>Showcase Card (large highlight)</option>
+                                </select>
+                                <p class="field-help">Pick <strong>Gallery</strong> for image grid items, <strong>Showcase</strong> for the bigger highlight cards below.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_sort_order">Sort Order</label>
+                                <input class="field-input" id="achievement_sort_order" name="sort_order" type="number" min="0" placeholder="e.g. 0" value="{{ old('sort_order', $editingAchievement->sort_order ?? 0) }}" />
+                                <p class="field-help">Lower numbers appear first. <code>0</code> shows at the top, <code>1</code> next, and so on.</p>
+                            </div>
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="achievement_title">Title</label>
+                                <input class="field-input" id="achievement_title" name="title" type="text" maxlength="120" placeholder="e.g. Annual Science Exhibition 2025" value="{{ old('title', $editingAchievement->title ?? '') }}" />
+                                <p class="field-help">A short, clear heading used in both gallery and showcase views.</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="field-shell" data-achievement-scope="showcase" @if ($activeAchievementKind !== 'showcase') hidden @endif>
-                        <label class="field-label" for="achievement_copy">Description</label>
-                        <textarea class="field-textarea" id="achievement_copy" name="copy" rows="5" @if ($activeAchievementKind !== 'showcase') disabled @endif>{{ old('copy', $editingAchievement->copy ?? '') }}</textarea>
-                    </div>
-                    <div class="field-shell" data-achievement-scope="showcase" @if ($activeAchievementKind !== 'showcase') hidden @endif>
-                        <label class="field-label" for="achievement_points">Highlight Points</label>
-                        <textarea class="field-textarea" id="achievement_points" name="points" rows="4" @if ($activeAchievementKind !== 'showcase') disabled @endif>{{ old('points', isset($editingAchievement) ? implode(PHP_EOL, $editingAchievement->points ?? []) : '') }}</textarea>
-                        <p class="field-help">Add one point per line for showcase cards.</p>
+                    <div class="form-card space-y-5" data-achievement-scope="gallery" @if ($activeAchievementKind !== 'gallery') hidden @endif>
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">collections</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Gallery Category</h3>
+                                <p class="text-xs text-slate-500">Group gallery photos under a category like Seminar, Event, or Workshop.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_category_mode">Category Source</label>
+                                <select class="field-select" id="achievement_category_mode" name="category_mode" data-achievement-category-mode @if ($activeAchievementKind !== 'gallery') disabled @endif>
+                                    <option value="existing" @selected($activeCategoryMode === 'existing')>Use an existing category</option>
+                                    <option value="new" @selected($activeCategoryMode === 'new')>Create a new category</option>
+                                </select>
+                                <p class="field-help">Pick <strong>existing</strong> to reuse a category, or <strong>new</strong> to add one.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_gallery_category_order">Category Display Order</label>
+                                <input class="field-input" id="achievement_gallery_category_order" name="gallery_category_order" type="number" min="0" placeholder="e.g. 0" value="{{ $activeCategoryOrder }}" @if ($activeAchievementKind !== 'gallery') disabled @endif />
+                                <p class="field-help">Use the same number for every photo inside one category. <code>0</code> shows first, larger numbers go lower.</p>
+                            </div>
+                            <div class="field-shell" data-category-input="existing" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'existing') hidden @endif>
+                                <label class="field-label" for="achievement_existing_category">Existing Category</label>
+                                <select class="field-select" id="achievement_existing_category" name="existing_category" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'existing') disabled @endif>
+                                    <option value="">— Select a category —</option>
+                                    @foreach ($achievementCategories as $category)
+                                        <option value="{{ $category }}" @selected(old('existing_category', $editingAchievement->gallery_category ?? '') === $category)>{{ $category }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="field-shell" data-category-input="new" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'new') hidden @endif>
+                                <label class="field-label" for="achievement_new_category">New Category Name</label>
+                                <input class="field-input" id="achievement_new_category" name="new_category" type="text" maxlength="60" placeholder="e.g. Award Ceremony" value="{{ old('new_category') }}" @if ($activeAchievementKind !== 'gallery' || $activeCategoryMode !== 'new') disabled @endif />
+                                <p class="field-help">Give the new category a short, memorable name.</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"><input name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingAchievement->is_active ?? true)) />Show this achievement item on the public site</label>
+                    <div class="form-card space-y-5" data-achievement-scope="showcase" @if ($activeAchievementKind !== 'showcase') hidden @endif>
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">style</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Showcase Card Details</h3>
+                                <p class="text-xs text-slate-500">These details power the large highlight cards shown under the gallery.</p>
+                            </div>
+                        </div>
 
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_eyebrow">Eyebrow Label</label>
+                                <input class="field-input" id="achievement_eyebrow" name="eyebrow" type="text" maxlength="40" placeholder="e.g. Student Achievement" value="{{ old('eyebrow', $editingAchievement->eyebrow ?? '') }}" @if ($activeAchievementKind !== 'showcase') disabled @endif />
+                                <p class="field-help">A tiny tag shown above the title, like a category name.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_stat">Stat Label</label>
+                                <input class="field-input" id="achievement_stat" name="stat" type="text" maxlength="20" placeholder="e.g. 120+" value="{{ old('stat', $editingAchievement->stat ?? '') }}" @if ($activeAchievementKind !== 'showcase') disabled @endif />
+                                <p class="field-help">A short stat or number that appears on the card (for example, <code>120+</code> students).</p>
+                            </div>
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="achievement_icon">Material Icon Name</label>
+                                <input class="field-input" id="achievement_icon" name="icon" type="text" maxlength="40" placeholder="e.g. workspace_premium" value="{{ old('icon', $editingAchievement->icon ?? 'workspace_premium') }}" @if ($activeAchievementKind !== 'showcase') disabled @endif />
+                                <p class="field-help">Type the icon name from Google Material Symbols. Examples: <code>workspace_premium</code>, <code>emoji_events</code>, <code>campaign</code>, <code>school</code>.</p>
+                            </div>
+                        </div>
+
+                        <div class="field-shell">
+                            <label class="field-label" for="achievement_copy">Description</label>
+                            <textarea class="field-textarea" id="achievement_copy" name="copy" rows="4" maxlength="500" placeholder="Write 2-3 lines describing this achievement…" @if ($activeAchievementKind !== 'showcase') disabled @endif>{{ old('copy', $editingAchievement->copy ?? '') }}</textarea>
+                            <p class="field-help">Keep it short and clear. Visitors will read this on the showcase card.</p>
+                        </div>
+                        <div class="field-shell">
+                            <label class="field-label" for="achievement_points">Highlight Points</label>
+                            <textarea class="field-textarea" id="achievement_points" name="points" rows="4" maxlength="400" placeholder="National-level winners&#10;Hands-on robotics workshop&#10;Guided by industry mentors" @if ($activeAchievementKind !== 'showcase') disabled @endif>{{ old('points', isset($editingAchievement) ? implode(PHP_EOL, $editingAchievement->points ?? []) : '') }}</textarea>
+                            <p class="field-help">Add one bullet point per line. Each line becomes a separate point on the card.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-card space-y-5">
+                        <div class="form-card-head">
+                            <span class="material-symbols-outlined">gallery_thumbnail</span>
+                            <div>
+                                <h3 class="font-headline text-lg font-extrabold text-slate-900">Media Setup</h3>
+                                <p class="text-xs text-slate-500">Choose where the photo or video is stored, and how it should be uploaded.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4 lg:grid-cols-2">
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_media_provider">Storage Option</label>
+                                <select class="field-select" id="achievement_media_provider" name="media_provider">
+                                    <option value="" disabled @selected(is_null(old('media_provider', $editingAchievement->media_provider ?? null)))>— Choose storage —</option>
+                                    <option value="url" @selected(old('media_provider', $editingAchievement->media_provider ?? 'cloudinary') === 'url')>Use a media URL</option>
+                                    <option value="local" @selected(old('media_provider', $editingAchievement->media_provider ?? '') === 'local')>Upload to local storage</option>
+                                    <option value="cloudflare" @selected(in_array(old('media_provider', $editingAchievement->media_provider ?? ''), ['cloud', 'cloudflare'], true))>Upload to Cloudflare R2</option>
+                                    <option value="cloudinary" @selected(old('media_provider', $editingAchievement->media_provider ?? 'cloudinary') === 'cloudinary')>Upload to Cloudinary</option>
+                                </select>
+                                <p class="field-help">Pick <strong>URL</strong> to paste a link, or one of the upload options to store the file directly.</p>
+                            </div>
+                            <div class="field-shell">
+                                <label class="field-label" for="achievement_media_type">Media Type</label>
+                                <select class="field-select" id="achievement_media_type" name="media_type">
+                                    <option value="" disabled @selected(is_null(old('media_type', $editingAchievement->media_type ?? null)))>— Choose media type —</option>
+                                    <option value="image" @selected(old('media_type', $editingAchievement->media_type ?? 'image') === 'image')>Image (photo)</option>
+                                    <option value="video" @selected(old('media_type', $editingAchievement->media_type ?? '') === 'video')>Video (mp4, etc.)</option>
+                                </select>
+                            </div>
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="achievement_media_file">Upload From Device</label>
+                                <input class="field-file" id="achievement_media_file" name="media_file" type="file" accept="image/*,video/*" />
+                                <p class="field-help">Use this when storing locally, in Cloudflare R2, or in Cloudinary. Max size depends on the storage option.</p>
+                            </div>
+                            <div class="field-shell lg:col-span-2">
+                                <label class="field-label" for="achievement_media_url">Media URL</label>
+                                <input class="field-input" id="achievement_media_url" name="media_url" type="url" placeholder="https://res.cloudinary.com/…/photo.jpg" value="{{ old('media_url', $editingAchievement->media_url ?? '') }}" />
+                                <p class="field-help">Paste a public image or video URL when <strong>URL</strong> storage is selected above.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="flex items-center gap-3 rounded-[1.2rem] border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700">
+                        <input name="is_active" type="checkbox" value="1" @checked(old('is_active', $editingAchievement->is_active ?? true)) />
+                        <span>Show this achievement item on the public site</span>
+                    </label>
                     <div class="flex flex-wrap gap-3">
                         <button class="rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(124,58,237,0.24)]" type="submit">{{ $editingAchievement ? 'Update Achievement' : 'Create Achievement' }}</button>
                         @if ($editingAchievement)
@@ -312,3 +390,5 @@
 </script>
 </body>
 </html>
+
+

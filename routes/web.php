@@ -46,6 +46,8 @@ Route::controller(PublicSiteController::class)->group(function () {
     Route::post('/workshop/register', 'submitWorkshopRegistration')->middleware('throttle:public-contact')->name('home.workshop.register');
     Route::get('/mentorship', 'mentorship')->name('home.mentorship');
     Route::get('/career-with-us', 'careerWithUs')->name('home.career-with-us');
+    Route::get('/career-with-us/{job}', 'jobApplication')->name('home.career-with-us.apply');
+    Route::post('/career-with-us/{job}', 'submitJobApplication')->middleware('throttle:public-contact')->name('home.career-with-us.apply.submit');
 });
 
 Route::get('/courseDetails', [StudentCatalogController::class, 'courseDetails'])
@@ -56,6 +58,7 @@ Route::redirect('/carrer', '/career-with-us', 301);
 Route::controller(PublicChatbotController::class)->prefix('api/chatbot')->group(function () {
     Route::get('/health', 'health')->name('chatbot.health');
     Route::get('/context', 'context')->name('chatbot.context');
+    Route::post('/messages', 'message')->name('chatbot.messages');
     Route::post('/inquiries', 'storeInquiry')->name('chatbot.inquiries');
 });
 
@@ -299,6 +302,12 @@ Route::middleware(['auth', 'verified', 'role:hr team,admin,super admin'])
             Route::post('/', 'storeJob')->name('.store');
             Route::put('/{job}', 'updateJob')->name('.update');
             Route::delete('/{job}', 'destroyJob')->name('.destroy');
+        });
+
+        Route::prefix('job-applications')->name('job-applications')->group(function () {
+            Route::get('/', 'jobApplications')->name('');
+            Route::get('/{application}/resume', 'downloadJobApplicationResume')->name('.resume');
+            Route::put('/{application}', 'updateJobApplication')->name('.update');
         });
 
         Route::prefix('faculty')->name('faculty')->group(function () {

@@ -1,4 +1,4 @@
-@php
+﻿@php
     $topicMeta = match ($filterTopic) {
         'career' => ['eyebrow' => 'Career Pipeline', 'title' => 'Career inquiries', 'pageTitle' => 'Career Leads'],
         'workshop' => ['eyebrow' => 'Workshop Pipeline', 'title' => 'Workshop registrations', 'pageTitle' => 'Workshop Leads'],
@@ -47,7 +47,9 @@
         .status-follow_up { background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%); color: #b45309; }
         .status-closed { background: linear-gradient(135deg, #e2e8f0 0%, #f8fafc 100%); color: #475569; }
         .action-btn { display: inline-flex; align-items: center; gap: 0.5rem; border-radius: 999px; padding: 0.7rem 1rem; background: linear-gradient(135deg, #0f4c81 0%, #2563eb 100%); color: white; font-size: 0.78rem; font-weight: 700; box-shadow: 0 14px 28px rgba(37, 99, 235, 0.18); }
-        .field-input, .field-select, .field-textarea { width: 100%; border-radius: 1rem; border: 1px solid rgb(203 213 225); background: white; font-size: 0.9rem; color: rgb(15 23 42); }
+        .field-input, .field-select, .form-card { border: 1px solid rgb(186 230 253); border-radius: 1.55rem; background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(240,249,255,0.94)); padding: 1.4rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.92), 0 14px 30px rgba(15,23,42,0.045); }
+        .form-card-head { display: flex; align-items: flex-start; gap: 0.85rem; padding-bottom: 1rem; border-bottom: 1px dashed rgba(2,132,199,0.22); margin-bottom: 0.5rem; }
+        .form-card-head .material-symbols-outlined { display: inline-flex; align-items: center; justify-content: center; height: 2.4rem; width: 2.4rem; border-radius: 0.85rem; background: linear-gradient(135deg, rgba(2,132,199,0.14), rgba(14,165,233,0.14)); color: rgb(2 132 199); font-size: 1.25rem; }.field-textarea { width: 100%; border-radius: 1rem; border: 1px solid rgb(203 213 225); background: white; font-size: 0.9rem; color: rgb(15 23 42); }
         .field-input, .field-select { padding: 0.78rem 0.95rem; }
         .field-textarea { min-height: 7rem; padding: 0.9rem 0.95rem; resize: vertical; }
         .field-label { display: block; margin-bottom: 0.45rem; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(71 85 105); }
@@ -286,39 +288,51 @@
                     </div>
 
                     <div>
-                        <form action="{{ route('hr.inquiries.update', $contact) }}" class="space-y-4 rounded-[1.6rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fbff_100%)] p-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)]" method="POST">
+                        <form action="{{ route('hr.inquiries.update', $contact) }}" class="form-card space-y-4" method="POST">
                             @csrf
                             @method('PUT')
-                            <div>
-                                <p class="text-xs font-bold uppercase tracking-[0.22em] text-sky-700">Edit Inquiry</p>
-                                <h4 class="mt-2 font-headline text-2xl font-extrabold text-slate-900">Update and respond</h4>
+                            <div class="form-card-head">
+                                <span class="material-symbols-outlined">support_agent</span>
+                                <div>
+                                    <p class="text-xs font-bold uppercase tracking-[0.22em] text-sky-700">Edit Inquiry</p>
+                                    <h4 class="mt-1 font-headline text-xl font-extrabold text-slate-900">Update and respond</h4>
+                                    <p class="text-xs text-slate-500">Pick a status, assign a teammate, set a follow-up, and add the HR reply.</p>
+                                </div>
                             </div>
                             <div>
                                 <label class="field-label" for="status-{{ $contact->id }}">Status</label>
                                 <select class="field-select" id="status-{{ $contact->id }}" name="status">
+                                    <option value="" disabled @selected(is_null($contact->status))>— Choose status —</option>
                                     @foreach (['new' => 'New', 'contacted' => 'Contacted', 'follow_up' => 'Follow Up', 'closed' => 'Closed'] as $value => $label)
                                         <option value="{{ $value }}" @selected($contact->status === $value)>{{ $label }}</option>
                                     @endforeach
                                 </select>
+                                <p class="field-help">Pick <strong>Contacted</strong> after the first reply, <strong>Follow Up</strong> when action is pending, or <strong>Closed</strong> when done.</p>
                             </div>
                             <div>
                                 <label class="field-label" for="assigned-{{ $contact->id }}">Assign To</label>
                                 <select class="field-select" id="assigned-{{ $contact->id }}" name="assigned_to">
-                                    <option value="">Unassigned</option>
+                                    <option value="">— Unassigned —</option>
                                     @foreach ($hrUsers as $hrUser)
                                         <option value="{{ $hrUser->id }}" @selected($contact->assigned_to === $hrUser->id)>{{ $hrUser->name }}</option>
                                     @endforeach
                                 </select>
+                                <p class="field-help">Choose who on the HR team owns this inquiry.</p>
                             </div>
                             <div>
                                 <label class="field-label" for="follow-up-{{ $contact->id }}">Follow-Up Time</label>
                                 <input class="field-input" id="follow-up-{{ $contact->id }}" name="follow_up_at" type="datetime-local" value="{{ old('follow_up_at', optional($contact->follow_up_at)->format('Y-m-d\TH:i')) }}" />
+                                <p class="field-help">Optional. Pick the next time someone should call or message this lead.</p>
                             </div>
                             <div>
                                 <label class="field-label" for="notes-{{ $contact->id }}">Reply / Internal Notes</label>
-                                <textarea class="field-textarea" id="notes-{{ $contact->id }}" name="internal_notes" rows="6" placeholder="Add the HR response, callback details, next step, or internal remarks">{{ old('internal_notes', $contact->internal_notes) }}</textarea>
+                                <textarea class="field-textarea" id="notes-{{ $contact->id }}" name="internal_notes" rows="6" maxlength="1000" placeholder="e.g. Called the parent at 6 PM, follow up next Tuesday with brochure.">{{ old('internal_notes', $contact->internal_notes) }}</textarea>
+                                <p class="field-help">Add the HR response, callback details, next step, or internal remarks.</p>
                             </div>
-                            <button class="inline-flex w-full items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#0f4c81_0%,#2563eb_100%)] px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(37,99,235,0.18)] transition hover:brightness-105" type="submit">Save Inquiry</button>
+                            <button class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(135deg,#0f4c81_0%,#2563eb_100%)] px-4 py-3 text-sm font-semibold text-white shadow-[0_14px_28px_rgba(37,99,235,0.18)] transition hover:brightness-105" type="submit">
+                                <span class="material-symbols-outlined text-[18px]">save</span>
+                                Save Inquiry
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -376,3 +390,5 @@
 </script>
 </body>
 </html>
+
+

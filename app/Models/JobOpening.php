@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class JobOpening extends Model
 {
@@ -27,5 +28,10 @@ class JobOpening extends Model
             'skills' => 'array',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function applications(): HasMany
+    {
+        return $this->hasMany(JobApplication::class);
     }
 }
